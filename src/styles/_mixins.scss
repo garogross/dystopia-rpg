@@ -1,0 +1,51 @@
+@import "vars";
+
+
+@mixin icon($width,$height: $width,) {
+  width: $width;
+  height: $height;
+  object-fit: contain;
+}
+
+@mixin setFont($size,$weight,$family: $font-fam-main,$color: $color-white) {
+  font-size: $size;
+  font-weight: $weight;
+  font-family: $family;
+  color: $color;
+}
+
+@mixin flexCol($layout: center,$align: center) {
+  display: flex;
+  justify-content: $layout;
+  align-items: $align;
+}
+
+@mixin bgWebp($src,$srcSet) {
+    background-image: url($src); /* Fallback image */
+
+  @supports (background-image: url($srcSet)) {
+      background-image: url($srcSet);
+  }
+}
+
+@mixin button($bg: transparent, $border: none) {
+  border: $border;
+  background: $bg;
+  cursor: pointer;
+}
+
+@mixin svg($width,$color: transparent,$height: $width,$stroke: none) {
+  width: $width;
+  height: $height;
+  transition: $transition;
+  fill: $color;
+  stroke: $stroke;
+}
+
+%no-user-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}

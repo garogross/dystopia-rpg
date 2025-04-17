@@ -1,0 +1,32 @@
+@import "../../../styles/vars";
+@import "../../../styles/mixins";
+
+.mainBtn {
+  cursor: pointer;
+  border: none;
+  background: $color-primary;
+  width: 100%;
+  white-space: nowrap;
+  text-align: center;
+  padding: 12px 20px;
+  border-radius: 10px;
+  transition: $transition;
+  @include setFont(16px, 600);
+  text-align: center;
+  display: block;
+
+  &:hover,
+  &:active,
+  &:focus-visible {
+    background: lighten($color: $color-primary, $amount: 5%);
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &_negative {
+    background: #707579;
+  }
+}
