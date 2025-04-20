@@ -11,6 +11,7 @@ const GameCharacterMain = () => {
     <div className={styles.gameCharacterMain}>
       <ImageWebp
         className={styles.gameCharacterMain__character}
+        pictureClass={styles.gameCharacterMain__characterPicture}
         src={personModel1Image}
         alt="character"
         srcSet={personModel1ImageWebp}
