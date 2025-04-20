@@ -16,7 +16,7 @@ jobs:
       - name: ⚙️ Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
       - name: 📦 Install dependencies
         run: npm install
@@ -29,6 +29,6 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
           source: "build/*"
           target: "${{ secrets.VPS_PATH }}"
