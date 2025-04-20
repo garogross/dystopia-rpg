@@ -1,0 +1,132 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.gameSideBar {
+  @include flexCol();
+  width: 135px;
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  &__item {
+    position: relative;
+    text-decoration: none;
+  }
+  &__itemWrapper {
+    background: $color-primary;
+    width: 100px;
+
+    max-height: 100%;
+    height: 60px;
+    padding: 1px;
+
+    transition: $transition;
+
+    & svg {
+      fill: $color-text;
+      transition: $transition;
+    }
+
+    &_active svg {
+      fill: $color-black;
+    }
+  }
+
+  &__item:nth-child(-n + 3) &__itemWrapper,
+  &__item:nth-child(-n + 3) &__itemInner {
+    clip-path: polygon(
+      100% 77.76%,
+      87.5% 100%,
+      14.43% 100%,
+      0% 24.46%,
+      14.43% 0%,
+      87.5% 0%,
+      100% 77.76%
+    );
+  }
+  &__item:nth-last-child(-n + 3) &__itemWrapper,
+  &__item:nth-last-child(-n + 3) &__itemInner {
+    clip-path: polygon(
+      100% 22.24%,
+      87.5% 0%,
+      14.43% 0%,
+      0% 75.54%,
+      14.43% 100%,
+      87.5% 100%,
+      100% 22.24%
+    );
+  }
+
+  &__itemInner {
+    background: radial-gradient(
+      76.5% 76.5% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
+    @include flexCol();
+    flex-direction: column;
+    gap: 6px;
+    transition: $transition;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__itemWrapper_active &__itemInner {
+    background: radial-gradient(
+      76.5% 76.5% at 50% 50%,
+      #3d2b7e 0%,
+      #5a41b5 100%
+    );
+  }
+
+  &__text {
+    @include setFont(12px, 400);
+    text-align: center;
+    transition: $transition;
+  }
+
+  &__itemWrapper_active &__text {
+    color: $color-black;
+  }
+
+  &__socket {
+    position: absolute;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    width: 18px;
+    height: 18px;
+    transform: rotate(45deg);
+    border: 3px solid $color-primary;
+    background: transparent;
+    @include flexCol();
+  }
+
+  &__item:nth-child(-n + 3) &__socket {
+    bottom: 6px;
+  }
+
+  &__item:nth-last-child(-n + 3) &__socket {
+    top: 6px;
+  }
+
+  &__socketInner {
+    width: 6px;
+    height: 6px;
+    background: $color-secondary;
+  }
+
+  &__cables {
+    height: 100%;
+    margin-left: -26px;
+    margin-right: -10px;
+  }
+
+  &__cablesImage {
+    width: 100%;
+    height: 100%;
+  }
+}

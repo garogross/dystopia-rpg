@@ -1,4 +1,5 @@
 import React from 'react';
+import HomeMain from '../components/HomePage/HomeMain/HomeMain';
 
 
 interface Props {
@@ -6,7 +7,7 @@ interface Props {
 }
 
 const HomePage: React.FC<Props> = (props) => {
-  return <div></div>;
+  return <HomeMain />;
 };
 
 export default HomePage;

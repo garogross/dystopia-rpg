@@ -7,7 +7,7 @@
   object-fit: contain;
 }
 
-@mixin setFont($size,$weight,$family: $font-fam-main,$color: $color-white) {
+@mixin setFont($size,$weight,$family: $font-fam-main,$color: $color-text) {
   font-size: $size;
   font-weight: $weight;
   font-family: $family;

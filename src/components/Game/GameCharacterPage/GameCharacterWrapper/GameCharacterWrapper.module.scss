@@ -1,0 +1,12 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.gameCharacterWrapper {
+  width: 100%;
+  height: 100%;
+  @include bgWebp(
+    "../../../../assets/images/game/CharacterPage/characterBg.jpeg",
+    "../../../../assets/images/game/CharacterPage/characterBg.webp"
+  );
+  background-position: bottom center;
+}

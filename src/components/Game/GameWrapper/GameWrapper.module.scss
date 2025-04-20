@@ -1,0 +1,27 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.gameWrapper {
+  height: 100%;
+  background: $color-black;
+  width: 100%;
+  overflow: hidden;
+  color: white;
+
+  &__container {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    z-index: 1;
+    position: relative;
+  }
+
+  &__main {
+    flex: 1;
+    height: calc(100vh - 75px);
+    overflow: hidden;
+  }
+}

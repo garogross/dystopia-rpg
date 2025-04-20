@@ -1,0 +1,14 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.gameCharacterMain {
+  width: 100%;
+  height: 100%;
+  @include flexCol(center, flex-end);
+
+  &__character {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
