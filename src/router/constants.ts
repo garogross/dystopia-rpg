@@ -2,6 +2,7 @@
 export const gamePagePath = "/start";
 
 export const gameChallengesPagePath = "challenges";
+export const gameSingleChallengePagePath = "challenge";
 export const gameMinigamesPagePath = "minigames";
 export const gameDuelPagePath = "duel";
 export const gameClanPagePath = "clan";

@@ -9,6 +9,7 @@ export enum TransitionStyleTypes {
   top = "top",
   bottom = "bottom",
   zoomIn = "zoomIn",
+  zoomOut = "zoomOut",
 }
 
 interface TransitionProviderProps {
@@ -66,6 +67,11 @@ const TransitionProvider = ({
       from: { opacity: 0, scale: "0" },
       enter: { opacity: 1, scale: "1" },
       leave: { opacity: 0, scale: "0" },
+    },
+    [TransitionStyleTypes.zoomOut]: {
+      from: { opacity: 1, scale: "2" },
+      enter: { opacity: 1, scale: "1" },
+      leave: { opacity: 0, scale: "2" },
     },
   };
 

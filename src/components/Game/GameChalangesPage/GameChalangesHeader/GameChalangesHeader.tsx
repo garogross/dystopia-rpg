@@ -12,7 +12,7 @@ const GameChalangesHeader = () => {
   return (
     <TransitionProvider  className={styles.gameChalangesHeader} style={TransitionStyleTypes.bottom} inProp={gameInited} >
       <div className={styles.gameChalangesHeader__wrapper}>
-        <h3 className={styles.gameChalangesHeader__title}>
+        <h3 className={`${styles.gameChalangesHeader__title} gradientText`}>
           Тактика — это роскошь.
           <br /> Остальное — инстинкт и сталь.
         </h3>

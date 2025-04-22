@@ -76,6 +76,7 @@ const GameWrapper: React.FC<Props> = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appLoading, loaderTimerFinished]);
+console.log({appLoading});
 
   return (
     <div className={`${styles.gameWrapper}`}>

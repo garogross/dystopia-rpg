@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 
 import styles from "./GameChalangesList.module.scss";
 import { Link } from "react-router-dom";
-import { gameChallengesPagePath } from "../../../../router/constants";
+import {
+  gamePagePath,
+  gameSingleChallengePagePath,
+} from "../../../../router/constants";
 import { useAppSelector } from "../../../../hooks/redux";
 import HeaderWings from "../../../layout/icons/game/Common/HeaderWings";
 import GameChalangesFrame from "../../../layout/icons/game/GameChalangesPage/GameChalangesFrame";
@@ -30,7 +33,7 @@ const GameChalangesList: React.FC = () => {
           inProp={gameInited && inited}
         >
           <Link
-            to={gameChallengesPagePath}
+            to={`${gamePagePath}/${gameSingleChallengePagePath}/${chalange.id}`}
             className={styles.gameChalangesList__item}
           >
             <div className={styles.gameChalangesList__itemImgWrapper}>
@@ -44,7 +47,7 @@ const GameChalangesList: React.FC = () => {
               </div>
             </div>
             <div className={styles.gameChalangesList__itemTitleWrapper}>
-              <h5 className={styles.gameChalangesList__itemTitle}>
+              <h5 className={`${styles.gameChalangesList__itemTitle} typeAnimation`}>
                 {chalange.name}
               </h5>
               <div className={styles.gameChalangesList__itemWings}>

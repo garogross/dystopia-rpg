@@ -38,6 +38,10 @@
   border: $border;
   background: $bg;
   cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+  }
 }
 
 @mixin svg($width,$color: transparent,$height: $width,$stroke: none) {

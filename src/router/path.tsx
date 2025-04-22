@@ -10,12 +10,15 @@ import GameClanPage from "../pages/Game/GameClanPage";
 import {
   gamePagePath,
   gameChallengesPagePath,
+  gameSingleChallengePagePath,
   gameMinigamesPagePath,
   gameDuelPagePath,
   gameClanPagePath,
   gameLoyalityPagePath
 } from "./constants";
 import GameLoyalityPage from "../pages/Game/GameLoyalityPage";
+import GameSingleChalangePage from "../pages/Game/GameSingleChalangePage";
+import { Navigate } from "react-router-dom";
 
 export const homePagePath = "/";
 
@@ -56,6 +59,10 @@ export const routes: IRoute[] = [
       {
         path: gameLoyalityPagePath,
         component: <GameLoyalityPage />,
+      },
+      {
+        path: `${gameSingleChallengePagePath}/:id`,
+        component: <GameSingleChalangePage />,
       },
     ],
   },

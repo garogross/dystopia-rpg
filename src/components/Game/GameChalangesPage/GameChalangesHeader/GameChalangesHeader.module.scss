@@ -18,9 +18,7 @@
   &__title {
     text-align: center;
     @include setFont(16px, 400, $font-fam-h3, transparent);
-    background: linear-gradient(91.23deg, #c6b7ff 8.44%, #7f5cff 77.15%);
-    -webkit-background-clip: text;
-    background-clip: text;
+ 
     line-height: 10px;
 
 
