@@ -11,8 +11,8 @@
 
   &__cornerBlock {
     position: relative;
-    max-width: 157px;
-    width: 100%;
+    width: 157px;
+    min-width: 157px;
     height: 100%;
     padding-top: 6.5px;
     @include flexCol(flex-start);
@@ -48,7 +48,7 @@
   }
 
   &__mainBtn {
-    @include button($color-primary);
+    @include button($color-primary-dark-gradient);
     @include flexCol();
     width: 36px;
     height: 36px;
@@ -66,7 +66,7 @@
   }
 
   &__navBtn {
-    @include button($color-primary-gradient);
+    @include button($color-primary-dark-gradient);
     max-width: 37px;
     width: 100%;
     padding: 2px;
@@ -114,6 +114,19 @@
     clip-path: path("M37 0H4.71563L0 8.5L4.71563 17H37V0Z");
   }
 
+  &__premiumBtn {
+    margin-top: 7px;
+    margin-inline: -40px;
+    clip-path: polygon(98% 1%, 100% 50%, 98% 99%, 2% 99%, 0% 50%, 2% 1%);
+    height: 11px;
+    width: 100%;
+    @include flexCol();
+    gap: 3px;
+    padding-inline: 4px;
+    @include button(linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%));
+    @include setFont(8px, 400);
+  }
+
   &__bottomBlock {
     position: absolute;
     bottom: 0;
@@ -147,7 +160,7 @@
   }
 
   &__hideBtn {
-    @include button($color-primary-gradient);
+    @include button($color-primary-light-gradient);
     max-width: 75px;
     height: 10px;
     width: 100%;

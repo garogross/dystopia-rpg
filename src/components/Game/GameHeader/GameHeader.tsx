@@ -10,7 +10,6 @@ import {
 } from "../../../assets/images";
 import { HeaderBtnsBg } from "../../layout/icons/game/Header/HeaderBtnsBg";
 import { HeaderSwitcherIcon } from "../../layout/icons/game/Header/HeaderSwitcherIcon";
-import { HeaderSupportIcon } from "../../layout/icons/game/Header/HeaderSupportIcon";
 import { HeaderMailIcon } from "../../layout/icons/game/Header/HeaderMailIcon";
 import { HeaderSettingsIcon } from "../../layout/icons/game/Header/HeaderSettingsIcon";
 import { HeaderRatingIcon } from "../../layout/icons/game/Header/HeaderRatingIcon";
@@ -18,7 +17,8 @@ import { HeaderReferenceIcon } from "../../layout/icons/game/Header/HeaderRefere
 import { HeaderBottomBg } from "../../layout/icons/game/Header/HeaderBottomBg";
 import { HeaderHideIcon } from "../../layout/icons/game/Header/HeaderHideIcon";
 import { DotsLine } from "../../layout/icons/game/Common/DotsLine";
-
+import HeaderPremiumIcon from "../../layout/icons/game/Header/HeaderPremiumIcon";
+import HeaderMiniGamesICon from "../../layout/icons/game/Header/HeaderMiniGamesICon";
 interface Props {}
 
 const GameHeader: React.FC<Props> = (props) => {
@@ -38,7 +38,7 @@ const GameHeader: React.FC<Props> = (props) => {
         </button>
         <div className={styles.header__navBtns}>
           <button className={styles.header__navBtn}>
-            <HeaderSupportIcon />
+            <HeaderMiniGamesICon />
           </button>
           <button
             className={`${styles.header__navBtn} ${styles.header__mailBtn}`}
@@ -58,6 +58,10 @@ const GameHeader: React.FC<Props> = (props) => {
           <span className={styles.header__statText}>126,90k</span>
         </div>
       </div>
+      <button className={styles.header__premiumBtn}>
+        <HeaderPremiumIcon />
+        <span>Получить премиум</span>
+      </button>
       <div
         className={`${styles.header__cornerBlock} ${styles.header__cornerBlock_right}`}
       >
