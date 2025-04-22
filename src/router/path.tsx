@@ -13,7 +13,9 @@ import {
   gameMinigamesPagePath,
   gameDuelPagePath,
   gameClanPagePath,
+  gameLoyalityPagePath
 } from "./constants";
+import GameLoyalityPage from "../pages/Game/GameLoyalityPage";
 
 export const homePagePath = "/";
 
@@ -50,6 +52,10 @@ export const routes: IRoute[] = [
       {
         path: gameClanPagePath,
         component: <GameClanPage />,
+      },
+      {
+        path: gameLoyalityPagePath,
+        component: <GameLoyalityPage />,
       },
     ],
   },

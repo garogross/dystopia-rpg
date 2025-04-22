@@ -6,16 +6,16 @@ import { BottomNavbarItemInnerFrame } from "../../layout/icons/game/BottomNavbar
 import { BottomNavbarChalanagesIcon } from "../../layout/icons/game/BottomNavbar/BottomNavbarChalanagesIcon";
 import { BottomNavbarDuelsIcon } from "../../layout/icons/game/BottomNavbar/BottomNavbarDuelsIcon";
 import { BottomNavbarClanIcon } from "../../layout/icons/game/BottomNavbar/BottomNavbarClanIcon";
-import { BottomNavbarMiniGamesIcon } from "../../layout/icons/game/BottomNavbar/BottomNavbarMiniGamesIcon";
 import {
   gameChallengesPagePath,
   gameClanPagePath,
   gameDuelPagePath,
-  gameMinigamesPagePath,
+  gameLoyalityPagePath,
 } from "../../../router/constants";
 import styles from "./BottomNavbar.module.scss";
 import { BottomNavbarTopBg } from "../../layout/icons/game/BottomNavbar/BottomNavbarTopBg";
 import { BottomNavbarCharacterIcon } from "../../layout/icons/game/BottomNavbar/BottomNavbarCharacterIcon";
+import BottomNavbarLoyalityIcon from "../../layout/icons/game/BottomNavbar/BottomNavbarLoyalityIcon";
 const items = [
   {
     icon: <BottomNavbarChalanagesIcon className={styles.bottomNavbar__icon} />,
@@ -34,8 +34,8 @@ const items = [
     link: gameClanPagePath,
   },
   {
-    icon: <BottomNavbarMiniGamesIcon className={styles.bottomNavbar__icon} />,
-    link: gameMinigamesPagePath,
+    icon: <BottomNavbarLoyalityIcon className={styles.bottomNavbar__icon} />,
+    link: gameLoyalityPagePath,
   },
 ];
 
