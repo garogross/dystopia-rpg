@@ -3,12 +3,14 @@ import React from "react";
 import styles from "./GameChalangesHeader.module.scss";
 import { DotsLine } from "../../../layout/icons/game/Common/DotsLine";
 import HeaderWings from "../../../layout/icons/game/Common/HeaderWings";
+import TransitionProvider, { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
+import { useAppSelector } from "../../../../hooks/redux";
 
-interface Props {}
 
-const GameChalangesHeader: React.FC<Props> = (props) => {
+const GameChalangesHeader = () => {
+  const gameInited = useAppSelector(state => state.ui.gameInited)
   return (
-    <header className={styles.gameChalangesHeader}>
+    <TransitionProvider  className={styles.gameChalangesHeader} style={TransitionStyleTypes.bottom} inProp={gameInited} >
       <div className={styles.gameChalangesHeader__wrapper}>
         <h3 className={styles.gameChalangesHeader__title}>
           Тактика — это роскошь.
@@ -22,7 +24,7 @@ const GameChalangesHeader: React.FC<Props> = (props) => {
       <div className={styles.gameChalangesHeader__bg}>
         <HeaderWings />
       </div>
-    </header>
+    </TransitionProvider>
   );
 };
 
