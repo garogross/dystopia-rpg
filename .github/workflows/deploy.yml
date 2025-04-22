@@ -23,15 +23,6 @@ jobs:
 
       - name: 🏗️ Build app
         run: CI='' npm run build
-
-      - name: Check if secret is set
-        run: |
-          if [ -z "${{ secrets.VPS_PRIVATE_KEY }}" ]; then
-            echo "VPS_PRIVATE_KEY is EMPTY or not set"
-          else
-            echo "VPS_PRIVATE_KEY is set"
-          fi
-
       - name: 📤 Copy files to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
