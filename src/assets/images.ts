@@ -19,7 +19,7 @@ import characterPageBgImageWebp from "./images/game/CharacterPage/characterBg.we
 import chalange1Image from "./images/game/ChalangesPage/chalange1.jpeg";
 import chalange2Image from "./images/game/ChalangesPage/chalange2.png";
 import chalange3Image from "./images/game/ChalangesPage/chalange3.jpeg";
-import chalange4Image from "./images/game/ChalangesPage/chalange4.jpeg";
+import chalange4Image from "./images/game/ChalangesPage/chalange4.png";
 
 export {
   // GAME
