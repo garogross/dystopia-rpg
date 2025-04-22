@@ -1,0 +1,60 @@
+@import "../../styles/mixins";
+@import "../../styles/vars";
+
+.appLoader {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-color: $color-black;
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s linear;
+  }
+
+  &__loader {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    max-width: 576px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #000000c5;
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s linear;
+
+    &::after {
+      content: "";
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: transparent;
+      border: 6px solid $color-primary;
+      border-top-color: #ffffff00;
+      animation: loader 1s linear infinite;
+    }
+    &_hidden {
+      opacity: 0;
+    }
+  }
+}
+
+@keyframes loader {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

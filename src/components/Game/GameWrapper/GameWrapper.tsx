@@ -8,6 +8,7 @@ import { authUser } from "../../../store/slices/profileSlice";
 import { useTelegram } from "../../../hooks/useTelegram";
 import { useAppDispatch } from "../../../hooks/redux";
 import { useImageLoader } from "../../../hooks/useImageLoader";
+import AppLoader from "../../AppLoader/AppLoader";
 
 interface Props {}
 
@@ -69,7 +70,7 @@ const GameWrapper: React.FC<Props> = (props) => {
   return (
     <div className={`${styles.gameWrapper}`}>
       <div className={styles.gameWrapper__container}>
-        {/* <AppLoader loading={appLoading} /> */}
+        <AppLoader loading={appLoading} />
         <GameHeader />
         <div className={styles.gameWrapper__main}>
           <Outlet />

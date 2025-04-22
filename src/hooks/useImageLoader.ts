@@ -8,7 +8,7 @@ export const useImageLoader = () => {
     const [loading, setLoading] = useState(false)
 
     const imagesArr = Object.values(allImages).filter(item => item.endsWith(".webp"))
-
+console.log(imagesArr)
     useEffect(() => {
         setLoading(true)
         preloadImages(imagesArr)
