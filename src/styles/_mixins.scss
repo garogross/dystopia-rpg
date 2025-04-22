@@ -1,6 +1,12 @@
 @import "vars";
 
 
+@mixin xsScreenMedia {
+  @media (max-width: $xs-screen) {
+    @content;
+  }
+}
+
 @mixin icon($width,$height: $width,) {
   width: $width;
   height: $height;

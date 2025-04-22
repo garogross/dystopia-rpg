@@ -15,20 +15,31 @@ import gameSideBarCablesImageWebp from "./images/game/GameSidebar/gameSideBarCab
 import characterPageBgImage from "./images/game/CharacterPage/characterBg.jpeg";
 import characterPageBgImageWebp from "./images/game/CharacterPage/characterBg.webp";
 
+// ChalangesPage
+import chalange1Image from "./images/game/ChalangesPage/chalange1.jpeg";
+import chalange2Image from "./images/game/ChalangesPage/chalange2.png";
+import chalange3Image from "./images/game/ChalangesPage/chalange3.jpeg";
+import chalange4Image from "./images/game/ChalangesPage/chalange4.jpeg";
+
 export {
   // GAME
+  // stats
+  kardImage,
+  kardImageWebp,
+  darkMatterImage,
+  darkMatterImageWebp,
+  // Models
+  personModel1Image,
+  personModel1ImageWebp,
   // GameSidebar
   gameSideBarCablesImage,
   gameSideBarCablesImageWebp,
   // CharacterPage
   characterPageBgImage,
   characterPageBgImageWebp,
-  // Models
-  personModel1Image,
-  personModel1ImageWebp,
-  // stats
-  kardImage,
-  kardImageWebp,
-  darkMatterImage,
-  darkMatterImageWebp,
+  // ChalangesPage
+  chalange1Image,
+  chalange2Image,
+  chalange3Image,
+  chalange4Image,
 };

@@ -1,10 +1,9 @@
 import React from "react";
+import GameChalangesMain from "../../components/Game/GameChalangesPage/GameChalangesMain/GameChalangesMain";
 
 const GameChallengesPage: React.FC = () => {
   return (
-    <div>
-      <h1>Game Challenges</h1>
-    </div>
+    <GameChalangesMain/>
   );
 };
 

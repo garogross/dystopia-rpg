@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import ProfileReducer from "./slices/profileSlice";
 import uIReducer from "./slices/uiSlice";
+import chalangesReducer from "./slices/chalangesSlice";
 const rootReducer = combineReducers({
   profile: ProfileReducer,
   ui: uIReducer,
+  chalanges: chalangesReducer
 });
 
 export const store = () => {
