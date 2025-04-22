@@ -16,6 +16,8 @@ import styles from "./BottomNavbar.module.scss";
 import { BottomNavbarTopBg } from "../../layout/icons/game/BottomNavbar/BottomNavbarTopBg";
 import { BottomNavbarCharacterIcon } from "../../layout/icons/game/BottomNavbar/BottomNavbarCharacterIcon";
 import BottomNavbarLoyalityIcon from "../../layout/icons/game/BottomNavbar/BottomNavbarLoyalityIcon";
+import { useAppSelector } from "../../../hooks/redux";
+
 const items = [
   {
     icon: <BottomNavbarChalanagesIcon className={styles.bottomNavbar__icon} />,
@@ -40,12 +42,18 @@ const items = [
 ];
 
 const BottomNavbar = () => {
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+
   const linkActiveClass = ({ isActive }: { isActive: boolean }) =>
     isActive
       ? `${styles.bottomNavbar__item_active} ${styles.bottomNavbar__item}`
       : `${styles.bottomNavbar__item}`;
   return (
-    <div className={styles.bottomNavbar}>
+    <div
+      className={`${styles.bottomNavbar} ${
+        gameInited ? styles.bottomNavbar_inited : ""
+      }`}
+    >
       <div className={styles.bottomNavbar__topBlock}>
         <BottomNavbarTopBg />
       </div>

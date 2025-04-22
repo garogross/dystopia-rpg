@@ -4,6 +4,12 @@
 .gameSideBar {
   @include flexCol();
   width: 135px;
+  transform: translateX(200%);
+
+  &_inited {
+    transform: translateX(0%);
+    transition: $transition;
+  }
 
   &__nav {
     display: flex;
@@ -82,6 +88,29 @@
     );
   }
 
+  &_inited &__itemInner {
+    animation: init 0.5s ease-in-out;
+  }
+
+  &_inited &__item:nth-child(1) &__itemInner {
+    animation-delay: 0.5s;
+  }
+  &_inited &__item:nth-child(2) &__itemInner {
+    animation-delay: 0.8s;
+  }
+  &_inited &__item:nth-child(3) &__itemInner {
+    animation-delay: 1s;
+  }
+  &_inited &__item:nth-child(4) &__itemInner {
+    animation-delay: 1.2s;
+  }
+  &_inited &__item:nth-child(5) &__itemInner {
+    animation-delay: 1.4s;
+  }
+  &_inited &__item:nth-child(6) &__itemInner {
+    animation-delay: 1.6s;
+  }
+
   &__text {
     @include setFont(12px, 400);
     text-align: center;
@@ -128,5 +157,14 @@
   &__cablesImage {
     width: 100%;
     height: 100%;
+  }
+}
+
+@keyframes init {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

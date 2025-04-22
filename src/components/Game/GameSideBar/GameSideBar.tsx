@@ -6,9 +6,11 @@ import { GameSideBarProps } from "../../../models/Props/GameSideBarProps";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import { gameSideBarCablesImageWebp } from "../../../assets/images";
 import { gameSideBarCablesImage } from "../../../assets/images";
+import { useAppSelector } from "../../../hooks/redux";
 
 const GameSideBar: React.FC<GameSideBarProps> = ({ items }) => {
   const location = useLocation();
+  const gameInited = useAppSelector(state => state.ui.gameInited)
 
   const isActiveHash = (hash: string) => {
     return location.hash.includes(hash);
@@ -20,7 +22,7 @@ const GameSideBar: React.FC<GameSideBarProps> = ({ items }) => {
       : `${styles.gameSideBar__itemWrapper}`;
 
   return (
-    <aside className={styles.gameSideBar}>
+    <aside className={`${styles.gameSideBar} ${gameInited ? styles.gameSideBar_inited : ""}`}>
       <nav className={styles.gameSideBar__nav}>
         {items.map((item, index) => (
           <NavLink

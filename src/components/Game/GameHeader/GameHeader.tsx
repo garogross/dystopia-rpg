@@ -19,11 +19,16 @@ import { HeaderHideIcon } from "../../layout/icons/game/Header/HeaderHideIcon";
 import { DotsLine } from "../../layout/icons/game/Common/DotsLine";
 import HeaderPremiumIcon from "../../layout/icons/game/Header/HeaderPremiumIcon";
 import HeaderMiniGamesICon from "../../layout/icons/game/Header/HeaderMiniGamesICon";
-interface Props {}
+import { useAppSelector } from "../../../hooks/redux";
 
-const GameHeader: React.FC<Props> = (props) => {
+
+  const GameHeader: React.FC = () => {
+    const gameInited = useAppSelector((state) => state.ui.gameInited);
+
+    console.log({gameInited});
+    
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${gameInited ? styles.header_inited : ""}`}>
       <div
         className={`${styles.header__cornerBlock} ${styles.header__cornerBlock_left}`}
       >

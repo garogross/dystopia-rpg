@@ -9,6 +9,7 @@ import { useTelegram } from "../../../hooks/useTelegram";
 import { useAppDispatch } from "../../../hooks/redux";
 import { useImageLoader } from "../../../hooks/useImageLoader";
 import AppLoader from "../../AppLoader/AppLoader";
+import { setGameInited } from "../../../store/slices/uiSlice";
 
 interface Props {}
 
@@ -17,6 +18,7 @@ const GameWrapper: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
   const imagesLoading = useImageLoader();
   const [loading, setLoading] = useState(true);
+  const [loaderTimerFinished, setLoaderTimerFinished] = useState(false);
 
   const isMobile =
     tg?.platform &&
@@ -67,10 +69,22 @@ const GameWrapper: React.FC<Props> = (props) => {
 
   const appLoading = imagesLoading || loading;
 
+  useEffect(() => {
+
+    if (loaderTimerFinished && !appLoading) {
+      dispatch(setGameInited(true));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appLoading, loaderTimerFinished]);
+
   return (
     <div className={`${styles.gameWrapper}`}>
-      <div className={styles.gameWrapper__container}>
-        <AppLoader loading={appLoading} />
+      <div className={`${styles.gameWrapper__container} gameContainer`}>
+        <AppLoader
+          loading={appLoading}
+          timerFinished={loaderTimerFinished}
+          setTimerFinished={setLoaderTimerFinished}
+        />
         <GameHeader />
         <div className={styles.gameWrapper__main}>
           <Outlet />

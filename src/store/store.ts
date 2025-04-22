@@ -1,8 +1,9 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import ProfileReducer from "./slices/profileSlice";
-
+import uIReducer from "./slices/uiSlice";
 const rootReducer = combineReducers({
   profile: ProfileReducer,
+  ui: uIReducer,
 });
 
 export const store = () => {
