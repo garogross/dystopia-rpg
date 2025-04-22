@@ -25,7 +25,6 @@ import { useAppSelector } from "../../../hooks/redux";
   const GameHeader: React.FC = () => {
     const gameInited = useAppSelector((state) => state.ui.gameInited);
 
-    console.log({gameInited});
     
   return (
     <header className={`${styles.header} ${gameInited ? styles.header_inited : ""}`}>
