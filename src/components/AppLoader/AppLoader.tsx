@@ -55,7 +55,7 @@ const AppLoader = ({ loading, timerFinished, setTimerFinished }: Props) => {
 
   return (
     <TransitionProvider
-      style={TransitionStyleTypes.opacity}
+      style={TransitionStyleTypes.opacityLeave}
       inProp={loading || !timerFinished}
       className={styles.appLoader}
     >
