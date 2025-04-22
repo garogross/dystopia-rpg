@@ -1,14 +1,14 @@
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 import { animated, useTransition } from "react-spring";
 
 export enum TransitionStyleTypes {
   opacity = "opacity",
   opacityLeave = "opacityLeave",
-  rotateX = "rotateX",
   right = "right",
-  translateX = "translateX",
-  translateY = "translateY",
-  maxHeight = "maxHeight",
+  left = "left",
+  top = "top",
+  bottom = "bottom",
+  zoomIn = "zoomIn",
 }
 
 interface TransitionProviderProps {
@@ -16,20 +16,20 @@ interface TransitionProviderProps {
   inProp: boolean;
   className?: string;
   duration?: number;
-  maxheight?: string;
+  delay?: number;
+  isPicture?: boolean;
   children: ReactNode;
 }
-
-const TransitionProvider: FC<TransitionProviderProps> = ({
+const TransitionProvider = ({
   style,
   inProp,
   className,
   duration,
+  delay,
   children,
-  maxheight,
-}) => {
-  const transDuration = duration ? duration : 300;
-
+  isPicture,
+}: TransitionProviderProps) => {
+  const transDuration = duration ? duration : 500;
   const styles = {
     [TransitionStyleTypes.opacity]: {
       from: { opacity: 0 },
@@ -41,46 +41,49 @@ const TransitionProvider: FC<TransitionProviderProps> = ({
       enter: { opacity: 1 },
       leave: { opacity: 0 },
     },
-    [TransitionStyleTypes.rotateX]: {
-      from: { transform: "rotateX(90deg)" },
-      enter: { transform: "rotateX(0deg)" },
-      leave: { transform: "rotateX(90deg)" },
-    },
 
     [TransitionStyleTypes.right]: {
-      from: { right: "-630px" },
-      enter: { right: "0" },
-      leave: { right: "-630px" },
+      from: { opacity: 0, translateX: "60px" },
+      enter: { opacity: 1, translateX: "0%" },
+      leave: { opacity: 0, translateX: "60px" },
     },
-    [TransitionStyleTypes.translateX]: {
-      from: { translateX: "100%" },
-      enter: { translateX: "0%" },
-      leave: { translateX: "100%" },
+    [TransitionStyleTypes.left]: {
+      from: { opacity: 0, translateX: "-60px" },
+      enter: { opacity: 1, translateX: "0%" },
+      leave: { opacity: 0, translateX: "-60px" },
     },
-    [TransitionStyleTypes.translateY]: {
+    [TransitionStyleTypes.top]: {
       from: { opacity: 0, translateY: "-60px" },
       enter: { opacity: 1, translateY: "0%" },
       leave: { opacity: 0, translateY: "-60px" },
     },
-    [TransitionStyleTypes.maxHeight]: {
-      from: { maxHeight: "0px", opacity: 0 },
-      enter: { maxHeight: maxheight || "100px", opacity: 1 },
-      leave: { maxHeight: "0px", opacity: 0 },
+    [TransitionStyleTypes.bottom]: {
+      from: { opacity: 0, translateY: "60px" },
+      enter: { opacity: 1, translateY: "0%" },
+      leave: { opacity: 0, translateY: "60px" },
+    },
+    [TransitionStyleTypes.zoomIn]: {
+      from: { opacity: 0, scale: "0" },
+      enter: { opacity: 1, scale: "1" },
+      leave: { opacity: 0, scale: "0" },
     },
   };
 
   const transition = useTransition(inProp, {
     ...styles[style],
+    trail: delay || 0,
     config: { duration: transDuration },
   });
+
+  const Wrapper = isPicture ? animated.picture : animated.div;
 
   return (
     <>
       {transition((style, item) =>
         item ? (
-          <animated.div style={style} className={className ? className : ""}>
+          <Wrapper style={style} className={className ? className : ""}>
             {children}
-          </animated.div>
+          </Wrapper>
         ) : (
           ""
         )
