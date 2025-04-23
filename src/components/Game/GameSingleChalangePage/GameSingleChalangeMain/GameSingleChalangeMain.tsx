@@ -47,11 +47,13 @@ const GameSingleChalangeMain: React.FC = () => {
         inProp={gameInited}
         className={styles.gameSingleChalangeMain__imgWrapper}
       >
-        <img
-          src={chalange?.image}
-          alt="chalange"
-          className={styles.gameSingleChalangeMain__img}
-        />
+        <div className={styles.gameSingleChalangeMain__imgWrapperInner}>
+          <img
+            src={chalange?.image}
+            alt="chalange"
+            className={styles.gameSingleChalangeMain__img}
+          />
+        </div>
         <div className={styles.gameSingleChalangeMain__imgFrame}>
           <ImageFrame />
         </div>

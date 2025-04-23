@@ -37,11 +37,13 @@ const GameChalangesList: React.FC = () => {
             className={styles.gameChalangesList__item}
           >
             <div className={styles.gameChalangesList__itemImgWrapper}>
-              <img
-                src={chalange.image}
-                alt={chalange.name}
-                className={styles.gameChalangesList__itemImg}
-              />
+              <div className={styles.gameChalangesList__itemImgWrapperInner}>
+                <img
+                  src={chalange.image}
+                  alt={chalange.name}
+                  className={styles.gameChalangesList__itemImg}
+                />
+              </div>
               <div className={styles.gameChalangesList__itemFrame}>
                 <ImageFrame />
               </div>
