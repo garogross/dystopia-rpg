@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./GameSingleChalangeMain.module.scss";
 import HeaderWings from "../../../layout/icons/game/Common/HeaderWings";
 import { DotsLine } from "../../../layout/icons/game/Common/DotsLine";
-import GameChalangesFrame from "../../../layout/icons/game/GameChalangesPage/GameChalangesFrame";
+import ImageFrame from "../../../layout/icons/game/Common/ImageFrame";
 import GameSingleChalangeLevels from "../GameSingleChalangeLevels/GameSingleChalangeLevels";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../../../hooks/redux";
@@ -53,7 +53,7 @@ const GameSingleChalangeMain: React.FC = () => {
           className={styles.gameSingleChalangeMain__img}
         />
         <div className={styles.gameSingleChalangeMain__imgFrame}>
-          <GameChalangesFrame />
+          <ImageFrame />
         </div>
       </TransitionProvider>
       <TransitionProvider

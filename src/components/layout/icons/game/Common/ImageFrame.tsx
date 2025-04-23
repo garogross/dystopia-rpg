@@ -2,7 +2,7 @@ import React from "react";
 
 interface Props {}
 
-const GameChalangesFrame: React.FC<Props> = (props) => {
+const ImageFrame: React.FC<Props> = (props) => {
   return (
     <svg
       preserveAspectRatio="none"
@@ -84,4 +84,4 @@ const GameChalangesFrame: React.FC<Props> = (props) => {
   );
 };
 
-export default GameChalangesFrame;
+export default ImageFrame;

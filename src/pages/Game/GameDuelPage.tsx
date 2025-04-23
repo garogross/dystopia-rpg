@@ -1,10 +1,9 @@
 import React from "react";
+import GameDuelList from "../../components/Game/GameDuelPage/GameDuelList/GameDuelList";
 
 const GameDuelPage: React.FC = () => {
   return (
-    <div>
-      <h1>Game Duel</h1>
-    </div>
+    <GameDuelList/>
   );
 };
 

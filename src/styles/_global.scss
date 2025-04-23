@@ -63,6 +63,10 @@ html {
   @include setFont(16px, 400, $font-fam-h1);
   text-align: center;
 }
+.titleH3 {
+  @include setFont(12px, 400, $font-fam-h1);
+  text-align: center;
+}
 
 .gradientText {
   background: linear-gradient(91.23deg, #c6b7ff 8.44%, #7f5cff 77.15%);
@@ -87,11 +91,9 @@ html {
     width: 10px;
     height: 100%;
     background: $color-primary;
-    animation: blink 1s infinite;
     opacity: 0;
     animation: blink 1s infinite;
     animation-delay: 3.5s;
-    animation-fill-mode: backwards;
   }
 }
 

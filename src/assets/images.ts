@@ -21,6 +21,14 @@ import chalange2Image from "./images/game/ChalangesPage/chalange2.png";
 import chalange3Image from "./images/game/ChalangesPage/chalange3.jpeg";
 import chalange4Image from "./images/game/ChalangesPage/chalange4.png";
 
+// GameDuelPage
+import dailyTournaments5vs5Image from "./images/game/DuelsPage/dailytournaments5vs5.png";
+import dailyTurnaments5vs5Image from "./images/game/DuelsPage/dailyTurnaments5vs5.png";
+import weeklyTournaments5vs5Image from "./images/game/DuelsPage/weeklytournaments5vs5.png";
+import weeklyTournaments3vs3Image from "./images/game/DuelsPage/weeklytournaments3vs3.jpg";
+import duel5vs5Image from "./images/game/DuelsPage/duel5vs5.png";
+import duel3vs3Image from "./images/game/DuelsPage/duel3vs3.png";
+
 export {
   // GAME
   // stats
@@ -42,4 +50,11 @@ export {
   chalange2Image,
   chalange3Image,
   chalange4Image,
+  // GameDuelPage
+  dailyTournaments5vs5Image,
+  dailyTurnaments5vs5Image,
+  weeklyTournaments5vs5Image,
+  weeklyTournaments3vs3Image,
+  duel5vs5Image,
+  duel3vs3Image,
 };

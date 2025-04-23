@@ -8,7 +8,7 @@ import {
 } from "../../../../router/constants";
 import { useAppSelector } from "../../../../hooks/redux";
 import HeaderWings from "../../../layout/icons/game/Common/HeaderWings";
-import GameChalangesFrame from "../../../layout/icons/game/GameChalangesPage/GameChalangesFrame";
+import ImageFrame from "../../../layout/icons/game/Common/ImageFrame";
 import { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
 import TransitionProvider from "../../../../providers/TransitionProvider";
 
@@ -43,11 +43,13 @@ const GameChalangesList: React.FC = () => {
                 className={styles.gameChalangesList__itemImg}
               />
               <div className={styles.gameChalangesList__itemFrame}>
-                <GameChalangesFrame />
+                <ImageFrame />
               </div>
             </div>
             <div className={styles.gameChalangesList__itemTitleWrapper}>
-              <h5 className={`${styles.gameChalangesList__itemTitle} typeAnimation`}>
+              <h5
+                className={`${styles.gameChalangesList__itemTitle} typeAnimation`}
+              >
                 {chalange.name}
               </h5>
               <div className={styles.gameChalangesList__itemWings}>
