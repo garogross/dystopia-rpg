@@ -8,9 +8,9 @@ import {
 } from "../../../../router/constants";
 import { useAppSelector } from "../../../../hooks/redux";
 import HeaderWings from "../../../layout/icons/game/Common/HeaderWings";
-import ImageFrame from "../../../layout/icons/game/Common/ImageFrame";
 import { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
 import TransitionProvider from "../../../../providers/TransitionProvider";
+import WrapperWithFrame from "../../../layout/WrapperWithFrame/WrapperWithFrame";
 
 const GameChalangesList: React.FC = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
@@ -36,18 +36,16 @@ const GameChalangesList: React.FC = () => {
             to={`${gamePagePath}/${gameSingleChallengePagePath}/${chalange.id}`}
             className={styles.gameChalangesList__item}
           >
-            <div className={styles.gameChalangesList__itemImgWrapper}>
-              <div className={styles.gameChalangesList__itemImgWrapperInner}>
-                <img
-                  src={chalange.image}
-                  alt={chalange.name}
-                  className={styles.gameChalangesList__itemImg}
-                />
-              </div>
-              <div className={styles.gameChalangesList__itemFrame}>
-                <ImageFrame />
-              </div>
-            </div>
+            <WrapperWithFrame
+              innerClassName={styles.gameChalangesList__itemImgWrapperInner}
+            >
+              <img
+                src={chalange.image}
+                alt={chalange.name}
+                className={styles.gameChalangesList__itemImg}
+              />
+            </WrapperWithFrame>
+
             <div className={styles.gameChalangesList__itemTitleWrapper}>
               <h5
                 className={`${styles.gameChalangesList__itemTitle} typeAnimation`}

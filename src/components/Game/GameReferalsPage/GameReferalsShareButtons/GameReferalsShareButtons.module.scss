@@ -1,0 +1,53 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.gameReferalsShareButtons {
+  @include flexCol();
+  padding-inline: 12px;
+  gap: 26px;
+  margin-bottom: 35px;
+
+  &__button {
+    @include button($color-primary);
+    padding: 1px;
+  }
+
+  &__buttonInner {
+    @include flexCol();
+    gap: 5px;
+    padding: 12px 10px;
+    @include setFont(12px, 400);
+    background: radial-gradient(
+      85.56% 85.56% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 98.08%
+    );
+  }
+
+  &__button:nth-child(1),
+  &__button:nth-child(1) &__buttonInner {
+    clip-path: polygon(
+      8.6% 1.1%,
+      3.7% 8.9%,
+      0.3% 14.2%,
+      0.3% 100%,
+      92.7% 100%,
+      96.6% 91.2%,
+      100% 83.7%,
+      100% 1.1%
+    );
+  }
+  &__button:nth-child(2),
+  &__button:nth-child(2) &__buttonInner {
+    clip-path: polygon(
+      91.7% 1.1%,
+      96.7% 8.9%,
+      100% 14.2%,
+      100% 100%,
+      7.6% 100%,
+      3.7% 91.2%,
+      0.3% 83.7%,
+      0.3% 1.1%
+    );
+  }
+}

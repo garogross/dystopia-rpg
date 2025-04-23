@@ -1,0 +1,30 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+
+.wrapperWithFrame {
+    position: relative;
+    width: 100%;
+    padding: 3px;
+
+&__inner {
+    width: 100%;
+    height: 100%;
+    padding: 1px;
+    background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
+    z-index: 3;
+    position: relative;
+}
+&__frame {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+}
+}

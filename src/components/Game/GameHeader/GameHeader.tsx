@@ -5,8 +5,8 @@ import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
   darkMatterImage,
   darkMatterImageWebp,
-  kardImage,
-  kardImageWebp,
+  kreditImage,
+  kreditImageWebp,
 } from "../../../assets/images";
 import { HeaderBtnsBg } from "../../layout/icons/game/Header/HeaderBtnsBg";
 import { HeaderSwitcherIcon } from "../../layout/icons/game/Header/HeaderSwitcherIcon";
@@ -21,14 +21,24 @@ import HeaderPremiumIcon from "../../layout/icons/game/Header/HeaderPremiumIcon"
 import HeaderMiniGamesICon from "../../layout/icons/game/Header/HeaderMiniGamesICon";
 import { useAppSelector } from "../../../hooks/redux";
 import { NavLink } from "react-router-dom";
+import { gamePagePath, gameReferalsPagePath } from "../../../router/constants";
 
+const GameHeader: React.FC = () => {
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
 
-  const GameHeader: React.FC = () => {
-    const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const linkActiveClass =
+    (className?: string) =>
+    ({ isActive }: { isActive: boolean }) =>
+      isActive
+        ? `${styles.header__navBtn_active} ${styles.header__navBtn} ${
+            className || ""
+          }`
+        : `${styles.header__navBtn} ${className || ""}`;
 
-    
   return (
-    <header className={`${styles.header} ${gameInited ? styles.header_inited : ""}`}>
+    <header
+      className={`${styles.header} ${gameInited ? styles.header_inited : ""}`}
+    >
       <div
         className={`${styles.header__cornerBlock} ${styles.header__cornerBlock_left}`}
       >
@@ -42,11 +52,12 @@ import { NavLink } from "react-router-dom";
           <HeaderSwitcherIcon />
         </button>
         <div className={styles.header__navBtns}>
-          <NavLink to={""} className={styles.header__navBtn}>
+          <NavLink to={"/mingames"} className={linkActiveClass()}>
             <HeaderMiniGamesICon />
           </NavLink>
-          <NavLink to={""}
-            className={`${styles.header__navBtn} ${styles.header__mailBtn}`}
+          <NavLink
+            to={"/mail"}
+            className={linkActiveClass(styles.header__mailBtn)}
           >
             <HeaderMailIcon />
           </NavLink>
@@ -54,10 +65,10 @@ import { NavLink } from "react-router-dom";
         <div className={styles.header__stat}>
           <div className={styles.header__statImgWrapper}>
             <ImageWebp
-              src={kardImage}
-              alt="kard"
+              src={kreditImage}
+              alt="kredit"
               className={styles.header__statImg}
-              srcSet={kardImageWebp}
+              srcSet={kreditImageWebp}
             />
           </div>
           <span className={styles.header__statText}>126,90k</span>
@@ -80,12 +91,16 @@ import { NavLink } from "react-router-dom";
           <HeaderSettingsIcon />
         </button>
         <div className={styles.header__navBtns}>
-          <NavLink to={""}
-            className={`${styles.header__navBtn} ${styles.header__ratingBtn}`}
+          <NavLink
+            to={"/rating"}
+            className={linkActiveClass(styles.header__ratingBtn)}
           >
             <HeaderRatingIcon />
           </NavLink>
-          <NavLink to={""} className={styles.header__navBtn}>
+          <NavLink
+            to={`${gamePagePath}/${gameReferalsPagePath}`}
+            className={linkActiveClass()}
+          >
             <HeaderReferenceIcon />
           </NavLink>
         </div>
@@ -93,7 +108,7 @@ import { NavLink } from "react-router-dom";
           <div className={styles.header__statImgWrapper}>
             <ImageWebp
               src={darkMatterImage}
-              alt="kard"
+              alt="kredit"
               className={styles.header__statImg}
               srcSet={darkMatterImageWebp}
             />

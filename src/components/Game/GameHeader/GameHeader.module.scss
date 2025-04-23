@@ -7,7 +7,7 @@
   @include flexCol(space-between);
   gap: 10px;
   position: relative;
-  background: linear-gradient(178.36deg, #0c0620 61.64%, #362670 143.6%);
+  background: linear-gradient(178.36deg, $color-bg 61.64%, #362670 143.6%);
   opacity: 0;
 
   &_inited {
@@ -81,6 +81,18 @@
     padding: 2px;
     height: 17px;
     @include flexCol();
+
+    & svg {
+      fill: $color-black;
+    }
+
+    &_active {
+      background: linear-gradient(180deg, #5D42BA 0%, #2A1E54 100%);
+
+      & svg {
+        fill: $color-text;
+      }
+    }
   }
 
   &__mailBtn {

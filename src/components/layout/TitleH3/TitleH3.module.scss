@@ -3,11 +3,14 @@
 
 .titleH3 {
   position: relative;
-  @include flexCol();
-  flex-direction: column;
-  gap: 2px;
   padding-inline: 10%;
   margin-bottom: 12px;
+
+  &__main {
+    @include flexCol();
+    flex-direction: column;
+    gap: 2px;
+  }
 
   &__wings {
     position: absolute;
@@ -24,20 +27,19 @@
 }
 
 @keyframes zoomOut {
-    0% {
-      transform: scale(1.5);
-    }
-    100% {
-      transform: scale(1);
-    }
+  0% {
+    transform: scale(1.5);
   }
-  
-  @keyframes zoomIn {
-    0% {
-      transform: scale(0);
-    }
-    100% {
-      transform: scale(1);
-    }
+  100% {
+    transform: scale(1);
   }
-  
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

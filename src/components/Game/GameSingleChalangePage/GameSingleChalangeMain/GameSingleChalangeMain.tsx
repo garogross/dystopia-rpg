@@ -2,12 +2,12 @@ import React from "react";
 import styles from "./GameSingleChalangeMain.module.scss";
 import HeaderWings from "../../../layout/icons/game/Common/HeaderWings";
 import { DotsLine } from "../../../layout/icons/game/Common/DotsLine";
-import ImageFrame from "../../../layout/icons/game/Common/ImageFrame";
 import GameSingleChalangeLevels from "../GameSingleChalangeLevels/GameSingleChalangeLevels";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../../../hooks/redux";
 import { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
 import TransitionProvider from "../../../../providers/TransitionProvider";
+import WrapperWithFrame from "../../../layout/WrapperWithFrame/WrapperWithFrame";
 const GameSingleChalangeMain: React.FC = () => {
   const params = useParams<{ id: string }>();
   const chalanges = useAppSelector((state) => state.chalanges.chalanges);
@@ -47,7 +47,7 @@ const GameSingleChalangeMain: React.FC = () => {
         inProp={gameInited}
         className={styles.gameSingleChalangeMain__imgWrapper}
       >
-        <div className={styles.gameSingleChalangeMain__imgWrapperInner}>
+        {/* <div className={styles.gameSingleChalangeMain__imgWrapperInner}>
           <img
             src={chalange?.image}
             alt="chalange"
@@ -56,7 +56,14 @@ const GameSingleChalangeMain: React.FC = () => {
         </div>
         <div className={styles.gameSingleChalangeMain__imgFrame}>
           <ImageFrame />
-        </div>
+        </div> */}
+        <WrapperWithFrame innerClassName={styles.gameSingleChalangeMain__imgWrapperInner}>
+          <img
+            src={chalange?.image}
+            alt="chalange"
+            className={styles.gameSingleChalangeMain__img}
+          />
+        </WrapperWithFrame>
       </TransitionProvider>
       <TransitionProvider
         delay={200}

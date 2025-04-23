@@ -2,8 +2,8 @@ import personModel1Image from "./images/game/persons/personModel1.png";
 import personModel1ImageWebp from "./images/game/persons/personModel1.webp";
 
 // stats
-import kardImage from "./images/game/stats/kard.png";
-import kardImageWebp from "./images/game/stats/kard.webp";
+import kreditImage from "./images/game/stats/kredit.png";
+import kreditImageWebp from "./images/game/stats/kredit.webp";
 import darkMatterImage from "./images/game/stats/darkMatter.png";
 import darkMatterImageWebp from "./images/game/stats/darkMatter.webp";
 
@@ -32,8 +32,8 @@ import duel3vs3Image from "./images/game/DuelsPage/duel3vs3.png";
 export {
   // GAME
   // stats
-  kardImage,
-  kardImageWebp,
+  kreditImage,
+  kreditImageWebp,
   darkMatterImage,
   darkMatterImageWebp,
   // Models

@@ -6,17 +6,21 @@ import { DotsLine } from "../icons/game/Common/DotsLine";
 
 interface Props {
   children: ReactNode;
+  className?: string;
+  wingsReverse?: boolean;
 }
 
-const TitleH3: React.FC<Props> = ({ children }) => {
+const TitleH3: React.FC<Props> = ({ children, className, wingsReverse = true }) => {
   return (
     <div className={styles.titleH3}>
-      <h3 className={`titleH3 typeAnimation`}>{children}</h3>
-      <div className={styles.titleH3__wings}>
-        <HeaderWings />
+      <div className={`${styles.titleH3__main} ${className || ""}`}>
+        <h3 className={`titleH3 typeAnimation`}>{children}</h3>
+        <div className={styles.titleH3__dotline}>
+          <DotsLine />
+        </div>
       </div>
-      <div className={styles.titleH3__dotline}>
-        <DotsLine />
+      <div className={styles.titleH3__wings}>
+        <HeaderWings reversed={wingsReverse} />
       </div>
     </div>
   );

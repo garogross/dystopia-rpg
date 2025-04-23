@@ -23,18 +23,10 @@
     @include flexCol(space-between);
     margin-bottom: 10px;
   }
-  &__imgWrapper {
-    position: relative;
-    width: 100%;
-    padding: 2px;
-  }
+
 
   &__imgWrapperInner {
-    width: 100%;
-    height: 100%;
     aspect-ratio: 4/1;
-    padding: 1px;
-    background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
   }
 
   &__img {
@@ -42,18 +34,7 @@
     height: 100%;
     object-fit: cover;
   }
-  &__imgFrame {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-
-    & svg {
-      width: 100%;
-      height: 100%;
-    }
-  }
+ 
   &__imgWings {
     width: 100%;
     margin-top: 2px;
