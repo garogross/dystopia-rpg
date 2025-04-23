@@ -1,0 +1,43 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.titleH3 {
+  position: relative;
+  @include flexCol();
+  flex-direction: column;
+  gap: 5px;
+  padding-inline: 10%;
+  margin-bottom: 12px;
+
+  &__wings {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    width: 100%;
+    animation: zoomOut 0.5s linear 1;
+  }
+  &__dotline {
+    @include flexCol();
+    animation: zoomIn 0.5s linear 1;
+  }
+}
+
+@keyframes zoomOut {
+    0% {
+      transform: scale(1.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes zoomIn {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  

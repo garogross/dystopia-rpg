@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import styles from "./GameDuelList.module.scss";
 import { useAppSelector } from "../../../../hooks/redux";
 import HeaderWings from "../../../layout/icons/game/Common/HeaderWings";
-import { DotsLine } from "../../../layout/icons/game/Common/DotsLine";
 import ImageFrame from "../../../layout/icons/game/Common/ImageFrame";
 import GameDueBottomBg from "../../../layout/icons/game/GameDuelPage/GameDueBottomBg";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import { Link } from "react-router-dom";
+import TitleH3 from "../../../layout/TitleH3/TitleH3";
 
 const GameDuelList = () => {
   const duels = useAppSelector((state) => state.duels.duels);
@@ -32,15 +32,7 @@ const GameDuelList = () => {
             className={styles.gameDuelList__item}
             key={duel.id}
           >
-            <div className={styles.gameDuelList__itemHeader}>
-              <h3 className={`titleH3 typeAnimation`}>{duel.title}</h3>
-              <div className={styles.gameDuelList__headerWings}>
-                <HeaderWings />
-              </div>
-              <div className={styles.gameDuelList__headerDotline}>
-                <DotsLine />
-              </div>
-            </div>
+            <TitleH3>{duel.title}</TitleH3>
             <div className={styles.gameDuelList__itemImages}>
               <Link to={`/game/duel/${duel.id}`} className={styles.gameDuelList__imgWrapper}>
                 <div
