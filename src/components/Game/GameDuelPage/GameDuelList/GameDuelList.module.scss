@@ -43,7 +43,7 @@
     height: 100%;
     background-size: cover;
     background-blend-mode: overlay;
-    background-color: #0512157a;
+    background-color: rgba(5, 18, 21, 0.5);
   }
   &__itemImageFrame {
     position: absolute;
@@ -61,7 +61,7 @@
     position: absolute;
     top: 7px;
     right: 7px;
-    @include setFont(12px, 400, $font-fam-h3);
+    @include setFont(14px, 400, $font-fam-h3);
   }
 
   &__imgWrapper:nth-child(1) &__itemImageText {
