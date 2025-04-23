@@ -60,12 +60,14 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
+    z-index: 2
   }
 
   &__navBtns {
     @include flexCol(flex-start);
     flex: 1;
     gap: 2px;
+    z-index: 2;
   }
 
   &__cornerBlock_right &__navBtns {

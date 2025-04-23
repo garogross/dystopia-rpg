@@ -20,6 +20,7 @@ import { DotsLine } from "../../layout/icons/game/Common/DotsLine";
 import HeaderPremiumIcon from "../../layout/icons/game/Header/HeaderPremiumIcon";
 import HeaderMiniGamesICon from "../../layout/icons/game/Header/HeaderMiniGamesICon";
 import { useAppSelector } from "../../../hooks/redux";
+import { NavLink } from "react-router-dom";
 
 
   const GameHeader: React.FC = () => {
@@ -41,14 +42,14 @@ import { useAppSelector } from "../../../hooks/redux";
           <HeaderSwitcherIcon />
         </button>
         <div className={styles.header__navBtns}>
-          <button className={styles.header__navBtn}>
+          <NavLink to={""} className={styles.header__navBtn}>
             <HeaderMiniGamesICon />
-          </button>
-          <button
+          </NavLink>
+          <NavLink to={""}
             className={`${styles.header__navBtn} ${styles.header__mailBtn}`}
           >
             <HeaderMailIcon />
-          </button>
+          </NavLink>
         </div>
         <div className={styles.header__stat}>
           <div className={styles.header__statImgWrapper}>
@@ -79,14 +80,14 @@ import { useAppSelector } from "../../../hooks/redux";
           <HeaderSettingsIcon />
         </button>
         <div className={styles.header__navBtns}>
-          <button
+          <NavLink to={""}
             className={`${styles.header__navBtn} ${styles.header__ratingBtn}`}
           >
             <HeaderRatingIcon />
-          </button>
-          <button className={styles.header__navBtn}>
+          </NavLink>
+          <NavLink to={""} className={styles.header__navBtn}>
             <HeaderReferenceIcon />
-          </button>
+          </NavLink>
         </div>
         <div className={styles.header__stat}>
           <div className={styles.header__statImgWrapper}>
