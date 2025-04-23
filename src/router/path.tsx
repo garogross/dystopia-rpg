@@ -18,7 +18,6 @@ import {
 } from "./constants";
 import GameLoyalityPage from "../pages/Game/GameLoyalityPage";
 import GameSingleChalangePage from "../pages/Game/GameSingleChalangePage";
-import { Navigate } from "react-router-dom";
 
 export const homePagePath = "/";
 
