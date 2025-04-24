@@ -59,6 +59,17 @@ import tool5Image from "./images/game/ClanPage/Depot/tools/tool5.png";
 import tool9Image from "./images/game/ClanPage/Depot/tools/tool9.png";
 import tool18Image from "./images/game/ClanPage/Depot/tools/tool18.png";
 
+// // Store
+import gun2Image from "./images/game/ClanPage/Store/gun2.png"
+import gun3Image from "./images/game/ClanPage/Store/gun3.png"
+import gun5Image from "./images/game/ClanPage/Store/gun5.png"
+import gun4Image from "./images/game/ClanPage/Store/gun4.png"
+import gun1Image from "./images/game/ClanPage/Store/gun1.png"
+import helmet3Image from "./images/game/ClanPage/Store/helmet3.png"
+import helmet1Image from "./images/game/ClanPage/Store/helmet1.png"
+import helmet2Image from "./images/game/ClanPage/Store/helmet2.png"
+import helmet4Image from "./images/game/ClanPage/Store/helmet4.png"
+
 export {
   // GAME
   // stats
@@ -115,4 +126,16 @@ export {
   tool5Image,
   tool9Image,
   tool18Image,
+
+
+  // Store
+  gun2Image,
+  gun3Image,
+  gun5Image,
+  gun4Image,
+  gun1Image,
+  helmet3Image,
+  helmet1Image,
+  helmet2Image,
+  helmet4Image,
 };

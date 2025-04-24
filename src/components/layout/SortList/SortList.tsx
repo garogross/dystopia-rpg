@@ -12,11 +12,12 @@ interface Props {
   items: SortItem[];
   onChange: (id: string) => void;
   activeSort: string;
+  className?: string
 }
 
-const SortList: React.FC<Props> = ({ items, activeSort, onChange }) => {
+const SortList: React.FC<Props> = ({ items, activeSort, onChange,className }) => {
   return (
-    <div className={styles.sortList}>
+    <div className={`${styles.sortList} ${className || ""}`}>
       {items.map((item) => (
         <button
         onClick={() => onChange(item.id)}
