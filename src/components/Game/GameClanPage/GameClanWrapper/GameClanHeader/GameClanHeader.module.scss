@@ -1,0 +1,77 @@
+@import "../../../../../styles/mixins";
+@import "../../../../../styles/vars";
+
+.gameClanHeader {
+  width: 100%;
+  padding: 8px 10px;
+  @include flexCol(flex-start, flex-start);
+  gap: 10px;
+  background-color: $color-bg;
+  margin-bottom: 10px;
+
+  &__logoImg {
+    width: 33px;
+    object-fit: contain;
+  }
+  &__main {
+    flex: 1;
+  }
+  &__topBlock {
+    @include flexCol(space-between, flex-start);
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  &__texts {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  &__nameText {
+    @include setFont(16px, 400, $font-fam-h3);
+    @include flexCol(flex-start);
+    gap: 6px;
+  }
+  &__editBtn {
+    @include button();
+    display: flex
+  }
+  &__levelText {
+    @include setFont(12px, 400);
+  }
+  &__description {
+    @include setFont(10px, 400);
+  }
+
+  &__leaveClanBtn {
+    @include button($color-primary);
+    padding: 1px;
+  }
+
+  &__leaveClanBtnInner {
+    padding: 9px;
+    @include flexCol();
+    gap: 5px;
+    background: radial-gradient(
+      85.56% 85.56% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 98.08%
+    );
+    @include setFont(10px,400)
+  }
+
+  &__leaveClanBtn,
+  &__leaveClanBtnInner {
+    clip-path: polygon(
+      0% 0%,
+      91.85% 0%,
+      96.78% 9.59%,
+      100% 14.77%,
+      100% 100%,
+      7.67% 100%,
+      3.77% 91.21%,
+      0% 83.83%,
+      0% 0%
+    );
+  }
+}

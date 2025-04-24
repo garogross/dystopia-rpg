@@ -4,9 +4,10 @@
 .wrapperWithSidebar {
   @include flexCol();
   width: 100%;
-  height: 100%;
+  flex: 1;
+  overflow: hidden;
   gap: 7px;
-  
+
   &__main {
     flex: 1;
     height: 100%;

@@ -1,0 +1,48 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.tabbar {
+  display: flex;
+  width: 100%;
+  gap: 4px;
+  padding-inline: 3px;
+
+  &__item {
+    flex: 1;
+    @include flexCol();
+    @include button(
+      linear-gradient(180deg, #2e2062 0%, #140c2e 100%),
+      1px solid $color-primary
+    );
+    padding: 3px;
+    transition: $transition;
+
+    & svg {
+      transition: $transition;
+    }
+    
+    &:not(&_stroked) svg {
+      fill: $color-text;
+      
+    }
+    
+    &_stroked svg {
+      stroke: $color-text;
+      
+    }
+
+    &_active {
+      background: linear-gradient(180deg, #5a41b5 0%, #3d2b7e 100%);
+
+    }
+    &_active:not(&_stroked) svg {
+      fill: $color-black;
+      
+    }
+    
+    &_active &_stroked svg {
+      stroke: $color-black;
+      
+    }
+  }
+}

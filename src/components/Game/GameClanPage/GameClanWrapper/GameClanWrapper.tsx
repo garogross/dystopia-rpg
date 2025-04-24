@@ -1,0 +1,71 @@
+import React from "react";
+import styles from "./GameClanWrapper.module.scss";
+import GameClanHeader from "./GameClanHeader/GameClanHeader";
+import GameClanAboutIcon from "../../../layout/icons/game/GameClanPage/sidebar/GameClanAboutIcon";
+import GameClanBattlesIcon from "../../../layout/icons/game/GameClanPage/sidebar/GameClanBattlesIcon";
+import GameClanBaseIcon from "../../../layout/icons/game/GameClanPage/sidebar/GameClanBaseIcon";
+import GameClanDepotIcon from "../../../layout/icons/game/GameClanPage/sidebar/GameClanDepotIcon";
+import GameClanStoreIcon from "../../../layout/icons/game/GameClanPage/sidebar/GameClanStoreIcon";
+import GameClanHuntingIcon from "../../../layout/icons/game/GameClanPage/sidebar/GameClanHuntingIcon";
+import { GameSideBarProps } from "../../../../models/Props/GameSideBarProps";
+import GameClanAbout from "../GameClanAbout/GameClanAbout";
+import GameClanBattles from "../GameClanBattles/GameClanBattles";
+import GameClanBase from "../GameClanBase/GameClanBase";
+import GameClanDepot from "../GameClanDepot/GameClanDepot";
+import GameClanStore from "../GameClanStore/GameClanStore";
+import GameClanHunting from "../GameClanHunting/GameClanHunting";
+import WrapperWithSidebar from "../../WrapperWithSidebar/WrapperWithSidebar";
+import GameClanBottomWings from "../../../layout/icons/game/GameClanPage/GameClanBottomWings";
+
+const sidebarItems: GameSideBarProps["items"] = [
+  {
+    link: "about",
+    icon: <GameClanAboutIcon />,
+    name: "О клане",
+    component: <GameClanAbout />,
+  },
+  {
+    link: "depot",
+    icon: <GameClanDepotIcon />,
+    name: "Хранилище",
+    component: <GameClanDepot />,
+  },
+  {
+    link: "store",
+    icon: <GameClanStoreIcon />,
+    name: "Магазин",
+    component: <GameClanStore />,
+  },
+  {
+    link: "battles",
+    icon: <GameClanBattlesIcon />,
+    name: "Сражения",
+    component: <GameClanBattles />,
+  },
+  {
+    link: "hunting",
+    icon: <GameClanHuntingIcon />,
+    name: "Охота",
+    component: <GameClanHunting />,
+  },
+  {
+    link: "base",
+    icon: <GameClanBaseIcon />,
+    name: "База",
+    component: <GameClanBase />,
+  },
+];
+
+const GameClanWrapper = () => {
+  return (
+    <section className={`${styles.gameClanWrapper} `}>
+      <GameClanHeader />
+      <WrapperWithSidebar items={sidebarItems} />
+      <div className={styles.gameClanWrapper__bottomWings}>
+        <GameClanBottomWings />
+      </div>
+    </section>
+  );
+};
+
+export default GameClanWrapper;

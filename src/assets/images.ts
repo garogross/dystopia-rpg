@@ -6,6 +6,8 @@ import kreditImage from "./images/game/stats/kredit.png";
 import kreditImageWebp from "./images/game/stats/kredit.webp";
 import darkMatterImage from "./images/game/stats/darkMatter.png";
 import darkMatterImageWebp from "./images/game/stats/darkMatter.webp";
+import tokenImage from "./images/game/stats/token.png";
+import tokenImageWebp from "./images/game/stats/token.webp";
 
 // GameSidebar
 import gameSideBarCablesImage from "./images/game/GameSidebar/gameSideBarCables.png";
@@ -29,6 +31,11 @@ import weeklyTournaments3vs3Image from "./images/game/DuelsPage/weeklytournament
 import duel5vs5Image from "./images/game/DuelsPage/duel5vs5.png";
 import duel3vs3Image from "./images/game/DuelsPage/duel3vs3.png";
 
+// GameClanPage
+import clanLogoImage from "./images/game/ClanPage/clanLogo.png";
+import clanBgImage from "./images/game/ClanPage/clanBg.jpg";
+import clanBgImageWebp from "./images/game/ClanPage/clanBg.webp";
+
 export {
   // GAME
   // stats
@@ -36,6 +43,8 @@ export {
   kreditImageWebp,
   darkMatterImage,
   darkMatterImageWebp,
+  tokenImage,
+  tokenImageWebp,
   // Models
   personModel1Image,
   personModel1ImageWebp,
@@ -57,4 +66,8 @@ export {
   weeklyTournaments3vs3Image,
   duel5vs5Image,
   duel3vs3Image,
+  // GameClanPage
+  clanLogoImage,
+  clanBgImage,
+  clanBgImageWebp,
 };

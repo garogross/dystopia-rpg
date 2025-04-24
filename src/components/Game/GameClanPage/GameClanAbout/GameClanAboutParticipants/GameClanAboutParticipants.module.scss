@@ -1,0 +1,83 @@
+@import "../../../../../styles/mixins";
+@import "../../../../../styles/vars";
+
+.gameClanAboutParticipants {
+  overflow: hidden;
+
+  &__wrapper {
+    height: 100%;
+    overflow: auto;
+    background: $color-bg;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.3fr;
+    gap: 6px;
+  }
+  &__headerText {
+    @include setFont(12px, 700);
+
+    &:last-child {
+      margin-left: auto;
+    }
+  }
+
+  &__list {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  &__listItem {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.3fr;
+    gap: 6px;
+  }
+
+  &__nameBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+  }
+  &__roleText {
+    @include setFont(8px, 100, $font-fam-montserrat);
+  }
+  &__nameText {
+    @include setFont(12px, 400);
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__status {
+    @include flexCol(flex-start);
+    gap: 3px;
+  }
+  &__statusColor {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid $color-primary;
+
+    &_active {
+      background-color: $color-primary;
+    }
+
+    &_inactive {
+      background-color: $color-bg;
+    }
+  }
+  &__statusText {
+    @include setFont(10px, 400);
+  }
+  &__levelText {
+    @include setFont(12px, 400);
+    margin-left: auto;
+  }
+}
