@@ -36,6 +36,29 @@ import clanLogoImage from "./images/game/ClanPage/clanLogo.png";
 import clanBgImage from "./images/game/ClanPage/clanBg.jpg";
 import clanBgImageWebp from "./images/game/ClanPage/clanBg.webp";
 
+// // Depot
+
+// // // tools
+import tool13Image from "./images/game/ClanPage/Depot/tools/tool13.png";
+import tool14Image from "./images/game/ClanPage/Depot/tools/tool14.png";
+import tool10Image from "./images/game/ClanPage/Depot/tools/tool10.png";
+import tool6Image from "./images/game/ClanPage/Depot/tools/tool6.png";
+import tool4Image from "./images/game/ClanPage/Depot/tools/tool4.png";
+import tool11Image from "./images/game/ClanPage/Depot/tools/tool11.png";
+import tool17Image from "./images/game/ClanPage/Depot/tools/tool17.png";
+import tool2Image from "./images/game/ClanPage/Depot/tools/tool2.png";
+import tool8Image from "./images/game/ClanPage/Depot/tools/tool8.png";
+import tool1Image from "./images/game/ClanPage/Depot/tools/tool1.png";
+import tool15Image from "./images/game/ClanPage/Depot/tools/tool15.png";
+import tool16Image from "./images/game/ClanPage/Depot/tools/tool16.png";
+import tool7Image from "./images/game/ClanPage/Depot/tools/tool7.png";
+import tool12Image from "./images/game/ClanPage/Depot/tools/tool12.png";
+import tool19Image from "./images/game/ClanPage/Depot/tools/tool19.png";
+import tool3Image from "./images/game/ClanPage/Depot/tools/tool3.png";
+import tool5Image from "./images/game/ClanPage/Depot/tools/tool5.png";
+import tool9Image from "./images/game/ClanPage/Depot/tools/tool9.png";
+import tool18Image from "./images/game/ClanPage/Depot/tools/tool18.png";
+
 export {
   // GAME
   // stats
@@ -70,4 +93,26 @@ export {
   clanLogoImage,
   clanBgImage,
   clanBgImageWebp,
+
+  // GameDepotPage
+  // tools
+  tool13Image,
+  tool14Image,
+  tool10Image,
+  tool6Image,
+  tool4Image,
+  tool11Image,
+  tool17Image,
+  tool2Image,
+  tool8Image,
+  tool1Image,
+  tool15Image,
+  tool16Image,
+  tool7Image,
+  tool12Image,
+  tool19Image,
+  tool3Image,
+  tool5Image,
+  tool9Image,
+  tool18Image,
 };

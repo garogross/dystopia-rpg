@@ -80,11 +80,11 @@ const GameWrapper: React.FC<Props> = (props) => {
   return (
     <div className={`${styles.gameWrapper}`}>
       <div className={`${styles.gameWrapper__container} gameContainer`}>
-        <AppLoader
+        {/* <AppLoader
           loading={appLoading}
           timerFinished={loaderTimerFinished}
           setTimerFinished={setLoaderTimerFinished}
-        />
+        /> */}
         <GameHeader />
         <div className={styles.gameWrapper__main}>
           <Outlet />

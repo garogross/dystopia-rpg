@@ -1,0 +1,23 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.sortList {
+  @include flexCol(space-between);
+  width: 100%;
+  gap: 5px;
+
+  &__item {
+    @include flexCol();
+    @include button();
+    gap: 3px;
+    @include setFont(10px, 400);
+
+    & svg {
+      transition: $transition;
+    }
+
+    &_up svg {
+      transform: rotate(180deg);
+    }
+  }
+}

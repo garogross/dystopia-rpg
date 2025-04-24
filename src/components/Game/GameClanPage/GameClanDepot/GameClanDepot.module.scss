@@ -1,5 +1,49 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
 .gameClanDepot {
-  padding: 20px;
-  width: 100%;
   height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  &__wrapper {
+    overflow: hidden;
+  }
+
+  &__main {
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 8px 10px 5px;
+    background-color: $color-bg;
+  }
+  &__list {
+    flex: 1;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+  }
+  &__listItem {
+    aspect-ratio: 1/1;
+    @include flexCol();
+    @include button(
+      radial-gradient(50% 50% at 50% 50%, #523ba6 0%, #170e35 100%),
+      1px solid $color-primary
+    );
+    position: relative;
+  }
+  &__img {
+    max-width: 100%;
+  }
+  &__countText {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    @include setFont(10px, 400, $font-fam-h3);
+  }
 }

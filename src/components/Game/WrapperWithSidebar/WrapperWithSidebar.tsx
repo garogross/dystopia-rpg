@@ -13,7 +13,7 @@ const WrapperWithSidebar: React.FC<Props> = ({ items }) => {
   const curItem = items.find((item) => item.link === curItemPath) || items[0];
 
   useEffect(() => {
-    setCurItemPath(location.hash);
+    setCurItemPath(location.hash.slice(1));
   }, [location.hash]);
 
   return (

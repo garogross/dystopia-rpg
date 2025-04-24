@@ -5,7 +5,7 @@ export interface UIState {
 }
 
 const initialState: UIState = {
-  gameInited: false,
+  gameInited: true,
 };
 
 export const uISlice = createSlice({
