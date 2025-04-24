@@ -48,6 +48,7 @@
   }
   &__roleText {
     @include setFont(8px, 100, $font-fam-montserrat);
+    font-style: italic
   }
   &__nameText {
     @include setFont(12px, 400);
