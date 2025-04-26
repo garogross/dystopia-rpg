@@ -9,6 +9,11 @@
 
   &__item {
     flex: 1;
+  }
+
+  &__itemBtn {
+    width: 100%;
+    height: 100%;
     @include flexCol();
     @include button(
       linear-gradient(180deg, #2e2062 0%, #140c2e 100%),
@@ -20,29 +25,24 @@
     & svg {
       transition: $transition;
     }
-    
+
     &:not(&_stroked) svg {
       fill: $color-text;
-      
     }
-    
+
     &_stroked svg {
       stroke: $color-text;
-      
     }
 
     &_active {
       background: linear-gradient(180deg, #5a41b5 0%, #3d2b7e 100%);
-
     }
     &_active:not(&_stroked) svg {
       fill: $color-black;
-      
     }
-    
+
     &_active &_stroked svg {
       stroke: $color-black;
-      
     }
   }
 }

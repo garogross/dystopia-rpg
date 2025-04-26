@@ -31,6 +31,9 @@ import {
   tool9Image,
   tool18Image,
 } from "../../../../assets/images";
+import { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
+import TransitionProvider from "../../../../providers/TransitionProvider";
+import { useAppSelector } from "../../../../hooks/redux";
 
 interface StoragePlace {
   count?: number;
@@ -114,6 +117,7 @@ const sortItems: SortItem[] = [
 const GameClanDepot: React.FC = () => {
   const [activeTabId, setActiveTabId] = useState("storage");
   const { activeSort, handleSortChange } = useSort();
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <section className={styles.gameClanDepot}>
       <Tabbar
@@ -131,15 +135,27 @@ const GameClanDepot: React.FC = () => {
           />
           <div className={styles.gameClanDepot__list}>
             {storageData.map((place, index) => (
-              <button className={styles.gameClanDepot__listItem} key={index}>
-                {place.image && (
-                  <img src={place.image} alt="tool" className={styles.gameClanDepot__img} />
-                )}
-                {(place.count || 0) > 1 && (
-                  <span className={styles.gameClanDepot__countText}></span>
-                )}
-                {place.blocked && <GameClanDepotBlockIcon />}
-              </button>
+              <TransitionProvider
+                inProp={gameInited}
+                style={TransitionStyleTypes.zoomIn}
+                delay={100 * index}
+                key={index}
+                className={styles.gameClanDepot__listItem}
+              >
+                <button className={styles.gameClanDepot__listItemBtn} key={index}>
+                  {place.image && (
+                    <img
+                      src={place.image}
+                      alt="tool"
+                      className={styles.gameClanDepot__img}
+                    />
+                  )}
+                  {(place.count || 0) > 1 && (
+                    <span className={styles.gameClanDepot__countText}></span>
+                  )}
+                  {place.blocked && <GameClanDepotBlockIcon />}
+                </button>
+              </TransitionProvider>
             ))}
           </div>
         </div>

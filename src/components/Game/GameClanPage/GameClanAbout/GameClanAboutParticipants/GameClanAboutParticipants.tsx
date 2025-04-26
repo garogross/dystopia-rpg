@@ -6,7 +6,11 @@ import GameClanRequetsIcon from "../../../../layout/icons/game/GameClanPage/Game
 import GameClanHistoryIcon from "../../../../layout/icons/game/GameClanPage/GameClanAbout/GameClanHistoryIcon";
 import WrapperWithFrame from "../../../../layout/WrapperWithFrame/WrapperWithFrame";
 
-import styles from "./GameClanAboutParticipants.module.scss"
+import styles from "./GameClanAboutParticipants.module.scss";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../../../providers/TransitionProvider";
+import { useAppSelector } from "../../../../../hooks/redux";
 
 const tabs: TabBarItem[] = [
   {
@@ -16,7 +20,7 @@ const tabs: TabBarItem[] = [
   {
     icon: <GameClanEditSettingsIcon />,
     id: "settings",
-    isIconStroke: true
+    isIconStroke: true,
   },
   {
     icon: <GameClanRequetsIcon />,
@@ -47,6 +51,8 @@ const users = [
 
 const GameClanAboutParticipants = () => {
   const [activeTabId, setActiveTabId] = useState("");
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+
   return (
     <>
       <Tabbar
@@ -56,24 +62,61 @@ const GameClanAboutParticipants = () => {
       />
       <WrapperWithFrame className={styles.gameClanAboutParticipants}>
         <div className={styles.gameClanAboutParticipants__wrapper}>
-          <div className={styles.gameClanAboutParticipants__header}>
-            <h6 className={styles.gameClanAboutParticipants__headerText}>Участники</h6>
-            <h6 className={styles.gameClanAboutParticipants__headerText}>Статус</h6>
-            <h6 className={styles.gameClanAboutParticipants__headerText}>Ур.</h6>
-          </div>
+          <TransitionProvider
+            inProp={gameInited}
+            style={TransitionStyleTypes.bottom}
+            className={styles.gameClanAboutParticipants__header}
+          >
+            <h6 className={styles.gameClanAboutParticipants__headerText}>
+              Участники
+            </h6>
+            <h6 className={styles.gameClanAboutParticipants__headerText}>
+              Статус
+            </h6>
+            <h6 className={styles.gameClanAboutParticipants__headerText}>
+              Ур.
+            </h6>
+          </TransitionProvider>
           <div className={styles.gameClanAboutParticipants__list}>
             {users.map((user, index) => (
-              <div key={index} className={styles.gameClanAboutParticipants__listItem}>
-                <div className={styles.gameClanAboutParticipants__nameBlock}>
-                  <span className={styles.gameClanAboutParticipants__roleText}>{user.role}</span>
-                  <p className={styles.gameClanAboutParticipants__nameText}>{user.name}</p>
+              <TransitionProvider
+                key={index}
+                inProp={gameInited}
+                style={TransitionStyleTypes.bottom}
+                delay={100 * index}
+              >
+                <div className={styles.gameClanAboutParticipants__listItem}>
+                  <div className={styles.gameClanAboutParticipants__nameBlock}>
+                    <span
+                      className={styles.gameClanAboutParticipants__roleText}
+                    >
+                      {user.role}
+                    </span>
+                    <p className={styles.gameClanAboutParticipants__nameText}>
+                      {user.name}
+                    </p>
+                  </div>
+                  <div className={styles.gameClanAboutParticipants__status}>
+                    <span
+                      className={`${
+                        styles.gameClanAboutParticipants__statusColor
+                      } ${
+                        user.status === "в сети"
+                          ? styles.gameClanAboutParticipants__statusColor_active
+                          : styles.gameClanAboutParticipants__statusColor_inactive
+                      }`}
+                    ></span>
+                    <span
+                      className={styles.gameClanAboutParticipants__statusText}
+                    >
+                      {user.status}
+                    </span>
+                  </div>
+                  <div className={styles.gameClanAboutParticipants__levelText}>
+                    {user.level}
+                  </div>
                 </div>
-                <div className={styles.gameClanAboutParticipants__status}>
-                  <span className={`${styles.gameClanAboutParticipants__statusColor} ${user.status === "в сети" ? styles.gameClanAboutParticipants__statusColor_active : styles.gameClanAboutParticipants__statusColor_inactive}`}></span>
-                  <span className={styles.gameClanAboutParticipants__statusText}>{user.status}</span>
-                </div>
-                <div className={styles.gameClanAboutParticipants__levelText}>{user.level}</div>
-              </div>
+              </TransitionProvider>
             ))}
           </div>
         </div>

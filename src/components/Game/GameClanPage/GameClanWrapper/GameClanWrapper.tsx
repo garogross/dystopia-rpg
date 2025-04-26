@@ -16,6 +16,9 @@ import GameClanStore from "../GameClanStore/GameClanStore";
 import GameClanHunting from "../GameClanHunting/GameClanHunting";
 import WrapperWithSidebar from "../../WrapperWithSidebar/WrapperWithSidebar";
 import GameClanBottomWings from "../../../layout/icons/game/GameClanPage/GameClanBottomWings";
+import TransitionProvider from "../../../../providers/TransitionProvider";
+import { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
+import { useAppSelector } from "../../../../hooks/redux";
 
 const sidebarItems: GameSideBarProps["items"] = [
   {
@@ -57,13 +60,19 @@ const sidebarItems: GameSideBarProps["items"] = [
 ];
 
 const GameClanWrapper = () => {
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <section className={`${styles.gameClanWrapper} `}>
       <GameClanHeader />
       <WrapperWithSidebar items={sidebarItems} />
-      <div className={styles.gameClanWrapper__bottomWings}>
-        <GameClanBottomWings />
-      </div>
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.bottom}
+      >
+        <div className={styles.gameClanWrapper__bottomWings}>
+          <GameClanBottomWings />
+        </div>
+      </TransitionProvider>
     </section>
   );
 };

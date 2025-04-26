@@ -28,6 +28,9 @@ import GameClanHeadSkinIcon from "../../../layout/icons/game/GameClanPage/GameCl
 import GameClanBodySkinIcon from "../../../layout/icons/game/GameClanPage/GameClanStore/GameClanBodySkinIcon";
 import GameClanHandSkinIcon from "../../../layout/icons/game/GameClanPage/GameClanStore/GameClanHandSkinIcon";
 import GameClanFootSkinIcon from "../../../layout/icons/game/GameClanPage/GameClanStore/GameClanFootSkinIcon";
+import { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
+import TransitionProvider from "../../../../providers/TransitionProvider";
+import { useAppSelector } from "../../../../hooks/redux";
 
 const tabs: TabBarItem[] = [
   {
@@ -155,6 +158,7 @@ const GameClanStore: React.FC = () => {
   const [activeTabId, setActiveTabId] = useState("gun");
   const [activeskinSort, setActiveskinSort] = useState("head");
   const { activeSort, handleSortChange } = useSort();
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
 
   return (
     <div className={styles.gameClanStore}>
@@ -166,8 +170,12 @@ const GameClanStore: React.FC = () => {
       <WrapperWithFrame className={styles.gameClanStore__wrapper}>
         <div className={styles.gameClanStore__main}>
           {activeTabId === "helmet" && (
-            <div className={styles.gameClanStore__skinFilter}>
-              {skinFilters.map((item) => (
+            <TransitionProvider
+              inProp={gameInited}
+              style={TransitionStyleTypes.bottom}
+              className={styles.gameClanStore__skinFilter}
+            >
+              {skinFilters.map((item, index) => (
                 <button
                   key={item.id}
                   onClick={() => setActiveskinSort(item.id)}
@@ -180,7 +188,7 @@ const GameClanStore: React.FC = () => {
                   {item.icon}
                 </button>
               ))}
-            </div>
+            </TransitionProvider>
           )}
           <SortList
             className={styles.gameClanStore__sortList}
@@ -191,8 +199,14 @@ const GameClanStore: React.FC = () => {
           <div className={styles.gameClanStore__list}>
             {data
               .filter((item) => item.type === activeTabId)
-              .map((item) => (
-                <div className={styles.gameClanStore__listItem}>
+              .map((item, index) => (
+                <TransitionProvider
+                  inProp={gameInited}
+                  style={TransitionStyleTypes.bottom}
+                  delay={100 * index}
+                  key={index}
+                  className={styles.gameClanStore__listItem}
+                >
                   <img
                     src={item.image}
                     alt="weapon"
@@ -224,7 +238,7 @@ const GameClanStore: React.FC = () => {
                       );
                     })}
                   </div>
-                </div>
+                </TransitionProvider>
               ))}
           </div>
         </div>
