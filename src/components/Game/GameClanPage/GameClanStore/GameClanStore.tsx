@@ -207,9 +207,8 @@ const GameClanStore: React.FC = () => {
                   key={index}
                   className={styles.gameClanStore__listItem}
                 >
-                  <img
-                    src={item.image}
-                    alt="weapon"
+                  <div
+                    style={{ backgroundImage: `url(${item.image})` }}
                     className={styles.gameClanStore__listItemImg}
                   />
                   <div className={styles.gameClanStore__name}>{item.name}</div>
