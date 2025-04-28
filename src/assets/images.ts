@@ -25,6 +25,8 @@ import gameCharacterInventoryBgImage from "./images/game/CharacterPage/gameChara
 import gameCharacterInventoryBgImageWebp from "./images/game/CharacterPage/gameCharacterInventoryBg.webp";
 import gameCharacterShopBgImage from "./images/game/CharacterPage/gameCharacterShopBg.jpg";
 import gameCharacterShopBgImageWebp from "./images/game/CharacterPage/gameCharacterShopBg.webp";
+import gameCharacterTrainingBgImage from "./images/game/CharacterPage/gameCharacterTrainingBg.jpg";
+import gameCharacterTrainingBgImageWebp from "./images/game/CharacterPage/gameCharacterTrainingBg.webp";
 
 // ChalangesPage
 import chalange1Image from "./images/game/ChalangesPage/chalange1.jpeg";
@@ -109,6 +111,8 @@ export {
   gameCharacterInventoryBgImageWebp,
   gameCharacterShopBgImage,
   gameCharacterShopBgImageWebp,
+  gameCharacterTrainingBgImage,
+  gameCharacterTrainingBgImageWebp,
   // ChalangesPage
   chalange1Image,
   chalange2Image,

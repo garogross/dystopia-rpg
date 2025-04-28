@@ -1,1 +1,51 @@
- 
+@import "../../../../../styles/mixins";
+@import "../../../../../styles/vars";
+
+.gameCharacterTrainingRedistribution {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__item {
+    @include flexCol();
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__itemMain {
+    width: 100%;
+    @include flexCol();
+    gap: 3px;
+  }
+  &__text {
+    @include setFont(10px, 400);
+  }
+  &__statImageWrapper {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #42307d;
+    @include flexCol();
+  }
+  &__statImage {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  &__resetBtn {
+    @include button(
+      linear-gradient(180deg, #2e2062 0%, #140c2e 100%),
+      1px solid $color-primary
+    );
+    padding: 3px 5px;
+    @include flexCol();
+    gap: 5px;
+
+    @include setFont(8px,400)
+  }
+  &__dotLine {
+    width: 100%;
+
+    & svg {
+      width: 100%;
+    }
+  }
+}

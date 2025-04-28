@@ -36,6 +36,12 @@
     );
     background-position: center;
   }
+  &_training {
+    @include bgWebp(
+      "../../../../assets/images/game/CharacterPage/gameCharacterTrainingBg.jpg",
+      "../../../../assets/images/game/CharacterPage/gameCharacterTrainingBg.webp"
+      );
+  }
   & > svg {
     width: 100%;
   }

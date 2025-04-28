@@ -1,19 +1,90 @@
-import React from "react";
-import styles from "./GameCharacterTrainingCybernetics.module.scss";
+import GameCharacterTrainingAccordionList, {
+  TrainingCategory,
+} from "../GameCharacterTrainingAccordionList/GameCharacterTrainingAccordionList";
 
-interface GameCharacterTrainingCyberneticsProps {
-  // Add props as needed
-}
+const data: TrainingCategory[] = [
+  {
+    name: "Характеристики",
+    price: 100,
+    items: [
+      {
+        name: "Сила",
+        level: 5,
+      },
+      {
+        name: "Ловкость",
+        level: 4,
+      },
+      {
+        name: "Меткость",
+        level: 3,
+      },
+      {
+        name: "Выносливость",
+        level: 2,
+      },
+      {
+        name: "Инициатива",
+        level: 1,
+      },
+    ],
+  },
+  {
+    name: "Параметры",
+    price: 333,
+    items: [
+      {
+        name: "Здоровье",
+        level: 5,
+      },
+      {
+        name: "Урон",
+        level: 4,
+      },
+      {
+        name: "Уворот",
+        level: 3,
+      },
+      {
+        name: "Контрудар",
+        level: 2,
+      },
+    ],
+  },
+  {
+    name: "Приёмы",
+    price: 100,
+    unavailableUpgrades: true,
+    items: [
+      {
+        name: "Приём А",
+        condition: "Использований 10/20",
+      },
+      {
+        name: "Приём Б",
+        condition: "Использований 10/20",
+      },
+    ],
+  },
+  {
+    name: "Навыки",
+    price: 100,
+    unavailableUpgrades: true,
+    items: [
+      {
+        name: "Ближний бой",
+        condition: "Очки навыков 10/20",
+      },
+      {
+        name: "Тяжелая броня",
+        condition: "Очки навыков 10/20",
+      },
+    ],
+  },
+];
 
-export const GameCharacterTrainingCybernetics: React.FC<
-  GameCharacterTrainingCyberneticsProps
-> = () => {
-  return (
-    <div className={styles.container}>
-      <h2>Cybernetics Training</h2>
-      {/* Add component content here */}
-    </div>
-  );
+export const GameCharacterTrainingCybernetics = () => {
+  return <GameCharacterTrainingAccordionList data={data} />;
 };
 
 export default GameCharacterTrainingCybernetics;
