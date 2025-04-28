@@ -1,12 +1,8 @@
 import React from "react";
-import styles from "./GameCharacterShop.module.scss";
+import GameStore from "../../GameStore/GameStore";
 
 const GameCharacterShop: React.FC = () => {
-  return (
-    <div className={styles.gameCharacterShop}>
-      <h1>Shop</h1>
-    </div>
-  );
+  return <GameStore />;
 };
 
 export default GameCharacterShop;

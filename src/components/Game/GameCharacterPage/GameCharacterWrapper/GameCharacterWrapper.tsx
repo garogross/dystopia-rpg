@@ -64,7 +64,11 @@ const GameCharacterWrapper: React.FC = () => {
   const location = useLocation();
   const isMainPage = location.hash === "#main" || location.hash === "";
   return (
-    <div className={styles.gameCharacterWrapper}>
+    <div
+      className={`${styles.gameCharacterWrapper} ${
+        styles[`gameCharacterWrapper_${location.hash.replace("#", "")}`]
+      }`}
+    >
       <WrapperWithSidebar items={sidebarItems} />
       <TransitionProvider
         style={TransitionStyleTypes.height}

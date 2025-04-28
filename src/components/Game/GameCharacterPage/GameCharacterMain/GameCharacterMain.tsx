@@ -5,10 +5,16 @@ import {
   personModel1ImageWebp,
 } from "../../../../assets/images";
 import styles from "./GameCharacterMain.module.scss";
-
+import TransitionProvider, { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
+import { useAppSelector } from "../../../../hooks/redux";
 const GameCharacterMain = () => {
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
-    <div className={styles.gameCharacterMain}>
+    <TransitionProvider
+      className={styles.gameCharacterMain}
+      style={TransitionStyleTypes.left}
+      inProp={gameInited}
+    >
       <ImageWebp
         className={styles.gameCharacterMain__character}
         pictureClass={styles.gameCharacterMain__characterPicture}
@@ -16,7 +22,7 @@ const GameCharacterMain = () => {
         alt="character"
         srcSet={personModel1ImageWebp}
       />
-    </div>
+    </TransitionProvider>
   );
 };
 

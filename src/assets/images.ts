@@ -1,4 +1,3 @@
-
 // Models
 import personModel1Image from "./images/game/persons/personModel1.png";
 import personModel1ImageWebp from "./images/game/persons/personModel1.webp";
@@ -22,6 +21,10 @@ import gameSideBarCablesWithAdditionsImageWebp from "./images/game/GameSidebar/g
 // CharacterPage
 import characterPageBgImage from "./images/game/CharacterPage/characterBg.jpeg";
 import characterPageBgImageWebp from "./images/game/CharacterPage/characterBg.webp";
+import gameCharacterInventoryBgImage from "./images/game/CharacterPage/gameCharacterInventoryBg.jpg";
+import gameCharacterInventoryBgImageWebp from "./images/game/CharacterPage/gameCharacterInventoryBg.webp";
+import gameCharacterShopBgImage from "./images/game/CharacterPage/gameCharacterShopBg.jpg";
+import gameCharacterShopBgImageWebp from "./images/game/CharacterPage/gameCharacterShopBg.webp";
 
 // ChalangesPage
 import chalange1Image from "./images/game/ChalangesPage/chalange1.jpeg";
@@ -102,6 +105,10 @@ export {
   // CharacterPage
   characterPageBgImage,
   characterPageBgImageWebp,
+  gameCharacterInventoryBgImage,
+  gameCharacterInventoryBgImageWebp,
+  gameCharacterShopBgImage,
+  gameCharacterShopBgImageWebp,
   // ChalangesPage
   chalange1Image,
   chalange2Image,
