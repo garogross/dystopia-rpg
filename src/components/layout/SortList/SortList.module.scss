@@ -11,13 +11,5 @@
     @include button();
     gap: 3px;
     @include setFont(10px, 400);
-
-    & svg {
-      transition: $transition;
-    }
-
-    &_up svg {
-      transform: rotate(180deg);
-    }
   }
 }

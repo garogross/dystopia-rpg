@@ -1,0 +1,86 @@
+@import "../../../../../styles/mixins";
+@import "../../../../../styles/vars";
+
+.gameCharacterTrainingDevelopment {
+  display: flex;
+  width: 100%;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  overflow: auto;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  &__itemHeader {
+    @include flexCol(space-between);
+    gap: 2px;
+  }
+  &__itemHeaderTitleBlock {
+    @include flexCol(flex-start);
+    gap: 3px;
+
+    & > svg {
+      transition: $transition;
+    }
+  }
+
+
+
+  &__itemHeaderTitleText {
+    @include setFont(10px, 400);
+  }
+  &__itemHeaderPayBtn {
+    padding: 1px 3px;
+    @include button(
+      linear-gradient(180deg, #2e2062 0%, #140c2e 100%),
+      1px solid $color-primary
+    );
+    @include setFont(8px, 400);
+
+    &:disabled {
+      background: linear-gradient(180deg, #140c2e 0%, #2e2062 100%);
+      color: $color-primary;
+      border-color: #140c2e;
+    }
+  }
+  &__dropdownList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__dropdownItem {
+    position: relative;
+    @include flexCol(space-between);
+    gap: 3px;
+    padding-bottom: 10px;
+  }
+  &__dropdownItemNameText {
+    @include setFont(8px, 200, $font-fam-montserrat);
+    font-style: italic;
+  }
+  &__dropdownItemConditionText {
+    @include setFont(8px, 400);
+  }
+  &__dropdownItemLevel {
+    @include flexCol(flex-end);
+    gap: 3px;
+  }
+  &__dropdownItemLevelAddBtn {
+    @include button();
+  }
+  &__dropdownItemLevelText {
+    @include setFont(8px, 200, $font-fam-montserrat);
+    font-style: italic;
+  }
+
+  &__dropdownItemLine {
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+  }
+}

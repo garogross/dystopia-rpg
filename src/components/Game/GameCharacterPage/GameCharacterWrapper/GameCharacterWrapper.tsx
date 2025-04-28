@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styles from "./GameCharacterWrapper.module.scss";
 import { GameSideBarProps } from "../../../../models/Props/GameSideBarProps";
-import GameCharacterAchievementsIcon from "../../../layout/icons/game/GameCharacterPage/GameCharacterAchievementsIcon";
+import GameCharacterAchievementsIcon from "../../../layout/icons/game/GameCharacterPage/sidebar/GameCharacterAchievementsIcon";
 import GameCharacterMain from "../GameCharacterMain/GameCharacterMain";
 import WrapperWithSidebar from "../../WrapperWithSidebar/WrapperWithSidebar";
-import GameCharacterMainIcon from "../../../layout/icons/game/GameCharacterPage/GameCharacterMainIcon";
-import GameCharacterInventoryIcon from "../../../layout/icons/game/GameCharacterPage/GameCharacterInventoryIcon";
+import GameCharacterMainIcon from "../../../layout/icons/game/GameCharacterPage/sidebar/GameCharacterMainIcon";
+import GameCharacterInventoryIcon from "../../../layout/icons/game/GameCharacterPage/sidebar/GameCharacterInventoryIcon";
 import GameCharacterInventory from "../GameCharacterInventory/GameCharacterInventory";
-import GameCharacterShopIcon from "../../../layout/icons/game/GameCharacterPage/GameCharacterShopIcon";
+import GameCharacterShopIcon from "../../../layout/icons/game/GameCharacterPage/sidebar/GameCharacterShopIcon";
 import GameCharacterShop from "../GameCharacterShop/GameCharacterShop";
 import GameCharacterTraining from "../GameCharacterTraining/GameCharacterTraining";
-import GameCharacterTrainingIcon from "../../../layout/icons/game/GameCharacterPage/GameCharacterTrainingIcon";
-import GameCharacterSkinsIcon from "../../../layout/icons/game/GameCharacterPage/GameCharacterSkinsIcon";
+import GameCharacterTrainingIcon from "../../../layout/icons/game/GameCharacterPage/sidebar/GameCharacterTrainingIcon";
+import GameCharacterSkinsIcon from "../../../layout/icons/game/GameCharacterPage/sidebar/GameCharacterSkinsIcon";
 import GameCharacterSkins from "../GameCharacterSkins/GameCharacterSkins";
 import GameCharacterAchievements from "../GameCharacterAchievements/GameCharacterAchievements";
 import GameCharacterBottomWings from "../../../layout/icons/game/GameCharacterPage/GameCharacterBottomWings";
@@ -20,55 +20,69 @@ import { useLocation } from "react-router-dom";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
+import GameCharacterTrainingTabBar from "../GameCharacterTraining/GameCharacterTrainingTabBar/GameCharacterTrainingTabBar";
+import { ETrainingTabs } from "../../../../constants/ETrainingTabs";
 
-const sidebarItems: GameSideBarProps["items"] = [
-  {
-    link: "main",
-    icon: <GameCharacterMainIcon />,
-    name: "Персонаж",
-    component: <GameCharacterMain />,
-  },
-  {
-    link: "inventory",
-    icon: <GameCharacterInventoryIcon />,
-    name: "Инвентарь",
-    component: <GameCharacterInventory />,
-  },
-  {
-    link: "shop",
-    icon: <GameCharacterShopIcon />,
-    name: "Магазин",
-    component: <GameCharacterShop />,
-  },
-  {
-    link: "training",
-    icon: <GameCharacterTrainingIcon />,
-    name: "Тренировка",
-    component: <GameCharacterTraining />,
-  },
-  {
-    link: "skins",
-    icon: <GameCharacterSkinsIcon />,
-    name: "Скины",
-    component: <GameCharacterSkins />,
-  },
-  {
-    link: "achievements",
-    icon: <GameCharacterAchievementsIcon />,
-    name: "Достижения",
-    component: <GameCharacterAchievements />,
-  },
-];
 
 const GameCharacterWrapper: React.FC = () => {
   const location = useLocation();
   const isMainPage = location.hash === "#main" || location.hash === "";
+  const isTrainingPage = location.hash === "#training";
+  const [activeTrainingTab, setActiveTrainingTab] = useState<ETrainingTabs>(
+    ETrainingTabs.DEVELOPMENT
+  );
+
+
+  const sidebarItems: GameSideBarProps["items"] = [
+    {
+      link: "main",
+      icon: <GameCharacterMainIcon />,
+      name: "Персонаж",
+      component: <GameCharacterMain />,
+    },
+    {
+      link: "inventory",
+      icon: <GameCharacterInventoryIcon />,
+      name: "Инвентарь",
+      component: <GameCharacterInventory />,
+    },
+    {
+      link: "shop",
+      icon: <GameCharacterShopIcon />,
+      name: "Магазин",
+      component: <GameCharacterShop />,
+    },
+    {
+      link: "training",
+      icon: <GameCharacterTrainingIcon />,
+      name: "Тренировка",
+      component: <GameCharacterTraining activeTab={activeTrainingTab} />,
+    },
+    {
+      link: "skins",
+      icon: <GameCharacterSkinsIcon />,
+      name: "Скины",
+      component: <GameCharacterSkins />,
+    },
+    {
+      link: "achievements",
+      icon: <GameCharacterAchievementsIcon />,
+      name: "Достижения",
+      component: <GameCharacterAchievements />,
+    },
+  ];
+
   return (
     <div
       className={`${styles.gameCharacterWrapper} ${
         styles[`gameCharacterWrapper_${location.hash.replace("#", "")}`]
       }`}
     >
+      <GameCharacterTrainingTabBar
+        activeTab={activeTrainingTab}
+        setActiveTab={setActiveTrainingTab}
+        isShown={isTrainingPage}
+      />
       <WrapperWithSidebar items={sidebarItems} />
       <TransitionProvider
         style={TransitionStyleTypes.height}

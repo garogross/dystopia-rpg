@@ -1,5 +1,5 @@
 import React from "react";
-import { SvgProps } from "../../../../../models/Props/SvgProps";
+import { SvgProps } from "../../../../../../models/Props/SvgProps";
 
 const GameCharacterMainIcon: React.FC<SvgProps> = ({ className }) => {
   return (

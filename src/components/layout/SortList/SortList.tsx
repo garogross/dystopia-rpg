@@ -1,7 +1,7 @@
 import React from "react";
 
 import styles from "./SortList.module.scss";
-import SortArrow from "../icons/game/Common/SortArrow";
+import ArrowIcon from "../icons/game/Common/ArrowIcon";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
@@ -35,15 +35,11 @@ const SortList: React.FC<Props> = ({
       {items.map((item) => (
         <button
           onClick={() => onChange(item.id)}
-          className={`${styles.sortList__item} ${
-            activeSort.startsWith(item.id) && activeSort.endsWith("+")
-              ? styles.sortList__item_up
-              : ""
-          }`}
+          className={styles.sortList__item}
           key={item.id}
         >
           <span>{item.name}</span>
-          <SortArrow />
+          <ArrowIcon rotate={activeSort.startsWith(item.id) && activeSort.endsWith("+")}/>
         </button>
       ))}
     </TransitionProvider>
