@@ -1,0 +1,60 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.inventoryList {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  width: 100%;
+
+  &__item {
+    aspect-ratio: 1/1;
+    position: relative;
+  }
+  &__itemBtn {
+    @include flexCol();
+    @include button(
+      radial-gradient(50% 50% at 50% 50%, #523ba6 0%, #170e35 100%),
+      1px solid $color-primary
+    );
+    width: 100%;
+    height: 100%;
+    height: 100%;
+
+    &_active {
+      border-width: 2px;
+    }
+
+    &:disabled {
+      border-color: #6a4cd7;
+      background: radial-gradient(
+        50% 50% at 50% 50%,
+        #523ba680 0%,
+        #170e3580 100%
+      );
+    }
+  }
+  &__img {
+    max-width: 100%;
+  }
+  &__countText {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    @include setFont(12px, 400, $font-fam-h3);
+    line-height: 1;
+  }
+  &__selectedMark {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    width: 13px;
+    height: 13px;
+    background-color: $color-primary;
+    padding: 1px;
+    display: flex;
+    clip-path: polygon(0 0, 13px 0, 6.5px 6.5px, 0 13px);
+  }
+}

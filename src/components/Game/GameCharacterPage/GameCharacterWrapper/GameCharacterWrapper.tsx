@@ -15,6 +15,11 @@ import GameCharacterTrainingIcon from "../../../layout/icons/game/GameCharacterP
 import GameCharacterSkinsIcon from "../../../layout/icons/game/GameCharacterPage/GameCharacterSkinsIcon";
 import GameCharacterSkins from "../GameCharacterSkins/GameCharacterSkins";
 import GameCharacterAchievements from "../GameCharacterAchievements/GameCharacterAchievements";
+import GameCharacterBottomWings from "../../../layout/icons/game/GameCharacterPage/GameCharacterBottomWings";
+import { useLocation } from "react-router-dom";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../../providers/TransitionProvider";
 
 const sidebarItems: GameSideBarProps["items"] = [
   {
@@ -56,9 +61,19 @@ const sidebarItems: GameSideBarProps["items"] = [
 ];
 
 const GameCharacterWrapper: React.FC = () => {
+  const location = useLocation();
+  const isMainPage = location.hash === "#main" || location.hash === "";
   return (
     <div className={styles.gameCharacterWrapper}>
       <WrapperWithSidebar items={sidebarItems} />
+      <TransitionProvider
+        style={TransitionStyleTypes.height}
+        className={`${styles.gameCharacterWrapper__bottomWings} container`}
+        inProp={!isMainPage}
+        height={100}
+      >
+        <GameCharacterBottomWings />
+      </TransitionProvider>
     </div>
   );
 };

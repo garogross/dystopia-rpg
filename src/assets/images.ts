@@ -1,5 +1,9 @@
+
+// Models
 import personModel1Image from "./images/game/persons/personModel1.png";
 import personModel1ImageWebp from "./images/game/persons/personModel1.webp";
+import personModel2Image from "./images/game/persons/personModel2.png";
+import personModel2ImageWebp from "./images/game/persons/personModel2.webp";
 
 // stats
 import kreditImage from "./images/game/stats/kredit.png";
@@ -12,6 +16,8 @@ import tokenImageWebp from "./images/game/stats/token.webp";
 // GameSidebar
 import gameSideBarCablesImage from "./images/game/GameSidebar/gameSideBarCables.png";
 import gameSideBarCablesImageWebp from "./images/game/GameSidebar/gameSideBarCables.webp";
+import gameSideBarCablesWithAdditionsImage from "./images/game/GameSidebar/gameSideBarCablesWithAdditions.png";
+import gameSideBarCablesWithAdditionsImageWebp from "./images/game/GameSidebar/gameSideBarCablesWithAdditions.webp";
 
 // CharacterPage
 import characterPageBgImage from "./images/game/CharacterPage/characterBg.jpeg";
@@ -58,17 +64,21 @@ import tool3Image from "./images/game/ClanPage/Depot/tools/tool3.png";
 import tool5Image from "./images/game/ClanPage/Depot/tools/tool5.png";
 import tool9Image from "./images/game/ClanPage/Depot/tools/tool9.png";
 import tool18Image from "./images/game/ClanPage/Depot/tools/tool18.png";
+import tool20Image from "./images/game/ClanPage/Depot/tools/tool20.png";
+import tool23Image from "./images/game/ClanPage/Depot/tools/tool23.png";
+import tool22Image from "./images/game/ClanPage/Depot/tools/tool22.png";
+import tool21Image from "./images/game/ClanPage/Depot/tools/tool21.png";
 
 // // Store
-import gun2Image from "./images/game/ClanPage/Store/gun2.png"
-import gun3Image from "./images/game/ClanPage/Store/gun3.png"
-import gun5Image from "./images/game/ClanPage/Store/gun5.png"
-import gun4Image from "./images/game/ClanPage/Store/gun4.png"
-import gun1Image from "./images/game/ClanPage/Store/gun1.png"
-import helmet3Image from "./images/game/ClanPage/Store/helmet3.png"
-import helmet1Image from "./images/game/ClanPage/Store/helmet1.png"
-import helmet2Image from "./images/game/ClanPage/Store/helmet2.png"
-import helmet4Image from "./images/game/ClanPage/Store/helmet4.png"
+import gun2Image from "./images/game/ClanPage/Store/gun2.png";
+import gun3Image from "./images/game/ClanPage/Store/gun3.png";
+import gun5Image from "./images/game/ClanPage/Store/gun5.png";
+import gun4Image from "./images/game/ClanPage/Store/gun4.png";
+import gun1Image from "./images/game/ClanPage/Store/gun1.png";
+import helmet3Image from "./images/game/ClanPage/Store/helmet3.png";
+import helmet1Image from "./images/game/ClanPage/Store/helmet1.png";
+import helmet2Image from "./images/game/ClanPage/Store/helmet2.png";
+import helmet4Image from "./images/game/ClanPage/Store/helmet4.png";
 
 export {
   // GAME
@@ -82,9 +92,13 @@ export {
   // Models
   personModel1Image,
   personModel1ImageWebp,
+  personModel2Image,
+  personModel2ImageWebp,
   // GameSidebar
   gameSideBarCablesImage,
   gameSideBarCablesImageWebp,
+  gameSideBarCablesWithAdditionsImage,
+  gameSideBarCablesWithAdditionsImageWebp,
   // CharacterPage
   characterPageBgImage,
   characterPageBgImageWebp,
@@ -126,8 +140,10 @@ export {
   tool5Image,
   tool9Image,
   tool18Image,
-
-
+  tool20Image,
+  tool23Image,
+  tool22Image,
+  tool21Image,
   // Store
   gun2Image,
   gun3Image,

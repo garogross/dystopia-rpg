@@ -3,13 +3,14 @@ import React from "react";
 import styles from "./WrapperWithFrame.module.scss";
 import ImageFrame from "../icons/game/Common/ImageFrame";
 import ImageFrameBig from "../icons/game/Common/ImageFrameBig";
+import ImageFrameMd from "../icons/game/Common/ImageFrameMd";
 
 interface Props {
   children: React.ReactNode;
   className?: string;
   innerClassName?: string;
   withoutBorder?: boolean;
-  isBig?: boolean;
+  size?: "md" | "lg";
 }
 
 const WrapperWithFrame: React.FC<Props> = ({
@@ -17,7 +18,7 @@ const WrapperWithFrame: React.FC<Props> = ({
   className,
   innerClassName,
   withoutBorder,
-  isBig,
+  size,
 }) => {
   return (
     <div className={`${styles.wrapperWithFrame} ${className || ""}`}>
@@ -29,7 +30,13 @@ const WrapperWithFrame: React.FC<Props> = ({
         </div>
       )}
       <div className={styles.wrapperWithFrame__frame}>
-        {isBig ? <ImageFrameBig /> : <ImageFrame />}
+        {size === "lg" ? (
+          <ImageFrameBig />
+        ) : size === "md" ? (
+          <ImageFrameMd />
+        ) : (
+          <ImageFrame />
+        )}
       </div>
     </div>
   );

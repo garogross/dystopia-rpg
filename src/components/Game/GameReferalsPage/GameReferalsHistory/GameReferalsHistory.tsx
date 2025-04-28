@@ -49,7 +49,7 @@ const GameReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
       </TitleH3>
       <WrapperWithFrame
         className={styles.gameReferalsHistory__wrapper}
-        isBig
+        size={"lg"}
         innerClassName={styles.gameReferalsHistory__inner}
       >
         <div className={styles.gameReferalsHistory__main}>

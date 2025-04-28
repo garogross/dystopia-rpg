@@ -10,6 +10,7 @@ export enum TransitionStyleTypes {
   bottom = "bottom",
   zoomIn = "zoomIn",
   zoomOut = "zoomOut",
+  height = "height",
 }
 
 interface TransitionProviderProps {
@@ -20,6 +21,7 @@ interface TransitionProviderProps {
   delay?: number;
   isPicture?: boolean;
   children: ReactNode;
+  height?: number;
 }
 const TransitionProvider = ({
   style,
@@ -29,6 +31,7 @@ const TransitionProvider = ({
   delay,
   children,
   isPicture,
+  height,
 }: TransitionProviderProps) => {
   const transDuration = duration ? duration : 500;
   const styles = {
@@ -72,6 +75,11 @@ const TransitionProvider = ({
       from: { opacity: 1, scale: "2" },
       enter: { opacity: 1, scale: "1" },
       leave: { opacity: 0, scale: "2" },
+    },
+    [TransitionStyleTypes.height]: {
+      from: { maxHeight: 0, opacity: 0 },
+      enter: { maxHeight: height || 100, opacity: 1 },
+      leave: { maxHeight: 0, opacity: 0 },
     },
   };
 

@@ -10,4 +10,17 @@
   );
   background-position: -178px -380px;
   display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  gap: 5px;
+
+  & > svg {
+    width: 100%;
+  }
+  padding-bottom: 13px;
+  padding-top: 5px;
+
+  &__bottomWings {
+    width: 100%;
+  }
 }

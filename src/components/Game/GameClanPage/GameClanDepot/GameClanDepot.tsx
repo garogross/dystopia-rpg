@@ -8,7 +8,6 @@ import GameClanRepairIcon from "../../../layout/icons/game/GameClanPage/GameClan
 import WrapperWithFrame from "../../../layout/WrapperWithFrame/WrapperWithFrame";
 import SortList, { SortItem } from "../../../layout/SortList/SortList";
 import { useSort } from "../../../../hooks/useSort";
-import GameClanDepotBlockIcon from "../../../layout/icons/game/GameClanPage/GameClanDepot/GameClanDepotBlockIcon";
 
 import {
   tool13Image,
@@ -31,53 +30,47 @@ import {
   tool9Image,
   tool18Image,
 } from "../../../../assets/images";
-import { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
-import TransitionProvider from "../../../../providers/TransitionProvider";
-import { useAppSelector } from "../../../../hooks/redux";
+import InventoryList, {
+  InventoryListItem,
+} from "../../../layout/InventoryList/InventoryList";
 
-interface StoragePlace {
-  count?: number;
-  image?: string;
-  blocked?: boolean;
-}
-
-const storageData: StoragePlace[] = [
-  { count: 1, image: tool13Image },
-  { count: 1, image: tool14Image },
-  { count: 1, image: tool10Image },
-  { count: 1, image: tool6Image },
-  { count: 1, image: tool4Image },
-  { count: 1, image: tool11Image },
-  { count: 1, image: tool17Image },
-  { count: 1, image: tool2Image },
-  { count: 1, image: tool8Image },
-  { count: 1, image: tool1Image },
-  { count: 1, image: tool15Image },
-  { count: 1, image: tool16Image },
-  { count: 1, image: tool7Image },
-  { count: 1, image: tool12Image },
-  { count: 6, image: tool19Image },
-  { count: 10, image: tool3Image },
-  { count: 2, image: tool5Image },
-  { count: 3, image: tool9Image },
-  { count: 9, image: tool18Image },
-  {},
-  {},
-  {},
-  {},
-  {},
-  { blocked: true },
-  { blocked: true },
-  { blocked: true },
-  { blocked: true },
-  { blocked: true },
-  { blocked: true },
-  { blocked: true },
-  { blocked: true },
-  { blocked: true },
-  { blocked: true },
-  { blocked: true },
-  { blocked: true },
+const storageData: InventoryListItem[] = [
+  { id: "tool13", count: 1, image: tool13Image },
+  { id: "tool14", count: 1, image: tool14Image },
+  { id: "tool10", count: 1, image: tool10Image },
+  { id: "tool6", count: 1, image: tool6Image },
+  { id: "tool4", count: 1, image: tool4Image },
+  { id: "tool11", count: 1, image: tool11Image },
+  { id: "tool17", count: 1, image: tool17Image },
+  { id: "tool2", count: 1, image: tool2Image },
+  { id: "tool8", count: 1, image: tool8Image },
+  { id: "tool1", count: 1, image: tool1Image },
+  { id: "tool15", count: 1, image: tool15Image },
+  { id: "tool16", count: 1, image: tool16Image },
+  { id: "tool7", count: 1, image: tool7Image },
+  { id: "tool12", count: 1, image: tool12Image },
+  { id: "tool19", count: 6, image: tool19Image },
+  { id: "tool3", count: 10, image: tool3Image },
+  { id: "tool5", count: 2, image: tool5Image },
+  { id: "tool9", count: 3, image: tool9Image },
+  { id: "tool18", count: 9, image: tool18Image },
+  { id: "empty1" },
+  { id: "empty2" },
+  { id: "empty3" },
+  { id: "empty4" },
+  { id: "empty5" },
+  { id: "blocked1", blocked: true },
+  { id: "blocked2", blocked: true },
+  { id: "blocked3", blocked: true },
+  { id: "blocked4", blocked: true },
+  { id: "blocked5", blocked: true },
+  { id: "blocked6", blocked: true },
+  { id: "blocked7", blocked: true },
+  { id: "blocked8", blocked: true },
+  { id: "blocked9", blocked: true },
+  { id: "blocked10", blocked: true },
+  { id: "blocked11", blocked: true },
+  { id: "blocked12", blocked: true },
 ];
 
 const tabs: TabBarItem[] = [
@@ -117,7 +110,6 @@ const sortItems: SortItem[] = [
 const GameClanDepot: React.FC = () => {
   const [activeTabId, setActiveTabId] = useState("storage");
   const { activeSort, handleSortChange } = useSort();
-  const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <section className={styles.gameClanDepot}>
       <Tabbar
@@ -133,31 +125,7 @@ const GameClanDepot: React.FC = () => {
             onChange={handleSortChange}
             activeSort={activeSort}
           />
-          <div className={styles.gameClanDepot__list}>
-            {storageData.map((place, index) => (
-              <TransitionProvider
-                inProp={gameInited}
-                style={TransitionStyleTypes.zoomIn}
-                delay={100 * index}
-                key={index}
-                className={styles.gameClanDepot__listItem}
-              >
-                <button className={styles.gameClanDepot__listItemBtn} key={index}>
-                  {place.image && (
-                    <img
-                      src={place.image}
-                      alt="tool"
-                      className={styles.gameClanDepot__img}
-                    />
-                  )}
-                  {(place.count || 0) > 1 && (
-                    <span className={styles.gameClanDepot__countText}></span>
-                  )}
-                  {place.blocked && <GameClanDepotBlockIcon />}
-                </button>
-              </TransitionProvider>
-            ))}
-          </div>
+          <InventoryList data={storageData} />
         </div>
       </WrapperWithFrame>
     </section>
