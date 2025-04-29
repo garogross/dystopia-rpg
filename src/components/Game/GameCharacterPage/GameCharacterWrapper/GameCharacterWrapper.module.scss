@@ -17,31 +17,34 @@
     background-size: initial;
     background-position: -178px -380px;
     @include bgWebp(
-      "../../../../assets/images/game/CharacterPage/characterBg.jpeg",
-      "../../../../assets/images/game/CharacterPage/characterBg.webp"
+      "/assets/images/game/CharacterPage/characterBg.jpeg",
+      "/assets/images/game/CharacterPage/characterBg.webp"
     );
   }
 
   &_inventory {
     @include bgWebp(
-      "../../../../assets/images/game/CharacterPage/gameCharacterInventoryBg.jpg",
-      "../../../../assets/images/game/CharacterPage/gameCharacterInventoryBg.webp"
+      "/assets/images/game/CharacterPage/gameCharacterInventoryBg.jpg",
+      "/assets/images/game/CharacterPage/gameCharacterInventoryBg.webp"
     );
     background-position: center;
   }
+
   &_shop {
     @include bgWebp(
-      "../../../../assets/images/game/CharacterPage/gameCharacterShopBg.jpg",
-      "../../../../assets/images/game/CharacterPage/gameCharacterShopBg.webp"
+      "/assets/images/game/CharacterPage/gameCharacterShopBg.jpg",
+      "/assets/images/game/CharacterPage/gameCharacterShopBg.webp"
     );
     background-position: center;
   }
+
   &_training {
     @include bgWebp(
-      "../../../../assets/images/game/CharacterPage/gameCharacterTrainingBg.jpg",
-      "../../../../assets/images/game/CharacterPage/gameCharacterTrainingBg.webp"
-      );
+      "/assets/images/game/CharacterPage/gameCharacterTrainingBg.jpg",
+      "/assets/images/game/CharacterPage/gameCharacterTrainingBg.webp"
+    );
   }
+
   & > svg {
     width: 100%;
   }
