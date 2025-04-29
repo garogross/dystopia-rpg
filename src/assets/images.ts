@@ -102,6 +102,26 @@ import skin9Image from "./images/game/CharacterPage/skins/skin9.png";
 import skin6Image from "./images/game/CharacterPage/skins/skin6.png";
 import skin10Image from "./images/game/CharacterPage/skins/skin10.png";
 
+// achievments
+import achievment1Image from "./images/game/CharacterPage/achievments/achievment1.png"
+import achievment2Image from "./images/game/CharacterPage/achievments/achievment2.png"
+import achievment3Image from "./images/game/CharacterPage/achievments/achievment3.png"
+import achievment4Image from "./images/game/CharacterPage/achievments/achievment4.png"
+import achievment5Image from "./images/game/CharacterPage/achievments/achievment5.png"
+import achievment6Image from "./images/game/CharacterPage/achievments/achievment6.png"
+import achievment7Image from "./images/game/CharacterPage/achievments/achievment7.png"
+import achievment8Image from "./images/game/CharacterPage/achievments/achievment8.png"
+import achievment9Image from "./images/game/CharacterPage/achievments/achievment9.png"
+import achievment10Image from "./images/game/CharacterPage/achievments/achievment10.png"
+import achievment11Image from "./images/game/CharacterPage/achievments/achievment11.png"
+import achievment12Image from "./images/game/CharacterPage/achievments/achievment12.png"
+import achievment13Image from "./images/game/CharacterPage/achievments/achievment13.png"
+import achievment14Image from "./images/game/CharacterPage/achievments/achievment14.png"
+import achievment15Image from "./images/game/CharacterPage/achievments/achievment15.png"
+import achievment16Image from "./images/game/CharacterPage/achievments/achievment16.png"
+import achievment17Image from "./images/game/CharacterPage/achievments/achievment17.png"
+import achievment18Image from "./images/game/CharacterPage/achievments/achievment18.png"
+
 export {
   // GAME
   // stats
@@ -198,4 +218,24 @@ export {
   skin9Image,
   skin6Image,
   skin10Image,
+
+  // achievments
+  achievment1Image,
+  achievment2Image,
+  achievment3Image,
+  achievment4Image,
+  achievment5Image,
+  achievment6Image,
+  achievment7Image,
+  achievment8Image,
+  achievment9Image,
+  achievment10Image,
+  achievment11Image,
+  achievment12Image,
+  achievment13Image,
+  achievment14Image,
+  achievment15Image,
+  achievment16Image,
+  achievment17Image,
+  achievment18Image,
 };

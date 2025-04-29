@@ -23,6 +23,7 @@ import TransitionProvider, {
 import GameCharacterTrainingTabBar from "../GameCharacterTraining/GameCharacterTrainingTabBar/GameCharacterTrainingTabBar";
 import { ETrainingTabs } from "../../../../constants/ETrainingTabs";
 import CubeArrowIcon from "../../../layout/icons/game/Common/CubeArrowIcon";
+import GameCharacterAchievementsHeader from "../GameCharacterAchievements/GameCharacterAchievementsHeader/GameCharacterAchievementsHeader";
 
 const GameCharacterWrapper: React.FC = () => {
   const location = useLocation();
@@ -77,6 +78,7 @@ const GameCharacterWrapper: React.FC = () => {
     sidebarItems[0];
 
   const isSkinsPage = currentSidebarItem.link === "skins";
+  const isAchievementsPage = currentSidebarItem.link === "achievements";
 
   return (
     <div
@@ -89,6 +91,7 @@ const GameCharacterWrapper: React.FC = () => {
         setActiveTab={setActiveTrainingTab}
         isShown={isTrainingPage}
       />
+      <GameCharacterAchievementsHeader shown={isAchievementsPage} />
       <WrapperWithSidebar items={sidebarItems} />
       <TransitionProvider
         style={TransitionStyleTypes.height}
@@ -97,7 +100,7 @@ const GameCharacterWrapper: React.FC = () => {
         height={100}
       >
         {isSkinsPage && (
-          <button 
+          <button
             onClick={() => {
               setSkinsListOpened((prevState) => !prevState);
             }}

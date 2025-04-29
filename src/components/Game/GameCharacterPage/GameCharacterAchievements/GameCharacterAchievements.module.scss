@@ -1,3 +1,107 @@
 @import "../../../../styles/mixins";
 @import "../../../../styles/vars";
 
+@keyframes scrollText {
+  0% {
+    left: 0;
+    transform: translateY(-50%) translateX(0);
+  }
+  100% {
+    left: 100%;
+    transform: translateY(-50%) translateX(-100%);
+  }
+}
+
+.gameCharacterAchievements {
+  overflow: hidden;
+  height: 100%;
+
+  &__main {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    background-color: $color-bg;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px 7px;
+    overflow: auto;
+    flex: 1;
+  }
+
+  &__listItem {
+    @include button();
+    overflow: hidden;
+    width: calc((100% / 3) - 5px);
+    padding-bottom: 12px;
+  }
+
+  &__inner {
+    position: relative;
+    width: 100%;
+    flex-direction: column;
+    padding: 10px 4px 4px;
+    gap: 10px;
+    @include flexCol();
+    aspect-ratio: 1/1;
+    background: radial-gradient(50% 50% at 50% 50%, #523ba6 0%, #170e35 100%);
+    border: 1px solid $color-primary;
+  }
+
+  &__img {
+    object-fit: contain;
+    overflow: hidden;
+  }
+
+  &__textWrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center
+  }
+
+  &__text {
+    @include setFont(10px, 400);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &_hidden {
+      width: 100%;
+      overflow: hidden;
+      opacity: 0;
+    }
+
+    &_animated {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: 100%;
+      transform: translateY(-50%);
+      animation: scrollText 3s linear infinite alternate;
+      width: auto;
+      min-width: 100%;
+    }
+  }
+
+  &__listItemStatus {
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    @include flexCol();
+    z-index: 2;
+    & svg {
+      fill: $color-bg;
+      transition: $transition;
+    }
+
+    &_active svg {
+      fill: $color-text;
+    }
+  }
+}
