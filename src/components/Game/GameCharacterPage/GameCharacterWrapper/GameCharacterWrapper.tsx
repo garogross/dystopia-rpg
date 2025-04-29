@@ -22,7 +22,7 @@ import TransitionProvider, {
 } from "../../../../providers/TransitionProvider";
 import GameCharacterTrainingTabBar from "../GameCharacterTraining/GameCharacterTrainingTabBar/GameCharacterTrainingTabBar";
 import { ETrainingTabs } from "../../../../constants/ETrainingTabs";
-
+import CubeArrowIcon from "../../../layout/icons/game/Common/CubeArrowIcon";
 
 const GameCharacterWrapper: React.FC = () => {
   const location = useLocation();
@@ -31,7 +31,7 @@ const GameCharacterWrapper: React.FC = () => {
   const [activeTrainingTab, setActiveTrainingTab] = useState<ETrainingTabs>(
     ETrainingTabs.DEVELOPMENT
   );
-
+  const [skinsListOpened, setSkinsListOpened] = useState(false);
 
   const sidebarItems: GameSideBarProps["items"] = [
     {
@@ -62,7 +62,7 @@ const GameCharacterWrapper: React.FC = () => {
       link: "skins",
       icon: <GameCharacterSkinsIcon />,
       name: "Скины",
-      component: <GameCharacterSkins />,
+      component: <GameCharacterSkins opened={skinsListOpened} />,
     },
     {
       link: "achievements",
@@ -72,10 +72,16 @@ const GameCharacterWrapper: React.FC = () => {
     },
   ];
 
+  const currentSidebarItem =
+    sidebarItems.find((item) => item.link === location.hash.replace("#", "")) ||
+    sidebarItems[0];
+
+  const isSkinsPage = currentSidebarItem.link === "skins";
+
   return (
     <div
       className={`${styles.gameCharacterWrapper} ${
-        styles[`gameCharacterWrapper_${location.hash.replace("#", "")}`]
+        styles[`gameCharacterWrapper_${currentSidebarItem.link}`]
       }`}
     >
       <GameCharacterTrainingTabBar
@@ -90,7 +96,17 @@ const GameCharacterWrapper: React.FC = () => {
         inProp={!isMainPage}
         height={100}
       >
-        <GameCharacterBottomWings />
+        {isSkinsPage && (
+          <button 
+            onClick={() => {
+              setSkinsListOpened((prevState) => !prevState);
+            }}
+            className={styles.gameCharacterWrapper__bottomWingsButton}
+          >
+            <CubeArrowIcon rotated={skinsListOpened} />
+          </button>
+        )}
+        <GameCharacterBottomWings withCenterLine={isSkinsPage} />
       </TransitionProvider>
     </div>
   );

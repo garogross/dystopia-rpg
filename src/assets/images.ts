@@ -27,6 +27,9 @@ import gameCharacterShopBgImage from "./images/game/CharacterPage/gameCharacterS
 import gameCharacterShopBgImageWebp from "./images/game/CharacterPage/gameCharacterShopBg.webp";
 import gameCharacterTrainingBgImage from "./images/game/CharacterPage/gameCharacterTrainingBg.jpg";
 import gameCharacterTrainingBgImageWebp from "./images/game/CharacterPage/gameCharacterTrainingBg.webp";
+import gameCharacterSkinsBgImage from "./images/game/CharacterPage/gameCharacterSkinsBg.jpg";
+import gameCharacterSkinsBgImageWebp from "./images/game/CharacterPage/gameCharacterSkinsBg.webp";
+
 
 // ChalangesPage
 import chalange1Image from "./images/game/ChalangesPage/chalange1.jpeg";
@@ -85,6 +88,20 @@ import helmet1Image from "./images/game/ClanPage/Store/helmet1.png";
 import helmet2Image from "./images/game/ClanPage/Store/helmet2.png";
 import helmet4Image from "./images/game/ClanPage/Store/helmet4.png";
 
+// GameCharacterSkins
+import skin8Image from "./images/game/CharacterPage/skins/skin8.png";
+import skin3Image from "./images/game/CharacterPage/skins/skin3.png";
+import skin4Image from "./images/game/CharacterPage/skins/skin4.png";
+import skin1Image from "./images/game/CharacterPage/skins/skin1.png";
+import skin5Image from "./images/game/CharacterPage/skins/skin5.png";
+import skin12Image from "./images/game/CharacterPage/skins/skin12.png";
+import skin11Image from "./images/game/CharacterPage/skins/skin11.png";
+import skin7Image from "./images/game/CharacterPage/skins/skin7.png";
+import skin2Image from "./images/game/CharacterPage/skins/skin2.png";
+import skin9Image from "./images/game/CharacterPage/skins/skin9.png";
+import skin6Image from "./images/game/CharacterPage/skins/skin6.png";
+import skin10Image from "./images/game/CharacterPage/skins/skin10.png";
+
 export {
   // GAME
   // stats
@@ -113,6 +130,8 @@ export {
   gameCharacterShopBgImageWebp,
   gameCharacterTrainingBgImage,
   gameCharacterTrainingBgImageWebp,
+  gameCharacterSkinsBgImage,
+  gameCharacterSkinsBgImageWebp,
   // ChalangesPage
   chalange1Image,
   chalange2Image,
@@ -165,4 +184,18 @@ export {
   helmet1Image,
   helmet2Image,
   helmet4Image,
+
+  // GameCharacterSkins
+  skin8Image,
+  skin3Image,
+  skin4Image,
+  skin1Image,
+  skin5Image,
+  skin12Image,
+  skin11Image,
+  skin7Image,
+  skin2Image,
+  skin9Image,
+  skin6Image,
+  skin10Image,
 };

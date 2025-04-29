@@ -45,6 +45,15 @@
     );
   }
 
+  &_skins {
+    @include bgWebp(
+      "/assets/images/game/CharacterPage/gameCharacterSkinsBg.jpg",
+      "/assets/images/game/CharacterPage/gameCharacterSkinsBg.webp"
+    );
+    background-position: bottom;
+    background-size: cover;
+  }
+
   & > svg {
     width: 100%;
   }
@@ -53,5 +62,14 @@
 
   &__bottomWings {
     width: 100%;
+    position: relative;
+  }
+  &__bottomWingsButton {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    @include button();
+    display: flex;
   }
 }
