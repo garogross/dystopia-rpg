@@ -1,0 +1,11 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.gameLoyalityHeader {
+  padding-top: 9px;
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}

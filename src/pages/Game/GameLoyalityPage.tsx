@@ -1,10 +1,8 @@
 import React from "react";
-
+import GameLoyality from "../../components/Game/GameLoyalityPage/GameLoyality/GameLoyality";
 const GameLoyalityPage: React.FC = () => {
   return (
-    <div>
-      <h1>Game Duel</h1>
-    </div>
+    <GameLoyality />
   );
 };
 

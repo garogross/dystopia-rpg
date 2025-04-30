@@ -1,13 +1,7 @@
 import React from "react";
 
 import styles from "./GameHeader.module.scss";
-import ImageWebp from "../../layout/ImageWebp/ImageWebp";
-import {
-  darkMatterImage,
-  darkMatterImageWebp,
-  kreditImage,
-  kreditImageWebp,
-} from "../../../assets/images";
+
 import { HeaderBtnsBg } from "../../layout/icons/game/Header/HeaderBtnsBg";
 import { HeaderSwitcherIcon } from "../../layout/icons/game/Header/HeaderSwitcherIcon";
 import { HeaderMailIcon } from "../../layout/icons/game/Header/HeaderMailIcon";
@@ -26,6 +20,8 @@ import {
   gameReferalsPagePath,
   gameSkinViewPagePath,
 } from "../../../router/constants";
+import { EStats } from "../../../constants/EStats";
+import StatImg from "../../layout/StatImg/StatImg";
 
 const GameHeader: React.FC = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
@@ -67,14 +63,8 @@ const GameHeader: React.FC = () => {
           </NavLink>
         </div>
         <div className={styles.header__stat}>
-          <div className={styles.header__statImgWrapper}>
-            <ImageWebp
-              src={kreditImage}
-              alt="kredit"
-              className={styles.header__statImg}
-              srcSet={kreditImageWebp}
-            />
-          </div>
+         
+          <StatImg stat={EStats.kredit} size={19} />
           <span className={styles.header__statText}>126,90k</span>
         </div>
       </div>
@@ -109,14 +99,8 @@ const GameHeader: React.FC = () => {
           </NavLink>
         </div>
         <div className={styles.header__stat}>
-          <div className={styles.header__statImgWrapper}>
-            <ImageWebp
-              src={darkMatterImage}
-              alt="kredit"
-              className={styles.header__statImg}
-              srcSet={darkMatterImageWebp}
-            />
-          </div>
+   
+          <StatImg stat={EStats.darkMatter} size={19} />
           <span className={styles.header__statText}>126,90k</span>
         </div>
       </div>

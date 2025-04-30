@@ -1,0 +1,15 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.statImg {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  @include flexCol();
+  background-color: #42307d;
+
+  &__img {
+    max-width: 100%;
+    object-fit: contain;
+  }
+}

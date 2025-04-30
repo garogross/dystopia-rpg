@@ -11,6 +11,8 @@ import { useAppSelector } from "../../../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../../providers/TransitionProvider";
+import StatImg from "../../../../layout/StatImg/StatImg";
+import { EStats } from "../../../../../constants/EStats";
 
 interface Props {
   // Add props as needed
@@ -30,18 +32,8 @@ export const GameCharacterTrainingRedistribution: React.FC<Props> = () => {
           <span className={styles.gameCharacterTrainingRedistribution__text}>
             Перераспределить развитие: 50
           </span>
-          <div
-            className={
-              styles.gameCharacterTrainingRedistribution__statImageWrapper
-            }
-          >
-            <ImageWebp
-              src={darkMatterImage}
-              srcSet={darkMatterImageWebp}
-              alt="dark matter"
-              className={styles.gameCharacterTrainingRedistribution__statImage}
-            />
-          </div>
+     
+          <StatImg stat={EStats.darkMatter} size={10}/>
         </div>
         <button
           className={styles.gameCharacterTrainingRedistribution__resetBtn}

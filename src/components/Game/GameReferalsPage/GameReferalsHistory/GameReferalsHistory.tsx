@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./GameReferalsHistory.module.scss";
-import GameReferalsBackIcon from "../../../layout/icons/game/GameReferalsPage/GameReferalsBackIcon";
 import TitleH3 from "../../../layout/TitleH3/TitleH3";
 import { useAppSelector } from "../../../../hooks/redux";
 import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
@@ -16,6 +15,7 @@ import { DotsLine } from "../../../layout/icons/game/Common/DotsLine";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
+import HeaderWithBackButton from "../../../layout/HeaderWithBackButton/HeaderWithBackButton";
 
 interface Props {
   show: boolean;
@@ -30,17 +30,7 @@ const GameReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
       style={TransitionStyleTypes.opacity}
       className={`${styles.gameReferalsHistory} container`}
     >
-      <div className={styles.gameReferalsHistory__header}>
-        <button
-          className={styles.gameReferalsHistory__backBtn}
-          onClick={onClose}
-        >
-          <div className={styles.gameReferalsHistory__backBtnInner}>
-            <GameReferalsBackIcon />
-          </div>
-        </button>
-        <div className={styles.gameReferalsHistory__wind}></div>
-      </div>
+     <HeaderWithBackButton onClose={onClose} className={styles.gameReferalsHistory__header} />
       <TitleH3
         className={styles.gameReferalsHistory__title}
         wingsReverse={false}

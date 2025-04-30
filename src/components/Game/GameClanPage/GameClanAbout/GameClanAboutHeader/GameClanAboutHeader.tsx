@@ -3,11 +3,11 @@ import WrapperWithFrame from "../../../../layout/WrapperWithFrame/WrapperWithFra
 import GameClanEditMessageIcon from "../../../../layout/icons/game/GameClanPage/GameClanAbout/GameClanEditMessageIcon";
 import { statImages } from "../../../../../constants/statImages";
 import { EStats } from "../../../../../constants/EStats";
-import ImageWebp from "../../../../layout/ImageWebp/ImageWebp";
 import { useAppSelector } from "../../../../../hooks/redux";
 
 import styles from "./GameClanAboutHeader.module.scss"
 import TransitionProvider, { TransitionStyleTypes } from "../../../../../providers/TransitionProvider";
+import StatImg from "../../../../layout/StatImg/StatImg";
 
 const GameClanAboutHeader = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);  
@@ -15,6 +15,7 @@ const GameClanAboutHeader = () => {
     [EStats.kredit]: "120k",
     [EStats.darkMatter]: "10k",
     [EStats.token]: "100k",
+    [EStats.lp]: "100k",
   };
 
   return (
@@ -42,14 +43,8 @@ const GameClanAboutHeader = () => {
 
                 return (
                   <div className={styles.gameClanAboutHeader__tressuryValue} key={key}>
-                    <div className={styles.gameClanAboutHeader__tressuryValueImgWrapper}>
-                      <ImageWebp
-                        src={statImages[key].img}
-                        srcSet={statImages[key].imgWebp}
-                        alt=""
-                        className={styles.gameClanAboutHeader__tressuryImg}
-                      />
-                    </div>
+               
+                    <StatImg stat={key} size={10} />
                     <span className={styles.gameClanAboutHeader__tressuryValueText}>
                       {stats[key]}
                     </span>

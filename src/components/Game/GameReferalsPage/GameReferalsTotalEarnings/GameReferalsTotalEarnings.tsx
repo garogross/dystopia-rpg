@@ -2,11 +2,11 @@ import React from "react";
 import styles from "./GameReferalsTotalEarnings.module.scss";
 import HeaderWings from "../../../layout/icons/game/Common/HeaderWings";
 import WrapperWithFrame from "../../../layout/WrapperWithFrame/WrapperWithFrame";
-import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
-import { darkMatterImage, darkMatterImageWebp, kreditImage, kreditImageWebp } from "../../../../assets/images";
 import GameReferalsCollectIcon from "../../../layout/icons/game/GameReferalsPage/GameReferalsCollectIcon";
 import { useAppSelector } from "../../../../hooks/redux";
 import TransitionProvider, { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
+import { EStats } from "../../../../constants/EStats";
+import StatImg from "../../../layout/StatImg/StatImg";
 
 
 const GameReferalsTotalEarnings = () => {
@@ -24,31 +24,15 @@ const GameReferalsTotalEarnings = () => {
             </h5>
             <div className={styles.gameReferalsTotalEarnings__values}>
               <div className={styles.gameReferalsTotalEarnings__value}>
-                <div
-                  className={styles.gameReferalsTotalEarnings__valueImgWrapper}
-                >
-                  <ImageWebp
-                    src={kreditImage}
-                    alt={"kredit"}
-                    className={styles.gameReferalsTotalEarnings__valueImg}
-                    srcSet={kreditImageWebp}
-                  />
-                </div>
+            
+                <StatImg stat={EStats.kredit} size={19} />
                 <span className={styles.gameReferalsTotalEarnings__valueText}>
                   90k
                 </span>
               </div>
               <div className={styles.gameReferalsTotalEarnings__value}>
-                <div
-                  className={styles.gameReferalsTotalEarnings__valueImgWrapper}
-                >
-                  <ImageWebp
-                    src={darkMatterImage}
-                    alt={"kredit"}
-                    className={styles.gameReferalsTotalEarnings__valueImg}
-                    srcSet={darkMatterImageWebp}
-                  />
-                </div>
+        
+                <StatImg stat={EStats.darkMatter} size={19} />
                 <span className={styles.gameReferalsTotalEarnings__valueText}>
                   126
                 </span>

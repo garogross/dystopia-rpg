@@ -1,4 +1,4 @@
-import { darkMatterImage, darkMatterImageWebp, kreditImage, kreditImageWebp, tokenImage, tokenImageWebp } from "../assets/images";
+import { darkMatterImage, darkMatterImageWebp, kreditImage, kreditImageWebp, lpImage, lpImageWebp, tokenImage, tokenImageWebp } from "../assets/images";
 import { EStats } from "./EStats";
 
 
@@ -14,5 +14,9 @@ export const statImages = {
     [EStats.token]: {
         img: tokenImage,
         imgWebp: tokenImageWebp,
-    }
+    },
+    [EStats.lp]: {
+        img: lpImage,
+        imgWebp: lpImageWebp,
+    },
 }

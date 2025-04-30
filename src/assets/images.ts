@@ -11,6 +11,8 @@ import darkMatterImage from "./images/game/stats/darkMatter.png";
 import darkMatterImageWebp from "./images/game/stats/darkMatter.webp";
 import tokenImage from "./images/game/stats/token.png";
 import tokenImageWebp from "./images/game/stats/token.webp";
+import lpImage from "./images/game/stats/lp.png";
+import lpImageWebp from "./images/game/stats/lp.webp";
 
 // GameSidebar
 import gameSideBarCablesImage from "./images/game/GameSidebar/gameSideBarCables.png";
@@ -126,6 +128,12 @@ import achievment18Image from "./images/game/CharacterPage/achievments/achievmen
 import gameSkinViewBgImage from "./images/game/SkinViewPage/gameSkinViewBg.webp";
 import gameSkinViewBgImageWebp from "./images/game/SkinViewPage/gameSkinViewBg.jpg";
 
+// GameLoyalityPage
+import luteboxForAdImage from "./images/game/GameLoyalityPage/luteboxForAd.webp";
+import luteboxForLpImage from "./images/game/GameLoyalityPage/luteboxForLp.webp";
+import luteboxForAdImageWebp from "./images/game/GameLoyalityPage/luteboxForAd.png";
+import luteboxForLpImageWebp from "./images/game/GameLoyalityPage/luteboxForLp.png";
+
 export {
   // GAME
   // stats
@@ -135,6 +143,8 @@ export {
   darkMatterImageWebp,
   tokenImage,
   tokenImageWebp,
+  lpImage,
+  lpImageWebp,
   // Models
   personModel1Image,
   personModel1ImageWebp,
@@ -245,4 +255,9 @@ export {
   // GameSkinViewPage
   gameSkinViewBgImage,
   gameSkinViewBgImageWebp,
+  // GameLoyalityPage
+  luteboxForAdImage,
+  luteboxForLpImage,
+  luteboxForAdImageWebp,
+  luteboxForLpImageWebp,
 };

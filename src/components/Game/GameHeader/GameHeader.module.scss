@@ -114,18 +114,7 @@
     right: 0;
   }
 
-  &__statImgWrapper {
-    background: #42307d;
-    @include flexCol();
-    width: 19px;
-    height: 19px;
-    border-radius: 50%;
-  }
 
-  &__statImg {
-    max-width: 100%;
-    object-fit: contain;
-  }
 
   &__statText {
     @include setFont(12px, 500, $font-fam-montserrat, $color-white);
