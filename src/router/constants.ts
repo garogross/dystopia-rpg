@@ -8,3 +8,4 @@ export const gameDuelPagePath = "duel";
 export const gameClanPagePath = "clan";
 export const gameLoyalityPagePath = "loyality";
 export const gameReferalsPagePath = "referals";
+export const gameSkinViewPagePath = "skin-view";

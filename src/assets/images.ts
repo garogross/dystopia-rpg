@@ -122,6 +122,10 @@ import achievment16Image from "./images/game/CharacterPage/achievments/achievmen
 import achievment17Image from "./images/game/CharacterPage/achievments/achievment17.png"
 import achievment18Image from "./images/game/CharacterPage/achievments/achievment18.png"
 
+// GameSkinViewPage
+import gameSkinViewBgImage from "./images/game/SkinViewPage/gameSkinViewBg.webp";
+import gameSkinViewBgImageWebp from "./images/game/SkinViewPage/gameSkinViewBg.jpg";
+
 export {
   // GAME
   // stats
@@ -238,4 +242,7 @@ export {
   achievment16Image,
   achievment17Image,
   achievment18Image,
+  // GameSkinViewPage
+  gameSkinViewBgImage,
+  gameSkinViewBgImageWebp,
 };

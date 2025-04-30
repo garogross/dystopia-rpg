@@ -20,8 +20,12 @@ import { DotsLine } from "../../layout/icons/game/Common/DotsLine";
 import HeaderPremiumIcon from "../../layout/icons/game/Header/HeaderPremiumIcon";
 import HeaderMiniGamesICon from "../../layout/icons/game/Header/HeaderMiniGamesICon";
 import { useAppSelector } from "../../../hooks/redux";
-import { NavLink } from "react-router-dom";
-import { gamePagePath, gameReferalsPagePath } from "../../../router/constants";
+import { Link, NavLink } from "react-router-dom";
+import {
+  gamePagePath,
+  gameReferalsPagePath,
+  gameSkinViewPagePath,
+} from "../../../router/constants";
 
 const GameHeader: React.FC = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
@@ -121,9 +125,12 @@ const GameHeader: React.FC = () => {
         <div className={styles.header__bottomBlockBg}>
           <HeaderBottomBg />
         </div>
-        <button className={styles.header__hideBtn}>
+        <Link
+          to={`${gamePagePath}/${gameSkinViewPagePath}`}
+          className={styles.header__hideBtn}
+        >
           <HeaderHideIcon />
-        </button>
+        </Link>
       </div>
     </header>
   );

@@ -15,11 +15,13 @@ import {
   gameDuelPagePath,
   gameClanPagePath,
   gameLoyalityPagePath,
-  gameReferalsPagePath
+  gameReferalsPagePath,
+  gameSkinViewPagePath,
 } from "./constants";
 import GameLoyalityPage from "../pages/Game/GameLoyalityPage";
 import GameSingleChalangePage from "../pages/Game/GameSingleChalangePage";
 import GameReferalsPage from "../pages/Game/GameReferalsPage";
+import GameSkinViewPage from "../pages/Game/GameSkinViewPage";
 
 export const homePagePath = "/";
 
@@ -68,6 +70,10 @@ export const routes: IRoute[] = [
       {
         path: gameReferalsPagePath,
         component: <GameReferalsPage />,
+      },
+      {
+        path: gameSkinViewPagePath,
+        component: <GameSkinViewPage />,
       },
     ],
   },
