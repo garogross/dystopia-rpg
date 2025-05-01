@@ -5,7 +5,9 @@ import {
   personModel1ImageWebp,
 } from "../../../../assets/images";
 import styles from "./GameCharacterMain.module.scss";
-import TransitionProvider, { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../../hooks/redux";
 const GameCharacterMain = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);

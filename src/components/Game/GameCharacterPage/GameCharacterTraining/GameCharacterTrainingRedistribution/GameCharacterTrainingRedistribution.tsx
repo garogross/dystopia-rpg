@@ -32,8 +32,8 @@ export const GameCharacterTrainingRedistribution: React.FC<Props> = () => {
           <span className={styles.gameCharacterTrainingRedistribution__text}>
             Перераспределить развитие: 50
           </span>
-     
-          <StatImg stat={EStats.darkMatter} size={10}/>
+
+          <StatImg stat={EStats.darkMatter} size={10} />
         </div>
         <button
           className={styles.gameCharacterTrainingRedistribution__resetBtn}

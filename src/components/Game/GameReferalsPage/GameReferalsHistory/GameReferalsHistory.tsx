@@ -30,7 +30,10 @@ const GameReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
       style={TransitionStyleTypes.opacity}
       className={`${styles.gameReferalsHistory} container`}
     >
-     <HeaderWithBackButton onClose={onClose} className={styles.gameReferalsHistory__header} />
+      <HeaderWithBackButton
+        onClose={onClose}
+        className={styles.gameReferalsHistory__header}
+      />
       <TitleH3
         className={styles.gameReferalsHistory__title}
         wingsReverse={false}

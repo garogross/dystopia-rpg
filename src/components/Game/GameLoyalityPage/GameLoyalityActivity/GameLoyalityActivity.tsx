@@ -33,9 +33,7 @@ const weekData = [
 const GameLoyalityActivity = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
-    <div
-      className={styles.gameLoyalityActivity}
-    >
+    <div className={styles.gameLoyalityActivity}>
       <div className={styles.gameLoyalityActivity__list}>
         {weekData.map((col, colIndex) => (
           <TransitionProvider
@@ -81,7 +79,7 @@ const GameLoyalityActivity = () => {
       <GameLoyalityCollectReward disabled={true} />
       <div className={styles.gameLoyalityActivity__availableIn}>
         <span className={styles.gameLoyalityActivity__availableInText}>
-          100
+          Будет доступно через: 22ч 25м
         </span>
         <DotsLine />
       </div>

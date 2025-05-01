@@ -32,7 +32,6 @@ import gameCharacterTrainingBgImageWebp from "./images/game/CharacterPage/gameCh
 import gameCharacterSkinsBgImage from "./images/game/CharacterPage/gameCharacterSkinsBg.jpg";
 import gameCharacterSkinsBgImageWebp from "./images/game/CharacterPage/gameCharacterSkinsBg.webp";
 
-
 // ChalangesPage
 import chalange1Image from "./images/game/ChalangesPage/chalange1.jpeg";
 import chalange2Image from "./images/game/ChalangesPage/chalange2.png";
@@ -105,24 +104,24 @@ import skin6Image from "./images/game/CharacterPage/skins/skin6.png";
 import skin10Image from "./images/game/CharacterPage/skins/skin10.png";
 
 // achievments
-import achievment1Image from "./images/game/CharacterPage/achievments/achievment1.png"
-import achievment2Image from "./images/game/CharacterPage/achievments/achievment2.png"
-import achievment3Image from "./images/game/CharacterPage/achievments/achievment3.png"
-import achievment4Image from "./images/game/CharacterPage/achievments/achievment4.png"
-import achievment5Image from "./images/game/CharacterPage/achievments/achievment5.png"
-import achievment6Image from "./images/game/CharacterPage/achievments/achievment6.png"
-import achievment7Image from "./images/game/CharacterPage/achievments/achievment7.png"
-import achievment8Image from "./images/game/CharacterPage/achievments/achievment8.png"
-import achievment9Image from "./images/game/CharacterPage/achievments/achievment9.png"
-import achievment10Image from "./images/game/CharacterPage/achievments/achievment10.png"
-import achievment11Image from "./images/game/CharacterPage/achievments/achievment11.png"
-import achievment12Image from "./images/game/CharacterPage/achievments/achievment12.png"
-import achievment13Image from "./images/game/CharacterPage/achievments/achievment13.png"
-import achievment14Image from "./images/game/CharacterPage/achievments/achievment14.png"
-import achievment15Image from "./images/game/CharacterPage/achievments/achievment15.png"
-import achievment16Image from "./images/game/CharacterPage/achievments/achievment16.png"
-import achievment17Image from "./images/game/CharacterPage/achievments/achievment17.png"
-import achievment18Image from "./images/game/CharacterPage/achievments/achievment18.png"
+import achievment1Image from "./images/game/CharacterPage/achievments/achievment1.png";
+import achievment2Image from "./images/game/CharacterPage/achievments/achievment2.png";
+import achievment3Image from "./images/game/CharacterPage/achievments/achievment3.png";
+import achievment4Image from "./images/game/CharacterPage/achievments/achievment4.png";
+import achievment5Image from "./images/game/CharacterPage/achievments/achievment5.png";
+import achievment6Image from "./images/game/CharacterPage/achievments/achievment6.png";
+import achievment7Image from "./images/game/CharacterPage/achievments/achievment7.png";
+import achievment8Image from "./images/game/CharacterPage/achievments/achievment8.png";
+import achievment9Image from "./images/game/CharacterPage/achievments/achievment9.png";
+import achievment10Image from "./images/game/CharacterPage/achievments/achievment10.png";
+import achievment11Image from "./images/game/CharacterPage/achievments/achievment11.png";
+import achievment12Image from "./images/game/CharacterPage/achievments/achievment12.png";
+import achievment13Image from "./images/game/CharacterPage/achievments/achievment13.png";
+import achievment14Image from "./images/game/CharacterPage/achievments/achievment14.png";
+import achievment15Image from "./images/game/CharacterPage/achievments/achievment15.png";
+import achievment16Image from "./images/game/CharacterPage/achievments/achievment16.png";
+import achievment17Image from "./images/game/CharacterPage/achievments/achievment17.png";
+import achievment18Image from "./images/game/CharacterPage/achievments/achievment18.png";
 
 // GameSkinViewPage
 import gameSkinViewBgImage from "./images/game/SkinViewPage/gameSkinViewBg.webp";
@@ -133,6 +132,14 @@ import luteboxForAdImage from "./images/game/GameLoyalityPage/luteboxForAd.webp"
 import luteboxForLpImage from "./images/game/GameLoyalityPage/luteboxForLp.webp";
 import luteboxForAdImageWebp from "./images/game/GameLoyalityPage/luteboxForAd.png";
 import luteboxForLpImageWebp from "./images/game/GameLoyalityPage/luteboxForLp.png";
+
+// GameLoyalityTasks
+import task1Image from "./images/game/GameLoyalityPage/tasks/task1.png";
+import task1ImageWebp from "./images/game/GameLoyalityPage/tasks/task1.webp";
+import task2Image from "./images/game/GameLoyalityPage/tasks/task2.png";
+import task2ImageWebp from "./images/game/GameLoyalityPage/tasks/task2.webp";
+import task3Image from "./images/game/GameLoyalityPage/tasks/task3.png";
+import task3ImageWebp from "./images/game/GameLoyalityPage/tasks/task3.webp";
 
 export {
   // GAME
@@ -260,4 +267,11 @@ export {
   luteboxForLpImage,
   luteboxForAdImageWebp,
   luteboxForLpImageWebp,
+  // GameLoyalityTasks
+  task1Image,
+  task1ImageWebp,
+  task2Image,
+  task2ImageWebp,
+  task3Image,
+  task3ImageWebp,
 };

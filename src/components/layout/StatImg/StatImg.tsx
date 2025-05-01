@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 import styles from "./StatImg.module.scss";
-import { EStats } from '../../../constants/EStats';
-import ImageWebp from '../ImageWebp/ImageWebp';
-import { statImages } from '../../../constants/statImages';
+import { EStats } from "../../../constants/EStats";
+import ImageWebp from "../ImageWebp/ImageWebp";
+import { statImages } from "../../../constants/statImages";
 
 interface Props {
   stat: EStats;
@@ -13,7 +13,10 @@ interface Props {
 
 const StatImg: React.FC<Props> = ({ stat, className, size = 12 }) => {
   return (
-    <div style={{ width: size, height: size }} className={`${styles.statImg} ${className || ""}`}>
+    <div
+      style={{ width: size, height: size }}
+      className={`${styles.statImg} ${className || ""}`}
+    >
       <ImageWebp
         src={statImages[stat].img}
         srcSet={statImages[stat].imgWebp}

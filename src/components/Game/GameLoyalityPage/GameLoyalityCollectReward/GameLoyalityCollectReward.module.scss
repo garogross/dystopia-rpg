@@ -31,6 +31,7 @@
     @include flexCol();
     gap: 5px;
     padding: 5px 8px;
+    color: $color-text;
 
     & svg {
       fill: $color-text;

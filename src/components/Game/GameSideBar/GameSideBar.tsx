@@ -98,7 +98,6 @@ const GameSideBar: React.FC<GameSideBarProps> = ({ items }) => {
         className={`${styles.gameSideBar__cables} ${
           isInventoryActive ? styles.gameSideBar__cables_withAdditions : ""
         }`}
-      
       >
         <ImageWebp
           className={styles.gameSideBar__cablesImage}

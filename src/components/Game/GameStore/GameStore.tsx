@@ -223,9 +223,7 @@ const GameStore: React.FC = () => {
                       return (
                         <div key={key} className={styles.gameStore__price}>
                           <span>{item.price[key]}</span>
-                          <div
-                            className={styles.gameStore__priceImgWrapper}
-                          >
+                          <div className={styles.gameStore__priceImgWrapper}>
                             <ImageWebp
                               src={statImages[key].img}
                               srcSet={statImages[key].imgWebp}
