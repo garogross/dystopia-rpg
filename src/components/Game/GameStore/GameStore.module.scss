@@ -53,12 +53,16 @@
     padding-inline: 7px;
   }
   &__list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 5px;
     padding-inline: 7px;
     overflow-y: auto;
     height: 100%;
+
+    &_dualColumns {
+      grid-template-columns: 1fr 1fr;
+    }
   }
   &__listItem {
     position: relative;

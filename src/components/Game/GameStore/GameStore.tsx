@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styles from "./GameStore.module.scss";
 import Tabbar, { TabBarItem } from "../../layout/Tabbar/Tabbar";
-import GameClanGunIcon from "../../layout/icons/game/GameClanPage/GameClanStore/GameClanGunIcon";
-import GameClanColdWeaponIcon from "../../layout/icons/game/GameClanPage/GameClanStore/GameClanColdWeaponIcon";
-import GameClanHelmetIcon from "../../layout/icons/game/GameClanPage/GameClanStore/GameClanHelmetIcon";
-import GameClanBroneIcon from "../../layout/icons/game/GameClanPage/GameClanStore/GameClanBroneIcon";
+import GameStoreGunIcon from "../../layout/icons/game/GameStore/GameStoreGunIcon";
+import GameStoreColdWeaponIcon from "../../layout/icons/game/GameStore/GameStoreColdWeaponIcon";
+import GameStoreHelmetIcon from "../../layout/icons/game/GameStore/GameStoreHelmetIcon";
+import GameStoreAssetIcon from "../../layout/icons/game/GameStore/GameStoreAssetIcon";
 import WrapperWithFrame from "../../layout/WrapperWithFrame/WrapperWithFrame";
 import { useSort } from "../../../hooks/useSort";
 import SortList, { SortItem } from "../../layout/SortList/SortList";
@@ -19,35 +19,49 @@ import {
   helmet1Image,
   helmet2Image,
   helmet4Image,
+  asset1Image,
+  asset2Image,
+  asset3Image,
+  asset6Image,
+  asset4Image,
+  asset5Image,
 } from "../../../assets/images";
 import { EStats } from "../../../constants/EStats";
-import GameClanLevelIcon from "../../layout/icons/game/GameClanPage/GameClanStore/GameClanLevelIcon";
+import GameStoreLevelIcon from "../../layout/icons/game/GameStore/GameStoreLevelIcon";
 import { statImages } from "../../../constants/statImages";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
-import GameClanHeadSkinIcon from "../../layout/icons/game/GameClanPage/GameClanStore/GameClanHeadSkinIcon";
-import GameClanBodySkinIcon from "../../layout/icons/game/GameClanPage/GameClanStore/GameClanBodySkinIcon";
-import GameClanHandSkinIcon from "../../layout/icons/game/GameClanPage/GameClanStore/GameClanHandSkinIcon";
-import GameClanFootSkinIcon from "../../layout/icons/game/GameClanPage/GameClanStore/GameClanFootSkinIcon";
+import GameStoreHeadSkinIcon from "../../layout/icons/game/GameStore/skins/GameStoreHeadSkinIcon";
+import GameStoreBodySkinIcon from "../../layout/icons/game/GameStore/skins/GameStoreBodySkinIcon";
+import GameStoreHandSkinIcon from "../../layout/icons/game/GameStore/skins/GameStoreHandSkinIcon";
+import GameStoreFootSkinIcon from "../../layout/icons/game/GameStore/skins/GameStoreFootSkinIcon";
 import { TransitionStyleTypes } from "../../../providers/TransitionProvider";
 import TransitionProvider from "../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../hooks/redux";
+import GameStoreDrugIcon from "../../layout/icons/game/GameStore/assets/GameStoreDrugIcon";
+import GameStoreEnergyIcon from "../../layout/icons/game/GameStore/assets/GameStoreEnergyIcon";
+import GameStoreBombIcon from "../../layout/icons/game/GameStore/assets/GameStoreBombIcon";
+import GameStoreDronsIcon from "../../layout/icons/game/GameStore/assets/GameStoreDronsIcon";
+
+interface Props {
+  isDualColumns?: boolean;
+}
 
 const tabs: TabBarItem[] = [
   {
-    icon: <GameClanGunIcon />,
+    icon: <GameStoreGunIcon />,
     id: "gun",
   },
   {
-    icon: <GameClanColdWeaponIcon />,
+    icon: <GameStoreColdWeaponIcon />,
     id: "coldWeapon",
   },
   {
-    icon: <GameClanHelmetIcon />,
+    icon: <GameStoreHelmetIcon />,
     id: "helmet",
   },
   {
-    icon: <GameClanBroneIcon />,
-    id: "brone",
+    icon: <GameStoreAssetIcon />,
+    id: "asset",
   },
 ];
 
@@ -145,18 +159,66 @@ const data: {
     level: 2,
     price: { [EStats.darkMatter]: 350 },
   },
+  {
+    image: asset1Image,
+    name: "FRAG",
+    type: "asset",
+    level: 2,
+    price: { [EStats.lp]: 350 },
+  },
+  {
+    image: asset2Image,
+    name: "GASBALL",
+    type: "asset",
+    level: 2,
+    price: { [EStats.lp]: 350 },
+  },
+  {
+    image: asset3Image,
+    name: "CRYO-2",
+    type: "asset",
+    level: 2,
+    price: { [EStats.lp]: 350 },
+  },
+  {
+    image: asset4Image,
+    name: "NAPALM",
+    type: "asset",
+    level: 2,
+    price: { [EStats.lp]: 350 },
+  },
+  {
+    image: asset5Image,
+    name: "EMP-4",
+    type: "asset",
+    level: 2,
+    price: { [EStats.lp]: 350 },
+  },
+  {
+    image: asset6Image,
+    name: "FLASH",
+    type: "asset",
+    level: 2,
+    price: { [EStats.lp]: 350 },    
+  },
 ];
-
 const skinFilters = [
-  { icon: <GameClanHeadSkinIcon />, id: "head" },
-  { icon: <GameClanBodySkinIcon />, id: "body" },
-  { icon: <GameClanHandSkinIcon />, id: "hand" },
-  { icon: <GameClanFootSkinIcon />, id: "foot" },
+  { icon: <GameStoreHeadSkinIcon />, id: "head" },
+  { icon: <GameStoreBodySkinIcon />, id: "body" },
+  { icon: <GameStoreHandSkinIcon />, id: "hand" },
+  { icon: <GameStoreFootSkinIcon />, id: "foot" },
+];
+const assetFilters = [
+  { icon: <GameStoreDrugIcon />, id: "drug" },
+  { icon: <GameStoreBombIcon />, id: "bomb" },
+  { icon: <GameStoreEnergyIcon />, id: "energy" },
+  { icon: <GameStoreDronsIcon />, id: "drons" },
 ];
 
-const GameStore: React.FC = () => {
+const GameStore: React.FC<Props> = ({ isDualColumns = false }) => {
   const [activeTabId, setActiveTabId] = useState("gun");
   const [activeskinSort, setActiveskinSort] = useState("head");
+  const [activeAssetSort, setActiveAssetSort] = useState("drug");
   const { activeSort, handleSortChange } = useSort();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
 
@@ -172,7 +234,8 @@ const GameStore: React.FC = () => {
           {activeTabId === "helmet" && (
             <TransitionProvider
               inProp={gameInited}
-              style={TransitionStyleTypes.bottom}
+              height={30}
+              style={TransitionStyleTypes.height}
               className={styles.gameStore__skinFilter}
             >
               {skinFilters.map((item, index) => (
@@ -190,13 +253,39 @@ const GameStore: React.FC = () => {
               ))}
             </TransitionProvider>
           )}
+          {activeTabId === "asset" && (
+            <TransitionProvider
+              inProp={gameInited}
+              style={TransitionStyleTypes.height}
+              height={30}
+              className={styles.gameStore__skinFilter}
+            >
+              {assetFilters.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveAssetSort(item.id)}
+                  className={`${styles.gameStore__skinFilter__button} ${
+                    activeAssetSort === item.id
+                      ? styles.gameStore__skinFilter__button_active
+                      : ""
+                  }`}
+                >
+                  {item.icon}
+                </button>
+              ))}
+            </TransitionProvider>
+          )}
           <SortList
             className={styles.gameStore__sortList}
             activeSort={activeSort}
             onChange={handleSortChange}
             items={sortItems}
           />
-          <div className={styles.gameStore__list}>
+          <div
+            className={`${styles.gameStore__list} ${
+              isDualColumns ? styles.gameStore__list_dualColumns : ""
+            }`}
+          >
             {data
               .filter((item) => item.type === activeTabId)
               .map((item, index) => (
@@ -213,7 +302,7 @@ const GameStore: React.FC = () => {
                   />
                   <div className={styles.gameStore__name}>{item.name}</div>
                   <div className={styles.gameStore__level}>
-                    <GameClanLevelIcon />
+                    <GameStoreLevelIcon />
                     {item.level}
                   </div>
                   <div className={styles.gameStore__prices}>
