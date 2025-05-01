@@ -12,6 +12,8 @@ import {
   task3ImageWebp,
 } from "../../../../assets/images";
 import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
+import { useAppSelector } from "../../../../hooks/redux";
+import TransitionProvider, { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
 
 const tasks = [
   {
@@ -38,13 +40,17 @@ const tasks = [
 ];
 
 const GameLoyalityTasks = () => {
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <div className={styles.gameLoyalityTasks}>
       <div className={styles.gameLoyalityTasks__list}>
         {tasks.map((task, index) => {
           const progressInPercent = (task.progress[0] / task.progress[1]) * 100;
           return (
-            <div
+            <TransitionProvider
+              inProp={gameInited}
+              style={TransitionStyleTypes.bottom}
+              delay={index * 100}
               className={`${styles.gameLoyalityTasks__listItem} ${
                 progressInPercent === 100
                   ? styles.gameLoyalityTasks__listItem_completed
@@ -95,14 +101,18 @@ const GameLoyalityTasks = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </TransitionProvider>
           );
         })}
       </div>
       <GameLoyalityCollectReward />
-      <p className={styles.gameLoyalityTasks__availableIn}>
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.bottom}
+        className={styles.gameLoyalityTasks__availableIn}
+      >
         Все доступные задания будут обновляться через: <br /> 22ч 25м
-      </p>
+      </TransitionProvider>
     </div>
   );
 };

@@ -141,6 +141,13 @@ import task2ImageWebp from "./images/game/GameLoyalityPage/tasks/task2.webp";
 import task3Image from "./images/game/GameLoyalityPage/tasks/task3.png";
 import task3ImageWebp from "./images/game/GameLoyalityPage/tasks/task3.webp";
 
+// GameLoyalitySupportProject
+import supportTask3Image from "./images/game/GameLoyalityPage/supportTasks/supportTask3.jpg";
+import supportTask4Image from "./images/game/GameLoyalityPage/supportTasks/supportTask4.jpg";
+import supportTask5Image from "./images/game/GameLoyalityPage/supportTasks/supportTask5.jpg";
+import supportTask2Image from "./images/game/GameLoyalityPage/supportTasks/supportTask2.jpg";
+import supportTask1Image from "./images/game/GameLoyalityPage/supportTasks/supportTask1.jpg";
+
 export {
   // GAME
   // stats
@@ -274,4 +281,11 @@ export {
   task2ImageWebp,
   task3Image,
   task3ImageWebp,
+
+  // GameLoyalitySupportProject
+  supportTask3Image,
+  supportTask4Image,
+  supportTask5Image,
+  supportTask2Image,
+  supportTask1Image,
 };

@@ -11,7 +11,7 @@ import StatImg from "../../../layout/StatImg/StatImg";
 import { useAppSelector } from "../../../../hooks/redux";
 interface Props {
   title: string;
-  text: string;
+  text: React.ReactNode;
   statText: string;
 }
 
