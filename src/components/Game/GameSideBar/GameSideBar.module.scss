@@ -31,6 +31,11 @@
     text-decoration: none;
     overflow: hidden;
     padding-right: 3px;
+
+    &_disabled {
+      pointer-events: none;
+      cursor: not-allowed;
+    }
   }
   &__itemWrapper {
     background: $color-primary;
@@ -50,6 +55,11 @@
     &_active svg {
       fill: $color-black;
     }
+  }
+
+  &__item_disabled &__itemWrapper {
+    padding: 0;
+    filter: brightness(0.5);
   }
 
   &__item_sm &__itemWrapper {
@@ -96,6 +106,14 @@
     width: 100%;
     height: 100%;
     padding-block: 3px;
+  }
+
+  &__item_disabled &__itemInner {
+    background: radial-gradient(
+      76.5% 76.5% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
   }
 
   &__itemWrapper_active &__itemInner {

@@ -24,6 +24,7 @@ const GameSideBar: React.FC<GameSideBarProps> = ({ items }) => {
   const isActiveHash = (hash: string) => {
     return location.hash.includes(hash);
   };
+console.log({items});
 
   const isInventoryActive = location.hash.includes("inventory");
 
@@ -79,8 +80,10 @@ const GameSideBar: React.FC<GameSideBarProps> = ({ items }) => {
         {items.map((item, index) => (
           <NavLink
             key={item.link}
-            to={`#${item.link}`}
-            className={styles.gameSideBar__item}
+            to={item.disabled ? "" : `#${item.link}`}
+            className={`${styles.gameSideBar__item} ${
+              item.disabled ? styles.gameSideBar__item_disabled : ""
+            }`}
           >
             <div className={linkActiveClass(item.link, index)}>
               <div className={styles.gameSideBar__itemInner}>

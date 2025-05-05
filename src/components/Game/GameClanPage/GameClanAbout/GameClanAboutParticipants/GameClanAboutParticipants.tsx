@@ -11,6 +11,7 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../../../hooks/redux";
+import { IClan } from "../../../../../models/IClan";
 
 const tabs: TabBarItem[] = [
   {
@@ -32,24 +33,11 @@ const tabs: TabBarItem[] = [
   },
 ];
 
-const users = [
-  { name: "Гарик2000", role: "Лидер", status: "в сети", level: 37 },
-  { name: "JohnySilver", role: "Замлидер", status: "в сети", level: 81 },
-  { name: "NeonVortex", role: "Дембель", status: "в сети", level: 37 },
-  { name: "RustHawk", role: "Дембель", status: "в сети", level: 37 },
-  { name: "CyberReaper", role: "Дух", status: "в сети", level: 37 },
-  { name: "VoidSpecter", role: "Дух", status: "в сети", level: 37 },
-  { name: "IronReign", role: "Лидер", status: "в сети", level: 37 },
-  { name: "IronReign", role: "Лидер", status: "не в сети(1ч)", level: 37 },
-  { name: "IronReign", role: "Черпак", status: "не в сети(1ч)", level: 37 },
-  { name: "IronReign", role: "Черпак", status: "не в сети(1ч)", level: 37 },
-  { name: "IronReign", role: "Черпак", status: "не в сети(1ч)", level: 37 },
-  { name: "IronReign", role: "Черпак", status: "не в сети(1ч)", level: 37 },
-  { name: "IronReign", role: "Черпак", status: "не в сети(1ч)", level: 37 },
-  { name: "IronReign", role: "Черпак", status: "не в сети(1ч)", level: 37 },
-];
+interface Props {
+  participants: IClan["participants"];
+}
 
-const GameClanAboutParticipants = () => {
+const GameClanAboutParticipants: React.FC<Props> = ({participants}) => {
   const [activeTabId, setActiveTabId] = useState("");
   const gameInited = useAppSelector((state) => state.ui.gameInited);
 
@@ -78,7 +66,7 @@ const GameClanAboutParticipants = () => {
             </h6>
           </TransitionProvider>
           <div className={styles.gameClanAboutParticipants__list}>
-            {users.map((user, index) => (
+            {participants.map((user, index) => (
               <TransitionProvider
                 key={index}
                 inProp={gameInited}

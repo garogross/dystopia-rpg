@@ -4,12 +4,15 @@ import uIReducer from "./slices/uiSlice";
 import chalangesReducer from "./slices/chalangesSlice";
 import duelsReducer from "./slices/duelsSlice";
 import refferencesReducer from "./slices/refferencesSlice";
+import clanReducer from "./slices/clanSlice";
+
 const rootReducer = combineReducers({
   profile: ProfileReducer,
   ui: uIReducer,
   chalanges: chalangesReducer,
   duels: duelsReducer,
   refferences: refferencesReducer,
+  clan: clanReducer,
 });
 
 export const store = () => {

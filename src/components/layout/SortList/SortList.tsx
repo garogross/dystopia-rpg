@@ -17,6 +17,7 @@ interface Props {
   onChange: (id: string) => void;
   activeSort: string;
   className?: string;
+  disabled?: boolean;
 }
 
 const SortList: React.FC<Props> = ({
@@ -24,6 +25,7 @@ const SortList: React.FC<Props> = ({
   activeSort,
   onChange,
   className,
+  disabled,
 }) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
@@ -34,12 +36,21 @@ const SortList: React.FC<Props> = ({
     >
       {items.map((item) => (
         <button
-          onClick={() => onChange(item.id)}
+          onClick={() => {
+            if (disabled) return;
+            onChange(item.id);
+          }}
           className={styles.sortList__item}
           key={item.id}
         >
           <span>{item.name}</span>
-          <ArrowIcon rotate={activeSort.startsWith(item.id) && activeSort.endsWith("+")}/>
+          {!disabled && (
+            <ArrowIcon
+              rotate={
+                activeSort.startsWith(item.id) && activeSort.endsWith("+")
+              }
+            />
+          )}{" "}
         </button>
       ))}
     </TransitionProvider>

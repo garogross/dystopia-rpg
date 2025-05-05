@@ -5,13 +5,12 @@ import GameCharacterTrainingRedistribution from "./GameCharacterTrainingRedistri
 import GameCharacterTrainingDevelopment from "./GameCharacterTrainingDevelopment/GameCharacterTrainingDevelopment";
 import GameCharacterTrainingCybernetics from "./GameCharacterTrainingCybernetics/GameCharacterTrainingCybernetics";
 import { ETrainingTabs } from "../../../../constants/ETrainingTabs";
-import InfoIcon from "../../../layout/icons/game/Common/InfoIcon";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../../hooks/redux";
 import GameCharacterTrainingInfo from "./GameCharacterTrainingInfo/GameCharacterTrainingInfo";
-import GameCharacterCloseIcon from "../../../layout/icons/game/GameCharacterPage/GameCharacterTraining/development/GameCharacterCloseIcon";
+import HeaderBtn from "../../../layout/HeaderBtn/HeaderBtn";
 interface Props {
   activeTab: ETrainingTabs;
 }
@@ -145,12 +144,11 @@ const GameCharacterTraining: React.FC<Props> = ({ activeTab }) => {
               ? activeTabDetails.info[0].title
               : activeTabDetails.title}
           </h5>
-          <button
-            className={styles.gameCharacterTraining__headerBtn}
-            onClick={() => setIsInfoOpen(!isInfoOpen)}
-          >
-            {isInfoOpen ? <GameCharacterCloseIcon /> : <InfoIcon />}
-          </button>
+          <HeaderBtn
+          onClick={() => setIsInfoOpen((prev) => !prev)}
+          type={isInfoOpen ? "close" : "info"}
+          />
+     
         </TransitionProvider>
         {isInfoOpen && activeTabDetails.info ? (
           <GameCharacterTrainingInfo data={activeTabDetails.info} />

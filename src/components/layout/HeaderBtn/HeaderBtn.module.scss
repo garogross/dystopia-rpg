@@ -1,0 +1,11 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+
+.headerBtn {
+    @include button(transparent, 1px solid $color-text);
+    border-radius: 1px;
+    width: 12px;
+    height: 12px;
+    @include flexCol();
+}

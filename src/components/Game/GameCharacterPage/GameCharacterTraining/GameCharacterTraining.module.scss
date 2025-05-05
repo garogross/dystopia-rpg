@@ -26,11 +26,4 @@
     @include setFont(12px, 400, $font-fam-h3);
   }
 
-  &__headerBtn {
-    @include button(transparent, 1px solid $color-text);
-    border-radius: 1px;
-    width: 12px;
-    height: 12px;
-    @include flexCol();
-  }
 }

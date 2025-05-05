@@ -19,52 +19,92 @@ import GameClanBottomWings from "../../../layout/icons/game/GameClanPage/GameCla
 import TransitionProvider from "../../../../providers/TransitionProvider";
 import { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../../hooks/redux";
+import { IClan } from "../../../../models/IClan";
 
-const sidebarItems: GameSideBarProps["items"] = [
-  {
-    link: "about",
-    icon: <GameClanAboutIcon />,
-    name: "О клане",
-    component: <GameClanAbout />,
-  },
-  {
-    link: "depot",
-    icon: <GameClanDepotIcon />,
-    name: "Хранилище",
-    component: <GameClanDepot />,
-  },
-  {
-    link: "store",
-    icon: <GameClanStoreIcon />,
-    name: "Магазин",
-    component: <GameClanStore />,
-  },
-  {
-    link: "battles",
-    icon: <GameClanBattlesIcon />,
-    name: "Сражения",
-    component: <GameClanBattles />,
-  },
-  {
-    link: "hunting",
-    icon: <GameClanHuntingIcon />,
-    name: "Охота",
-    component: <GameClanHunting />,
-  },
-  {
-    link: "base",
-    icon: <GameClanBaseIcon />,
-    name: "База",
-    component: <GameClanBase />,
-  },
-];
 
-const GameClanWrapper = () => {
+
+interface Props {
+  mainComponent?: React.ReactNode;
+  sideBarDisableed?: boolean;
+  curClan?: IClan;
+  headerDescriptionText?: React.ReactNode;
+}
+
+const GameClanWrapper: React.FC<Props> = ({
+  mainComponent,
+  sideBarDisableed,
+  curClan,
+  headerDescriptionText,
+}) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const userClan = useAppSelector((state) => state.clan.clan);
+
+  const clan = curClan || userClan;
+
+
+  const sidebarItems: GameSideBarProps["items"] = [
+    {
+      link: "about",
+      icon: <GameClanAboutIcon />,
+      name: "О клане",
+      component: <GameClanAbout clan={clan || undefined}/>,
+    },
+    {
+      link: "depot",
+      icon: <GameClanDepotIcon />,
+      name: "Хранилище",
+      component: <GameClanDepot />,
+    },
+    {
+      link: "store",
+      icon: <GameClanStoreIcon />,
+      name: "Магазин",
+      component: <GameClanStore />,
+    },
+    {
+      link: "battles",
+      icon: <GameClanBattlesIcon />,
+      name: "Сражения",
+      component: <GameClanBattles />,
+    },
+    {
+      link: "hunting",
+      icon: <GameClanHuntingIcon />,
+      name: "Охота",
+      component: <GameClanHunting />,
+    },
+    {
+      link: "base",
+      icon: <GameClanBaseIcon />,
+      name: "База",
+      component: <GameClanBase />,
+    },
+  ];
+
+  let updatedSidebarItems = sidebarItems;
+
+  if (mainComponent) {
+    updatedSidebarItems[0].component = mainComponent;
+    updatedSidebarItems[0].link = "";
+  }
+
+  if (!clan || sideBarDisableed) {
+    updatedSidebarItems = sidebarItems.map((clan) => ({
+      ...clan,
+      disabled: true,
+    }));
+  }
+
   return (
     <section className={`${styles.gameClanWrapper} `}>
-      <GameClanHeader />
-      <WrapperWithSidebar items={sidebarItems} />
+      <GameClanHeader
+        clan={clan || undefined}
+        descriptionText={
+          headerDescriptionText ||
+          "На данный момент вы не входите в состав Клана․ Объединяйтесь с другими выжившими или создайте собственный путь."
+        }
+      />
+      <WrapperWithSidebar items={updatedSidebarItems} />
       <TransitionProvider
         inProp={gameInited}
         style={TransitionStyleTypes.bottom}

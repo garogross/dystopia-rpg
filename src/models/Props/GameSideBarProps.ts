@@ -6,5 +6,6 @@ export interface GameSideBarProps {
       name: string;
       component: ReactNode
       icon: React.ReactNode;
+      disabled?: boolean;
     }[];
   }

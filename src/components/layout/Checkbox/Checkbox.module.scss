@@ -1,0 +1,51 @@
+@import "../../../styles/vars";
+@import "../../../styles/mixins";
+
+.checkbox {
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+
+  &__label {
+    @include setFont(10px, 400);
+    position: relative;
+    padding-left: 17px;
+    cursor: pointer;
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      position: absolute;
+      left: 1px;
+      transform: translateY(-50%);
+      top: 50%;
+      border: 1px solid $color-bg;
+      outline: 1px solid $color-primary;
+      background-color: $color-bg;
+    }
+
+    & span,
+    & span div {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &__input {
+    visibility: hidden;
+    width: 0;
+
+    &:checked + label {
+      &::before {
+        background-color: $color-primary;
+      }
+    }
+  }
+}

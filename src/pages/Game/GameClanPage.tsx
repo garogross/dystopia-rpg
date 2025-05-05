@@ -1,8 +1,8 @@
 import React from "react";
-import GameClanWrapper from "../../components/Game/GameClanPage/GameClanWrapper/GameClanWrapper";
+import GameClan from "../../components/Game/GameClanPage/GameClan/GameClan";
 
 const GameClanPage: React.FC = () => {
-  return <GameClanWrapper />;
+  return <GameClan />;
 };
 
 export default GameClanPage;

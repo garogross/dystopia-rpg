@@ -47,7 +47,19 @@ import duel5vs5Image from "./images/game/DuelsPage/duel5vs5.png";
 import duel3vs3Image from "./images/game/DuelsPage/duel3vs3.png";
 
 // GameClanPage
-import clanLogoImage from "./images/game/ClanPage/clanLogo.png";
+// clans
+import clan1Image from "./images/game/ClanPage/clans/clan1.png";
+import clan2Image from "./images/game/ClanPage/clans/clan2.png";
+import clan3Image from "./images/game/ClanPage/clans/clan3.png";
+import clan4Image from "./images/game/ClanPage/clans/clan4.png";
+import clan5Image from "./images/game/ClanPage/clans/clan5.png";
+import clan6Image from "./images/game/ClanPage/clans/clan6.png";
+import clan7Image from "./images/game/ClanPage/clans/clan7.png";
+import clan8Image from "./images/game/ClanPage/clans/clan8.png";
+import clan9Image from "./images/game/ClanPage/clans/clan9.png";
+import clan10Image from "./images/game/ClanPage/clans/clan10.png";
+import clan11Image from "./images/game/ClanPage/clans/clan11.png";
+
 import clanBgImage from "./images/game/ClanPage/clanBg.jpg";
 import clanBgImageWebp from "./images/game/ClanPage/clanBg.webp";
 
@@ -199,7 +211,20 @@ export {
   duel5vs5Image,
   duel3vs3Image,
   // GameClanPage
-  clanLogoImage,
+
+  // clans
+  clan1Image,
+  clan2Image,
+  clan3Image,
+  clan4Image,
+  clan5Image,
+  clan6Image,
+  clan7Image,
+  clan8Image,
+  clan9Image,
+  clan10Image,
+  clan11Image,
+  // clanBg
   clanBgImage,
   clanBgImageWebp,
 
