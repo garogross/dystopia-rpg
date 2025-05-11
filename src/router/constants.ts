@@ -12,3 +12,4 @@ export const gameCreateClanPagePath = "clan/create";
 export const gameLoyalityPagePath = "loyality";
 export const gameReferalsPagePath = "referals";
 export const gameSkinViewPagePath = "skin-view";
+export const gamePlayAreaPagePath = "play-area";

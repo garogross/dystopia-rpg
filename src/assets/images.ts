@@ -166,6 +166,10 @@ import supportTask5Image from "./images/game/GameLoyalityPage/supportTasks/suppo
 import supportTask2Image from "./images/game/GameLoyalityPage/supportTasks/supportTask2.jpg";
 import supportTask1Image from "./images/game/GameLoyalityPage/supportTasks/supportTask1.jpg";
 
+// GamePlayAreaPage
+import gamePlayAreaBgImage from "./images/game/GamePlayAreaPage/gamePlayAreaBg.jpg";
+import positionPlaceImage from "./images/game/GamePlayAreaPage/positionPlace.png";
+
 export {
   // GAME
   // stats
@@ -325,4 +329,8 @@ export {
   supportTask5Image,
   supportTask2Image,
   supportTask1Image,
+
+  // GamePlayAreaPage
+  gamePlayAreaBgImage,
+  positionPlaceImage
 };

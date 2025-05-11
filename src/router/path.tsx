@@ -20,6 +20,7 @@ import {
   gameClanSearchPagePath,
   gameCreateClanPagePath,
   gameClansPagePath,
+  gamePlayAreaPagePath,
 } from "./constants";
 import GameLoyalityPage from "../pages/Game/GameLoyalityPage";
 import GameSingleChalangePage from "../pages/Game/GameSingleChalangePage";
@@ -28,6 +29,7 @@ import GameSkinViewPage from "../pages/Game/GameSkinViewPage";
 import GameClanSearchPage from "../pages/Game/GameClanSearchPage";
 import GameCreateClanPage from "../pages/Game/GameCreateClanPage";
 import GameSingeClanPage from "../pages/Game/GameSingeClanPage";
+import GamePlayAreaPage from "../pages/Game/GamePlayAreaPage";
 
 export const homePagePath = "/";
 
@@ -95,4 +97,8 @@ export const routes: IRoute[] = [
       },
     ],
   },
+  // {
+  //   path: gamePlayAreaPagePath,
+  //   component: <GamePlayAreaPage />,
+  // },
 ];

@@ -24,7 +24,6 @@ const GameSideBar: React.FC<GameSideBarProps> = ({ items }) => {
   const isActiveHash = (hash: string) => {
     return location.hash.includes(hash);
   };
-console.log({items});
 
   const isInventoryActive = location.hash.includes("inventory");
 
