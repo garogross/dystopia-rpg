@@ -25,7 +25,7 @@ const GameWrapper: React.FC<Props> = (props) => {
     !["macos", "tdesktop", "weba", "web", "webk"].includes(tg?.platform);
 
   useEffect(() => {
-    if (!tg) return;
+    // if (!tg) return;
     // open fullscreen
     tg.expand();
     if (tg.isVersionAtLeast("8.0")) {
@@ -46,23 +46,26 @@ const GameWrapper: React.FC<Props> = (props) => {
     }
     tg.ready();
 
-    const fetchData = async (id: number) => {
+    const fetchData = async (initData: string) => {
+      console.log("fetchData");
       try {
-        await Promise.all([
-          dispatch(authUser(id)), //1624247936
-        ]);
+        await dispatch(authUser(initData)); //1624247936
+        // await Promise.all([
+        // ]);
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
       }
     };
-    if (process.env.NODE_ENV === "development") {
-      fetchData(1624247931);
-    }
-    if (!tg.initDataUnsafe?.user) return;
-    const { id } = tg.initDataUnsafe?.user;
-    fetchData(id);
+    // if (process.env.NODE_ENV === "development") {
+    //   fetchData(1624247931);
+    // }
+    console.log("init", tg);
+    // if (!tg.initDataUnsafe?.user) return;
+
+    // const { id } = tg.initDataUnsafe?.user;
+    fetchData(tg.initData);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -70,7 +73,6 @@ const GameWrapper: React.FC<Props> = (props) => {
   const appLoading = imagesLoading || loading;
 
   useEffect(() => {
-
     if (loaderTimerFinished && !appLoading) {
       dispatch(setGameInited(true));
     }

@@ -1,37 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { fetchRequest } from "../tools/fetchTools";
 import { AppDispatch } from "../store";
+import { fetchRequest } from "../tools/fetchTools";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
-// const authUserUrl = "/user-account/";
+const authUserUrl = "/auth";
 
 export interface ProfileState {
   id: string;
   tgId: string;
+  token: string;
 }
 
 const initialState: ProfileState = {
   id: "",
   tgId: "",
+  token: "",
 };
 
-export const authUser = (payload: number) => async (dispatch: AppDispatch) => {
+export const authUser = (payload: string) => async (dispatch: AppDispatch) => {
   try {
-    
-    // const resData = await fetchRequest<AuthUserResponse>(authUserUrl, "POST", {
-    //   telegram_id: payload,
-    // }) as AuthUserResponse;
+    const resData = await fetchRequest(authUserUrl, "POST", {
+      initData: payload,
+    });
 
-    // const { id, telegram_id, wallets, nft_alerts } = resData;
-
-    // dispatch(setUser({
-    //   id,
-    //   tgId: telegram_id,
-    // }))
-    
+    console.log({ resData });
   } catch (error) {
-    console.error(error);
+    console.log("error",error);
   }
 };
 

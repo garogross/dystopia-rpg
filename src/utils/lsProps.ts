@@ -1,3 +1,4 @@
 export const lsProps = {
-    isRegistered: "isRegistered"
+    isRegistered: "isRegistered",
+    token: "token"
 } as const;

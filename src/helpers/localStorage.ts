@@ -1,7 +1,7 @@
 export function getLSItem(key: string, clb: CloudStorageGetItemCallback): void {
   if (process.env.NODE_ENV === "development") return;
-  if (window.Telegram?.WebApp.CloudStorage)
-    window.Telegram.WebApp.CloudStorage.getItem(key, clb);
+  // if (window.Telegram?.WebApp.CloudStorage)
+  // window.Telegram.WebApp.CloudStorage.getItem(key, clb);
 }
 
 export function getLSItems(
@@ -21,7 +21,7 @@ export const setLSItem = <T>(key: string, data: T) => {
     window.Telegram.WebApp.CloudStorage.setItem(key, JSON.stringify(data));
   }
 };
-export const removeLSItem = (key: string, ) => {
+export const removeLSItem = (key: string) => {
   if (process.env.NODE_ENV === "development") return;
 
   if (window.Telegram?.WebApp.CloudStorage) {
