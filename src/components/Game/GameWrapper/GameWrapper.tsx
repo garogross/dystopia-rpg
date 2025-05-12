@@ -61,7 +61,7 @@ const GameWrapper: React.FC<Props> = (props) => {
     // if (process.env.NODE_ENV === "development") {
     //   fetchData(1624247931);
     // }
-    console.log("init", tg);
+    console.log("init", tg.initData);
     // if (!tg.initDataUnsafe?.user) return;
 
     // const { id } = tg.initDataUnsafe?.user;
