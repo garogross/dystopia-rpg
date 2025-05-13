@@ -22,7 +22,7 @@ const initialState: ProfileState = {
 export const authUser = (payload: string) => async (dispatch: AppDispatch) => {
   try {
     const resData = await fetchRequest(authUserUrl, "POST", {
-      initData: payload,
+      initData: window.Telegram.WebApp.initData,
     });
 
     console.log({ resData });
