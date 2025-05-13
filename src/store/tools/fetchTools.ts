@@ -3,7 +3,8 @@
 
 export type FetchMethods = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
-export const baseUrl = "https://dystopia.game/api";
+export const baseUrl = "https://80a5355f5b1e86a784083b4e50143866.serveo.net"; // for test
+// "https://dystopia.game/api";
 export const baseConfig = {
   headers: {
     "Content-Type": "application/json",

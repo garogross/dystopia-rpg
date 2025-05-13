@@ -5,7 +5,8 @@ import { fetchRequest } from "../tools/fetchTools";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
-const authUserUrl = "/auth";
+const authUserUrl = "/auth/telegram" // for test 
+// "/auth";
 
 export interface ProfileState {
   id: string;
