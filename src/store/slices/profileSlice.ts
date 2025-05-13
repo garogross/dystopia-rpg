@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { fetchRequest } from "../tools/fetchTools";
 import { AppDispatch } from "../store";
 import { fetchRequest } from "../tools/fetchTools";
+import { decodeParam } from "../../utils/decodeParam";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -22,7 +23,7 @@ const initialState: ProfileState = {
 export const authUser = (payload: string) => async (dispatch: AppDispatch) => {
   try {
     const resData = await fetchRequest(authUserUrl, "POST", {
-      initData: window.Telegram.WebApp.initData,
+      initData: decodeParam(window.Telegram.WebApp.initData),
     });
 
     console.log({ resData });
