@@ -32,7 +32,11 @@
 
 
   &__itemHeaderTitleText {
-    @include setFont(10px, 400);
+    @include setFont(10px, 600);
+
+    @include xsScreenMedia {
+      font-weight: 400;
+    }
   }
   &__itemHeaderPayBtn {
     padding: 1px 3px;

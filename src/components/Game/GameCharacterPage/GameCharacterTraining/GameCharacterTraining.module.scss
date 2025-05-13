@@ -24,6 +24,7 @@
 
   &__headerTitle {
     @include setFont(12px, 400, $font-fam-h3);
+    line-height: 1;
   }
 
 }

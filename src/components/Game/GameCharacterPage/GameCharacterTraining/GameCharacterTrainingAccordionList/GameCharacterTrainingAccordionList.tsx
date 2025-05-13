@@ -27,18 +27,18 @@ export interface TrainingCategory {
   items: TrainingItem[];
 }
 
-
-
-export const GameCharacterTrainingAccordionList: React.FC<
-  Props
-> = ({ data }) => {
+export const GameCharacterTrainingAccordionList: React.FC<Props> = ({
+  data,
+}) => {
   const accaunt = 150;
-  const [openSections, setOpenSections] = useState<string[]>(data.map(item => item.name));
+  const [openSections, setOpenSections] = useState<string[]>(
+    data.map((item) => item.name)
+  );
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const toggleSection = (sectionName: string) => {
-    setOpenSections(prev => 
+    setOpenSections((prev) =>
       prev.includes(sectionName)
-        ? prev.filter(name => name !== sectionName)
+        ? prev.filter((name) => name !== sectionName)
         : [...prev, sectionName]
     );
   };
@@ -50,7 +50,7 @@ export const GameCharacterTrainingAccordionList: React.FC<
           className={styles.gameCharacterTrainingAccordionList__item}
           key={item.name}
         >
-          <div 
+          <div
             className={styles.gameCharacterTrainingAccordionList__itemHeader}
             onClick={() => toggleSection(item.name)}
           >
@@ -69,20 +69,25 @@ export const GameCharacterTrainingAccordionList: React.FC<
               >
                 {item.name}
               </h6>
-              <div >
+              <div>
                 <ArrowIcon rotate={openSections.includes(item.name)} />
               </div>
             </TransitionProvider>
-            <button
-              disabled={item.price >= accaunt}
-              className={
-                styles.gameCharacterTrainingAccordionList__itemHeaderPayBtn
-              }
-            >
-              {item.price < accaunt
-                ? `Улучшить за: ${item.price}`
-                : `Неоходимо: ${item.price}`}
-            </button>
+            {!item.unavailableUpgrades && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                disabled={item.price >= accaunt}
+                className={
+                  styles.gameCharacterTrainingAccordionList__itemHeaderPayBtn
+                }
+              >
+                {item.price < accaunt
+                  ? `Улучшить за: ${item.price}`
+                  : `Неоходимо: ${item.price}`}
+              </button>
+            )}
           </div>
           <TransitionProvider
             className={styles.gameCharacterTrainingAccordionList__dropdownList}
