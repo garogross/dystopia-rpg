@@ -8,6 +8,7 @@ import { useAppSelector } from "../../../../hooks/redux";
 import { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
 import TransitionProvider from "../../../../providers/TransitionProvider";
 import WrapperWithFrame from "../../../layout/WrapperWithFrame/WrapperWithFrame";
+import GameSingleChalangeInfo from "../GameSingleChalangeInfo/GameSingleChalangeInfo";
 const GameSingleChalangeMain: React.FC = () => {
   const params = useParams<{ id: string }>();
   const chalanges = useAppSelector((state) => state.chalanges.chalanges);
@@ -47,17 +48,9 @@ const GameSingleChalangeMain: React.FC = () => {
         inProp={gameInited}
         className={styles.gameSingleChalangeMain__imgWrapper}
       >
-        {/* <div className={styles.gameSingleChalangeMain__imgWrapperInner}>
-          <img
-            src={chalange?.image}
-            alt="chalange"
-            className={styles.gameSingleChalangeMain__img}
-          />
-        </div>
-        <div className={styles.gameSingleChalangeMain__imgFrame}>
-          <ImageFrame />
-        </div> */}
-        <WrapperWithFrame innerClassName={styles.gameSingleChalangeMain__imgWrapperInner}>
+        <WrapperWithFrame
+          innerClassName={styles.gameSingleChalangeMain__imgWrapperInner}
+        >
           <img
             src={chalange?.image}
             alt="chalange"
@@ -79,12 +72,11 @@ const GameSingleChalangeMain: React.FC = () => {
         delay={300}
         className={styles.gameSingleChalangeMain__description}
       >
-        <p
-          className={`${styles.gameSingleChalangeMain__description} gradientText`}
-        >
+        <p className={styles.gameSingleChalangeMain__description}>
           {chalange?.description}
         </p>
       </TransitionProvider>
+      <GameSingleChalangeInfo />
       <GameSingleChalangeLevels />
     </section>
   );
