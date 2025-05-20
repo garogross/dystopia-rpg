@@ -27,7 +27,7 @@ export const authUser = (payload: string) => async (dispatch: AppDispatch) => {
 
     console.log({ resData });
   } catch (error) {
-    console.log("error",error);
+    console.error("error",error);
   }
 };
 

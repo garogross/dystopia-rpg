@@ -42,14 +42,12 @@ export const fetchRequest = async <Res, Body extends object = {}>(
       }
     }
   }
-  console.log("fetchRequest", filteredBody);
 
   const response = await fetch(`${baseUrl}${fetchUrl}`, {
     method: method,
     body: !body || isFormData ? body : JSON.stringify(filteredBody),
     ...config,
   });
-  console.log("response");
 
   const resData: Res = await response.json();
 
