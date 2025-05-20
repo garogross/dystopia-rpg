@@ -47,7 +47,6 @@ const GameWrapper: React.FC<Props> = (props) => {
     tg.ready();
 
     const fetchData = async (initData: string) => {
-      console.log("fetchData");
       try {
         await dispatch(authUser(initData)); //1624247936
         // await Promise.all([
@@ -61,7 +60,6 @@ const GameWrapper: React.FC<Props> = (props) => {
     // if (process.env.NODE_ENV === "development") {
     //   fetchData(1624247931);
     // }
-    console.log("init", tg.initData);
     // if (!tg.initDataUnsafe?.user) return;
 
     // const { id } = tg.initDataUnsafe?.user;
