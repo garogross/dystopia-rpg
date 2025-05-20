@@ -6,7 +6,7 @@
   height: 12px;
   border-radius: 50%;
   @include flexCol();
-  background-color: #42307d;
+  background-color: $color-statsBg;
 
   &__img {
     max-width: 100%;
