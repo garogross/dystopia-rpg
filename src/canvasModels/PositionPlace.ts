@@ -1,47 +1,126 @@
 import { positionPlaceImage } from "../assets/images";
+import { BaseCourt } from "./BaseCourt";
+import { Character } from "./Character";
 import { IGame } from "./IGame";
 
-export class PostitionPlace {
-  width: number;
-  height: number;
-  x: number;
-  y: number;
+const image = new Image();
+image.src = positionPlaceImage;
 
-  constructor(width: number, height: number, x: number, y: number) {
+export class PositionPlace {
+  private context: IGame["context"];
+  private width: number;
+  private height: number;
+  private x: number;
+  private y: number;
+  private transparent: boolean = false;
+  inSide: BaseCourt["side"];
+  public character: Character | null = null;
+
+  constructor(
+    context: IGame["context"],
+    width: number,
+    height: number,
+    x: number,
+    y: number,
+    inSide: PositionPlace["inSide"],
+    characterImage?: Character["image"],
+    characterType?: Character["type"]
+  ) {
+    this.context = context;
     this.width = width;
     this.height = height;
     this.x = x;
     this.y = y;
+    this.inSide = inSide;
+
+    if (characterImage && characterType) {
+      this.setCharacter(characterImage, characterType);
+    }
   }
 
-  draw(ctx: IGame["context"]) {
+  public draw(ctx: IGame["context"]) {
+    if (!ctx || this.transparent) return;
+    ctx.imageSmoothingEnabled = false;
+
+    ctx.imageSmoothingEnabled = false;
+
+    ctx.drawImage(image, this.x, this.y, this.width, this.height);
+  }
+
+  public update(
+    width: number,
+    height: number,
+    x: number,
+    y: number,
+    characterType?: Character["type"],
+    characterImage?: Character["image"]
+  ) {
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+
+    if (characterImage && characterType) {
+      this.setCharacter(characterImage, characterType);
+    } else if (this.character) {
+      this.removeCharacter();
+    }
+  }
+
+  public setCharacter(
+    characterImage: Character["image"],
+    type: Character["type"],
+    owned?: boolean,
+    uuid?: string,
+  ) {
+    const ctx = this.context;
     if (!ctx) return;
-    ctx.imageSmoothingEnabled = false;
+    const y = this.y + this.height / 2;
 
-    const image = new Image();
-    image.src = positionPlaceImage;
-    ctx.imageSmoothingEnabled = false;
-  
-  // rect example
-    // ctx.fillStyle = "rgba(0, 0, 0, 0.5)"; // Example color
-    // ctx.fillRect(this.x, this.y, this.width, this.height);
-    // ctx.strokeStyle = "rgba(255, 255, 255, 0.8)"; // Example stroke color
-    // ctx.lineWidth = 2; // Example stroke width
-    // ctx.strokeRect(this.x, this.y, this.width, this.height);
+    if (this.character) {
+      this.character.update(this.x, y, this.width, characterImage);
+    } else {
+      this.character = new Character(
+        this.x,
+        y,
+        this.width,
+        characterImage,
+        type,
+        this.inSide,
+        owned,
+        uuid
+      );
+    }
+    this.character.draw(ctx);
 
-    const drawImage = () =>
-      ctx.drawImage(image, this.x, this.y, this.width, this.height);
+    return this.character;
+  }
+  private removeCharacter() {
+    this.character = null;
+  }
 
-    image
-      .decode()
-      .then(() => {
-        drawImage();
-      })
-      .catch((err) => {
-        console.warn("Decode failed, fallback to onload", err);
-        image.onload = () => {
-          drawImage();
-        };
-      });
+  public removePlace(ctx: IGame["context"]) {
+    if (!ctx) return;
+    ctx.clearRect(this.x, this.y, this.width, this.height);
+  }
+  public hidePlace() {
+    this.transparent = true;
+  }
+
+  public showPlace() {
+    this.transparent = false;
+  }
+
+  public checkTarget(x: number, y: number) {
+    const curCharacter = this.character;
+
+    if (!curCharacter) return null;
+
+    return (
+      x >= curCharacter.x &&
+      x <= curCharacter.x + curCharacter.width &&
+      y >= curCharacter.y &&
+      y <= curCharacter.y + curCharacter.height
+    );
   }
 }

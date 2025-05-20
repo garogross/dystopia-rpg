@@ -11,24 +11,77 @@
   flex-direction: column;
   justify-content: flex-end;
 
-  &__header {
-    height: 70px;
-    width: 100%;
-    background-color: $color-bg;
-    opacity: 0.5;
-    align-self: flex-start;
-    margin-bottom: auto;
-  }
 
   &__canvasWrapper {
-    max-height: 20vw;
+    max-height: 30vw;
     flex: 1;
-   border: 1px solid $color-primary;
   }
-  &__footer {
-    height: 70px;
+
+  &__characterMenuMain {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    transform: translate(-80%, -50%);
+  }
+  &__characterMenuBtn {
+    @include button($color-primary);
+    height: 29px;
+    padding: 1px;
+    &:nth-child(1),
+    &:nth-child(3) {
+      width: 60px;
+    }
+
+    &:nth-child(2) {
+      width: 50px;
+    }
+  }
+
+  &__characterMenuBtnInner {
     width: 100%;
-    background-color: $color-bg;
-    opacity: 0.5;
+    height: 100%;
+    @include flexCol();
+    background: radial-gradient(
+      85.56% 85.56% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 98.08%
+    );
+
+    & svg {
+      fill: $color-text;
+    }
   }
+
+  &__characterMenuBtn:nth-child(1),
+  &__characterMenuBtn:nth-child(1) &__characterMenuBtnInner {
+    clip-path: path(
+      "M60 1H12.094C12.094 1 8.14093 6.71895 6.04274 12C3.64336 18.0391 1 30 1 30H49.4103C49.4103 30 51.6826 17.947 53.9487 12C56.0379 6.51716 60 1 60 1Z"
+    );
+  }
+  &__characterMenuBtn:nth-child(2),
+  &__characterMenuBtn:nth-child(2) &__characterMenuBtnInner {
+    clip-path: path(
+      "M50 30.0001H2.5C2.5 30.0001 1 21.166 1 15.5001C1 9.83409 2.5 1.00006 2.5 1.00006H50C50 1.00006 49 9.82401 49 15.5001C49 21.1761 50 30.0001 50 30.0001Z"
+    );
+  }
+  &__characterMenuBtn:nth-child(3),
+  &__characterMenuBtn:nth-child(3) &__characterMenuBtnInner {
+    clip-path: path(
+      "M60 30H12.094C12.094 30 8.14093 24.2811 6.04274 19C3.64336 12.9609 1 1.00003 1 1.00003H49.4103C49.4103 1.00003 51.6826 13.0531 53.9487 19C56.0379 24.4829 60 30 60 30Z"
+    );
+  }
+
+  &__characterMenuBtn:active &__characterMenuBtnInner {
+    background: radial-gradient(71.72% 71.72% at 50% 50%, #3D2B7E 0%, #5A41B5 100%);
+
+
+    & svg {
+      fill: $color-black
+    }
+  }
+
+
 }

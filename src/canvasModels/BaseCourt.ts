@@ -2,6 +2,7 @@ import { IGame } from "./IGame";
 
 export abstract class BaseCourt {
   canvas: HTMLCanvasElement;
+  context: IGame["context"];
   public side: "left" | "right";
   public topLeftX: number = 0;
   public topRightX: number = 0;
@@ -12,21 +13,26 @@ export abstract class BaseCourt {
 
   constructor(
     canvas: HTMLCanvasElement,
+    context: IGame["context"],
     side: "left" | "right",
     height: number,
+    y: number
   ) {
     this.canvas = canvas;
+    this.context = context;
     this.side = side;
     this.height = height;
+    this.y = y;
   }
 
-  abstract draw(ctx: IGame["context"]): void;
+  abstract draw(): void;
 
-  drawPath(ctx: IGame["context"]) {
-    if (!ctx) return;
+  drawPath() {
+    if (!this.context) return;
+    const ctx = this.context;
+    const topY = this.y; // Adjust as needed
 
-    const topY = 0; // Adjust as needed
-    const bottomY = this.canvas.height; // Adjust as needed
+    const bottomY = this.height + this.y; // Adjust as needed
     ctx.beginPath();
     ctx.moveTo(this.topLeftX, topY);
     ctx.lineTo(this.topRightX, topY);

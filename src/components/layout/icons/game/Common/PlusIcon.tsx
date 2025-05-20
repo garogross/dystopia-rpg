@@ -13,7 +13,7 @@ export const PlusIcon = () => {
         d="M4.75 0.25V3.25H7.75V4.75H4.75V7.75H3.25V4.75H0.25V3.25H3.25V0.25H4.75Z"
         fill="#7958F4"
         stroke="#1F1347"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
     </svg>
   );

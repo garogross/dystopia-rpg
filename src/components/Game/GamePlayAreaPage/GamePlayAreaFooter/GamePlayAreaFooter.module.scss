@@ -1,0 +1,100 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.gamePlayAreaFooter {
+  padding-bottom: 10px;
+  padding-inline: 30px;
+  @include flexCol(center, flex-end);
+
+  &__btnsList {
+    @include flexCol();
+    flex: 1;
+    padding-bottom: 10px;
+  }
+  &__btn {
+    max-width: 55px;
+    width: 100%;
+    height: 27px;
+    padding: 1px;
+    @include button($color-primary);
+  }
+  &__btnInner {
+    width: 100%;
+    height: 100%;
+    @include flexCol();
+    background: radial-gradient(
+      76.5% 76.5% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
+    padding: 2px;
+  }
+
+  &__btnsList_left &__btn,
+  &__btnsList_left &__btnInner {
+    clip-path: polygon(
+      0% 22%,
+      12.5% 0%,
+      85.6% 0%,
+      100% 75.5%,
+      85.6% 100%,
+      12.5% 100%,
+      0% 22%
+    );
+  }
+  &__btnsList_right &__btn,
+  &__btnsList_right &__btnInner {
+    clip-path: polygon(
+      100% 22%,
+      87.5% 0%,
+      14.4% 0%,
+      0% 75.5%,
+      14.4% 100%,
+      87.5% 100%,
+      100% 22%
+    );
+  }
+
+  &__toolImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  &__statusPanel {
+    width: 136px;
+    padding: 1.5px;
+    background-color: $color-primary;
+  }
+  &__statuPannelInner {
+    width: 100%;
+    padding: 6px;
+    @include flexCol();
+    flex-direction: column;
+    gap: 6px;
+    background: radial-gradient(
+      76.5% 76.5% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
+  }
+
+  &__statusPanel {
+    clip-path: path(
+      "M124.207 56H11.7928L0 12.4562L11.7928 0L124.207 6.41683e-06L136 12.4563L124.207 56Z"
+    );
+  }
+  &__statuPannelInner {
+    clip-path: path(
+      "M124.207 56H11.7928L0 12.4562L11.7928 0L124.207 6.41683e-06L136 12.4563L124.207 56Z"
+    );
+  }
+  &__stepText {
+    @include setFont(10px, 700);
+  }
+  &__timerText {
+    @include setFont(10px, 400);
+  }
+  &__timerValueText {
+    @include setFont(20px, 400, $font-fam-h3);
+  }
+}

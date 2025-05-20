@@ -7,7 +7,7 @@ const GameCreateClanAddLogoIcon = () => {
         d="M28 2V20H46V28H28V46H20V28H2V20H20V2H28Z"
         fill="#3F2C82"
         stroke="#1F1347"
-        stroke-width="4"
+        strokeWidth="4"
       />
     </svg>
   );

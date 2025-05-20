@@ -169,6 +169,28 @@ import supportTask1Image from "./images/game/GameLoyalityPage/supportTasks/suppo
 // GamePlayAreaPage
 import gamePlayAreaBgImage from "./images/game/GamePlayAreaPage/gamePlayAreaBg.jpg";
 import positionPlaceImage from "./images/game/GamePlayAreaPage/positionPlace.png";
+import slapImage from "./images/game/GamePlayAreaPage/slap.png";
+import shotImage from "./images/game/GamePlayAreaPage/shot.png";
+import explodeImage from "./images/game/GamePlayAreaPage/explode.png";
+
+// // characters
+import character1Image from "./images/game/GamePlayAreaPage/characters/character1.png";
+import npc1Image from "./images/game/GamePlayAreaPage/characters/npc1.png";
+
+// // Header
+import characterAvatarImage from "./images/game/GamePlayAreaPage/Header/characterAvatar.png";
+import npcAvatarImage from "./images/game/GamePlayAreaPage/Header/npcAvatar.png";
+import rivalAvatarImage from "./images/game/GamePlayAreaPage/Header/rivalAvatar.png";
+
+// // Loader
+import elipse1Image from "./images/game/GamePlayAreaPage/Loader/elipse1.png";
+import elipse2Image from "./images/game/GamePlayAreaPage/Loader/elipse2.png";
+import elipse3Image from "./images/game/GamePlayAreaPage/Loader/elipse3.png";
+import elipse4Image from "./images/game/GamePlayAreaPage/Loader/elipse4.png";
+import gateImage from "./images/game/GamePlayAreaPage/Loader/gate.png";
+import gateImageWebp from "./images/game/GamePlayAreaPage/Loader/gate.webp";
+import gatePortraitImage from "./images/game/GamePlayAreaPage/Loader/gatePortrait.png";
+import gatePortraitImageWebp from "./images/game/GamePlayAreaPage/Loader/gatePortrait.webp";
 
 export {
   // GAME
@@ -332,5 +354,27 @@ export {
 
   // GamePlayAreaPage
   gamePlayAreaBgImage,
-  positionPlaceImage
+  positionPlaceImage,
+  slapImage,
+  shotImage,
+  explodeImage,
+
+  // // characters
+  character1Image,
+  npc1Image,
+
+  // // Header
+  characterAvatarImage,
+  npcAvatarImage,
+  rivalAvatarImage,
+
+  // // Loader
+  elipse1Image,
+  elipse2Image,
+  elipse3Image,
+  elipse4Image,
+  gateImage,
+  gateImageWebp,
+  gatePortraitImage,
+  gatePortraitImageWebp,
 };

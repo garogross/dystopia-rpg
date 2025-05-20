@@ -97,8 +97,8 @@ export const routes: IRoute[] = [
       },
     ],
   },
-  // {
-  //   path: gamePlayAreaPagePath,
-  //   component: <GamePlayAreaPage />,
-  // },
+  {
+    path: gamePlayAreaPagePath,
+    component: <GamePlayAreaPage />,
+  },
 ];

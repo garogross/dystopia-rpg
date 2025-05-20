@@ -1,53 +1,70 @@
 import { BaseCourt } from "./BaseCourt";
+import { Character } from "./Character";
 import { IGame } from "./IGame";
-import { PostitionPlace } from "./PositionPlace";
+import { PositionPlace } from "./PositionPlace";
 
 const POSITION_LINE_COLORS = ["#EA030859", "#EAB40359", "#03EA0359"] as const;
-
+const MAX_PLACE_PER_LINE = 3;
 export class PositionLine extends BaseCourt {
-  public positionIndex: 0 | 1 | 2;
+  private positionIndex: number; //  0 | 1 | 2;
   private gridType:
     | "space-around-top"
     | "space-around-bottom"
     | "space-between";
-  private charactersCount: number;
+  private transparent: boolean = false;
+  public places: PositionPlace[] = [];
+  public isLastLine: boolean;
 
   constructor(
     canvas: HTMLCanvasElement,
+    context: IGame["context"],
     side: "left" | "right",
-    positionIndex: 0 | 1 | 2,
+    positionIndex: PositionLine["positionIndex"], // 0 | 1 | 2,
     topWidth: number,
     bottomWidth: number,
     parentTopLeftX: number,
     parentBottomLeftX: number,
     height: number,
     gridType: PositionLine["gridType"],
-    charactersCount: PositionLine["charactersCount"]
+    y: number,
+    isLastLine?: boolean
   ) {
-    super(canvas, side, height);
+    super(canvas, context, side, height, y);
     this.positionIndex = positionIndex;
+    this.gridType = gridType;
+    this.isLastLine = !!isLastLine;
 
     this.topLeftX = parentTopLeftX + topWidth * positionIndex;
     this.topRightX = parentTopLeftX + topWidth * (positionIndex + 1);
     this.bottomLeftX = parentBottomLeftX + bottomWidth * positionIndex;
     this.bottomRightX = parentBottomLeftX + bottomWidth * (positionIndex + 1);
-    this.gridType = gridType;
-    this.charactersCount = charactersCount;
   }
 
-  override draw(ctx: IGame["context"]) {
+  public setGridType(gridType: PositionLine["gridType"]) {
+    this.gridType = gridType;
+  }
+
+  public getGridType() {
+    return this.gridType;
+  }
+
+  override draw(isInit?: boolean) {
+    const ctx = this.context;
     if (!ctx) return;
 
-    const colors =
-      this.side === "right"
-        ? [...POSITION_LINE_COLORS].reverse()
-        : POSITION_LINE_COLORS;
-
-    ctx.fillStyle = colors[this.positionIndex];
-    this.drawPath(ctx);
+    if (!this.transparent) {
+      const colors = POSITION_LINE_COLORS;
+      let colorIndex = 1;
+      if (this.isLastLine) colorIndex = colors.length - 1;
+      if (!this.positionIndex) colorIndex = 0;
+      ctx.fillStyle = colors[colorIndex];
+    } else {
+      ctx.fillStyle = "transparent";
+    }
+    this.drawPath();
     ctx.fill();
 
-    this.drawPlaces(ctx);
+    this.drawPlaces(isInit);
   }
 
   private interpolateX(topX: number, bottomX: number, y: number): number {
@@ -80,109 +97,174 @@ export class PositionLine extends BaseCourt {
     return eased * height;
   }
 
-  drawPlaces(ctx: IGame["context"]) {
-    // this.drawPlace(ctx, "center", this.height * 0.3);
-    // this.drawPlace(ctx, "top");
-    // this.drawPlace(ctx, "bottom");
+  drawPlaces(isInit?: boolean) {
+    type DrawPlaceParams = Parameters<typeof this.drawPlace>;
+    const characters = this.places.map((item) => item.character);
+    const charactersCount = !isInit ? characters?.length : MAX_PLACE_PER_LINE;
 
-    for (let i: number = 0; i < this.charactersCount; i++) {
+    for (let i: number = 0; i < charactersCount; i++) {
+      const characterImage = characters?.[i]?.image;
+      const characterType = characters?.[i]?.type;
+      const drawPlace = (
+        position: DrawPlaceParams[0],
+        y?: DrawPlaceParams[1]
+      ) => {
+        this.drawPlace(
+          position,
+          y,
+          this.places[i],
+          characterImage,
+          characterType
+        );
+      };
       if (this.gridType === "space-between") {
-        if (this.charactersCount === 1) {
-          const y = this.get3DEffectY(i, this.charactersCount, this.height);
+        if (charactersCount === 1) {
+          const y = this.get3DEffectY(i, charactersCount, this.height);
 
-          this.drawPlace(ctx, "center", y);
+          drawPlace("center", y);
         } else {
           if (!i) {
-            this.drawPlace(ctx, "top");
-          } else if (i === this.charactersCount - 1) {
-            this.drawPlace(ctx, "bottom");
+            drawPlace("top", undefined);
+          } else if (i === charactersCount - 1) {
+            drawPlace("bottom");
           } else {
-            const y = this.get3DEffectY(i, this.charactersCount, this.height);
+            const y = this.get3DEffectY(i, charactersCount, this.height);
 
-            this.drawPlace(ctx, "center", y);
+            drawPlace("center", y);
           }
         }
       }
       if (this.gridType.startsWith("space-around")) {
-        // const count =
-        //   this.charactersCount - 1 < 2 ? 2 : this.charactersCount - 1;
-        // const startAreaY = (this.height / count) * i;
-        // const endAreaY = (this.height / count) * (i + 1);
-        // const y = (startAreaY + endAreaY) / 2;
-
         const isBottomGridType = this.gridType.endsWith("bottom");
         const y = this.getSpaceAround3DEffectY(
           i,
-          this.charactersCount,
+          charactersCount,
           this.height,
           isBottomGridType
         );
-        this.drawPlace(ctx, "center", y);
+
+        drawPlace("center", y);
       }
     }
   }
+
   private drawPlace(
-    ctx: IGame["context"],
     position: "top" | "bottom" | "center",
-    y: number = 0
+    y: number = 0,
+    curPlace?: PositionPlace,
+    image?: Character["image"],
+    type?: Character["type"]
   ) {
+    const ctx = this.context;
     switch (position) {
       case "top": {
         y = y || 0;
         break;
       }
       case "bottom": {
-        y = y || this.height;
+        y = y || y + this.height;
         break;
       }
       case "center": {
-        y = y || this.height * 0.5;
+        y = y || y + this.height * 0.5;
         break;
       }
     }
-    const topLeftX = this.interpolateX(this.topLeftX, this.bottomLeftX, y);
-    const topRightX = this.interpolateX(this.topRightX, this.bottomRightX, y);
 
-    const topWidth = topRightX - topLeftX;
-    const height = topWidth * 0.3; // keep it a circle
+    const { width: topWidth, leftX: topLeftX } =
+      this.getLineWidthByPositionY(y);
+    const placeHeight = topWidth * 0.3; // keep it a circle
     let yPosition = 0;
     let yBottomPosition = 0;
 
     switch (position) {
       case "top": {
         y = 0;
-        yBottomPosition = y + height;
-        yPosition = y;
+        yBottomPosition = y + placeHeight;
+        yPosition = 0;
         break;
       }
       case "bottom": {
         y = this.height;
 
-        yBottomPosition = y - height;
+        yBottomPosition = y - placeHeight;
         yPosition = yBottomPosition;
+
         break;
       }
       case "center": {
-        yPosition = y - height / 2;
+        yPosition = y - placeHeight / 2;
         break;
       }
     }
-    const bottomLeftX = this.interpolateX(
-      this.topLeftX,
-      this.bottomLeftX,
-      yBottomPosition
-    );
-    const bottomRightX = this.interpolateX(
-      this.topRightX,
-      this.bottomRightX,
-      yBottomPosition
-    );
-    const bottomWidth = bottomRightX - bottomLeftX;
+
+    const { width: bottomWidth, leftX: bottomLeftX } =
+      this.getLineWidthByPositionY(yBottomPosition);
     const width =
       position === "center" ? topWidth : (topWidth + bottomWidth) / 2;
     const leftX =
       position === "center" ? topLeftX : (topLeftX + bottomLeftX) / 2;
-    const place = new PostitionPlace(width, height, leftX, yPosition);
-    place.draw(ctx);
+
+    if (curPlace) {
+      curPlace.update(
+        width,
+        placeHeight,
+        leftX,
+        this.y + yPosition,
+        type,
+        image
+      );
+
+      curPlace.draw(ctx);
+    } else {
+      const newPlace = new PositionPlace(
+        this.context,
+        width,
+        placeHeight,
+        leftX,
+        this.y + yPosition,
+        this.side,
+        image
+      );
+
+      this.places.push(newPlace);
+
+      newPlace.draw(ctx);
+    }
+  }
+
+  public getLineWidthByPositionY(y: number) {
+    const leftX = this.interpolateX(this.topLeftX, this.bottomLeftX, y);
+    const rightX = this.interpolateX(this.topRightX, this.bottomRightX, y);
+    return { width: rightX - leftX, leftX, rightX };
+  }
+
+  public addCharactersToPlaces(
+    characters: {
+      uuid: string;
+      index: number;
+      image: string;
+      type: Character["type"];
+      owned?: boolean;
+    }[]
+  ) {
+    characters.forEach((character) => {
+      const curPlace = this.places[character.index];
+
+      if (curPlace && character.image) {
+        curPlace.setCharacter(character.image, character.type, character.owned,character.uuid);
+      }
+    });
+  }
+
+  public removeEmptyPlaces() {
+    this.places = this.places.filter((place) => place.character);
+  }
+
+  public hide() {
+    this.transparent = true;
+  }
+  public hidePlaces() {
+    this.places.forEach((place) => place.hidePlace());
   }
 }
