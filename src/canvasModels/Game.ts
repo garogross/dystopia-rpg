@@ -115,10 +115,10 @@ export class Game implements IGame {
         this.removeSlap(attackerId),
         this.hurting(rival.uuid),
       ]);
+      await this.removeSlap(attackerId);
+      await this.moveTo("toBack", undefined, attackerId);
     }
-
-    await this.removeSlap(attackerId);
-    await this.moveTo("toBack", undefined, attackerId);
+    this.hideLinesAndPlaces();
   }
 
   public async moveTo(

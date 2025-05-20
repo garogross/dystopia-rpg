@@ -74,6 +74,8 @@ export class Character {
   }
 
   draw(context: CanvasRenderingContext2D) {
+    context.imageSmoothingEnabled = true;
+
     context.drawImage(
       this.imgElement,
       this.dX,
