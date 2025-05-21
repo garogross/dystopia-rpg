@@ -20,8 +20,8 @@ const HomeMain = () => {
       <HomeHeader />
       <HomeAbout />
       <HomeMainSlider />
-      <HomeBottomSlider />
       <HomeFooter />
+      <HomeBottomSlider />
     </div>
   );
 };

@@ -4,11 +4,10 @@
 .homeFooter {
   @include flexCol();
   gap: 35px;
-  margin-bottom: 30px;
 
   @include mdScreenMedia {
     order: 4;
-    margin-bottom: 0;
+    margin-bottom: 20px;
     margin-top: 20px;
   }
 
@@ -16,7 +15,12 @@
     text-decoration: none;
   }
   &__iconImg {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
+
+    @include mdScreenMedia {
+      width: 40px;
+      height: 40px;
+    }
   }
 }
