@@ -5,8 +5,8 @@ import eruda from "eruda";
 export const App = () => {
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
+      eruda.init();
     }
-    eruda.init();
   }, []);
   return (
     <>
