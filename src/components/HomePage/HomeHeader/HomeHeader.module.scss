@@ -128,6 +128,7 @@
     bottom: 0;
     right: 0;
     transform: translateY(100%);
+    z-index: 8;
   }
   &__langDropdownItem {
     width: 100%;
