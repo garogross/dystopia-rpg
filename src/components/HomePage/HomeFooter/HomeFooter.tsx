@@ -12,6 +12,8 @@ import {
   xIconImageWebp,
 } from "../../../assets/images";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
+import { ELanguages } from "../../../constants/ELanguages";
+import { useAppSelector } from "../../../hooks/redux";
 const socialIcons = [
   {
     link: "https://www.instagram.com/gamedystopia",
@@ -26,7 +28,10 @@ const socialIcons = [
     srcSet: reditIconImageWebp,
   },
   {
-    link: "https://t.me/dystopia_game",
+    link: {
+      [ELanguages.en]: "https://t.me/dystopia_game",
+      [ELanguages.ru]: "https://t.me/dystopiagamecis",
+    },
     alt: "Telegram",
     src: telegramIconImage,
     srcSet: telegramIconImageWebp,
@@ -39,13 +44,13 @@ const socialIcons = [
   },
 ];
 
-
 const HomeFooter = () => {
+  const language = useAppSelector((state) => state.ui.language);
   return (
     <footer className={styles.homeFooter}>
       {socialIcons.map((icon) => (
         <a
-          href={icon.link}
+          href={typeof icon.link === "string" ? icon.link : icon.link[language]}
           key={icon.alt}
           className={styles.homeFooter__btn}
           target="_blank"
