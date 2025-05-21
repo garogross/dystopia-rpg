@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ELanguages } from "../../constants/ELanguages";
 
 export interface UIState {
   gameInited: boolean;
+  language: ELanguages;
 }
 
 const initialState: UIState = {
   gameInited: false,
+  language: ELanguages.ru,
 };
 
 export const uISlice = createSlice({
@@ -15,10 +18,13 @@ export const uISlice = createSlice({
     setGameInited(state, { payload }) {
       state.gameInited = payload;
     },
+    setLanguage(state, { payload }) {
+      state.language = payload;
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { setGameInited } = uISlice.actions;
+export const { setGameInited, setLanguage } = uISlice.actions;
 
 export default uISlice.reducer;

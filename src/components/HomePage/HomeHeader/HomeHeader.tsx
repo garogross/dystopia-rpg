@@ -14,6 +14,8 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import HomeLanguagesSelectArrowIcon from "../../layout/icons/Home/HomeLanguagesSelectArrowIcon";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { setLanguage } from "../../../store/slices/uiSlice";
 
 const languages = {
   [ELanguages.ru]: {
@@ -28,8 +30,11 @@ const languages = {
   },
 };
 
+
 const HomeHeader = () => {
-  const [language, setLanguage] = useState<ELanguages>(ELanguages.ru);
+  const dispatch = useAppDispatch()
+  const language = useAppSelector(state => state.ui.language)
+  // const [language, setLanguage] = useState<ELanguages>(ELanguages.ru);
   const [languageModalOpend, setLanguageModalOpend] = useState(false);
 
   return (
@@ -74,7 +79,7 @@ const HomeHeader = () => {
               return (
                 <button
                   onClick={() => {
-                    setLanguage(lang);
+                    dispatch(setLanguage(lang));
                     setLanguageModalOpend(false);
                   }}
                   key={lang}

@@ -2,8 +2,13 @@ import React from "react";
 import WrapperWithFrame from "../../layout/WrapperWithFrame/WrapperWithFrame";
 
 import styles from "./HomeAbout.module.scss";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../hooks/redux";
+
+const { titleText, descriptionText } = TRANSLATIONS.home;
 
 const HomeAbout = () => {
+  const language = useAppSelector((state) => state.ui.language);
   return (
     <>
       <h1 className={`${styles.homeAbout__title} homeContainer`}>
@@ -13,15 +18,16 @@ const HomeAbout = () => {
         <WrapperWithFrame size={"lg"}>
           <div className={styles.homeAbout__descriptionInner}>
             <h4 className={styles.homeAbout__descriptionTitle}>
-              <span
-              className={styles.homeAbout__descriptionTitleNameText}
-              ><span className={styles.homeAbout__descriptionTitleTrait}>- </span>Dystopia —</span> игра в разработке, но мы уже играем
-              по-крупному
+              <span className={styles.homeAbout__descriptionTitleNameText}>
+                <span className={styles.homeAbout__descriptionTitleTrait}>
+                  -{" "}
+                </span>
+                Dystopia —
+              </span>{" "}
+              {titleText[language]}
             </h4>
             <p className={styles.homeAbout__descriptionText}>
-              Никаких обещаний. Только скрины, стиль и геймплей, который мы
-              затачиваем под кровь и металл. Посмотри — и подпишись, чтобы не
-              проспать запуск.
+              {descriptionText[language]}
             </p>
           </div>
         </WrapperWithFrame>
