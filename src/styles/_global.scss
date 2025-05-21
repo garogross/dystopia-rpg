@@ -22,7 +22,7 @@
 body {
   background: $color-black;
   overflow: hidden;
-  height: 100lvh;
+  height: 100dvh;
   margin: 0 auto;
 
   &[data-scroll-locked] {
@@ -31,7 +31,7 @@ body {
 }
 
 #root {
-  height: 100lvh;
+  height: 100dvh;
   padding-top: calc(var(--tg-safe-area-inset-top)) +
     var(--tg-content-safe-area-inset-top);
   padding-bottom: var(--tg-safe-area-inset-bottom);
