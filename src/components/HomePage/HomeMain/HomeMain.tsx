@@ -1,17 +1,27 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { gamePagePath } from "../../../router/constants";
 import styles from "./HomeMain.module.scss";
+import HomeHeader from "../HomeHeader/HomeHeader";
+import HomeAbout from "../HomeAbout/HomeAbout";
+import HomeMainSlider from "../HomeMainSlider/HomeMainSlider";
+import HomeBottomSlider from "../HomeBottomSlider/HomeBottomSlider";
+import HomeFooter from "../HomeFooter/HomeFooter";
+import { useImageLoader } from "../../../hooks/useImageLoader";
+import { homebgImageWebp } from "../../../assets/images";
 
 const HomeMain = () => {
-  const navigate = useNavigate();
+  const bgLoading = useImageLoader([homebgImageWebp]);
 
   return (
-    <div className={styles.homeMain}>
-      <h1 className={styles.homeMain__title}>Dystopia RPG</h1>
-      <button className={styles.homeMain__button} onClick={() => navigate(gamePagePath)}>
-        Start Game
-      </button>
+    <div
+      className={`${styles.homeMain} ${
+        !bgLoading ? styles.homeMain_loaded : ""
+      }`}
+    >
+      <HomeHeader />
+      <HomeAbout />
+      <HomeMainSlider />
+      <HomeBottomSlider />
+      <HomeFooter />
     </div>
   );
 };

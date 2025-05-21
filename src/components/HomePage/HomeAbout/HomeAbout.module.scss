@@ -1,0 +1,61 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.homeAbout {
+  &__title {
+    @include setFont(60px, 400, $font-fam-dystopia);
+    text-align: center;
+    margin-bottom: 20px;
+
+    @include mdScreenMedia {
+      order: 1;
+      font-size: 30px;
+      margin-top: 10px;
+      margin-bottom: 12px;
+    }
+  }
+  &__description {
+    @include mdScreenMedia {
+      order: 4;
+    }
+  }
+
+  &__descriptionInner {
+    background-color: $color-bg;
+    width: 100%;
+    padding: 15px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    @include mdScreenMedia {
+      padding: 10px;
+    }
+  }
+
+  &__descriptionTitle {
+    @include setFont(20px, 400, $font-fam-h1);
+
+    @include mdScreenMedia {
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+
+  &__descriptionTitleNameText {
+    @include mdScreenMedia {
+      display: block;
+    }
+  }
+  &__descriptionTitleTrait {
+    display: none;
+
+    @include mdScreenMedia {
+      display: inline;
+    }
+  }
+
+  &__descriptionText {
+    @include setFont(18px, 400);
+  }
+}

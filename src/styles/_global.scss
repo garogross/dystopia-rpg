@@ -53,6 +53,18 @@ html {
   padding-right: 16px;
 }
 
+.homeContainer {
+  padding-inline: 80px;
+
+  @include mdScreenMedia {
+    padding-inline: 20px;
+  }
+
+  @include smScreenMedia {
+    padding-inline: 14px;
+  }
+}
+
 .gameContainer {
   max-width: 500px;
   width: 100%;

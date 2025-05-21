@@ -1,36 +1,55 @@
 @import "vars";
 
-
 @mixin xsScreenMedia {
   @media (max-width: $xs-screen) {
     @content;
   }
 }
+@mixin smScreenMedia {
+  @media (max-width: $sm-screen) {
+    @content;
+  }
+}
+@mixin mdScreenMedia {
+  @media (max-width: $md-screen) {
+    @content;
+  }
+}
+@mixin lgScreenMedia {
+  @media (max-width: $lg-screen) {
+    @content;
+  }
+}
+@mixin xlScreenMedia {
+  @media (max-width: $xl-screen) {
+    @content;
+  }
+}
 
-@mixin icon($width,$height: $width,) {
+@mixin icon($width, $height: $width) {
   width: $width;
   height: $height;
   object-fit: contain;
 }
 
-@mixin setFont($size,$weight,$family: $font-fam-main,$color: $color-text) {
+@mixin setFont($size, $weight, $family: $font-fam-main, $color: $color-text) {
   font-size: $size;
   font-weight: $weight;
   font-family: $family;
   color: $color;
 }
 
-@mixin flexCol($layout: center,$align: center) {
+@mixin flexCol($layout: center, $align: center) {
   display: flex;
   justify-content: $layout;
   align-items: $align;
 }
 
-@mixin bgWebp($src,$srcSet) {
-    background-image: url($src); /* Fallback image */
+@mixin bgWebp($src, $srcSet) {
+  background-image: url($src); /* Fallback image */
 
   @supports (background-image: url($srcSet)) {
-      background-image: url($srcSet);
+    background-image: url($srcSet);
   }
 }
 
@@ -44,7 +63,7 @@
   }
 }
 
-@mixin svg($width,$color: transparent,$height: $width,$stroke: none) {
+@mixin svg($width, $color: transparent, $height: $width, $stroke: none) {
   width: $width;
   height: $height;
   transition: $transition;

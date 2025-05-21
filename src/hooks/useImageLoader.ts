@@ -2,10 +2,10 @@ import * as allImages from "../assets/images";
 import { useEffect, useState } from "react";
 import { preloadImages } from "../helpers/preloadImages";
 
-export const useImageLoader = () => {
-  const [loading, setLoading] = useState(false);
+export const useImageLoader = (images?: string[]) => {
+  const [loading, setLoading] = useState(true);
 
-  const imagesArr = Object.values(allImages)
+  const imagesArr = images || Object.values(allImages);
   // .filter((item) =>
   //   item.endsWith(".webp")
   // );

@@ -1,0 +1,22 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.homeFooter {
+  @include flexCol();
+  gap: 35px;
+  margin-bottom: 30px;
+
+  @include mdScreenMedia {
+    order: 4;
+    margin-bottom: 0;
+    margin-top: 20px;
+  }
+
+  &__btn {
+    text-decoration: none;
+  }
+  &__iconImg {
+    width: 40px;
+    height: 40px;
+  }
+}

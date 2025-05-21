@@ -1,0 +1,163 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.homeHeader {
+  @include flexCol(space-between);
+  gap: 12px;
+  width: 100%;
+  padding-block: 20px;
+
+  @include mdScreenMedia {
+    flex-direction: column-reverse;
+    order: 2;
+    padding-top: 0;
+    padding-bottom: 10px;
+  }
+
+  @include smScreenMedia {
+    padding-inline: 16px;
+  }
+
+  &__leftBlock {
+    flex: 1;
+  }
+  &__links {
+    @include flexCol();
+    gap: 20px;
+    flex: 2;
+    width: 100%;
+
+    @include mdScreenMedia {
+      flex-direction: column;
+    }
+  }
+  &__link {
+    text-decoration: none;
+    max-width: 274px;
+    width: 100%;
+    @include flexCol();
+    gap: 20px;
+    padding: 4px 12px;
+    height: 48px;
+    @include setFont(18px, 600);
+    border: 1px solid $color-primary;
+    background: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
+    white-space: nowrap;
+    min-width: fit-content;
+
+    @include smScreenMedia {
+      max-width: unset;
+      height: 40px;
+      font-size: 16px;
+    }
+  }
+  &__linkIconWrapper {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    @include flexCol();
+    background-color: $color-secondary;
+  }
+  &__rightBlock {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+
+    @include mdScreenMedia {
+      justify-content: center;
+    }
+  }
+  &__langSelect {
+    position: relative;
+    width: 115px;
+    max-width: 100%;
+
+    @include mdScreenMedia {
+      width: 274px;
+    }
+
+    @include smScreenMedia {
+      width: 100%;
+    }
+  }
+  &__langSelectBtn {
+    @include button(
+      linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%),
+      1px solid $color-primary
+    );
+    width: 100%;
+    @include flexCol(space-between);
+    gap: 20px;
+    height: 48px;
+    padding: 4px 12px;
+    @include setFont(18px, 600);
+
+    & span {
+      display: none;
+
+      @include mdScreenMedia {
+        display: block;
+      }
+    }
+
+    @include mdScreenMedia {
+      height: 40px;
+      font-size: 16px;
+    }
+  }
+  &__langImg {
+    width: 40px;
+    height: 30px;
+    border-radius: 4px;
+
+    @include mdScreenMedia {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+  }
+  &__langDropdown {
+    width: 100%;
+    background: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
+    border: 1px solid $color-primary;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translateY(100%);
+  }
+  &__langDropdownItem {
+    width: 100%;
+    padding: 8px 12px;
+    transition: $transition;
+    @include button();
+    @include setFont(16px, 600);
+    @include flexCol(space-between);
+    gap: 4px;
+
+    &:hover {
+      background-color: $color-secondary;
+    }
+  }
+
+  & span {
+    width: 100%;
+    text-align: center;
+  }
+
+  &__langDropdownItemShortName {
+    @include mdScreenMedia {
+      display: none;
+    }
+  }
+  &__langDropdownItemName {
+    display: none;
+
+    @include mdScreenMedia {
+      display: block;
+    }
+  }
+}
