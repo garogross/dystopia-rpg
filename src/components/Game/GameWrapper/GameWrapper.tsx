@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../../hooks/redux";
 import { useImageLoader } from "../../../hooks/useImageLoader";
 import AppLoader from "../../AppLoader/AppLoader";
 import { setGameInited } from "../../../store/slices/uiSlice";
+import eruda from "eruda";
 
 interface Props {}
 
@@ -27,6 +28,9 @@ const GameWrapper: React.FC<Props> = (props) => {
   useEffect(() => {
     // if (!tg) return;
     // open fullscreen
+
+    eruda.init();
+
     tg.expand();
     if (tg.isVersionAtLeast("8.0")) {
       // tg.requestFullscreen()

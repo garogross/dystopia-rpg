@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./HomeHeader.module.scss";
-// import HomeWebIcon from "../../layout/icons/Home/HomeWebIcon";
-// import HomeTgIcon from "../../layout/icons/Home/HomeTgIcon";
+import HomeWebIcon from "../../layout/icons/Home/HomeWebIcon";
+import HomeTgIcon from "../../layout/icons/Home/HomeTgIcon";
 import {
   enFlagImage,
   enFlagImageWebp,
@@ -16,6 +16,8 @@ import TransitionProvider, {
 import HomeLanguagesSelectArrowIcon from "../../layout/icons/Home/HomeLanguagesSelectArrowIcon";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setLanguage } from "../../../store/slices/uiSlice";
+import { Link } from "react-router-dom";
+import { gamePagePath } from "../../../router/constants";
 
 const languages = {
   [ELanguages.ru]: {
@@ -30,10 +32,9 @@ const languages = {
   },
 };
 
-
 const HomeHeader = () => {
-  const dispatch = useAppDispatch()
-  const language = useAppSelector(state => state.ui.language)
+  const dispatch = useAppDispatch();
+  const language = useAppSelector((state) => state.ui.language);
   // const [language, setLanguage] = useState<ELanguages>(ELanguages.ru);
   const [languageModalOpend, setLanguageModalOpend] = useState(false);
 
@@ -41,18 +42,22 @@ const HomeHeader = () => {
     <header className={`${styles.homeHeader} homeContainer`}>
       <div className={styles.homeHeader__leftBlock}></div>
       <div className={styles.homeHeader__links}>
-        {/* <a href="/" className={styles.homeHeader__link}>
-          <div className={styles.homeHeader__linkIconWrapper}>
-            <HomeWebIcon />
-          </div>
-          <span>Играть в браузере</span>
-        </a>
-        <a href="/" className={styles.homeHeader__link}>
-          <div className={styles.homeHeader__linkIconWrapper}>
-            <HomeTgIcon />
-          </div>
-          <span>Играть в Telegram</span>
-        </a> */}
+        {process.env.NODE_ENV === "development" && (
+          <>
+            <a href="/" className={styles.homeHeader__link}>
+              <div className={styles.homeHeader__linkIconWrapper}>
+                <HomeWebIcon />
+              </div>
+              <span>Играть в браузере</span>
+            </a>
+            <Link to={gamePagePath} className={styles.homeHeader__link}>
+              <div className={styles.homeHeader__linkIconWrapper}>
+                <HomeTgIcon />
+              </div>
+              <span>Играть в Telegram</span>
+            </Link>{" "}
+          </>
+        )}
       </div>
       <div className={styles.homeHeader__rightBlock}>
         <div className={styles.homeHeader__langSelect}>
