@@ -1,20 +1,17 @@
-// import { getLSItem } from "../../helpers/localStorage";
-// import { lsProps } from "../../utils/lsProps";
+import { getLSItem } from "../../helpers/localStorage";
+import { lsProps } from "../../utils/lsProps";
 
 export type FetchMethods = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
-export const baseUrl = "https://dystopia.game/api";
+export const baseUrl = process.env.REACT_APP_BACKEND_URL;
 export const baseConfig = {
   headers: {
     "Content-Type": "application/json",
   },
 };
 
-export const authConfig = (isFormData?: boolean) => {
-  let token = "";
-  // getLSItem(lsProps.token, (token) => {
-  //   console.log({ token });
-  // });
+export const authConfig = async (isFormData?: boolean) => {
+  const token = await getLSItem(lsProps.token);
 
   const headers: HeadersInit = {
     Authorization: token ? `Bearer ${token}` : "",
@@ -30,8 +27,9 @@ export const fetchRequest = async <Res, Body extends object = {}>(
   fetchUrl: string,
   method: FetchMethods = "GET",
   body: Body | null = null,
-  config = authConfig()
+  config?: RequestInit
 ) => {
+  config = config || (await authConfig());
   const filteredBody: Partial<Body> = {};
 
   const isFormData = body instanceof FormData;
@@ -46,7 +44,8 @@ export const fetchRequest = async <Res, Body extends object = {}>(
   const response = await fetch(`${baseUrl}${fetchUrl}`, {
     method: method,
     body: !body || isFormData ? body : JSON.stringify(filteredBody),
-    ...config,
+
+    // ...config,
   });
 
   const resData: Res = await response.json();

@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { fetchRequest } from "../tools/fetchTools";
-import { AppDispatch } from "../store";
 import { fetchRequest } from "../tools/fetchTools";
+import { AuthUserResponse } from "../../models/api/AuthUserResponse";
+import { setLSItem } from "../../helpers/localStorage";
+import { lsProps } from "../../utils/lsProps";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -16,20 +19,31 @@ export interface ProfileState {
 const initialState: ProfileState = {
   id: "",
   tgId: "",
-  token: "",
+  token:
+    process.env.NODE_ENV === "development"
+      ? (process.env.REACT_APP_TEST_TOKEN as string)
+      : "",
 };
 
-export const authUser = (payload: string) => async (dispatch: AppDispatch) => {
-  try {
-    const resData = await fetchRequest(authUserUrl, "POST", {
-      initData: payload,
-    });
+export const authUser = createAsyncThunk<AuthUserResponse, string>(
+  "profile/authUser",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const resData = await fetchRequest<AuthUserResponse>(authUserUrl, "POST", {
+        initData: payload,
+      });
 
-    console.log({ resData });
-  } catch (error) {
-    console.error("error",error);
+      if (resData.token) {
+        setLSItem(lsProps.token, resData.token);
+      }
+      console.log({ resData });
+      return resData;
+    } catch (error: any) {
+      console.error("error", error);
+      return rejectWithValue(error);
+    }
   }
-};
+);
 
 export const profileSlice = createSlice({
   name: "profileSlice",
@@ -41,14 +55,9 @@ export const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // builder.addCase(authUser.fulfilled, (state, { payload }) => {
-    //   if (payload) {
-    //     state.id = payload.id;
-    //     state.tgId = payload.tgId;
-    //     state.alerts = payload.alerts;
-    //     state.wallets = payload.wallets;
-    //   }
-    // });
+    builder.addCase(authUser.fulfilled, (state, { payload }) => {
+     state.token = payload.token
+    });
   },
 });
 

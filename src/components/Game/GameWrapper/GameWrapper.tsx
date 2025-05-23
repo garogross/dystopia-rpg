@@ -6,7 +6,7 @@ import GameHeader from "../GameHeader/GameHeader";
 import BottomNavbar from "../BottomNavbar/BottomNavbar";
 import { authUser } from "../../../store/slices/profileSlice";
 import { useTelegram } from "../../../hooks/useTelegram";
-import { useAppDispatch } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { useImageLoader } from "../../../hooks/useImageLoader";
 import AppLoader from "../../AppLoader/AppLoader";
 import { setGameInited } from "../../../store/slices/uiSlice";
@@ -17,6 +17,7 @@ interface Props {}
 const GameWrapper: React.FC<Props> = (props) => {
   const tg = useTelegram();
   const dispatch = useAppDispatch();
+  const token = useAppSelector((state) => state.profile.token);
   const imagesLoading = useImageLoader();
   const [loading, setLoading] = useState(true);
   const [loaderTimerFinished, setLoaderTimerFinished] = useState(false);
@@ -53,24 +54,49 @@ const GameWrapper: React.FC<Props> = (props) => {
     const fetchData = async (initData: string) => {
       try {
         await dispatch(authUser(initData)); //1624247936
-        // await Promise.all([
-        // ]);
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
       }
     };
-    // if (process.env.NODE_ENV === "development") {
-    //   fetchData(1624247931);
-    // }
-    // if (!tg.initDataUnsafe?.user) return;
-
-    // const { id } = tg.initDataUnsafe?.user;
     fetchData(tg.initData);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    console.log({token});
+    
+    if (token) {
+      const wsUrl = `${process.env.REACT_APP_SOCKET_URL}?token=${token}`;
+
+      const socket = new WebSocket(wsUrl);
+
+      socket.onopen = function () {
+        console.log("WebSocket соединение установлено");
+      };
+
+      socket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        if (data.timer !== undefined) {
+          console.log(`Таймер: ${data.timer}, пауза: ${data.pause} сек.`);
+        } else if (data.message) {
+          console.log(data.message);
+        } else if (data.error) {
+          console.error("Ошибка:", data.error);
+        }
+      };
+
+      socket.onerror = function (error) {
+        console.error("WebSocket ошибка:", error);
+      };
+
+      socket.onclose = function (event) {
+        console.log("Соединение прервано");
+      };
+    }
+  }, [token]);
 
   const appLoading = imagesLoading || loading;
 
