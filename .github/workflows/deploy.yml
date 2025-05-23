@@ -18,6 +18,11 @@ jobs:
         with:
           node-version: 20
 
+      - name: Create .env.production file
+        run: |
+          echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL }}" >> .env.production
+          echo "REACT_APP_SOCKET_URL=${{ secrets.REACT_APP_SOCKET_URL }}" >> .env.production
+
       - name: 📦 Install dependencies
         run: npm install
 
