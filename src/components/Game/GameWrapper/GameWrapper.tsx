@@ -30,7 +30,9 @@ const GameWrapper: React.FC<Props> = (props) => {
     // if (!tg) return;
     // open fullscreen
 
-    eruda.init();
+    if (process.env.NODE_ENV === "development") {
+      eruda.init();
+    }
 
     tg.expand();
     if (tg.isVersionAtLeast("8.0")) {
@@ -66,8 +68,8 @@ const GameWrapper: React.FC<Props> = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log({token});
-    
+    console.log({ token });
+
     if (token) {
       const wsUrl = `${process.env.REACT_APP_SOCKET_URL}?token=${token}`;
 

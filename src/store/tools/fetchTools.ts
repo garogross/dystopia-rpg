@@ -29,6 +29,8 @@ export const fetchRequest = async <Res, Body extends object = {}>(
   body: Body | null = null,
   config?: RequestInit
 ) => {
+  console.log({baseUrl});
+  
   config = config || (await authConfig());
   const filteredBody: Partial<Body> = {};
 
