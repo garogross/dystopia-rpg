@@ -11,12 +11,16 @@ export const baseConfig = {
 };
 
 export const authConfig = async (isFormData?: boolean) => {
-  const token = await getLSItem(lsProps.token);
+  let token = "";
+  try {
+    token = await getLSItem(lsProps.token);
+  } catch (error) {}
 
-  const headers: HeadersInit = {
-    Authorization: token ? `Bearer ${token}` : "",
-  };
+  const headers: HeadersInit = {};
 
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
   if (!isFormData) {
     headers["Content-Type"] = "application/json";
   }
@@ -29,9 +33,9 @@ export const fetchRequest = async <Res, Body extends object = {}>(
   body: Body | null = null,
   config?: RequestInit
 ) => {
-  console.log({baseUrl});
-  
+
   config = config || (await authConfig());
+
   const filteredBody: Partial<Body> = {};
 
   const isFormData = body instanceof FormData;
@@ -43,11 +47,12 @@ export const fetchRequest = async <Res, Body extends object = {}>(
     }
   }
 
+
   const response = await fetch(`${baseUrl}${fetchUrl}`, {
     method: method,
     body: !body || isFormData ? body : JSON.stringify(filteredBody),
 
-    // ...config,
+    ...config,
   });
 
   const resData: Res = await response.json();
