@@ -68,7 +68,6 @@ const GameWrapper: React.FC<Props> = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log({ token });
 
     if (token) {
       const wsUrl = `${process.env.REACT_APP_SOCKET_URL}?token=${token}`;
