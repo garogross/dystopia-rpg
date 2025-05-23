@@ -3,7 +3,7 @@ name: Deploy React App to VPS
 on:
   push:
     branches:
-      - main # or your deployment branch
+      - main
 
 jobs:
   build-and-deploy:
@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Create .env.production file
+      - name: 📄 Create .env.production
         run: |
           echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL }}" >> .env.production
           echo "REACT_APP_SOCKET_URL=${{ secrets.REACT_APP_SOCKET_URL }}" >> .env.production
@@ -27,7 +27,13 @@ jobs:
         run: npm install
 
       - name: 🏗️ Build app
-        run: CI='' npm run build
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: 🧹 Cleanup env file
+        run: rm .env.production
+
       - name: 📤 Copy files to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
