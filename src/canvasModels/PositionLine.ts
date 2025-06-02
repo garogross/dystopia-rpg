@@ -6,7 +6,7 @@ import { PositionPlace } from "./PositionPlace";
 const POSITION_LINE_COLORS = ["#EA030859", "#EAB40359", "#03EA0359"] as const;
 const MAX_PLACE_PER_LINE = 3;
 export class PositionLine extends BaseCourt {
-  private positionIndex: number; //  0 | 1 | 2;
+  public positionIndex: number; //  0 | 1 | 2;
   private gridType:
     | "space-around-top"
     | "space-around-bottom"
@@ -246,13 +246,20 @@ export class PositionLine extends BaseCourt {
       image: string;
       type: Character["type"];
       owned?: boolean;
+      death?: boolean;
     }[]
   ) {
     characters.forEach((character) => {
       const curPlace = this.places[character.index];
 
       if (curPlace && character.image) {
-        curPlace.setCharacter(character.image, character.type, character.owned,character.uuid);
+        curPlace.setCharacter(
+          character.image,
+          character.type,
+          character.owned,
+          character.uuid,
+          character?.death
+        );
       }
     });
   }

@@ -57,7 +57,6 @@ export class Game implements IGame {
   }
 
   public updateCanvas() {
-    
     if (!this.context) return;
 
     this.drawCourts();
@@ -78,6 +77,18 @@ export class Game implements IGame {
 
     this.updateCanvas();
   }
+  public resetCharactersStatus() {
+    if (!this.courts) return;
+    for (const court of this.courts) {
+      for (const line of court.lines) {
+        for (const place of line.places) {
+          place.character?.resetAllStatuses();
+        }
+      }
+    }
+
+    this.updateCanvas();
+  }
 
   // get character place by uuid ot owned
   public getCharacterPlace(uuid?: string) {
@@ -93,7 +104,11 @@ export class Game implements IGame {
     return { place, line: characterLine };
   }
 
-  public async attack(rival: Character, attacker: Character) {
+  public async attack(
+    rival: Character,
+    attacker: Character,
+    hurtingValue: number
+  ) {
     const attackerId = attacker.uuid;
 
     if (attacker.type === "shooter") {
@@ -104,7 +119,7 @@ export class Game implements IGame {
         for (let i = 0; i < SHOTS_COUNT; i++) {
           await this.explode(rival.uuid);
           if (i === Math.floor(SHOTS_COUNT / 2)) {
-            this.hurting(rival.uuid);
+            this.hurting(rival.uuid, hurtingValue);
           }
         }
       }
@@ -113,7 +128,7 @@ export class Game implements IGame {
       await this.slap(attackerId);
       await Promise.all([
         this.removeSlap(attackerId),
-        this.hurting(rival.uuid),
+        this.hurting(rival.uuid, hurtingValue),
       ]);
       await this.removeSlap(attackerId);
       await this.moveTo("toBack", undefined, attackerId);
@@ -156,7 +171,6 @@ export class Game implements IGame {
         const { width } = line.getLineWidthByPositionY(character.dY);
 
         const isInRight = character.inSide === "right";
-
 
         const rivalX = isInRight
           ? (rival?.x || 0) + (rival?.width || 0) * 2
@@ -244,7 +258,7 @@ export class Game implements IGame {
     });
   }
 
-  public async hurting(rivalId: string): Promise<void> {
+  public async hurting(rivalId: string, hurtingValue: number): Promise<void> {
     return new Promise<void>((resolve) => {
       const animate = () => {
         const placeProps = this.getCharacterPlace(rivalId);
@@ -261,7 +275,7 @@ export class Game implements IGame {
           resolve();
           return;
         } else {
-          character.updateHurting();
+          character.updateHurting(hurtingValue);
           this.updateCanvas();
           requestAnimationFrame(animate);
         }
@@ -326,6 +340,31 @@ export class Game implements IGame {
           return;
         } else {
           character.updateExploding();
+          this.updateCanvas();
+          requestAnimationFrame(animate);
+        }
+      };
+      animate();
+    });
+  }
+  public async death(characterId: string): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const animate = () => {
+        const placeProps = this.getCharacterPlace(characterId);
+        if (
+          !placeProps ||
+          !placeProps.line ||
+          !placeProps.place ||
+          !placeProps.place.character
+        )
+          return;
+        const character = placeProps.place.character;
+
+        if (character.deathProgress >= 1) {
+          resolve();
+          return;
+        } else {
+          character.updateDeathProcess();
           this.updateCanvas();
           requestAnimationFrame(animate);
         }

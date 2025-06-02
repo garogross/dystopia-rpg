@@ -1,0 +1,73 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.gamePlayAreaOwnedCharacterMenu {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  transform: translate(-80%, -50%);
+
+  &__btn {
+    @include button($color-primary);
+    height: 29px;
+    padding: 1px;
+    &:nth-child(1),
+    &:nth-child(3) {
+      width: 60px;
+    }
+
+    &:nth-child(2) {
+      width: 50px;
+    }
+  }
+
+  &__btnInner {
+    width: 100%;
+    height: 100%;
+    @include flexCol();
+    background: radial-gradient(
+      85.56% 85.56% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 98.08%
+    );
+
+    & svg {
+      fill: $color-text;
+    }
+  }
+
+  &__btn:nth-child(1),
+  &__btn:nth-child(1) &__btnInner {
+    clip-path: path(
+      "M0.999996 1H48.906C48.906 1 52.8591 6.71895 54.9573 12C57.3566 18.0391 60 30 60 30H11.5897C11.5897 30 9.31736 17.947 7.05128 12C4.96205 6.51716 0.999996 1 0.999996 1Z"
+    );
+  }
+  &__btn:nth-child(2),
+  &__btn:nth-child(2) &__btnInner {
+    clip-path: path(
+      "M1 30H48.5C48.5 30 50 21.166 50 15.5C50 9.83403 48.5 1 48.5 1H1C1 1 2 9.82395 2 15.5C2 21.1761 1 30 1 30Z"
+    );
+  }
+  &__btn:nth-child(3),
+  &__btn:nth-child(3) &__btnInner {
+    clip-path: path(
+      "M0.999996 30H48.906C48.906 30 52.8591 24.281 54.9573 19C57.3566 12.9609 60 1 60 1H11.5897C11.5897 1 9.31736 13.053 7.05128 19C4.96205 24.4828 0.999996 30 0.999996 30Z"
+    );
+  }
+
+  &__btn:active &__btnInner {
+    background: radial-gradient(
+      71.72% 71.72% at 50% 50%,
+      #3d2b7e 0%,
+      #5a41b5 100%
+    );
+
+    & svg {
+      fill: $color-black;
+    }
+  }
+}

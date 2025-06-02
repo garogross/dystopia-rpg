@@ -10,6 +10,7 @@ export enum TransitionStyleTypes {
   bottom = "bottom",
   zoomIn = "zoomIn",
   zoomOut = "zoomOut",
+  zoomInOut = "zoomInOut",
   height = "height",
 }
 
@@ -75,6 +76,11 @@ const TransitionProvider = ({
       from: { opacity: 1, scale: "2" },
       enter: { opacity: 1, scale: "1" },
       leave: { opacity: 0, scale: "2" },
+    },
+    [TransitionStyleTypes.zoomInOut]: {
+      from: { opacity: 0, scale: "2" },
+      enter: { opacity: 1, scale: "1" },
+      leave: { opacity: 0, scale: "0" },
     },
     [TransitionStyleTypes.height]: {
       from: { maxHeight: 0, opacity: 0 },

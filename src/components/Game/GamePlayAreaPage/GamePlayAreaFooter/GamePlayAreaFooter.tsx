@@ -13,14 +13,17 @@ import {
   asset4Image,
   asset5Image,
 } from "../../../../assets/images";
+import { IBattle } from "../../../../models/IBattle";
 
 const SECONDS_PER_STEP = 15;
 
 interface Props {
+  gameType: IBattle["type"];
   gameStarted: boolean;
   timerPoused: boolean;
   onEnd: () => void;
   ordersEnded: boolean;
+  isOurStep: boolean;
 }
 
 const GamePlayAreaFooter: React.FC<Props> = ({
@@ -28,6 +31,8 @@ const GamePlayAreaFooter: React.FC<Props> = ({
   onEnd,
   timerPoused,
   ordersEnded,
+  gameType,
+  isOurStep,
 }) => {
   const [timer, setTimer] = useState(SECONDS_PER_STEP);
   const intervalRef = useRef<NodeJS.Timer | null>(null);
@@ -38,6 +43,7 @@ const GamePlayAreaFooter: React.FC<Props> = ({
   }, [ordersEnded]);
 
   useEffect(() => {
+    if (gameType === "pve") return;
     if (timerPoused && intervalRef.current) {
       clearInterval(intervalRef.current);
       setTimer(SECONDS_PER_STEP);
@@ -59,7 +65,7 @@ const GamePlayAreaFooter: React.FC<Props> = ({
       }, 1000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameStarted, timerPoused]);
+  }, [gameStarted, timerPoused, gameType]);
 
   return (
     <footer className={styles.gamePlayAreaFooter}>
@@ -94,13 +100,19 @@ const GamePlayAreaFooter: React.FC<Props> = ({
       </div>
       <div className={styles.gamePlayAreaFooter__statusPanel}>
         <div className={styles.gamePlayAreaFooter__statuPannelInner}>
-          <h5 className={styles.gamePlayAreaFooter__stepText}>Ход игры: Ваш</h5>
-          <div className={styles.gamePlayAreaFooter__timerText}>
-            Осталось времени
-          </div>
-          <div className={styles.gamePlayAreaFooter__timerValueText}>
-            {timer} сек.
-          </div>
+          <h5 className={styles.gamePlayAreaFooter__stepText}>
+            Ход игры: {isOurStep ? "Ваш" : "Противника"}
+          </h5>
+          {gameType === "pvp" && (
+            <>
+              <div className={styles.gamePlayAreaFooter__timerText}>
+                Осталось времени
+              </div>
+              <div className={styles.gamePlayAreaFooter__timerValueText}>
+                {timer} сек.
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div

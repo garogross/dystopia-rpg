@@ -33,7 +33,6 @@ export const fetchRequest = async <Res, Body extends object = {}>(
   body: Body | null = null,
   config?: RequestInit
 ) => {
-
   config = config || (await authConfig());
 
   const filteredBody: Partial<Body> = {};
@@ -46,7 +45,6 @@ export const fetchRequest = async <Res, Body extends object = {}>(
       }
     }
   }
-
 
   const response = await fetch(`${baseUrl}${fetchUrl}`, {
     method: method,

@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./GamePlayArea.module.scss";
 import {
-  character1Image,
-  characterAvatarImage,
   gamePlayAreaBgImage,
-  npc1Image,
-  npcAvatarImage,
   positionPlaceImage,
 } from "../../../../assets/images";
 import { Game } from "../../../../canvasModels/Game";
 import { PositionPlace } from "../../../../canvasModels/PositionPlace";
-import TransitionProvider, {
-  TransitionStyleTypes,
-} from "../../../../providers/TransitionProvider";
-import HeadShotIcon from "../../../layout/icons/game/GamePlayArea/HeadShotIcon";
-import BodyShotIcon from "../../../layout/icons/game/GamePlayArea/BodyShotIcon";
-import FootShotIcon from "../../../layout/icons/game/GamePlayArea/FootShotIcon";
 import GamePlayAreaHeader from "../GamePlayAreaHeader/GamePlayAreaHeader";
-import { ICharacter } from "../../../../models/ICharacter";
 import GamePlayAreaFooter from "../GamePlayAreaFooter/GamePlayAreaFooter";
 import GamePlayAreaOrintationCheckModal from "../GamePlayAreaOrintationCheckModal/GamePlayAreaOrintationCheckModal";
 import GamePlayAreaLoader from "../GamePlayAreaLoader/GamePlayAreaLoader";
@@ -25,114 +14,68 @@ import { PositionLine } from "../../../../canvasModels/PositionLine";
 import GamePlayAreaStartGameModal from "../GamePlayAreaStartGameModal/GamePlayAreaStartGameModal";
 import { Character } from "../../../../canvasModels/Character";
 import GamePlayAreaGameOverModal from "../GamePlayAreaGameOverModal/GamePlayAreaGameOverModal";
+import { IBattle } from "../../../../models/IBattle";
+import {
+  activateBattle,
+  startBattleFight,
+  updateBattleSettings,
+} from "../../../../api/battle";
+import { ICharacter } from "../../../../models/ICharacter";
+import { useAppSelector } from "../../../../hooks/redux";
+import GamePlayAreaRivalMenu from "../GamePlayAreaRivalMenu/GamePlayAreaRivalMenu";
+import GamePlayAreaOwnedCharacterMenu from "../GamePlayAreaOwnedCharacterMenu/GamePlayAreaOwnedCharacterMenu";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../../providers/TransitionProvider";
+import { EHitZones } from "../../../../constants/EHitZones";
+import GamePlayAreaErrorModal from "../GamePlayAreaErrorModal/GamePlayAreaErrorModal";
+import { GameStatusType } from "../../../../types/GameStatusType";
+import { IBattleAction } from "../../../../models/IBattleAction";
+import {
+  checkLooserTeam,
+  generateGameCharactersArr,
+  generateOrder,
+} from "../../../../utils/battleUtils";
 
 type AddCharactersToPlacesArg = Parameters<
   PositionLine["addCharactersToPlaces"]
 >[0];
 
-const areaCourts: { left: ICharacter[]; right: ICharacter[] } = {
-  left: [
-    {
-      id: "1",
-      avatar: characterAvatarImage,
-      model: character1Image,
-      hearts: 100,
-      sheild: 100,
-      powerSheild: 100,
-      username: "Vasilisk48",
-      type: "striker",
-      owned: true,
-    },
-  ],
-  right: [
-    {
-      id: "2",
-      avatar: npcAvatarImage,
-      model: npc1Image,
-      hearts: 100,
-      sheild: 100,
-      powerSheild: 100,
-      username: "NPC1",
-      type: "shooter",
-    },
-
-    {
-      id: "3",
-      avatar: npcAvatarImage,
-      model: npc1Image,
-      hearts: 100,
-      sheild: 100,
-      powerSheild: 100,
-      username: "NPC2",
-      type: "shooter",
-    },
-
-    {
-      id: "4",
-      avatar: npcAvatarImage,
-      model: npc1Image,
-      hearts: 100,
-      sheild: 100,
-      powerSheild: 100,
-      username: "NPC3",
-      type: "shooter",
-    },
-  ],
-};
-
-const generateOrder = () => {
-  const orders: ICharacter[] = [];
-  const left = areaCourts.left;
-  const right = areaCourts.right;
-
-  const maxLen = Math.max(left.length, right.length);
-
-  for (let i = 0; i < maxLen; i++) {
-    const leftChar = left[i % left.length];
-    const rightChar = right[i % right.length];
-
-    orders.push(leftChar);
-    orders.push(rightChar);
-  }
-
-  return orders;
-};
-
-const generateGameCharactersArr = (side: keyof typeof areaCourts) => {
-  return areaCourts[side].reduce((acc, cur, index) => {
-    const lineIndex = Math.floor(index / 3);
-    const placeIndex = index % 3;
-    if (!acc[lineIndex]) acc[lineIndex] = [];
-    acc[lineIndex][placeIndex] = {
-      uuid: cur.id,
-      index: placeIndex,
-      image: cur.model,
-      type: cur.type,
-      owned: cur.owned,
-    };
-    return acc;
-  }, [] as AddCharactersToPlacesArg[]);
-};
-
-const orders = generateOrder();
+// theese variables will be come from props
+const gameType: IBattle["type"] = "pve";
+const locationId = "2";
 const GamePlayArea = () => {
+  const tgId = useAppSelector((state) => state.profile.tgId);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [game, setGame] = useState<Game | null>(null);
+  const [battle, setBattle] = useState<IBattle | null>(null);
   const [sizes, setSizes] = useState<[number, number]>([0, 0]);
   const [selectedPlace, setSelectedPlace] = useState<PositionPlace | null>(
     null
   );
   const [animating, setAnimating] = useState(false);
+  const [gameInited, setGameInited] = useState(false);
   const [timerPoused, setTimerPoused] = useState(false);
   const [loading, setLoading] = useState(true);
   const [gameStarted, setGameStarted] = useState(false);
-  const [gameOvered, setGameOvered] = useState(false);
+  const [gameStatus, setGameStatus] = useState<GameStatusType>("playing");
+  const [errored, setErrored] = useState(false);
   const [activeOrderIndex, setActiveOrderIndex] = useState(0);
-  const [characters, setCharacters] = useState(
-    Object.values(areaCourts).flatMap((item) => item)
-  );
+  const [round, setRound] = useState(1);
+  const [roundShowing, setRoundShowing] = useState(false);
+  const [defendZone, setDefendZone] = useState<EHitZones | null>(null);
+  const [hitZone, setHitZone] = useState<EHitZones | null>(null);
+  const [lastRoundActons, setLastRoundActons] = useState<IBattleAction[]>([]);
 
-  const curCharacter = characters.find((char) => char.owned);
+  const [orders, setOrders] = useState<ICharacter[] | null>(null);
+
+  const curCharacter = battle?.fighters.team1[tgId] || null;
+  const curCharObj = game?.getCharacterPlace();
+
+  const selectedPlaceBattleChar =
+    selectedPlace?.character && battle
+      ? battle?.fighters.team2[selectedPlace?.character.uuid]
+      : null;
 
   const updateCanvasSizes = () => {
     const width = canvasRef.current?.parentElement?.clientWidth || 0;
@@ -140,6 +83,28 @@ const GamePlayArea = () => {
 
     setSizes([width, height]);
   };
+
+  const startBattle = async (isRestart?: boolean) => {
+    try {
+      setErrored(false);
+      setLoading(true);
+
+      if (isRestart) game?.resetCharactersStatus();
+      const battle = await activateBattle(gameType, locationId);
+      setBattle(battle);
+      setRound(battle.battle_log.round);
+    } catch (error) {
+      console.error({ error });
+      setErrored(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    startBattle();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -154,11 +119,20 @@ const GamePlayArea = () => {
   }, [canvasRef, sizes]);
 
   useEffect(() => {
-    if (game) {
-      game.drawCourts();
+    if (!battle?.battle_id || !tgId) return;
 
-      const leftCharactersArr = generateGameCharactersArr("left");
-      const rightCharactersArr = generateGameCharactersArr("right");
+    setOrders(
+      generateOrder(battle.battle_log.turn_order, battle.fighters, tgId)
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [battle?.battle_id, tgId]);
+
+  useEffect(() => {
+    if (game && battle && tgId) {
+      game.drawCourts();
+      const { team1, team2 } = battle.fighters;
+      const leftCharactersArr = generateGameCharactersArr(team1, tgId);
+      const rightCharactersArr = generateGameCharactersArr(team2, tgId);
 
       const addCharactersToCourt = (
         charactersArr: AddCharactersToPlacesArg[],
@@ -176,27 +150,94 @@ const GamePlayArea = () => {
       addCharactersToCourt(rightCharactersArr, 1);
 
       game.removeEmptyPlacesFromCourtsLines();
+
       setTimeout(() => {
         game.hideLinesAndPlaces();
         setLoading(false);
       }, 300);
     }
-  }, [game]);
+  }, [battle, game, tgId]);
 
   useEffect(() => {
-    if (activeOrderIndex % 2 && game && curCharacter) {
+    if (
+      defendZone &&
+      hitZone &&
+      selectedPlace?.character &&
+      battle &&
+      curCharObj
+    ) {
+      (async () => {
+        try {
+          await updateBattleSettings(
+            battle?.battle_id,
+            curCharObj.line.positionIndex,
+            selectedPlace?.character!.uuid,
+            hitZone,
+            defendZone
+          );
+          const { battle_log, fighters } = await startBattleFight(
+            battle?.battle_id
+          );
+          setRound(battle_log.round);
+          if (battle_log.history) {
+            const lastRoundActions =
+              battle_log.history[battle_log.history.length - 1].actions;
+
+            setOrders(generateOrder(lastRoundActions, fighters, tgId));
+            const updatedActions =
+              battle_log.history[battle_log.history.length - 1].actions;
+            setLastRoundActons(updatedActions);
+            onAttackByOwnedChar(updatedActions);
+          }
+        } catch (error) {
+          setErrored(true);
+          console.error(error);
+        }
+      })();
+      setSelectedPlace(null);
+      setDefendZone(null);
+      setHitZone(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defendZone, hitZone, selectedPlace]);
+
+  useEffect(() => {
+    if (orders?.[activeOrderIndex].mob_name && game && curCharacter && orders) {
       const attackerObj = game.getCharacterPlace(orders[activeOrderIndex].id);
       const curCharObj = game.getCharacterPlace();
       const attackerChar = attackerObj?.place?.character;
       const curChar = curCharObj?.place?.character;
-      if (!attackerChar || !curChar) return;
+
+      if (attackerChar?.death) {
+        changeActiveOrderIndex();
+        return;
+      }
+
+      if (!attackerChar || !curChar || gameStatus !== "playing") return;
 
       (async () => {
         await onAttack(curChar, attackerChar);
       })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeOrderIndex]);
+  }, [activeOrderIndex, gameStatus]);
+
+  useEffect(() => {
+    (async () => {
+      if (activeOrderIndex === 0 && gameStarted && battle) {
+        setRoundShowing(true);
+        setTimeout(() => {
+          setRoundShowing(false);
+        }, 1000);
+
+        if (!gameInited) {
+          setGameInited(true);
+          return;
+        }
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeOrderIndex, gameStarted]);
 
   const onUpdateCanvas = () => {
     setLoading(true);
@@ -209,21 +250,28 @@ const GamePlayArea = () => {
     setGameStarted(true);
   };
   const onRestartGame = () => {
-    setGameOvered(false);
+    setGameStatus("playing");
     setTimerPoused(false);
     setActiveOrderIndex(0);
-
-    setCharacters(Object.values(areaCourts).flatMap((item) => item));
+    startBattle(true);
   };
 
   const changeActiveOrderIndex = () => {
+    if (!orders) return;
+
     setActiveOrderIndex((prevState) =>
-      prevState >= orders.length - 1 ? orders.length - 1 : prevState + 1
+      prevState >= orders.length - 1 ? 0 : prevState + 1
     );
   };
 
   const onClickCanvas = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!game || !game.courts || animating || !orders[activeOrderIndex].owned)
+    if (
+      !game ||
+      !game.courts ||
+      animating ||
+      !orders ||
+      !orders[activeOrderIndex].owned
+    )
       return;
     const canvasRect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - canvasRect.left;
@@ -232,7 +280,10 @@ const GamePlayArea = () => {
     const rightCourtPlaces = game.courts[1].lines.flatMap(
       (line) => line.places
     );
-    const curPlace = rightCourtPlaces.find((place) => place.checkTarget(x, y));
+    const curPlace = rightCourtPlaces.find(
+      (place) =>
+        place.checkTarget(x, y) && place.character && !place.character.death
+    );
 
     if (curPlace) {
       rightCourtPlaces.forEach((place) => place.hidePlace());
@@ -240,53 +291,58 @@ const GamePlayArea = () => {
 
       game.updateCanvas();
       setSelectedPlace(curPlace);
+      setHitZone(null);
     } else if (selectedPlace) {
+      // update after close modal
       setSelectedPlace(null);
+      game.updateCanvas();
     }
   };
 
-  const onAttack = async (rival: Character, attacker: Character) => {
-    if (!game) return;
+  const onAttack = async (
+    rival: Character,
+    attacker: Character,
+    lastRoundActionsAtr?: IBattleAction[]
+  ) => {
+    if (!game || !orders || !battle) return;
     setTimerPoused(true);
     setAnimating(true);
-    await game.attack(rival, attacker);
 
     // update character hearts
-    setCharacters((prevState) =>
-      prevState.map((char) => ({
-        ...char,
-        hearts: char.id === rival.uuid ? char.hearts - 20 : char.hearts,
-      }))
+    const actions = lastRoundActionsAtr || lastRoundActons;
+    // const updatedOrders = ordersAtr || orders
+    const battleCopy = { ...battle };
+
+    const curAction = actions.find(
+      (action) => action.attacker_id === attacker.uuid
     );
 
-    changeActiveOrderIndex();
-    setSelectedPlace(null);
+    if (!curAction) return;
+    battleCopy.fighters[curAction.target_team][
+      curAction.target_id
+    ].battle_parameters.max_hp = curAction.after_hp;
+
+    await game.attack(rival, attacker, curAction.damage);
+    // update battle
+    setBattle(battleCopy);
     setAnimating(false);
-    if (activeOrderIndex < orders.length - 1) {
-      setTimerPoused(false);
+
+    const hasLooser = checkLooserTeam(battleCopy, game);
+
+    if (hasLooser.some((item) => item)) {
+      setGameStatus(hasLooser[0] ? "loose" : "win");
     } else {
-      setGameOvered(true);
+      changeActiveOrderIndex();
+      setTimerPoused(false);
     }
   };
-  const onAttackByOwnedChar = () => {
+  const onAttackByOwnedChar = async (actions: IBattleAction[]) => {
     if (!game || !selectedPlace?.character) return;
     const char = selectedPlace.character;
     const curCharObj = game.getCharacterPlace();
     if (!curCharObj?.place?.character) return;
     const curChar = curCharObj.place.character;
-    (async () => {
-      await onAttack(char, curChar);
-    })();
-  };
-
-  const sharacterMenuPositionStyles = {
-    top:
-      (canvasRef.current?.getBoundingClientRect().top || 0) +
-      (selectedPlace?.character?.y || 0) +
-      (selectedPlace?.character?.height || 0) / 2,
-    left:
-      (canvasRef.current?.getBoundingClientRect().left || 0) +
-      (selectedPlace?.character?.x || 0),
+    await onAttack(char, curChar, actions);
   };
 
   return (
@@ -318,54 +374,52 @@ const GamePlayArea = () => {
           style={{ visibility: "hidden", position: "absolute" }}
         />
         <TransitionProvider
-          className={styles.gamePlayArea__characterMenu}
-          style={TransitionStyleTypes.opacity}
-          inProp={!!selectedPlace && !animating}
-          duration={100}
+          style={TransitionStyleTypes.zoomInOut}
+          className={styles.gamePlayArea__roundTextWrapper}
+          inProp={roundShowing}
         >
-          <div
-            style={sharacterMenuPositionStyles}
-            className={styles.gamePlayArea__characterMenuMain}
-          >
-            <button
-              className={styles.gamePlayArea__characterMenuBtn}
-              onClick={onAttackByOwnedChar}
-            >
-              <div className={styles.gamePlayArea__characterMenuBtnInner}>
-                <HeadShotIcon />
-              </div>
-            </button>
-            <button
-              onClick={onAttackByOwnedChar}
-              className={styles.gamePlayArea__characterMenuBtn}
-            >
-              <div className={styles.gamePlayArea__characterMenuBtnInner}>
-                <BodyShotIcon />
-              </div>
-            </button>
-            <button
-              onClick={onAttackByOwnedChar}
-              className={styles.gamePlayArea__characterMenuBtn}
-            >
-              <div className={styles.gamePlayArea__characterMenuBtnInner}>
-                <FootShotIcon />
-              </div>
-            </button>
-          </div>
+          <span>Раунд {round}</span>
         </TransitionProvider>
+
+        <GamePlayAreaRivalMenu
+          show={!!selectedPlace && !animating && !hitZone}
+          canvasRect={canvasRef.current?.getBoundingClientRect()}
+          selectedPlace={selectedPlace}
+          onClick={(zone) => setHitZone(zone)}
+          hp={selectedPlaceBattleChar?.battle_parameters.max_hp || 0}
+          damage={selectedPlaceBattleChar?.parameters?.damage || 0}
+          sheildPower={selectedPlaceBattleChar?.parameters?.shield_power || 0}
+        />
+        <GamePlayAreaOwnedCharacterMenu
+          show={
+            !!orders?.[activeOrderIndex].owned &&
+            !animating &&
+            gameStarted &&
+            !defendZone
+          }
+          canvasRect={canvasRef.current?.getBoundingClientRect()}
+          selectedPlace={curCharObj?.place || null}
+          onclick={(zone) => setDefendZone(zone)}
+        />
       </section>
       <GamePlayAreaFooter
+        gameType={gameType}
         gameStarted={gameStarted}
         timerPoused={timerPoused}
         onEnd={changeActiveOrderIndex}
-        ordersEnded={activeOrderIndex === orders.length - 1}
+        ordersEnded={!!orders && activeOrderIndex === orders?.length - 1}
+        isOurStep={!!orders?.[activeOrderIndex].owned}
       />
       {game && (
         <GamePlayAreaOrintationCheckModal updateCanvas={onUpdateCanvas} />
       )}
       <GamePlayAreaLoader loading={loading} />
       <GamePlayAreaStartGameModal show={!gameStarted} onStart={onStartGame} />
-      <GamePlayAreaGameOverModal show={gameOvered} onReStart={onRestartGame} />
+      <GamePlayAreaGameOverModal
+        gameStatus={gameStatus}
+        onReStart={onRestartGame}
+      />
+      <GamePlayAreaErrorModal show={errored} onRestart={startBattle} />
     </div>
   );
 };

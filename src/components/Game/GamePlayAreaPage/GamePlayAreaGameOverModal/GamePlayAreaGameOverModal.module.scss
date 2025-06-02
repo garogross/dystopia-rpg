@@ -22,6 +22,7 @@
   }
   &__title {
     @include setFont(14px, 400);
+    text-align: center;
   }
   &__btnsWrapper {
     @include flexCol();
@@ -48,12 +49,12 @@
   &__backBtn &__btnInner {
     clip-path: polygon(0% 0%, 90% 0%, 100% 20%, 100% 100%, 10% 100%, 0% 80%);
   }
-  
+
   &__backBtn &__btnInner {
     background: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
     color: $color-black;
   }
-  
+
   &__restartBtn,
   &__restartBtn &__btnInner {
     clip-path: polygon(10% 0%, 100% 0%, 100% 80%, 90% 100%, 0% 100%, 0% 20%);

@@ -14,24 +14,38 @@ export interface ProfileState {
   id: string;
   tgId: string;
   token: string;
+  username: string;
 }
+
+const initUserData =
+  process.env.NODE_ENV === "development"
+    ? {
+        token: process.env.REACT_APP_TEST_TOKEN || "",
+        username: process.env.REACT_APP_TEST_USERNAME || "",
+        tgId: process.env.REACT_APP_TEST_TG_ID || "",
+      }
+    : {
+        token: "",
+        username: "",
+        tgId: "",
+      };
 
 const initialState: ProfileState = {
   id: "",
-  tgId: "",
-  token:
-    process.env.NODE_ENV === "development"
-      ? (process.env.REACT_APP_TEST_TOKEN as string)
-      : "",
+  ...initUserData,
 };
 
 export const authUser = createAsyncThunk<AuthUserResponse, string>(
   "profile/authUser",
   async (payload, { rejectWithValue }) => {
     try {
-      const resData = await fetchRequest<AuthUserResponse>(authUserUrl, "POST", {
-        initData: payload,
-      });
+      const resData = await fetchRequest<AuthUserResponse>(
+        authUserUrl,
+        "POST",
+        {
+          initData: payload,
+        }
+      );
 
       if (resData.token) {
         setLSItem(lsProps.token, resData.token);
@@ -56,7 +70,8 @@ export const profileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(authUser.fulfilled, (state, { payload }) => {
-     state.token = payload.token
+      state.token = payload.token;
+      state.username = payload.user.username;
     });
   },
 });

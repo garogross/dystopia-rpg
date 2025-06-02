@@ -8,23 +8,27 @@ import GamePlayAreaHeaderSettingsIcon from "../../../layout/icons/game/GamePlayA
 import PowerSheildIcon from "../../../layout/icons/game/GamePlayArea/GamePlayAreaHeader/PowerSheildIcon";
 import { ICharacter } from "../../../../models/ICharacter";
 import GamePlayAreaHeaderLogArrowsIcon from "../../../layout/icons/game/GamePlayArea/GamePlayAreaHeader/GamePlayAreaHeaderLogArrowsIcon";
+import { getCharacterModel } from "../../../../utils/getCharacterModel";
+import { useAppSelector } from "../../../../hooks/redux";
 
 const ORDER_ITEM_WIDTH = 20;
 const ORDERS_GAP = 6;
 
 interface Props {
-  characters: ICharacter[];
+  characters: ICharacter[] | null;
   activeOrderIndex: number;
-  curCharacter: ICharacter | undefined;
+  curCharacter: ICharacter | null;
 }
 
 const GamePlayAreaHeader: React.FC<Props> = ({
   characters,
   activeOrderIndex,
-  curCharacter
+  curCharacter,
 }) => {
+  const username = useAppSelector((state) => state.profile.username);
 
-  if (!curCharacter) return null;
+  if (!curCharacter || !characters) return null;
+  const model = getCharacterModel(curCharacter.modelId);
 
   return (
     <header className={styles.gamePlayAreaHeader}>
@@ -34,7 +38,7 @@ const GamePlayAreaHeader: React.FC<Props> = ({
         >
           <div className={styles.gamePlayAreaHeader__avatarImgInner}>
             <img
-              src={curCharacter.avatar}
+              src={model.avatar}
               alt="avatar"
               className={styles.gamePlayAreaHeader__avatarImg}
             />
@@ -43,25 +47,25 @@ const GamePlayAreaHeader: React.FC<Props> = ({
         <div className={styles.gamePlayAreaHeader__curCharInner}>
           <div className={styles.gamePlayAreaHeader__curCharInfo}>
             <h6 className={styles.gamePlayAreaHeader__curCharNameText}>
-              {curCharacter.username}
+              {username}
             </h6>
             <div className={styles.gamePlayAreaHeader__curCharDetails}>
               <div className={styles.gamePlayAreaHeader__curCharDetailItem}>
                 <HeartIcon />
                 <h4 className={styles.gamePlayAreaHeader__curCharDetailsText}>
-                  {curCharacter.hearts}%
+                  {curCharacter.battle_parameters.max_hp || 0}
                 </h4>
               </div>
               <div className={styles.gamePlayAreaHeader__curCharDetailItem}>
                 <SheildIcon />
                 <h4 className={styles.gamePlayAreaHeader__curCharDetailsText}>
-                  {curCharacter.sheild}%
+                  {curCharacter.parameters?.damage || 0}
                 </h4>
               </div>
               <div className={styles.gamePlayAreaHeader__curCharDetailItem}>
                 <PowerSheildIcon />
                 <h4 className={styles.gamePlayAreaHeader__curCharDetailsText}>
-                  {curCharacter.powerSheild}%
+                  {curCharacter.parameters?.shield_power || 0}
                 </h4>
               </div>
             </div>
@@ -113,7 +117,7 @@ const GamePlayAreaHeader: React.FC<Props> = ({
                 className={styles.gamePlayAreaHeader__statusPanelOrderItem}
               >
                 <img
-                  src={item.avatar}
+                  src={getCharacterModel(item.modelId, !!item.mob_name).avatar}
                   alt="avatar"
                   className={styles.gamePlayAreaHeader__statusPanelOrderItemImg}
                 />
@@ -131,7 +135,9 @@ const GamePlayAreaHeader: React.FC<Props> = ({
         <div className={styles.gamePlayAreaHeader__statusPanelLogs}>
           <div className={styles.gamePlayAreaHeader__statusPanelLogsInner}>
             <span className={styles.gamePlayAreaHeader__statusPanelLogsText}>
-              1.Vasilisk48
+              {characters[activeOrderIndex].owned
+                ? username
+                : characters[activeOrderIndex]?.mob_name || ""}
             </span>
             <GamePlayAreaHeaderLogArrowsIcon />
           </div>

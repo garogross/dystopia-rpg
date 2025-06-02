@@ -72,13 +72,14 @@ export class PositionPlace {
     type: Character["type"],
     owned?: boolean,
     uuid?: string,
+    death?: boolean
   ) {
     const ctx = this.context;
     if (!ctx) return;
     const y = this.y + this.height / 2;
 
     if (this.character) {
-      this.character.update(this.x, y, this.width, characterImage);
+      this.character.update(this.x, y, this.width, characterImage, death);
     } else {
       this.character = new Character(
         this.x,
@@ -88,7 +89,8 @@ export class PositionPlace {
         type,
         this.inSide,
         owned,
-        uuid
+        uuid,
+        death
       );
     }
     this.character.draw(ctx);

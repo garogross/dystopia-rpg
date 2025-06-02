@@ -1,11 +1,12 @@
 import { v4 } from "uuid";
 import { explodeImage, shotImage, slapImage } from "../assets/images";
 import { BaseCourt } from "./BaseCourt";
-import { ICharacter } from "../models/ICharacter";
+import { ICharacterModel } from "../models/ICharacterModel";
 const MOVE_SPEED = 6;
 const SLAPPING_SPEED = 0.1;
 const HURTING_SPEED = 0.05;
 const EXPLODING_SPEED = 0.1;
+const DEATH_SPEED = 0.1;
 
 const SHOTING_SPEED = 0.1;
 const SHOTING_SLIDE_LEFT_DISTANCE = 0.1;
@@ -30,14 +31,14 @@ export class Character {
   image: string;
   imgElement: HTMLImageElement;
   owned: boolean;
-  type: ICharacter["type"];
+  type: ICharacterModel["type"];
   inSide: BaseCourt["side"];
 
   slapping: boolean = false;
   slappingProgress: number = 0;
   removeSlappingProgress: number = 0;
 
-  hurting: boolean = false;
+  hurtingValue: null | number = null;
   hurtingProgress: number = 0;
 
   shooting: boolean = false;
@@ -45,6 +46,9 @@ export class Character {
 
   exploding: boolean = false;
   explodingProgress: number = 0;
+
+  death: boolean = false;
+  deathProgress: number = 0;
 
   constructor(
     x: number,
@@ -54,7 +58,8 @@ export class Character {
     type: Character["type"],
     inSide: Character["inSide"],
     owned?: boolean,
-    uuid?: string
+    uuid?: string,
+    death?: boolean
   ) {
     this.uuid = uuid || v4();
     this.x = x;
@@ -71,23 +76,47 @@ export class Character {
     const img = new Image();
     img.src = this.image;
     this.imgElement = img;
+
+    if (death) {
+      this.death = true;
+      this.deathProgress = 1;
+    }
   }
 
   draw(context: CanvasRenderingContext2D) {
+    context.save();
     context.imageSmoothingEnabled = true;
 
-    context.drawImage(
-      this.imgElement,
-      this.dX,
-      this.dY,
-      this.width,
-      this.height
-    );
+    if (this.death) {
+      // Rotate from 0deg to 90deg (in radians: 0 to Math.PI/2) based on deathProgress
+      const angle = (Math.PI / 2) * this.deathProgress;
+      // Transform origin: bottom center
+      const cx = this.dX + this.width / 2;
+      const cy = this.dY + this.height;
+
+      context.translate(cx, cy);
+      // Rotate left (counter-clockwise) if inSide is "left", right (clockwise) if "right"
+
+      context.rotate(this.inSide === "left" ? -angle : angle);
+      context.translate(-this.width / 2, -this.height);
+
+      context.drawImage(this.imgElement, 0, 0, this.width, this.height);
+    } else {
+      context.drawImage(
+        this.imgElement,
+        this.dX,
+        this.dY,
+        this.width,
+        this.height
+      );
+    }
+
+    context.restore();
 
     if (this.slapping) {
       this.drawSlap(context);
     }
-    if (this.hurting) this.drawHurt(context);
+    if (this.hurtingValue) this.drawHurt(context);
     if (this.shooting) this.drawShot(context);
     if (this.exploding) this.drawExplode(context);
   }
@@ -132,7 +161,7 @@ export class Character {
     context.font = `Bold ${this.width * 0.3}px DS_Army`;
     context.fillStyle = "#650000";
     context.textAlign = "center";
-    context.fillText("-20%", this.dX + this.width / 2, textY);
+    context.fillText(`-${this.hurtingValue}`, this.dX + this.width / 2, textY);
     context.restore();
   }
 
@@ -188,7 +217,7 @@ export class Character {
     context.restore();
   }
 
-  update(x: number, y: number, size: number, image: string) {
+  update(x: number, y: number, size: number, image: string, death?: boolean) {
     const yPos = y - size;
     const isPositionUpdated = x !== this.x || yPos !== this.y;
     this.x = x;
@@ -200,6 +229,11 @@ export class Character {
       this.height = size;
     }
     this.image = image;
+
+    if (death) {
+      this.death = true;
+      this.deathProgress = 1;
+    }
   }
 
   move(size: number, targetX: number, targetY: number) {
@@ -240,15 +274,15 @@ export class Character {
     this.removeSlappingProgress = 0;
   }
 
-  updateHurting() {
-    this.hurting = true;
+  updateHurting(value: number) {
+    this.hurtingValue = value;
     if (this.hurtingProgress < 1) {
       this.hurtingProgress += HURTING_SPEED;
     }
   }
 
   resetHurting() {
-    this.hurting = false;
+    this.hurtingValue = null;
     this.hurtingProgress = 0;
   }
 
@@ -281,5 +315,25 @@ export class Character {
   resetExploding() {
     this.exploding = false;
     this.explodingProgress = 0;
+  }
+  updateDeathProcess() {
+    this.death = true;
+    if (this.deathProgress < 1) {
+      this.deathProgress = +(this.deathProgress + DEATH_SPEED).toFixed(1);
+    } else {
+      this.deathProgress = 1;
+    }
+  }
+
+  resetDeathProcess() {
+    this.deathProgress = 0;
+  }
+
+  resetAllStatuses() {
+    this.resetSlapping();
+    this.resetHurting();
+    this.resetShoting();
+    this.resetExploding();
+    this.resetDeathProcess();
   }
 }

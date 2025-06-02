@@ -62,11 +62,13 @@
   }
   &__statusPanel {
     width: 136px;
+    height: 56px;
     padding: 1.5px;
     background-color: $color-primary;
   }
   &__statuPannelInner {
     width: 100%;
+    height: 100%;
     padding: 6px;
     @include flexCol();
     flex-direction: column;

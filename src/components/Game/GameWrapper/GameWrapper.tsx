@@ -7,10 +7,11 @@ import BottomNavbar from "../BottomNavbar/BottomNavbar";
 import { authUser } from "../../../store/slices/profileSlice";
 import { useTelegram } from "../../../hooks/useTelegram";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { useImageLoader } from "../../../hooks/useImageLoader";
 import AppLoader from "../../AppLoader/AppLoader";
 import { setGameInited } from "../../../store/slices/uiSlice";
 import eruda from "eruda";
+import { setLSItem } from "../../../helpers/localStorage";
+import { lsProps } from "../../../utils/lsProps";
 
 interface Props {}
 
@@ -18,7 +19,7 @@ const GameWrapper: React.FC<Props> = (props) => {
   const tg = useTelegram();
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.profile.token);
-  const imagesLoading = useImageLoader();
+  const imagesLoading = false; // useImageLoader();
   const [loading, setLoading] = useState(true);
   const [loaderTimerFinished, setLoaderTimerFinished] = useState(false);
 
@@ -63,12 +64,17 @@ const GameWrapper: React.FC<Props> = (props) => {
       }
     };
     fetchData(tg.initData);
+    if (tg.initData) {
+    } else if (process.env.NODE_ENV === "development") {
+      const testToken = process.env.REACT_APP_TEST_TOKEN;
+      if (!testToken) return;
+      setLSItem(lsProps.token, process.env.REACT_APP_TEST_TOKEN);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-
     if (token) {
       const wsUrl = `${process.env.REACT_APP_SOCKET_URL}?token=${token}`;
 
