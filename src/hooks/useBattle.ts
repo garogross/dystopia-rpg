@@ -114,7 +114,7 @@ export const useBattle = ({
           }
         });
       };
-      console.log({ rightCharactersArr });
+      console.log({ rightCharactersArr, leftCharactersArr });
 
       addCharactersToCourt(leftCharactersArr, 0);
       addCharactersToCourt(rightCharactersArr, 1);
