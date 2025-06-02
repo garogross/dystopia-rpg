@@ -95,6 +95,8 @@ export const useBattle = ({
   }, [battle?.battle_id, battle?.fighters, tgId]);
 
   useEffect(() => {
+    console.log(game, battle, tgId);
+
     if (game && battle && tgId) {
       game.drawCourts();
       const { team1, team2 } = battle.fighters;
