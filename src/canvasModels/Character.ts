@@ -327,6 +327,7 @@ export class Character {
 
   resetDeathProcess() {
     this.deathProgress = 0;
+    this.death = false;
   }
 
   resetAllStatuses() {
