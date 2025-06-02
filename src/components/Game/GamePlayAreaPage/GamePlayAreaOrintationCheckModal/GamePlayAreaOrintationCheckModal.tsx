@@ -10,7 +10,8 @@ interface Props {
 }
 
 const checkOrientation = () =>
-  window.screen.orientation.type.includes("landscape");
+  window.screen?.orientation &&
+  window.screen?.orientation.type.includes("landscape");
 
 const GamePlayAreaOrintationCheckModal: React.FC<Props> = ({
   updateCanvas,
@@ -24,10 +25,10 @@ const GamePlayAreaOrintationCheckModal: React.FC<Props> = ({
       setIsOrintationLanscape(checkOrientation());
       updateCanvas();
     };
-    window.screen.orientation.addEventListener("change", onOrientationUpdate);
+    window.screen.orientation?.addEventListener("change", onOrientationUpdate);
 
     return () => {
-      window.screen.orientation.removeEventListener(
+      window.screen.orientation?.removeEventListener(
         "change",
         onOrientationUpdate
       );
