@@ -76,9 +76,6 @@ const GamePlayArea = () => {
     onSelectPlace: (place) => onSelectPlace(place), // Pass a setter
   });
 
-  // Update selectedPlace in useBattle based on canvas clicks
-  console.log({ selectedPlace });
-
   return (
     <div
       className={styles.gamePlayArea}

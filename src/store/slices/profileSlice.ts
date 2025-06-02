@@ -72,6 +72,8 @@ export const profileSlice = createSlice({
     builder.addCase(authUser.fulfilled, (state, { payload }) => {
       state.token = payload.token;
       state.username = payload.user.username;
+      state.tgId = payload.user.id_tgrm;
+      state.username = payload.user.username;
     });
   },
 });

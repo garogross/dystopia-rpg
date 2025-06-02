@@ -67,7 +67,6 @@ export const useBattle = ({
       try {
         setErrored(false);
         setLoading(true);
-        console.log("isRestart", isRestart, game);
 
         if (isRestart) game?.resetCharactersStatus(); // Reset character status on canvas
         const battleData = await activateBattle(gameType, locationId);
@@ -122,7 +121,8 @@ export const useBattle = ({
         setLoading(false);
       }, 300);
     }
-  }, [battle, game, tgId, setLoading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [battle, game, tgId]);
 
   const handleAttack = useCallback(
     async (

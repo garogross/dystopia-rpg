@@ -43,20 +43,6 @@ export const useCanvasGame = ({
   }, [canvasRef, sizes]);
 
   const onClickCanvas = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    console.log("onClickCanvas");
-
-    if (!game) {
-      console.log("No game instance");
-    }
-    if (!game?.courts) {
-      console.log("No courts in game");
-    }
-    if (animating) {
-      console.log("Animation in progress");
-    }
-    if (!isOurStep) {
-      console.log("Not our step");
-    }
     if (!game || !game.courts || animating || !isOurStep) return;
 
     const canvasRect = e.currentTarget.getBoundingClientRect();
@@ -70,7 +56,6 @@ export const useCanvasGame = ({
       (place) =>
         place.checkTarget(x, y) && place.character && !place.character.death
     );
-    console.log({ rightCourtPlaces, x, y });
 
     if (curPlace) {
       rightCourtPlaces.forEach((place) => place.hidePlace());
