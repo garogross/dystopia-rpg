@@ -11,7 +11,7 @@ type AddCharactersToPlacesArg = Parameters<
 export const generateOrder = (
   orderInitials: IBattleAction[] | IBattle["battle_log"]["turn_order"],
   fighters: IBattle["fighters"],
-  tgId: string
+  tgId: string | number
 ) => {
   if (!orderInitials) return [];
 
@@ -28,14 +28,14 @@ export const generateOrder = (
     }
     return {
       ...allFighters[id],
-      owned: id === tgId,
+      owned: id === tgId.toString(),
     };
   });
 };
 
 export const generateGameCharactersArr = (
   characters: IBattle["fighters"]["team1"],
-  tgId: string
+  tgId: string | number
 ) => {
   return Object.keys(characters).reduce((acc, cur, index) => {
     const lineIndex = Math.floor(index / 3);
@@ -49,7 +49,7 @@ export const generateGameCharactersArr = (
       index: placeIndex,
       image: model.modelAsset,
       type: model.type,
-      owned: cur === tgId,
+      owned: cur === tgId.toString(),
       death: !char.battle_parameters.max_hp,
     };
     return acc;

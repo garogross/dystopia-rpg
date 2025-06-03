@@ -90,7 +90,11 @@ export const useBattle = ({
   useEffect(() => {
     if (!battle?.battle_id || !tgId) return;
     setOrders(
-      generateOrder(battle.battle_log.turn_order, battle.fighters, tgId)
+      generateOrder(
+        battle.battle_log.turn_order,
+        battle.fighters,
+        tgId.toString()
+      )
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [battle?.battle_id, battle?.fighters, tgId]);

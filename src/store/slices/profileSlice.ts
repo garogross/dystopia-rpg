@@ -12,7 +12,7 @@ const authUserUrl = "/auth";
 
 export interface ProfileState {
   id: string;
-  tgId: string;
+  tgId: string | number;
   token: string;
   username: string;
 }
