@@ -32,8 +32,8 @@ const GameWrapper: React.FC<Props> = (props) => {
     // open fullscreen
 
     if (process.env.NODE_ENV === "development") {
+      eruda.init();
     }
-    eruda.init();
 
     tg.expand();
     if (tg.isVersionAtLeast("8.0")) {
