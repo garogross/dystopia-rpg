@@ -28,7 +28,6 @@ const locationId = "2";
 
 const GamePlayArea = () => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-
   // Local state for animation and loading, shared with hooks
   const [animating, setAnimating] = useState(false);
   const [loading, setLoading] = useState(true);

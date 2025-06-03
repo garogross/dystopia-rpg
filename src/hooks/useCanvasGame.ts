@@ -1,6 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { Game } from "../canvasModels/Game"; // Adjust path
 import { PositionPlace } from "../canvasModels/PositionPlace"; // Adjust path
+import { useImageLoader } from "./useImageLoader";
+import {
+  character1Image,
+  explodeImage,
+  npc1Image,
+  shotImage,
+  slapImage,
+} from "../assets/images";
 
 interface UseCanvasGameProps {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -21,6 +29,14 @@ export const useCanvasGame = ({
   isOurStep,
   onSelectPlace,
 }: UseCanvasGameProps) => {
+  const imagesLoading = useImageLoader([
+    explodeImage,
+    shotImage,
+    slapImage,
+    character1Image,
+    npc1Image,
+  ]);
+
   const [sizes, setSizes] = useState<[number, number]>([0, 0]);
 
   const updateCanvasSizes = useCallback(() => {
@@ -36,11 +52,11 @@ export const useCanvasGame = ({
   }, [canvasRef, updateCanvasSizes]);
 
   useEffect(() => {
-    if (sizes.every((size) => size) && canvasRef.current) {
+    if (!imagesLoading && sizes.every((size) => size) && canvasRef.current) {
       initGame(new Game(canvasRef.current));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canvasRef, sizes]);
+  }, [canvasRef, sizes, imagesLoading]);
 
   const onClickCanvas = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!game || !game.courts || animating || !isOurStep) return;

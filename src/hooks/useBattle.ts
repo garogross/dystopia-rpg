@@ -76,7 +76,7 @@ export const useBattle = ({
         console.error({ error });
         setErrored(true);
       } finally {
-        setLoading(false);
+        if (isRestart) setLoading(false);
       }
     },
     [game, gameType, locationId, setErrored, setLoading]
@@ -84,7 +84,8 @@ export const useBattle = ({
 
   useEffect(() => {
     startBattle();
-  }, [startBattle]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!battle?.battle_id || !tgId) return;
