@@ -102,13 +102,15 @@ export class Character {
 
       context.drawImage(this.imgElement, 0, 0, this.width, this.height);
     } else {
-      context.drawImage(
-        this.imgElement,
-        this.dX,
-        this.dY,
-        this.width,
-        this.height
-      );
+      context.fillStyle = "#cccccc";
+      context.fillRect(this.dX, this.dY, this.width, this.height);
+      // context.drawImage(
+      //   this.imgElement,
+      //   this.dX,
+      //   this.dY,
+      //   this.width,
+      //   this.height
+      // );
     }
 
     context.restore();
