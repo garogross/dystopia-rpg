@@ -74,22 +74,7 @@ const GamePlayArea = () => {
     isOurStep: !!orders?.[activeOrderIndex]?.owned, // A bit hacky, improve passing this
     onSelectPlace: (place) => onSelectPlace(place), // Pass a setter
   });
-  console.log({ orders, activeOrderIndex });
-  console.log(
-    "Owned:",
-    !!orders?.[activeOrderIndex]?.owned,
-    "Animating:",
-    !animating,
-    "GameStarted:",
-    gameStarted,
-    "NoDefendZone:",
-    !defendZone,
-    "Result:",
-    !!orders?.[activeOrderIndex]?.owned &&
-      !animating &&
-      gameStarted &&
-      !defendZone
-  );
+
   return (
     <div
       className={styles.gamePlayArea}

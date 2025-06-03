@@ -4,7 +4,7 @@ import {
   startBattleFight,
   updateBattleSettings,
 } from "../api/battle";
-import { useAppSelector } from "../hooks/redux"; // Assuming this is correct path
+import { useAppDispatch, useAppSelector } from "../hooks/redux"; // Assuming this is correct path
 import {
   checkLooserTeam,
   generateGameCharactersArr,
@@ -19,6 +19,8 @@ import { ICharacter } from "../models/ICharacter";
 import { PositionLine } from "../canvasModels/PositionLine";
 import { PositionPlace } from "../canvasModels/PositionPlace";
 import { Character } from "../canvasModels/Character";
+import { authUser } from "../store/slices/profileSlice";
+import { useTelegram } from "./useTelegram";
 
 type AddCharactersToPlacesArg = Parameters<
   PositionLine["addCharactersToPlaces"]
@@ -43,7 +45,9 @@ export const useBattle = ({
   setAnimating,
   setTimerPoused,
 }: UseBattleProps) => {
+  const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
+  const tg = useTelegram();
 
   const [battle, setBattle] = useState<IBattle | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
@@ -83,7 +87,12 @@ export const useBattle = ({
   );
 
   useEffect(() => {
-    startBattle();
+    (async () => {
+      if (!tgId) {
+        await dispatch(authUser(tg.initData));
+      }
+      startBattle();
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -100,8 +109,6 @@ export const useBattle = ({
   }, [battle?.battle_id, battle?.fighters, tgId]);
 
   useEffect(() => {
-    console.log(game, battle, tgId);
-
     if (game && battle && tgId) {
       game.drawCourts();
       const { team1, team2 } = battle.fighters;
@@ -119,7 +126,6 @@ export const useBattle = ({
           }
         });
       };
-      console.log({ rightCharactersArr, leftCharactersArr });
 
       addCharactersToCourt(leftCharactersArr, 0);
       addCharactersToCourt(rightCharactersArr, 1);
