@@ -61,6 +61,21 @@ export const useCanvasGame = ({
   const onClickCanvas = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!game || !game.courts || animating || !isOurStep) return;
 
+    if (game) {
+      console.log("Game is not initialized");
+    }
+    if (game.courts) {
+      console.log("Game courts are missing");
+    }
+    if (animating) {
+      console.log("Animation in progress");
+    }
+    if (!isOurStep) {
+      console.log("Not our step");
+    }
+
+    console.log({ imagesLoading });
+
     const canvasRect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - canvasRect.left;
     const y = e.clientY - canvasRect.top;
