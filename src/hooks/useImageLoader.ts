@@ -1,4 +1,4 @@
-import * as allImages from "../assets/images";
+import * as allImages from "../assets/imageMaps";
 import { useEffect, useState } from "react";
 import { preloadImages } from "../helpers/preloadImages";
 

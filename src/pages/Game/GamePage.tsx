@@ -1,9 +1,7 @@
-import GameWrapper from '../../components/Game/GameWrapper/GameWrapper'
+import RPGGameWrapper from "../../components/RPGGame/RPGGameWrapper/RPGGameWrapper";
 
-const GamePage = () => {
-  return (
-   <GameWrapper/>
-  )
-}
+const RPGGamePage = () => {
+  return <RPGGameWrapper />;
+};
 
-export default GamePage
+export default RPGGamePage;

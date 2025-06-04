@@ -1,9 +1,7 @@
-import React from 'react'
-import GameReferalsMain from '../../components/Game/GameReferalsPage/GameReferalsMain/GameReferalsMain'
-const GameReferalsPage = () => {
-  return (
-    <GameReferalsMain />
-  )
-}
+import React from "react";
+import RPGGameReferalsMain from "../../components/RPGGame/RPGGameReferalsPage/RPGGameReferalsMain/RPGGameReferalsMain";
+const RPGGameReferalsPage = () => {
+  return <RPGGameReferalsMain />;
+};
 
-export default GameReferalsPage
+export default RPGGameReferalsPage;

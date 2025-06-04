@@ -1,10 +1,8 @@
 import React from "react";
-import GameCharacterWrapper from "../../components/Game/GameCharacterPage/GameCharacterWrapper/GameCharacterWrapper";
+import RPGGameCharacterWrapper from "../../components/RPGGame/RPGGameCharacterPage/RPGGameCharacterWrapper/RPGGameCharacterWrapper";
 
-const GameCharacterPage: React.FC = () => {
-  return (
-    <GameCharacterWrapper/>
-  );
+const RPGGameCharacterPage: React.FC = () => {
+  return <RPGGameCharacterWrapper />;
 };
 
-export default GameCharacterPage;
+export default RPGGameCharacterPage;

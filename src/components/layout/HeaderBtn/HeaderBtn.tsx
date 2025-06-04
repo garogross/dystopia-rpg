@@ -1,8 +1,7 @@
 import React from "react";
 
 import styles from "./HeaderBtn.module.scss";
-import InfoIcon from "../icons/game/Common/InfoIcon";
-import CloseIcon from "../icons/game/Common/CloseIcon";
+import {InfoIcon,CloseIcon} from "../icons/RPGGame/Common";
 
 interface Props {
   className?: string;
@@ -12,7 +11,7 @@ interface Props {
 
 const HeaderBtn: React.FC<Props> = ({ className, onClick, type }) => {
   let icon = null;
-  
+
   switch (type) {
     case "info":
       icon = <InfoIcon />;

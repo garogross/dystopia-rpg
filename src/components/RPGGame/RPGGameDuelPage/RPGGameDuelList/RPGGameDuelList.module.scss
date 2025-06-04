@@ -1,0 +1,91 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.rpgGameDuelList {
+  padding-top: 30px;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  height: 100%;
+
+  &__main {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 35px;
+    width: 100%;
+    overflow-y: auto;
+  }
+  &__item {
+    width: 100%;
+  }
+
+  &__itemImages {
+    @include flexCol();
+    gap: 8px;
+    margin-bottom: 2px;
+  }
+
+  &__link {
+    flex: 1;
+    &:nth-child(1) {
+      animation: fadeFromLeft 0.5s linear 1;
+    }
+    &:nth-child(2) {
+      animation: fadeFromRight 0.5s linear 1;
+    }
+  }
+  &__imgWrapper {
+    position: relative;
+    aspect-ratio: 172/105;
+  }
+  &__img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-blend-mode: overlay;
+    background-color: rgba(5, 18, 21, 0.5);
+  }
+
+  &__itemImageText {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    @include setFont(14px, 400, $font-fam-h3);
+  }
+
+  &__link:nth-child(1) &__itemImageText {
+    right: 0;
+    left: 7px;
+  }
+
+  &__itemWings {
+    width: 100%;
+  }
+  &__footer {
+    width: 100%;
+    margin-bottom: 13px;
+  }
+}
+
+@keyframes fadeFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

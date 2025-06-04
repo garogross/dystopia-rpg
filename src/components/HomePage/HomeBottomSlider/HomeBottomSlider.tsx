@@ -14,7 +14,7 @@ import {
   bottomslide5ImageWebp,
   bottomslide6Image,
   bottomslide6ImageWebp,
-} from "../../../assets/images";
+} from "../../../assets/imageMaps";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperType } from "swiper/types";
 

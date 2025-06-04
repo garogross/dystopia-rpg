@@ -1,9 +1,11 @@
 import React from "react";
 
 import styles from "./WrapperWithFrame.module.scss";
-import ImageFrame from "../icons/game/Common/ImageFrame";
-import ImageFrameBig from "../icons/game/Common/ImageFrameBig";
-import ImageFrameMd from "../icons/game/Common/ImageFrameMd";
+import {ImageFrame,
+ImageFrameBig,
+ImageFrameMd,
+
+} from "../icons/RPGGame/Common";
 
 interface Props {
   children: React.ReactNode;

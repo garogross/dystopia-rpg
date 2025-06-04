@@ -1,5 +1,6 @@
-// game paths
-export const gamePagePath = "/start";
+export const onBoardingPagePath = "/start";
+// RPG game paths
+export const gamePagePath = onBoardingPagePath + "/rpg";
 
 export const gameChallengesPagePath = "challenges";
 export const gameSingleChallengePagePath = "challenge";

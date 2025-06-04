@@ -1,0 +1,76 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.rpgGameCharacterWrapper {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  gap: 5px;
+  transition: $transition;
+
+  background-size: cover;
+
+  &_main {
+    background-size: initial;
+    background-position: -178px -380px;
+    @include bgWebp(
+      "/assets/images/RPGGame/CharacterPage/characterBg.jpeg",
+      "/assets/images/RPGGame/CharacterPage/characterBg.webp"
+    );
+    background-image: url("../../../../assets/images/RPGGame/CharacterPage/characterBg.jpeg")
+  }
+
+  &_inventory {
+    @include bgWebp(
+      "/assets/images/RPGGame/CharacterPage/rpgGameCharacterInventoryBg.jpg",
+      "/assets/images/RPGGame/CharacterPage/rpgGameCharacterInventoryBg.webp"
+    );
+    background-position: center;
+  }
+
+  &_shop {
+    @include bgWebp(
+      "/assets/images/RPGGame/CharacterPage/rpgGameCharacterShopBg.jpg",
+      "/assets/images/RPGGame/CharacterPage/rpgGameCharacterShopBg.webp"
+    );
+    background-position: center;
+  }
+
+  &_training {
+    @include bgWebp(
+      "/assets/images/RPGGame/CharacterPage/rpgGameCharacterTrainingBg.jpg",
+      "/assets/images/RPGGame/CharacterPage/rpgGameCharacterTrainingBg.webp"
+    );
+  }
+
+  &_skins {
+    @include bgWebp(
+      "/assets/images/RPGGame/CharacterPage/rpgGameCharacterSkinsBg.jpg",
+      "/assets/images/RPGGame/CharacterPage/rpgGameCharacterSkinsBg.webp"
+    );
+    background-position: bottom;
+    background-size: cover;
+  }
+
+  & > svg {
+    width: 100%;
+  }
+  padding-bottom: 13px;
+  padding-top: 5px;
+
+  &__bottomWings {
+    width: 100%;
+    position: relative;
+  }
+  &__bottomWingsButton {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    @include button();
+    display: flex;
+  }
+}

@@ -1,4 +1,4 @@
-import { positionPlaceImage } from "../assets/images";
+import { positionPlaceImage } from "../assets/imageMaps";
 import { BaseCourt } from "./BaseCourt";
 import { Character } from "./Character";
 import { IGame } from "./IGame";

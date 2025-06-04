@@ -1,11 +1,11 @@
 import React from "react";
-import GameClanWrapper from "../../components/Game/GameClanPage/GameClanWrapper/GameClanWrapper";
-import GameCreateClanMain from "../../components/Game/GameCreateClanPage/GameCreateClanMain/GameCreateClanMain";
+import RPGGameClanWrapper from "../../components/RPGGame/RPGGameClanPage/RPGGameClanWrapper/RPGGameClanWrapper";
+import RPGGameCreateClanMain from "../../components/RPGGame/RPGGameCreateClanPage/RPGGameCreateClanMain/RPGGameCreateClanMain";
 
-const GameCreateClanPage = () => {
+const RPGGameCreateClanPage = () => {
   return (
-    <GameClanWrapper
-      mainComponent={<GameCreateClanMain />}
+    <RPGGameClanWrapper
+      mainComponent={<RPGGameCreateClanMain />}
       sideBarDisableed={true}
       headerDescriptionText={
         "Ты был один из многих. Теперь ты — тот, кого ждут. Встань. Назови свой клан. И пусть этот мир дрожит!"
@@ -14,4 +14,4 @@ const GameCreateClanPage = () => {
   );
 };
 
-export default GameCreateClanPage;
+export default RPGGameCreateClanPage;

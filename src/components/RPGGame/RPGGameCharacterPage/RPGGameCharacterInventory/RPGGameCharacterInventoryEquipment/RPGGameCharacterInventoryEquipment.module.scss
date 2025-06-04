@@ -1,0 +1,15 @@
+@import "../../../../../styles/mixins";
+@import "../../../../../styles/vars";
+
+.rpgGameCharacterInventoryEquipment {
+  padding: 10px;
+  background-color: $color-bg;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+
+  &__title {
+    @include setFont(10px, 400);
+  }
+}

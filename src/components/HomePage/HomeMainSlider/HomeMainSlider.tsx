@@ -10,7 +10,7 @@ import {
   phoneFrame3ImageWebp,
   phoneFrame4ImageWebp,
   phoneFrame5ImageWebp,
-} from "../../../assets/images";
+} from "../../../assets/imageMaps";
 
 const TOTAL_SLIDES = 9;
 

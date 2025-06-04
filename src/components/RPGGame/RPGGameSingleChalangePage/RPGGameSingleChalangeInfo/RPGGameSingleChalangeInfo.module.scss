@@ -1,0 +1,96 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.rpgGameSingleChalangeInfo {
+  margin-top: 18px;
+  margin-bottom: 8px;
+  @include flexCol();
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+
+  &__accordions {
+    @include flexCol();
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  &__accordionItem {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  &__accordionBtn {
+    @include button();
+    @include flexCol(space-between, flex-end);
+    width: 100%;
+    gap: 12px;
+  }
+  &__dotLines {
+    flex: 1;
+    overflow: hidden;
+  }
+  &__accordionBtnMain {
+    @include flexCol();
+    gap: 4px;
+    @include setFont(14px, 600);
+  }
+  &__accordiondropdown {
+    @include flexCol(flex-start, flex-start);
+    flex-direction: column;
+    width: fit-content;
+    margin: 0 auto;
+    gap: 4px;
+  }
+  &__dropdownListItem {
+    @include flexCol();
+    gap: 6px;
+  }
+  &__dropdownListItemImgWrapper {
+    width: 15px;
+    height: 15px;
+    background-color: $color-statsBg;
+    border-radius: 15px;
+    @include flexCol();
+  }
+  &__dropdownListItemImg {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  &__dropdownListItemText {
+    @include setFont(14px, 400);
+  }
+  &__startBtn {
+    @include button($color-primary);
+    max-width: 130px;
+    width: 100%;
+    padding: 1px;
+  }
+  &__startBtnInner {
+    width: 100%;
+    padding: 5px 10px;
+    @include flexCol();
+    gap: 5px;
+    background: radial-gradient(50% 50% at 50% 50%, #523ba6 0%, #170e35 100%);
+    @include setFont(12px, 400);
+  }
+  &__startBtn,
+  &__startBtnInner {
+    clip-path: polygon(
+      95% 0%,
+      98% 5%,
+      100% 10%,
+      100% 90%,
+      98% 95%,
+      95% 100%,
+      5% 100%,
+      2% 95%,
+      0% 90%,
+      0% 10%,
+      2% 5%,
+      5% 0%
+    );
+  }
+}

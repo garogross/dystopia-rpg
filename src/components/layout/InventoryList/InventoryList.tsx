@@ -4,8 +4,8 @@ import styles from "./InventoryList.module.scss";
 import { TransitionStyleTypes } from "../../../providers/TransitionProvider";
 import TransitionProvider from "../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../hooks/redux";
-import GameClanDepotBlockIcon from "../icons/game/GameClanPage/GameClanDepot/GameClanDepotBlockIcon";
-import SelectMarkIcon from "../icons/game/Common/SelectMarkIcon";
+import { SelectMarkIcon } from "../icons/RPGGame/Common";
+import { RPGGameClanDepotBlockIcon } from "../icons/RPGGame/RPGGameClanPage/RPGGameClanDepot";
 
 export interface InventoryListItem {
   id: string;
@@ -61,7 +61,7 @@ const InventoryList: React.FC<Props> = ({ data, onSelect }) => {
                 <SelectMarkIcon />
               </span>
             )}
-            {place.blocked && <GameClanDepotBlockIcon />}
+            {place.blocked && <RPGGameClanDepotBlockIcon />}
           </button>
         </TransitionProvider>
       ))}

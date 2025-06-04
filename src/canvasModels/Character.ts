@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { explodeImage, shotImage, slapImage } from "../assets/images";
+import { explodeImage, shotImage, slapImage } from "../assets/imageMaps";
 import { BaseCourt } from "./BaseCourt";
 import { ICharacterModel } from "../models/ICharacterModel";
 const MOVE_SPEED = 6;

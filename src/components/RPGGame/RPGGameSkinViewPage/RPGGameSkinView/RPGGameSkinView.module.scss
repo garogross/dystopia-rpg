@@ -1,0 +1,98 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.rpgGameSkinView {
+  width: 100%;
+  height: 100%;
+  background-image: url("/assets/images/RPGGame/SkinViewPage/rpgGameSkinViewBg.jpg");
+  background-position: top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__container {
+    position: relative;
+    @include flexCol(center, flex-start);
+    height: 100%;
+  }
+
+  &__modelImgWrap {
+    width: 100%;
+    height: 42vh;
+    @include flexCol(center, flex-end);
+  }
+
+  &__modelImg {
+    max-width: 100%;
+    height: 90%;
+    max-height: 300px;
+  }
+  
+  &__btn {
+    @include button($color-primary);
+    width: 42px;
+    height: 24px;
+  }
+
+  &__btnInner {
+    @include flexCol();
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      76.5% 76.5% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
+  }
+  &__btnPrev {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  &__btnPrev,
+  &__btnPrev &__btn__inner {
+    clip-path: polygon(
+      0% 22.24%,
+      12.5% 0%,
+      85.58% 0%,
+      100% 75.54%,
+      85.58% 100%,
+      12.5% 100%,
+      0% 22.24%
+    );
+  }
+  &__btnSelect {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  &__btnNext {
+    position: absolute;
+    right: 0;
+    bottom: 30%;
+  }
+  &__btnSelect,
+  &__btnSelect &__btn__inner,
+  &__btnNext,
+  &__btnNext &__btn__inner {
+    clip-path: polygon(
+      100% 22.24%,
+      87.5% 0%,
+      14.42% 0%,
+      0% 75.54%,
+      14.42% 100%,
+      87.5% 100%,
+      100% 22.24%
+    );
+  }
+
+  &__bottomBg {
+    width: 100%;
+  }
+}

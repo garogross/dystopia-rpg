@@ -1,10 +1,8 @@
-import React from 'react'
-import GameSingeClanMain from '../../components/Game/GameSingeClanPage/GameSingeClanMain'
+import React from "react";
+import RPGGameSingeClanMain from "../../components/RPGGame/RPGGameSingeClanPage/RPGGameSingeClanMain";
 
-const GameSingeClanPage = () => {
-  return (
-    <GameSingeClanMain/>
-  )
-}
+const RPGGameSingeClanPage = () => {
+  return <RPGGameSingeClanMain />;
+};
 
-export default GameSingeClanPage
+export default RPGGameSingeClanPage;

@@ -3,7 +3,7 @@ import {
   characterAvatarImage,
   npc1Image,
   npcAvatarImage,
-} from "../assets/images";
+} from "../assets/imageMaps";
 import { ICharacterModel } from "../models/ICharacterModel";
 
 export const CHARACTER_MODELS: ICharacterModel[] = [

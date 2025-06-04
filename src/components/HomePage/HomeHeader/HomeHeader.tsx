@@ -7,7 +7,7 @@ import {
   enFlagImageWebp,
   ruFlagImage,
   ruFlagImageWebp,
-} from "../../../assets/images";
+} from "../../../assets/imageMaps";
 import { ELanguages } from "../../../constants/ELanguages";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import TransitionProvider, {

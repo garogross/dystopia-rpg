@@ -1,0 +1,10 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+
+.rpgGameLoyality {
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}

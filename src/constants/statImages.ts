@@ -7,7 +7,7 @@ import {
   lpImageWebp,
   tokenImage,
   tokenImageWebp,
-} from "../assets/images";
+} from "../assets/imageMaps";
 import { EStats } from "./EStats";
 
 export const statImages = {

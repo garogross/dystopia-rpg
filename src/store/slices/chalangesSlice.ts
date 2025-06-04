@@ -5,7 +5,7 @@ import {
   chalange2Image,
   chalange3Image,
   chalange4Image,
-} from "../../assets/images";
+} from "../../assets/imageMaps";
 
 export interface ChalangesState {
   chalanges: IChalange[];

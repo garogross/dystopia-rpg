@@ -1,10 +1,8 @@
 import React from "react";
-import GameDuelList from "../../components/Game/GameDuelPage/GameDuelList/GameDuelList";
+import RPGGameDuelList from "../../components/RPGGame/RPGGameDuelPage/RPGGameDuelList/RPGGameDuelList";
 
-const GameDuelPage: React.FC = () => {
-  return (
-    <GameDuelList/>
-  );
+const RPGGameDuelPage: React.FC = () => {
+  return <RPGGameDuelList />;
 };
 
-export default GameDuelPage;
+export default RPGGameDuelPage;

@@ -7,7 +7,7 @@ import {
   weeklyTournaments3vs3Image,
   duel5vs5Image,
   duel3vs3Image,
-} from "../../assets/images";
+} from "../../assets/imageMaps";
 
 export interface DuelsState {
   duels: IDuel[];

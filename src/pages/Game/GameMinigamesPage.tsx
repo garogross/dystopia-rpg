@@ -1,6 +1,6 @@
 import React from "react";
 
-const GameMinigamesPage: React.FC = () => {
+const RPGGameMinigamesPage: React.FC = () => {
   return (
     <div>
       <h1>Game Minigames</h1>
@@ -8,4 +8,4 @@ const GameMinigamesPage: React.FC = () => {
   );
 };
 
-export default GameMinigamesPage;
+export default RPGGameMinigamesPage;

@@ -1,0 +1,46 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.rpgGameSingleChalangeMain {
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  overflow-y: auto;
+
+  &__headerWings {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+  &__title {
+    margin-bottom: 24px;
+  }
+  &__headerDotsLines {
+    min-width: 253px;
+    width: 100%;
+    margin: 0 auto;
+    @include flexCol(space-between);
+    margin-bottom: 10px;
+  }
+
+  &__imgWrapperInner {
+    aspect-ratio: 4/1;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__imgWings {
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 20px;
+  }
+  &__description {
+    flex: 1;
+    @include setFont(14px, 400);
+  }
+}

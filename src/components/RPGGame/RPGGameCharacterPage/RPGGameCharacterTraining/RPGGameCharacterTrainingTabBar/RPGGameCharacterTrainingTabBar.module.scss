@@ -1,0 +1,99 @@
+@import "../../../../../styles/mixins";
+@import "../../../../../styles/vars";
+
+.rpgGameCharacterTrainingTabBar {
+  width: 100%;
+
+  &__inner {
+    width: 100%;
+    display: flex;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    gap: 6px;
+  }
+
+  &__item {
+    flex: 1;
+    @include button($color-primary);
+    height: 46px;
+    padding: 1px;
+  }
+
+  &__itemInner {
+    width: 100%;
+    background: radial-gradient(
+      70.17% 76.5% at 54.14% 50%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
+    padding: 5px;
+    height: 100%;
+    @include flexCol(space-between);
+    flex-direction: column;
+    gap: 3px;
+    transition: $transition;
+
+    @include setFont(9px, 400);
+
+    & > svg {
+      fill: $color-text;
+      transition: $transition;
+    }
+  }
+
+  &__item:nth-child(1),
+  &__item:nth-child(1) &__itemInner {
+    clip-path: polygon(
+      1% 22%,
+      13% 0%,
+      86% 0%,
+      100% 76%,
+      86% 100%,
+      13% 100%,
+      1% 22%
+    );
+  }
+
+  &__item:nth-child(2),
+  &__item:nth-child(2) &__itemInner {
+    clip-path: polygon(
+      12% 0%,
+      1% 22%,
+      12% 100%,
+      22% 100%,
+      79% 100%,
+      89% 100%,
+      100% 22%,
+      89% 0%,
+      79% 0%,
+      22% 0%,
+      12% 0%
+    );
+  }
+
+  &__item:nth-child(3),
+  &__item:nth-child(3) &__itemInner {
+    clip-path: polygon(
+      100% 22%,
+      88% 0%,
+      15% 0%,
+      1% 76%,
+      15% 100%,
+      88% 100%,
+      100% 22%
+    );
+  }
+
+  &__item_active &__itemInner {
+    background: radial-gradient(
+      76.5% 76.5% at 50% 50%,
+      #3d2b7e 0%,
+      #5a41b5 100%
+    );
+    color: $color-black;
+
+    & > svg {
+      fill: $color-black;
+    }
+  }
+}

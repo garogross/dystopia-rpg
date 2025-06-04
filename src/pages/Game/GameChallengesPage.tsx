@@ -1,10 +1,8 @@
 import React from "react";
-import GameChalangesMain from "../../components/Game/GameChalangesPage/GameChalangesMain/GameChalangesMain";
+import RPGGameChalangesMain from "../../components/RPGGame/RPGGameChalangesPage/RPGGameChalangesMain/RPGGameChalangesMain";
 
-const GameChallengesPage: React.FC = () => {
-  return (
-    <GameChalangesMain/>
-  );
+const RPGGameChallengesPage: React.FC = () => {
+  return <RPGGameChalangesMain />;
 };
 
-export default GameChallengesPage;
+export default RPGGameChallengesPage;

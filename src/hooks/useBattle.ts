@@ -3,7 +3,7 @@ import {
   activateBattle,
   startBattleFight,
   updateBattleSettings,
-} from "../api/battle";
+} from "../api/RPGGame/battle";
 import { useAppDispatch, useAppSelector } from "../hooks/redux"; // Assuming this is correct path
 import {
   checkLooserTeam,

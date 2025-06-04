@@ -1,8 +1,8 @@
 import React from "react";
-import GameSingleChalangeMain from "../../components/Game/GameSingleChalangePage/GameSingleChalangeMain/GameSingleChalangeMain";
+import RPGGameSingleChalangeMain from "../../components/RPGGame/RPGGameSingleChalangePage/RPGGameSingleChalangeMain/RPGGameSingleChalangeMain";
 
-const GameSingleChalangePage = () => {
-  return <GameSingleChalangeMain/>;
+const RPGGameSingleChalangePage = () => {
+  return <RPGGameSingleChalangeMain />;
 };
 
-export default GameSingleChalangePage;
+export default RPGGameSingleChalangePage;

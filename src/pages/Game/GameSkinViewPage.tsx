@@ -1,10 +1,8 @@
-import React from 'react'
-import GameSkinView from '../../components/Game/GameSkinViewPage/GameSkinView/GameSkinView'
+import React from "react";
+import RPGGameSkinView from "../../components/RPGGame/RPGGameSkinViewPage/RPGGameSkinView/RPGGameSkinView";
 
-const GameSkinViewPage = () => {
-  return (
-    <GameSkinView/>
-  )
-}
+const RPGGameSkinViewPage = () => {
+  return <RPGGameSkinView />;
+};
 
-export default GameSkinViewPage
+export default RPGGameSkinViewPage;

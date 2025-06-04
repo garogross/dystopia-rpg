@@ -10,7 +10,7 @@ import {
   telegramIconImageWebp,
   xIconImage,
   xIconImageWebp,
-} from "../../../assets/images";
+} from "../../../assets/imageMaps";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import { ELanguages } from "../../../constants/ELanguages";
 import { useAppSelector } from "../../../hooks/redux";

@@ -1,7 +1,7 @@
 import React from "react";
 
 import styles from "./SortList.module.scss";
-import ArrowIcon from "../icons/game/Common/ArrowIcon";
+import {ArrowIcon} from "../icons/RPGGame/Common";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";

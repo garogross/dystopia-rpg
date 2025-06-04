@@ -1,0 +1,62 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.rpgGameLoyalityTabbar {
+  @include flexCol(center, stretch);
+  gap: 6px;
+  margin-bottom: 10px;
+
+  &__item {
+    flex: 1;
+    @include button($color-primary);
+    padding: 1px;
+  }
+
+  &__inner {
+    @include flexCol(space-between);
+    flex-direction: column;
+    background: radial-gradient(
+      85.56% 85.56% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 98.08%
+    );
+    padding: 5px;
+    gap: 5px;
+    @include setFont(12px, 400);
+    transition: $transition;
+    height: 100%;
+    & svg {
+      fill: $color-text;
+      transition: $transition;
+      flex: 1;
+    }
+  }
+
+  &__item,
+  &__inner {
+    clip-path: polygon(
+      91.8% 1.1%,
+      96.7% 8.7%,
+      100% 14%,
+      100% 100%,
+      7.8% 100%,
+      4% 91.4%,
+      0.6% 83.9%,
+      0.6% 1.1%,
+      91.8% 1.1%
+    );
+  }
+
+  &__item_active &__inner {
+    background: radial-gradient(
+      71.72% 71.72% at 50% 50%,
+      #3d2b7e 0%,
+      #5a41b5 100%
+    );
+    color: $color-black;
+
+    & svg {
+      fill: $color-black;
+    }
+  }
+}

@@ -1,0 +1,1 @@
+export { RPGGameCharacterResetIcon } from './RPGGameCharacterResetIcon';

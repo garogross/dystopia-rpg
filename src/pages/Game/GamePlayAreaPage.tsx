@@ -1,10 +1,8 @@
-import React from 'react'
-import GamePlayArea from '../../components/Game/GamePlayAreaPage/GamePlayArea/GamePlayArea'
+import React from "react";
+import RPGGamePlayArea from "../../components/RPGGame/RPGGamePlayAreaPage/RPGGamePlayArea/RPGGamePlayArea";
 
-const GamePlayAreaPage = () => {
-  return (
-    <GamePlayArea/>
-  )
-}
+const RPGGamePlayAreaPage = () => {
+  return <RPGGamePlayArea />;
+};
 
-export default GamePlayAreaPage
+export default RPGGamePlayAreaPage;

@@ -8,7 +8,7 @@ import {
   npc1Image,
   shotImage,
   slapImage,
-} from "../assets/images";
+} from "../assets/imageMaps";
 
 interface UseCanvasGameProps {
   canvasRef: React.RefObject<HTMLCanvasElement>;

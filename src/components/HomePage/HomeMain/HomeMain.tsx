@@ -6,7 +6,7 @@ import HomeMainSlider from "../HomeMainSlider/HomeMainSlider";
 import HomeBottomSlider from "../HomeBottomSlider/HomeBottomSlider";
 import HomeFooter from "../HomeFooter/HomeFooter";
 import { useImageLoader } from "../../../hooks/useImageLoader";
-import { homebgImageWebp } from "../../../assets/images";
+import { homebgImageWebp } from "../../../assets/imageMaps";
 
 const HomeMain = () => {
   const bgLoading = useImageLoader([homebgImageWebp]);

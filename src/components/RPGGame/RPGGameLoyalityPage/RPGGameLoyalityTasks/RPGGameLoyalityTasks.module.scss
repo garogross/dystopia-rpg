@@ -1,0 +1,95 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.rpgGameLoyalityTasks {
+  display: flex;
+  flex-direction: column;
+  gap: 12pxpx;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  &__listItem {
+    min-height: 60px;
+    width: 100%;
+    padding: 1px;
+
+    background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
+
+    &_completed {
+      background: $color-primary;
+    }
+  }
+
+  &__listItemInner {
+    @include flexCol(space-between);
+    gap: 20px;
+    padding: 7px 12px;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #2e147f 0%, #090419 25.96%);
+  }
+
+  &__itemImg {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+  &__itemMain {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  &__listItemDescriptionText {
+    @include setFont(14px, 400);
+  }
+  &__progressBar {
+    max-width: 164px;
+    width: 100%;
+    height: 15px;
+    position: relative;
+  }
+  &__progressBarMain {
+    width: 100%;
+    height: 100%;
+    border: 1px solid $color-primary;
+    padding: 1px;
+    transform: skewX(325deg);
+  }
+  &__progressBarInner {
+    height: 100%;
+    background: $color-primary;
+  }
+  &__progressBarText {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    @include setFont(12px, 400);
+  }
+
+  &__listItem_completed &__progressBarText {
+    color: $color-black;
+  }
+  &__listItemIncome {
+    @include flexCol();
+    gap: 3px;
+  }
+  &__listItemIncomeImg {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+  }
+  &__listItemIncomeText {
+    @include setFont(20px, 400, $font-fam-h3);
+  }
+  &__availableIn {
+    @include setFont(12px, 400);
+    text-align: center;
+    padding-block: 14px;
+  }
+}

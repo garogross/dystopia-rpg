@@ -1,0 +1,12 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.rpgGameCharacterInventory {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
+    width: 100%;
+    overflow: hidden;
+    padding-bottom: 5px;
+}

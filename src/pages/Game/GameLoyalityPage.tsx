@@ -1,9 +1,7 @@
 import React from "react";
-import GameLoyality from "../../components/Game/GameLoyalityPage/GameLoyality/GameLoyality";
-const GameLoyalityPage: React.FC = () => {
-  return (
-    <GameLoyality />
-  );
+import RPGGameLoyality from "../../components/RPGGame/RPGGameLoyalityPage/RPGGameLoyality/RPGGameLoyality";
+const RPGGameLoyalityPage: React.FC = () => {
+  return <RPGGameLoyality />;
 };
 
-export default GameLoyalityPage;
+export default RPGGameLoyalityPage;

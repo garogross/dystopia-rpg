@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 
 import styles from "./TitleH3.module.scss";
-import HeaderWings from "../icons/game/Common/HeaderWings";
-import { DotsLine } from "../icons/game/Common/DotsLine";
+import {HeaderWings} from "../icons/RPGGame/Common";
+import { DotsLine } from "../icons/RPGGame/Common/DotsLine";
 
 interface Props {
   children: ReactNode;
@@ -10,7 +10,11 @@ interface Props {
   wingsReverse?: boolean;
 }
 
-const TitleH3: React.FC<Props> = ({ children, className, wingsReverse = true }) => {
+const TitleH3: React.FC<Props> = ({
+  children,
+  className,
+  wingsReverse = true,
+}) => {
   return (
     <div className={styles.titleH3}>
       <div className={`${styles.titleH3__main} ${className || ""}`}>

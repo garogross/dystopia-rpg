@@ -1,8 +1,8 @@
 import React from "react";
-import GameClan from "../../components/Game/GameClanPage/GameClan/GameClan";
+import RPGGameClan from "../../components/RPGGame/RPGGameClanPage/RPGGameClan/RPGGameClan";
 
-const GameClanPage: React.FC = () => {
-  return <GameClan />;
+const RPGGameClanPage: React.FC = () => {
+  return <RPGGameClan />;
 };
 
-export default GameClanPage;
+export default RPGGameClanPage;
