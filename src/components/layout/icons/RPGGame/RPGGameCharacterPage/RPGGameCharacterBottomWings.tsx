@@ -49,8 +49,8 @@ const GameCharacterBottomWings: React.FC<{ withCenterLine?: boolean }> = ({
           y2="11.5"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#7F5CFF" />
-          <stop offset="1" stop-color="#0F0E10" />
+          <stop stopColor="#7F5CFF" />
+          <stop offset="1" stopColor="#0F0E10" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_2008_9631"

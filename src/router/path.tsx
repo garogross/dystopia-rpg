@@ -8,19 +8,20 @@ import GameMinigamesPage from "../pages/Game/GameMinigamesPage";
 import GameDuelPage from "../pages/Game/GameDuelPage";
 import GameClanPage from "../pages/Game/GameClanPage";
 import {
-  gamePagePath,
-  gameChallengesPagePath,
-  gameSingleChallengePagePath,
-  gameMinigamesPagePath,
-  gameDuelPagePath,
-  gameClanPagePath,
-  gameLoyalityPagePath,
-  gameReferalsPagePath,
-  gameSkinViewPagePath,
-  gameClanSearchPagePath,
-  gameCreateClanPagePath,
-  gameClansPagePath,
-  gamePlayAreaPagePath,
+  rpgGamePagePath,
+  rpgGameChallengesPagePath,
+  rpgGameSingleChallengePagePath,
+  rpgGameMinigamesPagePath,
+  rpgGameDuelPagePath,
+  rpgGameClanPagePath,
+  rpgGameLoyalityPagePath,
+  rpgGameReferalsPagePath,
+  rpgGameSkinViewPagePath,
+  rpgGameClanSearchPagePath,
+  rpgGameCreateClanPagePath,
+  rpgGameClansPagePath,
+  rpgGamePlayAreaPagePath,
+  onBoardingPagePath,
 } from "./constants";
 import GameLoyalityPage from "../pages/Game/GameLoyalityPage";
 import GameSingleChalangePage from "../pages/Game/GameSingleChalangePage";
@@ -30,6 +31,7 @@ import GameClanSearchPage from "../pages/Game/GameClanSearchPage";
 import GameCreateClanPage from "../pages/Game/GameCreateClanPage";
 import GameSingeClanPage from "../pages/Game/GameSingeClanPage";
 import GamePlayAreaPage from "../pages/Game/GamePlayAreaPage";
+import OnBoardingPage from "../pages/OnBoardingPage";
 
 export const homePagePath = "/";
 
@@ -46,59 +48,63 @@ export const routes: IRoute[] = [
     component: <HomePage />,
   },
   {
-    path: gamePagePath,
+    path: onBoardingPagePath,
+    component: <OnBoardingPage />,
+  },
+  {
+    path: rpgGamePagePath,
     component: <GamePage />,
     indexComponent: <GameCharacterPage />,
     children: [
     
       {
-        path: gameChallengesPagePath,
+        path: rpgGameChallengesPagePath,
         component: <GameChallengesPage />,
       },
       {
-        path: gameMinigamesPagePath,
+        path: rpgGameMinigamesPagePath,
         component: <GameMinigamesPage />,
       },
       {
-        path: gameDuelPagePath,
+        path: rpgGameDuelPagePath,
         component: <GameDuelPage />,
       },
       {
-        path: gameClanPagePath,
+        path: rpgGameClanPagePath,
         component: <GameClanPage />,
       },
       {
-        path: gameClanSearchPagePath,
+        path: rpgGameClanSearchPagePath,
         component: <GameClanSearchPage />,
       },
       {
-        path: gameCreateClanPagePath,
+        path: rpgGameCreateClanPagePath,
         component: <GameCreateClanPage />,
       },
       {
-        path: `${gameClansPagePath}/:id`,
+        path: `${rpgGameClansPagePath}/:id`,
         component: <GameSingeClanPage />,
       },
       {
-        path: gameLoyalityPagePath,
+        path: rpgGameLoyalityPagePath,
         component: <GameLoyalityPage />,
       },
       {
-        path: `${gameSingleChallengePagePath}/:id`,
+        path: `${rpgGameSingleChallengePagePath}/:id`,
         component: <GameSingleChalangePage />,
       },
       {
-        path: gameReferalsPagePath,
+        path: rpgGameReferalsPagePath,
         component: <GameReferalsPage />,
       },
       {
-        path: gameSkinViewPagePath,
+        path: rpgGameSkinViewPagePath,
         component: <GameSkinViewPage />,
       },
     ],
   },
   {
-    path: gamePlayAreaPagePath,
+    path: rpgGamePlayAreaPagePath,
     component: <GamePlayAreaPage />,
   },
 ];

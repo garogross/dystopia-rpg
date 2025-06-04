@@ -13,10 +13,10 @@ import {
  } from "../../layout/icons/RPGGame/RPGBottomNavbar";
 
 import {
-  gameChallengesPagePath,
-  gameClanPagePath,
-  gameDuelPagePath,
-  gameLoyalityPagePath,
+  rpgGameChallengesPagePath,
+  rpgGameClanPagePath,
+  rpgGameDuelPagePath,
+  rpgGameLoyalityPagePath,
 } from "../../../router/constants";
 import styles from "./RPGBottomNavbar.module.scss";
 
@@ -25,7 +25,7 @@ import { useAppSelector } from "../../../hooks/redux";
 const items = [
   {
     icon: <RPGBottomNavbarChalanagesIcon className={styles.rpgBottomNavbar__icon} />,
-    link: gameChallengesPagePath,
+    link: rpgGameChallengesPagePath,
   },
   {
     icon: <RPGBottomNavbarCharacterIcon className={styles.rpgBottomNavbar__icon} />,
@@ -33,15 +33,15 @@ const items = [
   },
   {
     icon: <RPGBottomNavbarDuelsIcon className={styles.rpgBottomNavbar__icon} />,
-    link: gameDuelPagePath,
+    link: rpgGameDuelPagePath,
   },
   {
     icon: <RPGBottomNavbarClanIcon className={styles.rpgBottomNavbar__icon} />,
-    link: gameClanPagePath,
+    link: rpgGameClanPagePath,
   },
   {
     icon: <RPGBottomNavbarLoyalityIcon className={styles.rpgBottomNavbar__icon} />,
-    link: gameLoyalityPagePath,
+    link: rpgGameLoyalityPagePath,
   },
 ];
 

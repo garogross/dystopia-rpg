@@ -1,16 +1,15 @@
 export const onBoardingPagePath = "/start";
 // RPG game paths
-export const gamePagePath = onBoardingPagePath + "/rpg";
-
-export const gameChallengesPagePath = "challenges";
-export const gameSingleChallengePagePath = "challenge";
-export const gameMinigamesPagePath = "minigames";
-export const gameDuelPagePath = "duel";
-export const gameClanPagePath = "clan";
-export const gameClansPagePath = "clans";
-export const gameClanSearchPagePath = "clan/search";
-export const gameCreateClanPagePath = "clan/create";
-export const gameLoyalityPagePath = "loyality";
-export const gameReferalsPagePath = "referals";
-export const gameSkinViewPagePath = "skin-view";
-export const gamePlayAreaPagePath = `${gamePagePath}/play-area`;
+export const rpgGamePagePath = onBoardingPagePath + "/rpg";
+export const rpgGameChallengesPagePath = "challenges";
+export const rpgGameSingleChallengePagePath = "challenge";
+export const rpgGameMinigamesPagePath = "minigames";
+export const rpgGameDuelPagePath = "duel";
+export const rpgGameClanPagePath = "clan";
+export const rpgGameClansPagePath = "clans";
+export const rpgGameClanSearchPagePath = "clan/search";
+export const rpgGameCreateClanPagePath = "clan/create";
+export const rpgGameLoyalityPagePath = "loyality";
+export const rpgGameReferalsPagePath = "referals";
+export const rpgGameSkinViewPagePath = "skin-view";
+export const rpgGamePlayAreaPagePath = `${rpgGamePagePath}/play-area`;

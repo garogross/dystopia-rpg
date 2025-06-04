@@ -63,8 +63,8 @@ export const ImageFrameMd = () => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(229.506 6.99304) rotate(66.6148) scale(20.1356 20.1357)"
         >
-          <stop stop-color="#7F5CFF" />
-          <stop offset="1" stop-color="#180F38" />
+          <stop stopColor="#7F5CFF" />
+          <stop offset="1" stopColor="#180F38" />
         </radialGradient>
         <radialGradient
           id="paint3_radial_2012_10561"
@@ -81,4 +81,3 @@ export const ImageFrameMd = () => {
     </svg>
   );
 };
-

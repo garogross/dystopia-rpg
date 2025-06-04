@@ -1,0 +1,65 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.onBoardingSaveSelectBlock {
+  @include flexCol();
+  height: 110px;
+  position: relative;
+  z-index: 3;
+
+  &__wing {
+    width: 55px;
+    height: 100%;
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &__main {
+    flex: 1;
+    height: 100%;
+    padding: 3px;
+    background-color: $color-primary;
+    margin-inline: -25px;
+  }
+  &__inner {
+    width: 100%;
+    height: 100%;
+    padding-inline: 25px;
+    @include flexCol();
+    flex-direction: column;
+    gap: 10px;
+    background: radial-gradient(
+      71.72% 75.65% at 50% 51.24%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
+  }
+
+  &__main,
+  &__inner {
+    clip-path: polygon(
+      0% 22.25%,
+      8.67% 0%,
+      91.33% 0%,
+      100% 22.25%,
+      91.33% 100%,
+      8.67% 100%,
+      0% 22.25%
+    );
+  }
+
+  &__checkbox {
+    @include flexCol();
+    gap: 12px;
+    @include button();
+  }
+  &__checkboxLabel {
+    @include setFont(12px, 400, $font-fam-h3, $color-text);
+  }
+  &__description {
+    @include setFont(12px, 400);
+    text-align: center;
+  }
+}

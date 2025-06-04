@@ -14,9 +14,9 @@ import TransitionProvider, {
 } from "../../../../providers/TransitionProvider";
 import { useNavigate } from "react-router-dom";
 import {
-  gameClanSearchPagePath,
-  gameCreateClanPagePath,
-  gamePagePath,
+  rpgGameClanSearchPagePath,
+  rpgGameCreateClanPagePath,
+  rpgGamePagePath,
 } from "../../../../router/constants";
 import RPGGameClansList from "../RPGGameClansList/RPGGameClansList";
 
@@ -55,7 +55,7 @@ const RPGGameClanMain = () => {
             <button className={styles.gameClanMain__btn}>
               <div
                 onClick={() =>
-                  navigate(`${gamePagePath}/${gameCreateClanPagePath}`)
+                  navigate(`${rpgGamePagePath}/${rpgGameCreateClanPagePath}`)
                 }
                 className={styles.gameClanMain__btnInner}
               >
@@ -81,7 +81,7 @@ const RPGGameClanMain = () => {
           </p>
           <button
             onClick={() =>
-              navigate(`${gamePagePath}/${gameClanSearchPagePath}`)
+              navigate(`${rpgGamePagePath}/${rpgGameClanSearchPagePath}`)
             }
             className={styles.gameClanMain__btn}
           >

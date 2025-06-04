@@ -29,8 +29,8 @@ import TransitionProvider, {
 } from "../../../../providers/TransitionProvider";
 import { useNavigate } from "react-router-dom";
 import {
-  gameCreateClanPagePath,
-  gamePagePath,
+  rpgGameCreateClanPagePath,
+  rpgGamePagePath,
 } from "../../../../router/constants";
 
 const logos = [
@@ -74,7 +74,7 @@ const RPGGameCreateClanMain = () => {
           <HeaderBtn
             type="close"
             onClick={() =>
-              navigate(`${gamePagePath}/${gameCreateClanPagePath}`)
+              navigate(`${rpgGamePagePath}/${rpgGameCreateClanPagePath}`)
             }
           />
         </TransitionProvider>

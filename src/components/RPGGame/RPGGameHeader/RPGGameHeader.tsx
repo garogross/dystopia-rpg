@@ -2,7 +2,8 @@ import React from "react";
 
 import styles from "./RPGGameHeader.module.scss";
 
-import { RPGHeaderBtnsBg,
+import {
+  RPGHeaderBtnsBg,
   RPGHeaderSwitcherIcon,
   RPGHeaderMailIcon,
   RPGHeaderSettingsIcon,
@@ -12,33 +13,44 @@ import { RPGHeaderBtnsBg,
   RPGHeaderHideIcon,
   RPGHeaderPremiumIcon,
   RPGHeaderMiniGamesICon,
- } from "../../layout/icons/RPGGame/RPGHeader";
-import {DotsLine} from "../../layout/icons/RPGGame/Common";
+} from "../../layout/icons/RPGGame/RPGHeader";
+import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { useAppSelector } from "../../../hooks/redux";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
-  gamePagePath,
-  gameReferalsPagePath,
-  gameSkinViewPagePath,
+  onBoardingPagePath,
+  rpgGamePagePath,
+  rpgGameReferalsPagePath,
+  rpgGameSkinViewPagePath,
 } from "../../../router/constants";
 import { EStats } from "../../../constants/EStats";
 import StatImg from "../../layout/StatImg/StatImg";
+import { removeLSItem } from "../../../helpers/localStorage";
+import { lsProps } from "../../../utils/lsProps";
 
 const RPGGameHeader: React.FC = () => {
+  const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
 
   const linkActiveClass =
     (className?: string) =>
     ({ isActive }: { isActive: boolean }) =>
       isActive
-        ? `${styles.rpgGameHeader__navBtn_active} ${styles.rpgGameHeader__navBtn} ${
-            className || ""
-          }`
+        ? `${styles.rpgGameHeader__navBtn_active} ${
+            styles.rpgGameHeader__navBtn
+          } ${className || ""}`
         : `${styles.rpgGameHeader__navBtn} ${className || ""}`;
+
+  const onSwith = () => {
+    removeLSItem(lsProps.selectedGameLink);
+    navigate(onBoardingPagePath);
+  };
 
   return (
     <header
-      className={`${styles.rpgGameHeader} ${gameInited ? styles.rpgGameHeader_inited : ""}`}
+      className={`${styles.rpgGameHeader} ${
+        gameInited ? styles.rpgGameHeader_inited : ""
+      }`}
     >
       <div
         className={`${styles.rpgGameHeader__cornerBlock} ${styles.rpgGameHeader__cornerBlock_left}`}
@@ -49,7 +61,7 @@ const RPGGameHeader: React.FC = () => {
         <div className={styles.rpgGameHeader__dotsLine}>
           <DotsLine />
         </div>
-        <button className={styles.rpgGameHeader__mainBtn}>
+        <button onClick={onSwith} className={styles.rpgGameHeader__mainBtn}>
           <RPGHeaderSwitcherIcon />
         </button>
         <div className={styles.rpgGameHeader__navBtns}>
@@ -92,7 +104,7 @@ const RPGGameHeader: React.FC = () => {
             <RPGHeaderRatingIcon />
           </NavLink>
           <NavLink
-            to={`${gamePagePath}/${gameReferalsPagePath}`}
+            to={`${rpgGamePagePath}/${rpgGameReferalsPagePath}`}
             className={linkActiveClass()}
           >
             <RPGHeaderReferenceIcon />
@@ -109,7 +121,7 @@ const RPGGameHeader: React.FC = () => {
           <RPGHeaderBottomBg />
         </div>
         <Link
-          to={`${gamePagePath}/${gameSkinViewPagePath}`}
+          to={`${rpgGamePagePath}/${rpgGameSkinViewPagePath}`}
           className={styles.rpgGameHeader__hideBtn}
         >
           <RPGHeaderHideIcon />

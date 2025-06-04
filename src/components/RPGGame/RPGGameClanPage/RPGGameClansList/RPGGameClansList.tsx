@@ -5,7 +5,7 @@ import { IClan } from "../../../../models/IClan";
 import SortList, { SortItem } from "../../../layout/SortList/SortList";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../../hooks/redux";
-import { gameClansPagePath, gamePagePath } from "../../../../router/constants";
+import { rpgGamePagePath, rpgGameClansPagePath } from "../../../../router/constants";
 import TransitionProvider, { TransitionStyleTypes } from "../../../../providers/TransitionProvider";
 import { RPGGameClanListAccordionSwitcherIcon, RPGGameClanListDotsline, RPGGameClanListRequestIcon, RPGGameClanListViewIcon } from "../../../layout/icons/RPGGame/RPGGameClanPage/RPGGameClanList";
 
@@ -40,7 +40,7 @@ const RPGGameClansList: React.FC<Props> = ({
   const gameInited = useAppSelector((state) => state.ui.gameInited);
 
   const goToSingleClan = (clanId: string) => {
-    navigate(`${gamePagePath}/${gameClansPagePath}/${clanId}`);
+    navigate(`${rpgGamePagePath}/${rpgGameClansPagePath}/${clanId}`);
   };
 
   return (

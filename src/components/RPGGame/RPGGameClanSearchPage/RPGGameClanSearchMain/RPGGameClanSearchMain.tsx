@@ -6,7 +6,7 @@ import HeaderBtn from "../../../layout/HeaderBtn/HeaderBtn";
 import {SearchLupeIcon} from "../../../layout/icons/RPGGame/Common";
 import { CLANS } from "../../../../dummyData/clans";
 import { useNavigate } from "react-router-dom";
-import { gameClanPagePath, gamePagePath } from "../../../../router/constants";
+import { rpgGamePagePath, rpgGameClanPagePath } from "../../../../router/constants";
 import { useAppSelector } from "../../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
@@ -28,7 +28,7 @@ const RPGGameClanSearchMain = () => {
           <h3 className="titleH3Italic">Найти свой клан</h3>
           <HeaderBtn
             type="close"
-            onClick={() => navigate(`${gamePagePath}/${gameClanPagePath}`)}
+            onClick={() => navigate(`${rpgGamePagePath}/${rpgGameClanPagePath}`)}
           />
         </TransitionProvider>
 

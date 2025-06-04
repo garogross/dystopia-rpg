@@ -17,7 +17,7 @@ import HomeLanguagesSelectArrowIcon from "../../layout/icons/Home/HomeLanguagesS
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setLanguage } from "../../../store/slices/uiSlice";
 import { Link } from "react-router-dom";
-import { gamePagePath } from "../../../router/constants";
+import { onBoardingPagePath } from "../../../router/constants";
 
 const languages = {
   [ELanguages.ru]: {
@@ -50,7 +50,7 @@ const HomeHeader = () => {
               </div>
               <span>Играть в браузере</span>
             </a>
-            <Link to={gamePagePath} className={styles.homeHeader__link}>
+            <Link to={onBoardingPagePath} className={styles.homeHeader__link}>
               <div className={styles.homeHeader__linkIconWrapper}>
                 <HomeTgIcon />
               </div>

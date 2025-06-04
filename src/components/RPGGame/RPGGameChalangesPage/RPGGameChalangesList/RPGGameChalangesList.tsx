@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./RPGGameChalangesList.module.scss";
 import { Link } from "react-router-dom";
 import {
-  gamePagePath,
-  gameSingleChallengePagePath,
+  rpgGamePagePath,
+  rpgGameSingleChallengePagePath,
 } from "../../../../router/constants";
 import { useAppSelector } from "../../../../hooks/redux";
 import {HeaderWings} from "../../../layout/icons/RPGGame/Common";
@@ -33,7 +33,7 @@ const RPGGameChalangesList: React.FC = () => {
           inProp={gameInited && inited}
         >
           <Link
-            to={`${gamePagePath}/${gameSingleChallengePagePath}/${chalange.id}`}
+            to={`${rpgGamePagePath}/${rpgGameSingleChallengePagePath}/${chalange.id}`}
             className={styles.rpgGameChalangesList__item}
           >
             <WrapperWithFrame

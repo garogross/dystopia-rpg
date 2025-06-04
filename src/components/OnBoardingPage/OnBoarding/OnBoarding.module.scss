@@ -1,0 +1,35 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.onBoarding {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-black;
+  position: relative;
+  &__sideFrame {
+    position: absolute;
+    top: 0;
+    width: 26px;
+    height: 100%;
+    z-index: 2;
+
+    &_left {
+      background: linear-gradient(
+        90deg,
+        #0c0620 12.33%,
+        rgba(54, 38, 112, 0) 115.57%
+      );
+      left: 0;
+    }
+    &_right {
+      background: linear-gradient(
+        270deg,
+        #0c0620 12.33%,
+        rgba(54, 38, 112, 0) 114.88%
+      );
+
+      right: 0;
+    }
+  }
+}

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import RPGGameClanWrapper from "../RPGGameClanPage/RPGGameClanWrapper/RPGGameClanWrapper";
 import { useNavigate, useParams } from "react-router-dom";
 import { CLANS } from "../../../dummyData/clans";
-import { gameClanPagePath, gamePagePath } from "../../../router/constants";
+import { rpgGamePagePath, rpgGameClanPagePath } from "../../../router/constants";
 
 const RPGGameSingeClanMain = () => {
   const params = useParams() as { id: string };
@@ -13,7 +13,7 @@ const RPGGameSingeClanMain = () => {
 
   useEffect(() => {
     if (!clan) {
-      navigate(`${gamePagePath}/${gameClanPagePath}`);
+      navigate(`${rpgGamePagePath}/${rpgGameClanPagePath}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clanId]);

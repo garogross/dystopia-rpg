@@ -9,7 +9,7 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import { useNavigate } from "react-router-dom";
-import { gamePlayAreaPagePath } from "../../../../router/constants";
+import { rpgGamePlayAreaPagePath } from "../../../../router/constants";
 
 const compositions = [
   {
@@ -106,7 +106,7 @@ const RPGGameSingleChalangeInfo = () => {
         ))}
       </div>
       <button
-        onClick={() => navigate(gamePlayAreaPagePath)}
+        onClick={() => navigate(rpgGamePlayAreaPagePath)}
         className={styles.rpgGameSingleChalangeInfo__startBtn}
       >
         <div className={styles.rpgGameSingleChalangeInfo__startBtnInner}>
