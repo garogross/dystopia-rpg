@@ -55,12 +55,15 @@ const CyberFarmHeader = () => {
           <HeaderSwitcherIcon />
         </button>
         <div className={styles.cyberFarmHeader__navBtns}>
-          <NavLink to={``} className={linkActiveClass()}>
+          <NavLink
+            to={`/ref`}
+            className={linkActiveClass(styles.cyberFarmHeader__refBtn)}
+          >
             <HeaderReferenceIcon />
           </NavLink>
         </div>
         <div className={styles.cyberFarmHeader__stat}>
-          <StatImg stat={EStats.kredit} size={19} />
+          <StatImg stat={EStats.cp} size={19} />
           <span className={styles.cyberFarmHeader__statText}>126,90k</span>
         </div>
       </div>
@@ -81,12 +84,15 @@ const CyberFarmHeader = () => {
           <HeaderSettingsIcon />
         </button>
         <div className={styles.cyberFarmHeader__navBtns}>
-          <NavLink to={"/rating"} className={linkActiveClass()}>
+          <NavLink
+            to={"/rating"}
+            className={linkActiveClass(styles.cyberFarmHeader__ratingBtn)}
+          >
             <HeaderRatingIcon />
           </NavLink>
         </div>
         <div className={styles.cyberFarmHeader__stat}>
-          <StatImg stat={EStats.darkMatter} size={19} />
+          <StatImg stat={EStats.ton} size={19} />
           <span className={styles.cyberFarmHeader__statText}>126,90k</span>
         </div>
       </div>

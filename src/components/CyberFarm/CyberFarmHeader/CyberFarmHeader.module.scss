@@ -76,7 +76,6 @@
 
   &__navBtn {
     @include button($color-primary-dark-gradient);
-    max-width: 37px;
     width: 100%;
     padding: 2px;
     height: 17px;
@@ -94,9 +93,13 @@
       }
     }
   }
-
-  &__mailBtn {
-    clip-path: path("M0 0H32L37 8.5L32 17H0V0Z");
+  &__ratingBtn {
+    clip-path: path("M76 17H4.71582L0 8.5L4.71582 0H76V17Z");
+    margin-left: 33px;
+  }
+  &__refBtn {
+    margin-right: 33px;
+    clip-path: path("M71 0L76 8.5L71 17H0V0H71Z");
   }
 
   &__stat {
@@ -118,11 +121,7 @@
     @include setFont(12px, 500, $font-fam-montserrat, $color-white);
   }
 
-  &__ratingBtn {
-    clip-path: path("M37 0H4.71563L0 8.5L4.71563 17H37V0Z");
-  }
-
-  &__premiumBtn {
+  &__walletBtn {
     margin-top: 7px;
     margin-inline: -40px;
     clip-path: polygon(98% 1%, 100% 50%, 98% 99%, 2% 99%, 0% 50%, 2% 1%);

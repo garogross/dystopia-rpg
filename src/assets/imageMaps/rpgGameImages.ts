@@ -5,14 +5,18 @@ import personModel2Image from "../images/RPGGame/persons/personModel2.png";
 import personModel2ImageWebp from "../images/RPGGame/persons/personModel2.webp";
 
 // stats
-import kreditImage from "../images/RPGGame/stats/kredit.png";
-import kreditImageWebp from "../images/RPGGame/stats/kredit.webp";
-import darkMatterImage from "../images/RPGGame/stats/darkMatter.png";
-import darkMatterImageWebp from "../images/RPGGame/stats/darkMatter.webp";
-import tokenImage from "../images/RPGGame/stats/token.png";
-import tokenImageWebp from "../images/RPGGame/stats/token.webp";
-import lpImage from "../images/RPGGame/stats/lp.png";
-import lpImageWebp from "../images/RPGGame/stats/lp.webp";
+import kreditImage from "../images/stats/kredit.png";
+import kreditImageWebp from "../images/stats/kredit.webp";
+import darkMatterImage from "../images/stats/darkMatter.png";
+import darkMatterImageWebp from "../images/stats/darkMatter.webp";
+import tokenImage from "../images/stats/token.png";
+import tokenImageWebp from "../images/stats/token.webp";
+import lpImage from "../images/stats/lp.png";
+import lpImageWebp from "../images/stats/lp.webp";
+import cpImage from "../images/stats/cp.png";
+import cpImageWebp from "../images/stats/cp.webp";
+import tonImage from "../images/stats/ton.png";
+import tonImageWebp from "../images/stats/ton.webp";
 
 // GameSidebar
 import rpgGameSideBarCablesImage from "../images/RPGGame/Sidebar/rpgGameSideBarCables.png";
@@ -202,6 +206,10 @@ export {
   tokenImageWebp,
   lpImage,
   lpImageWebp,
+  cpImage,
+  cpImageWebp,
+  tonImage,
+  tonImageWebp,
   // Models
   personModel1Image,
   personModel1ImageWebp,

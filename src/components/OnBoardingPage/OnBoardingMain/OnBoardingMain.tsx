@@ -7,7 +7,7 @@ import {
   MiniGamesIcon,
   StrategyIcon,
 } from "../../layout/icons/OnBoarding";
-import { rpgGamePagePath } from "../../../router/constants";
+import { cyberFarmPagePath, rpgGamePagePath } from "../../../router/constants";
 import { Link } from "react-router-dom";
 import { onBoardingGirl2Video } from "../../../assets/videos";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
@@ -42,7 +42,7 @@ const options = [
   {
     icon: <CyberFarmIcon />,
     titleKey: "titleTonCyberFarm",
-    link: "",
+    link: cyberFarmPagePath,
   },
   {
     icon: <MiniGamesIcon />,

@@ -1,11 +1,8 @@
-import React from 'react'
+import React from "react";
+import CyberFarmWrapper from "../../components/CyberFarm/CyberFarmWrapper/CyberFarmWrapper";
 
 const CyberFarmPage = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <CyberFarmWrapper />;
+};
 
-export default CyberFarmPage
+export default CyberFarmPage;
