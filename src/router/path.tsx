@@ -1,12 +1,12 @@
 import React, { ReactElement } from "react";
 
 import HomePage from "../pages/HomePage";
-import GamePage from "../pages/Game/GamePage";
-import GameCharacterPage from "../pages/Game/GameCharacterPage";
-import GameChallengesPage from "../pages/Game/GameChallengesPage";
-import GameMinigamesPage from "../pages/Game/GameMinigamesPage";
-import GameDuelPage from "../pages/Game/GameDuelPage";
-import GameClanPage from "../pages/Game/GameClanPage";
+import RPGGamePage from "../pages/RPGGame/RPGGamePage";
+import RPGGameCharacterPage from "../pages/RPGGame/RPGGameCharacterPage";
+import RPGGameChallengesPage from "../pages/RPGGame/RPGGameChallengesPage";
+import RPGGameMinigamesPage from "../pages/RPGGame/RPGGameMinigamesPage";
+import RPGGameDuelPage from "../pages/RPGGame/RPGGameDuelPage";
+import RPGGameClanPage from "../pages/RPGGame/RPGGameClanPage";
 import {
   rpgGamePagePath,
   rpgGameChallengesPagePath,
@@ -24,14 +24,14 @@ import {
   onBoardingPagePath,
   cyberFarmPagePath,
 } from "./constants";
-import GameLoyalityPage from "../pages/Game/GameLoyalityPage";
-import GameSingleChalangePage from "../pages/Game/GameSingleChalangePage";
-import GameReferalsPage from "../pages/Game/GameReferalsPage";
-import GameSkinViewPage from "../pages/Game/GameSkinViewPage";
-import GameClanSearchPage from "../pages/Game/GameClanSearchPage";
-import GameCreateClanPage from "../pages/Game/GameCreateClanPage";
-import GameSingeClanPage from "../pages/Game/GameSingeClanPage";
-import GamePlayAreaPage from "../pages/Game/GamePlayAreaPage";
+import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
+import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
+import RPGGameReferalsPage from "../pages/RPGGame/RPGGameReferalsPage";
+import RPGGameSkinViewPage from "../pages/RPGGame/RPGGameSkinViewPage";
+import RPGGameClanSearchPage from "../pages/RPGGame/RPGGameClanSearchPage";
+import RPGGameCreateClanPage from "../pages/RPGGame/RPGGameCreateClanPage";
+import RPGGameSingeClanPage from "../pages/RPGGame/RPGGameSingeClanPage";
+import RPGGamePlayAreaPage from "../pages/RPGGame/RPGGamePlayAreaPage";
 import OnBoardingPage from "../pages/OnBoardingPage";
 import CyberFarmPage from "../pages/CyberFarm/CyberFarmPage";
 import CyberFarmFieldsPage from "../pages/CyberFarm/CyberFarmFieldsPage";
@@ -56,58 +56,58 @@ export const routes: IRoute[] = [
   },
   {
     path: rpgGamePagePath,
-    component: <GamePage />,
-    indexComponent: <GameCharacterPage />,
+    component: <RPGGamePage />,
+    indexComponent: <RPGGameCharacterPage />,
     children: [
       {
         path: rpgGameChallengesPagePath,
-        component: <GameChallengesPage />,
+        component: <RPGGameChallengesPage />,
       },
       {
         path: rpgGameMinigamesPagePath,
-        component: <GameMinigamesPage />,
+        component: <RPGGameMinigamesPage />,
       },
       {
         path: rpgGameDuelPagePath,
-        component: <GameDuelPage />,
+        component: <RPGGameDuelPage />,
       },
       {
         path: rpgGameClanPagePath,
-        component: <GameClanPage />,
+        component: <RPGGameClanPage />,
       },
       {
         path: rpgGameClanSearchPagePath,
-        component: <GameClanSearchPage />,
+        component: <RPGGameClanSearchPage />,
       },
       {
         path: rpgGameCreateClanPagePath,
-        component: <GameCreateClanPage />,
+        component: <RPGGameCreateClanPage />,
       },
       {
         path: `${rpgGameClansPagePath}/:id`,
-        component: <GameSingeClanPage />,
+        component: <RPGGameSingeClanPage />,
       },
       {
         path: rpgGameLoyalityPagePath,
-        component: <GameLoyalityPage />,
+        component: <RPGGameLoyalityPage />,
       },
       {
         path: `${rpgGameSingleChallengePagePath}/:id`,
-        component: <GameSingleChalangePage />,
+        component: <RPGGameSingleChalangePage />,
       },
       {
         path: rpgGameReferalsPagePath,
-        component: <GameReferalsPage />,
+        component: <RPGGameReferalsPage />,
       },
       {
         path: rpgGameSkinViewPagePath,
-        component: <GameSkinViewPage />,
+        component: <RPGGameSkinViewPage />,
       },
     ],
   },
   {
     path: rpgGamePlayAreaPagePath,
-    component: <GamePlayAreaPage />,
+    component: <RPGGamePlayAreaPage />,
   },
 
   // cyberfarm
