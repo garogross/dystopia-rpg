@@ -13,3 +13,6 @@ export const rpgGameLoyalityPagePath = "loyality";
 export const rpgGameReferalsPagePath = "referals";
 export const rpgGameSkinViewPagePath = "skin-view";
 export const rpgGamePlayAreaPagePath = `${rpgGamePagePath}/play-area`;
+
+
+export const cyberFarmPagePath = onBoardingPagePath + "/cyberfarm"

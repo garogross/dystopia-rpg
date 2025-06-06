@@ -22,6 +22,7 @@ import {
   rpgGameClansPagePath,
   rpgGamePlayAreaPagePath,
   onBoardingPagePath,
+  cyberFarmPagePath,
 } from "./constants";
 import GameLoyalityPage from "../pages/Game/GameLoyalityPage";
 import GameSingleChalangePage from "../pages/Game/GameSingleChalangePage";
@@ -32,6 +33,8 @@ import GameCreateClanPage from "../pages/Game/GameCreateClanPage";
 import GameSingeClanPage from "../pages/Game/GameSingeClanPage";
 import GamePlayAreaPage from "../pages/Game/GamePlayAreaPage";
 import OnBoardingPage from "../pages/OnBoardingPage";
+import CyberFarmPage from "../pages/CyberFarm/CyberFarmPage";
+import CyberFarmFieldsPage from "../pages/CyberFarm/CyberFarmFieldsPage";
 
 export const homePagePath = "/";
 
@@ -56,7 +59,6 @@ export const routes: IRoute[] = [
     component: <GamePage />,
     indexComponent: <GameCharacterPage />,
     children: [
-    
       {
         path: rpgGameChallengesPagePath,
         component: <GameChallengesPage />,
@@ -106,5 +108,15 @@ export const routes: IRoute[] = [
   {
     path: rpgGamePlayAreaPagePath,
     component: <GamePlayAreaPage />,
+  },
+
+  // cyberfarm
+  {
+    path: cyberFarmPagePath,
+    component: <CyberFarmPage />,
+    indexComponent: <CyberFarmFieldsPage />,
+    children: [
+    
+    ],
   },
 ];
