@@ -9,46 +9,77 @@ import {
 } from "../../layout/icons/OnBoarding";
 import { rpgGamePagePath } from "../../../router/constants";
 import { Link } from "react-router-dom";
-import { onBoardingGirlVideo } from "../../../assets/videos";
+import { onBoardingGirl2Video } from "../../../assets/videos";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
-  onBoardingGirlTumbNailImage,
-  onBoardingGirlTumbNailWebpImage,
+  onBoardingGirlTumbNail2Image,
+  onBoardingGirlTumbNail2WebpImage,
 } from "../../../assets/imageMaps";
 import { removeLSItem, setLSItem } from "../../../helpers/localStorage";
 import { lsProps } from "../../../utils/lsProps";
+import { useAppSelector } from "../../../hooks/redux";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 
 interface Props {
   rememberSelect: boolean;
 }
 
+const onBoardingVideos = [
+  {
+    video: onBoardingGirl2Video,
+    thumbnail: {
+      webp: onBoardingGirlTumbNail2WebpImage,
+      jpg: onBoardingGirlTumbNail2Image,
+    },
+  },
+];
+
+const randomOnBoardingVideo = onBoardingVideos[0];
+// Math.floor(Math.random() * onBoardingVideos.length)
+
+
 const options = [
   {
     icon: <CyberFarmIcon />,
-    title: "Cyber Farm",
+    titleKey: "titleTonCyberFarm",
+    link: "",
+  },
+  {
+    icon: <MiniGamesIcon />,
+    titleKey: "titleMiniGames",
     link: "",
   },
   {
     icon: <RPGIcon />,
-    title: "RPG",
-    link: rpgGamePagePath,
-  },
-  {
-    icon: <MiniGamesIcon />,
-    title: "Mini Games",
-    link: "",
+    titleKey: "titleRPG",
+    link: process.env.NODE_ENV === "development" ? rpgGamePagePath : "",
   },
   {
     icon: <StrategyIcon />,
-    title: "Strategy",
+    titleKey: "titleStrategy",
     link: "",
   },
 ];
 
+const {
+      talkText,
+      titleTonCyberFarm,
+      titleMiniGames,
+      titleRPG,
+      titleStrategy,
+    } = TRANSLATIONS.onBoarding.main;
+
+const titleKeysMap: Record<string, { [key: string]: string }> = {
+  titleTonCyberFarm,
+  titleMiniGames,
+  titleRPG,
+  titleStrategy,
+};
+
 const OnBoardingMain: React.FC<Props> = ({ rememberSelect }) => {
   const [videoLoaded, setVideoLoaded] = useState(false);
-
-
+  const language = useAppSelector(state => state.ui.language)
+  
   const onClickLink = (link: string) => {
     if (rememberSelect) {
       setLSItem(lsProps.selectedGameLink, link);
@@ -60,12 +91,12 @@ const OnBoardingMain: React.FC<Props> = ({ rememberSelect }) => {
     <section className={styles.onBoardingMain}>
       <div className={styles.onBoardingMain__talkTextWrapper}>
         <div className={styles.onBoardingMain__talkTextInner}>
-          <p className={styles.onBoardingMain__talkText}>
-            Ну что, красавчик, ты в игре. Тут каждый выживает по-своему… <br />
-            Одни строят империю. Другие воруют у корпораций. А кое-кто просто
-            гоняет ночью по улицам в хроме.Выбирай, как хочешь начать — а я
-            прослежу, чтобы всё пошло гладко 💋
-          </p>
+          <p
+            className={styles.onBoardingMain__talkText}
+            dangerouslySetInnerHTML={{
+              __html: talkText[language],
+            }}
+          />
           <div className={styles.onBoardingMain__tail}></div>
         </div>
       </div>
@@ -73,34 +104,35 @@ const OnBoardingMain: React.FC<Props> = ({ rememberSelect }) => {
         <video
           muted
           autoPlay
-          loop
-          src={onBoardingGirlVideo}
+          src={randomOnBoardingVideo.video}
           onCanPlay={() => setVideoLoaded(true)}
           className={styles.onBoardingMain__video}
         ></video>
         <ImageWebp
-          srcSet={onBoardingGirlTumbNailWebpImage}
-          src={onBoardingGirlTumbNailImage}
+          srcSet={randomOnBoardingVideo.thumbnail.webp}
+          src={randomOnBoardingVideo.thumbnail.jpg}
           alt={"on boarding"}
           className={`${styles.onBoardingMain__tumbnailImage} ${
             !videoLoaded ? styles.onBoardingMain__tumbnailImage_active : ""
           } `}
         />
-      </div>
-      <div className={styles.onBoardingMain__optionLinks}>
-        {options.map((option, index) => (
-          <Link
-            onClick={() => onClickLink(option.link)}
-            to={option.link}
-            key={index}
-            className={styles.onBoardingMain__optionLink}
-          >
-            <div className={styles.onBoardingMain__optionLinkInner}>
-              {option.icon}
-              <span>{option.title}</span>
-            </div>
-          </Link>
-        ))}
+        <div className={styles.onBoardingMain__optionLinks}>
+          {options.map((option, index) => (
+            <Link
+              onClick={() => onClickLink(option.link)}
+              to={option.link}
+              key={index}
+              className={styles.onBoardingMain__optionLink}
+            >
+              <div className={styles.onBoardingMain__optionLinkInner}>
+                {option.icon}
+                <span>
+                  {titleKeysMap[option.titleKey][language]}
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );

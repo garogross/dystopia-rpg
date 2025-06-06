@@ -5,13 +5,22 @@ import {
   OnBoardingSaveSelectBlockCheckboxIcon,
   OnBoardingSaveSelectBlockWing,
 } from "../../layout/icons/OnBoarding";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../hooks/redux";
 
 interface Props {
-  rememberSelect: boolean
-  setRememberSelect: React.Dispatch<React.SetStateAction<boolean>>
+  rememberSelect: boolean;
+  setRememberSelect: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const OnBoardingSaveSelectBlock:React.FC<Props> = ({rememberSelect,setRememberSelect}) => {
+const { rememberChoiceLabel, descriptionText } =
+  TRANSLATIONS.onBoarding.saveSelectBlock;
+
+const OnBoardingSaveSelectBlock: React.FC<Props> = ({
+  rememberSelect,
+  setRememberSelect,
+}) => {
+  const language = useAppSelector((state) => state.ui.language);
   return (
     <div className={styles.onBoardingSaveSelectBlock}>
       <div className={styles.onBoardingSaveSelectBlock__wing}>
@@ -21,16 +30,15 @@ const OnBoardingSaveSelectBlock:React.FC<Props> = ({rememberSelect,setRememberSe
         <div className={styles.onBoardingSaveSelectBlock__inner}>
           <button
             className={styles.onBoardingSaveSelectBlock__checkbox}
-            onClick={() => setRememberSelect(prev => !prev)}
+            onClick={() => setRememberSelect((prev) => !prev)}
           >
             <OnBoardingSaveSelectBlockCheckboxIcon checked={rememberSelect} />
             <h6 className={styles.onBoardingSaveSelectBlock__checkboxLabel}>
-              Запомнить выбор
+              {rememberChoiceLabel[language]}
             </h6>
           </button>
           <p className={styles.onBoardingSaveSelectBlock__description}>
-            В следующий раз ты сразу попадёшь туда, что выбрал. Не волнуйся — в
-            любой момент можно изменить в настройках
+            {descriptionText[language]}
           </p>
         </div>
       </div>
