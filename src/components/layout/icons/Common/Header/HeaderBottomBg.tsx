@@ -6,7 +6,7 @@ interface HeaderBottomBgProps {
   className?: string;
 }
 
-export const RPGHeaderBottomBg: React.FC<HeaderBottomBgProps> = ({
+export const HeaderBottomBg: React.FC<HeaderBottomBgProps> = ({
   width = 353,
   height = 11,
   className,

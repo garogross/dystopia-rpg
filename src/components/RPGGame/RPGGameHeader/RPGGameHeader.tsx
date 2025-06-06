@@ -3,17 +3,20 @@ import React from "react";
 import styles from "./RPGGameHeader.module.scss";
 
 import {
-  RPGHeaderBtnsBg,
-  RPGHeaderSwitcherIcon,
   RPGHeaderMailIcon,
-  RPGHeaderSettingsIcon,
-  RPGHeaderRatingIcon,
-  RPGHeaderReferenceIcon,
-  RPGHeaderBottomBg,
   RPGHeaderHideIcon,
   RPGHeaderPremiumIcon,
   RPGHeaderMiniGamesICon,
 } from "../../layout/icons/RPGGame/RPGHeader";
+
+import {
+  HeaderBottomBg,
+  HeaderBtnsBg,
+  HeaderRatingIcon,
+  HeaderReferenceIcon,
+  HeaderSettingsIcon,
+  HeaderSwitcherIcon,
+} from "../../layout/icons/Common/Header";
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { useAppSelector } from "../../../hooks/redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -56,13 +59,13 @@ const RPGGameHeader: React.FC = () => {
         className={`${styles.rpgGameHeader__cornerBlock} ${styles.rpgGameHeader__cornerBlock_left}`}
       >
         <div className={styles.rpgGameHeader__headerBtnsBg}>
-          <RPGHeaderBtnsBg />
+          <HeaderBtnsBg />
         </div>
         <div className={styles.rpgGameHeader__dotsLine}>
           <DotsLine />
         </div>
         <button onClick={onSwith} className={styles.rpgGameHeader__mainBtn}>
-          <RPGHeaderSwitcherIcon />
+          <HeaderSwitcherIcon />
         </button>
         <div className={styles.rpgGameHeader__navBtns}>
           <NavLink to={"/mingames"} className={linkActiveClass()}>
@@ -88,26 +91,26 @@ const RPGGameHeader: React.FC = () => {
         className={`${styles.rpgGameHeader__cornerBlock} ${styles.rpgGameHeader__cornerBlock_right}`}
       >
         <div className={styles.rpgGameHeader__headerBtnsBg}>
-          <RPGHeaderBtnsBg />
+          <HeaderBtnsBg />
         </div>
         <div className={styles.rpgGameHeader__dotsLine}>
           <DotsLine />
         </div>
         <button className={styles.rpgGameHeader__mainBtn}>
-          <RPGHeaderSettingsIcon />
+          <HeaderSettingsIcon />
         </button>
         <div className={styles.rpgGameHeader__navBtns}>
           <NavLink
             to={"/rating"}
             className={linkActiveClass(styles.rpgGameHeader__ratingBtn)}
           >
-            <RPGHeaderRatingIcon />
+            <HeaderRatingIcon />
           </NavLink>
           <NavLink
             to={`${rpgGamePagePath}/${rpgGameReferalsPagePath}`}
             className={linkActiveClass()}
           >
-            <RPGHeaderReferenceIcon />
+            <HeaderReferenceIcon />
           </NavLink>
         </div>
         <div className={styles.rpgGameHeader__stat}>
@@ -118,7 +121,7 @@ const RPGGameHeader: React.FC = () => {
 
       <div className={styles.rpgGameHeader__bottomBlock}>
         <div className={styles.rpgGameHeader__bottomBlockBg}>
-          <RPGHeaderBottomBg />
+          <HeaderBottomBg />
         </div>
         <Link
           to={`${rpgGamePagePath}/${rpgGameSkinViewPagePath}`}
