@@ -5,10 +5,11 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import { PositionPlace } from "../../../../canvasModels/PositionPlace";
-import { EHitZones } from "../../../../constants/EHitZones";
-import {HeadSheildIcon,
+import { EHitZones } from "../../../../constants/cyberfarm/EHitZones";
+import {
+  HeadSheildIcon,
   BodySheildIcon,
-FootSheildIcon,
+  FootSheildIcon,
 } from "../../../layout/icons/RPGGame/RPGGamePlayArea/RPGGamePlayAreaOwnedCharacterMenu";
 
 interface Props {

@@ -5,7 +5,7 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import { PositionPlace } from "../../../../canvasModels/PositionPlace";
-import { EHitZones } from "../../../../constants/EHitZones";
+import { EHitZones } from "../../../../constants/cyberfarm/EHitZones";
 import {
   HeadShotIcon,
   BodyShotIcon,
@@ -69,7 +69,9 @@ const RPGGamePlayAreaRivalMenu: React.FC<Props> = ({
           <div className={styles.rpgGamePlayAreaRivalMenu__infoInner}>
             <div className={styles.rpgGamePlayAreaRivalMenu__infoItem}>
               <HeartIcon />
-              <h4 className={styles.rpgGamePlayAreaRivalMenu__infoText}>{hp}</h4>
+              <h4 className={styles.rpgGamePlayAreaRivalMenu__infoText}>
+                {hp}
+              </h4>
             </div>
             <div className={styles.rpgGamePlayAreaRivalMenu__infoItem}>
               <SheildIcon />

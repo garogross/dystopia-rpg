@@ -1,0 +1,1 @@
+export {SocialStoreIcon} from "./SocialStoreIcon"

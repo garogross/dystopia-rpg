@@ -23,7 +23,7 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import RPGGameCharacterTrainingTabBar from "../RPGGameCharacterTraining/RPGGameCharacterTrainingTabBar/RPGGameCharacterTrainingTabBar";
-import { ETrainingTabs } from "../../../../constants/ETrainingTabs";
+import { ETrainingTabs } from "../../../../constants/cyberfarm/ETrainingTabs";
 import { CubeArrowIcon } from "../../../layout/icons/RPGGame/Common";
 import RPGGameCharacterAchievementsHeader from "../RPGGameCharacterAchievements/RPGGameCharacterAchievementsHeader/RPGGameCharacterAchievementsHeader";
 

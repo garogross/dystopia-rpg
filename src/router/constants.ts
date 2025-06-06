@@ -16,3 +16,7 @@ export const rpgGamePlayAreaPagePath = `${rpgGamePagePath}/play-area`;
 
 
 export const cyberFarmPagePath = onBoardingPagePath + "/cyberfarm"
+export const cyberFarmFarmsPagePath = "farms"
+export const cyberFarmFactoriesPagePath = "factories"
+export const cyberFarmWarehousePagePath = "warehouse"
+export const cyberFarmSupportPagePath = "support"

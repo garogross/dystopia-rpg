@@ -4,7 +4,7 @@ import WrapperWithFrame from "../../../layout/WrapperWithFrame/WrapperWithFrame"
 import RPGGameCharacterTrainingRedistribution from "./RPGGameCharacterTrainingRedistribution/RPGGameCharacterTrainingRedistribution";
 import RPGGameCharacterTrainingDevelopment from "./RPGGameCharacterTrainingDevelopment/RPGGameCharacterTrainingDevelopment";
 import RPGGameCharacterTrainingCybernetics from "./RPGGameCharacterTrainingCybernetics/RPGGameCharacterTrainingCybernetics";
-import { ETrainingTabs } from "../../../../constants/ETrainingTabs";
+import { ETrainingTabs } from "../../../../constants/cyberfarm/ETrainingTabs";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
@@ -145,10 +145,9 @@ const RPGGameCharacterTraining: React.FC<Props> = ({ activeTab }) => {
               : activeTabDetails.title}
           </h5>
           <HeaderBtn
-          onClick={() => setIsInfoOpen((prev) => !prev)}
-          type={isInfoOpen ? "close" : "info"}
+            onClick={() => setIsInfoOpen((prev) => !prev)}
+            type={isInfoOpen ? "close" : "info"}
           />
-     
         </TransitionProvider>
         {isInfoOpen && activeTabDetails.info ? (
           <RPGGameCharacterTrainingInfo data={activeTabDetails.info} />

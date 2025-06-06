@@ -1,11 +1,14 @@
 import React from "react";
 import styles from "./RPGGameCharacterTrainingTabBar.module.scss";
-import {RPGGameCharacterTrainingRedistributionIcon,RPGGameCharacterTrainingCyberneticsIcon,
-RPGGameCharacterTrainingDevelopmentIcon} from "../../../../layout/icons/RPGGame/RPGGameCharacterPage/RPGGameCharacterTraining/tabbar";
+import {
+  RPGGameCharacterTrainingRedistributionIcon,
+  RPGGameCharacterTrainingCyberneticsIcon,
+  RPGGameCharacterTrainingDevelopmentIcon,
+} from "../../../../layout/icons/RPGGame/RPGGameCharacterPage/RPGGameCharacterTraining/tabbar";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../../providers/TransitionProvider";
-import { ETrainingTabs } from "../../../../../constants/ETrainingTabs";
+import { ETrainingTabs } from "../../../../../constants/cyberfarm/ETrainingTabs";
 import { useAppSelector } from "../../../../../hooks/redux";
 interface Props {
   activeTab: ETrainingTabs;

@@ -1,4 +1,4 @@
-import { EHitZones } from "../constants/EHitZones";
+import { EHitZones } from "../constants/cyberfarm/EHitZones";
 import { IBattle } from "./IBattle";
 
 export interface IBattleAction {
