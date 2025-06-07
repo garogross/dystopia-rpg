@@ -1,10 +1,9 @@
 import React from "react";
+import Loyality from "../../components/Loyality/Loyality/Loyality";
 
 const CyberFarmSupportPage: React.FC = () => {
   return (
-    <div>
-      <h1>CyberFarm Support</h1>
-    </div>
+    <Loyality isFarm />
   );
 };
 

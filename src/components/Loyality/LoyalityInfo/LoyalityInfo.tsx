@@ -1,0 +1,67 @@
+import React, { useState } from "react";
+import styles from "./LoyalityInfo.module.scss";
+import WrapperWithFrame from "../../layout/WrapperWithFrame/WrapperWithFrame";
+import { LoyalityArrowIcon } from "../../layout/icons/Loyality";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../providers/TransitionProvider";
+import { EStats } from "../../../constants/EStats";
+import { HeaderWings } from "../../layout/icons/RPGGame/Common";
+import StatImg from "../../layout/StatImg/StatImg";
+import { useAppSelector } from "../../../hooks/redux";
+
+interface Props {
+  title: string;
+  text: React.ReactNode;
+  statText: string;
+}
+
+const LoyalityInfo: React.FC<Props> = ({ title, text, statText }) => {
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState(true);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+  return (
+    <TransitionProvider
+      className={styles.loyalityInfo}
+      style={TransitionStyleTypes.zoomIn}
+      inProp={gameInited}
+    >
+      <WrapperWithFrame>
+        <div className={styles.loyalityInfo__main}>
+          <div className={styles.loyalityInfo__mainHeader}>
+            <h4 className={styles.loyalityInfo__title}>{title}</h4>
+            <button
+              className={styles.loyalityInfo__headerBtn}
+              onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
+            >
+              <LoyalityArrowIcon rotated={isDescriptionOpen} />
+            </button>
+          </div>
+          <TransitionProvider
+            inProp={isDescriptionOpen}
+            style={TransitionStyleTypes.height}
+            height={60}
+            className={styles.loyalityInfo__textWrapper}
+          >
+            <p className={styles.loyalityInfo__text}>{text}</p>
+          </TransitionProvider>
+        </div>
+      </WrapperWithFrame>
+
+      <div className={styles.loyalityInfo__bottomBlock}>
+        <div className={styles.loyalityInfo__bottomBlockWings}>
+          <HeaderWings />
+        </div>
+        <div className={styles.loyalityInfo__bottomBlockValue}>
+          <span className={styles.loyalityInfo__bottomBlockText}>
+            Всего : 50
+          </span>
+
+          <StatImg stat={EStats.lp} />
+        </div>
+        <span className={styles.loyalityInfo__bottomBlockText}>{statText}</span>
+      </div>
+    </TransitionProvider>
+  );
+};
+
+export default LoyalityInfo;

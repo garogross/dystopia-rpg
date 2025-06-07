@@ -1,0 +1,9 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.loyality {
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}

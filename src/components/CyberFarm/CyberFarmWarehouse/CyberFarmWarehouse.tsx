@@ -4,7 +4,7 @@ import { IWarehouseProduct } from "../../../models/IWarehouseProduct";
 import { EFactoryProducts } from "../../../constants/cyberfarm/EFactoryProducts";
 import { EPlants } from "../../../constants/EPlants";
 import { SocialStoreIcon } from "../../layout/icons/CyberFarm/CyberFarmWarehousePage";
-import styles from "./CyberFarmWarehouse.module.scss"
+import styles from "./CyberFarmWarehouse.module.scss";
 
 const warehouseProducts: IWarehouseProduct[] = [
   {
@@ -47,7 +47,9 @@ const warehouseProducts: IWarehouseProduct[] = [
 
 const CyberFarmWarehouse = () => {
   return (
-    <main className={`${styles.cyberFarmWarehouse} cyberFarmContainer`}>
+    <main
+      className={`${styles.cyberFarmWarehouse} fullheight cyberFarmContainer`}
+    >
       <div className={styles.cyberFarmWarehouse__main}>
         <CyberFarmWrapperWithList
           title={"Склад"}
@@ -57,7 +59,7 @@ const CyberFarmWarehouse = () => {
       </div>
       <button className={styles.cyberFarmWarehouse__socialStoreBtn}>
         <div className={styles.cyberFarmWarehouse__socialStorebtnInner}>
-          <SocialStoreIcon/>
+          <SocialStoreIcon />
           <span>Социальный магазин</span>
         </div>
       </button>

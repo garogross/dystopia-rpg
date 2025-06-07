@@ -1,0 +1,12 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.loyalityStore {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  &__wings {
+    width: 100%;
+    margin-block: 5px;
+  }
+}

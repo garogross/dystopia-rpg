@@ -130,7 +130,7 @@ const farms: IFarmField[] = [
 
 const CyberFarmFarmsPage: React.FC = () => {
   return (
-    <main className="cyberFarmContainer">
+    <main className="cyberFarmContainer fullheight">
 
       <CyberFarmWrapperWithList title={"Фермы"} data={farms}/>
     </main>

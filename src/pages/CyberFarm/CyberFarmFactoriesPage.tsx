@@ -51,7 +51,7 @@ const factories: IFarmField[] = [
 
 const CyberFarmFactoriesPage: React.FC = () => {
   return (
-    <main className='cyberFarmContainer'>
+    <main className='cyberFarmContainer fullheight'>
 
     <CyberFarmWrapperWithList title={'Заводы'} data={factories}/>
     </main>

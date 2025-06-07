@@ -128,7 +128,7 @@ const fields: IFarmField[] = [
 ];
 
 const CyberFarmFieldsPage = () => {
-  return <main className="cyberFarmContainer">
+  return <main className="cyberFarmContainer fullheight">
     <CyberFarmWrapperWithList title={"Поля"} data={fields} />;
     </main>
 };
