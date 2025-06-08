@@ -113,7 +113,10 @@ export const routes: IRoute[] = [
       },
     ],
   },
-  
+  {
+    path: rpgGamePlayAreaPagePath,
+    component: <RPGGamePlayAreaPage/>,
+  },
   // cyberfarm
   {
     path: cyberFarmPagePath,
