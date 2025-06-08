@@ -9,6 +9,7 @@ import { EStats } from "../../../constants/EStats";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
 import StatImg from "../../layout/StatImg/StatImg";
 import { useAppSelector } from "../../../hooks/redux";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 
 interface Props {
   title: string;
@@ -16,8 +17,12 @@ interface Props {
   statText: string;
 }
 
+const {totalText} = TRANSLATIONS.loyality.info
+
 const LoyalityInfo: React.FC<Props> = ({ title, text, statText }) => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(true);
+    const language = useAppSelector(state => state.ui.language)
+
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <TransitionProvider
@@ -53,7 +58,7 @@ const LoyalityInfo: React.FC<Props> = ({ title, text, statText }) => {
         </div>
         <div className={styles.loyalityInfo__bottomBlockValue}>
           <span className={styles.loyalityInfo__bottomBlockText}>
-            Всего : 50
+            {totalText[language]} : 50
           </span>
 
           <StatImg stat={EStats.lp} />

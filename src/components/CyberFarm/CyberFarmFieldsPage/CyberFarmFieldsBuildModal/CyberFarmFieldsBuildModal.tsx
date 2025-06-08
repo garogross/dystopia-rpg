@@ -6,6 +6,8 @@ import {
   BuildIcon,
   PlantIcon,
 } from "../../../layout/icons/CyberFarm/CyberFarmFieldsPage";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../hooks/redux";
 
 interface Props {
   show: boolean;
@@ -14,17 +16,25 @@ interface Props {
   onPlant: () => void;
 }
 
+const {
+  titleText,
+plantButtonText,
+buildButtonText,
+} = TRANSLATIONS.cyberFarm.fields.buildModal
+
 const CyberFarmFieldsBuildModal: React.FC<Props> = ({
   show,
   onClose,
   onBuild,
   onPlant,
 }) => {
+    const language = useAppSelector(state => state.ui.language)
+
   return (
     <ModalWithAdd
       show={show}
       onClose={onClose}
-      title="Выберите способ использования поля"
+      title={titleText[language]}
     >
       <div className={styles.cyberFarmFieldsBuildModal}>
         <button
@@ -36,7 +46,7 @@ const CyberFarmFieldsBuildModal: React.FC<Props> = ({
         >
           <div className={styles.cyberFarmFieldsBuildModal__btnInner}>
             <PlantIcon />
-            <span>Посадить</span>
+            <span>{plantButtonText[language]}</span>
           </div>
         </button>
         <button
@@ -48,8 +58,8 @@ const CyberFarmFieldsBuildModal: React.FC<Props> = ({
         >
           <div className={styles.cyberFarmFieldsBuildModal__btnInner}>
             <BuildIcon />
-            <span>Построить</span>
-          </div>{" "}
+            <span>{buildButtonText[language]}</span>
+          </div>
         </button>
       </div>
     </ModalWithAdd>

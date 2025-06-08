@@ -6,25 +6,34 @@ import {
   BuyIcon,
   CancelIcon,
 } from "../../../layout/icons/CyberFarm/CyberFarmFieldsPage";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../hooks/redux";
 
 interface Props {
   show: boolean;
   onClose: () => void;
 }
 
+const {
+  titleText,
+buyButtonText,
+cancelButtonText,
+} = TRANSLATIONS.cyberFarm.fields.buyModal
+
 const CyberFarmFieldsBuyModal: React.FC<Props> = ({ show, onClose }) => {
+    const language = useAppSelector(state => state.ui.language)
+
   return (
     <ModalWithAdd
       show={show}
       onClose={onClose}
-      title="Вы точно хотите купить этот участок 
-за 1 CP?"
+      title={titleText[language]}
     >
       <div className={styles.cyberFarmFieldsBuyModal}>
         <button className={styles.cyberFarmFieldsBuyModal__btn}>
           <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
             <BuyIcon />
-            <span>Купить</span>
+            <span>{buyButtonText[language]}</span>
           </div>
         </button>
         <button
@@ -33,8 +42,8 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({ show, onClose }) => {
         >
           <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
             <CancelIcon />
-            <span>Отмена</span>
-          </div>{" "}
+            <span>{cancelButtonText[language]}</span>
+          </div>
         </button>
       </div>
     </ModalWithAdd>

@@ -14,36 +14,56 @@ import { useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { ELanguages } from "../../../constants/ELanguages";
 
-const tasks = [
+const {
+  availableInText,
+  subscribeText,
+  subscribedText,
+  visitText,
+  getText,
+  task1NameText,
+  task1DescriptionText,
+  task2NameText,
+  task2DescriptionText,
+  task3NameText,
+  task3DescriptionText,
+  task4NameText,
+  task4DescriptionText,
+  task5NameText,
+  task5DescriptionText,
+} = TRANSLATIONS.loyality.supportProject
+
+const tasks = (language: ELanguages) => [
   {
     id: "1",
-    name: "Подпишитесь на канал CryptoZver",
-    description: "Канал про крипту",
+    name: task1NameText[language],
+    description: task1DescriptionText[language],
     image: supportTask1Image,
     price: 5,
     subscription: true,
   },
   {
     id: "2",
-    name: "Подпишитесь на канал KARIMOV",
-    description: "Путь со 100$ до 500k$",
+    name: task2NameText[language],
+    description: task2DescriptionText[language],
     image: supportTask2Image,
     price: 7,
     subscription: false,
   },
   {
     id: "3",
-    name: "Поделитесь игрой в Telegram",
-    description: "Расскажи друзьям и получи бонус",
+    name: task3NameText[language],
+    description: task3DescriptionText[language],
     image: supportTask3Image,
     price: 10,
     subscription: false,
   },
   {
     id: "4",
-    name: "Посетите сайт партнёров",
-    description: "Один клик — и ты помог проекту",
+    name: task4NameText[language],
+    description: task4DescriptionText[language],
     image: supportTask4Image,
     price: 3,
     subscription: false,
@@ -51,8 +71,8 @@ const tasks = [
   },
   {
     id: "5",
-    name: "Подпишитесь на All COMBO TAP X",
-    description: "Один клик — и ты помог проекту",
+    name: task5NameText[language],
+    description: task5DescriptionText[language],
     image: supportTask5Image,
     price: 3,
     subscription: false,
@@ -60,11 +80,12 @@ const tasks = [
 ];
 
 const LoyalitySupportProject = () => {
+  const language = useAppSelector(state => state.ui.language)
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <div className={styles.loyalitySupportProject}>
       <div className={styles.loyalitySupportProject__list}>
-        {tasks.map((task, index) => (
+        {tasks(language).map((task, index) => (
           <TransitionProvider
             inProp={gameInited}
             style={TransitionStyleTypes.bottom}
@@ -76,70 +97,42 @@ const LoyalitySupportProject = () => {
             }`}
             key={task.id}
           >
-            <div
-              className={styles.loyalitySupportProject__listItemInner}
-            >
-              <div
-                className={styles.loyalitySupportProject__listItemMain}
-              >
+            <div className={styles.loyalitySupportProject__listItemInner}>
+              <div className={styles.loyalitySupportProject__listItemMain}>
                 <img
                   src={task.image}
                   alt={task.name}
                   className={styles.loyalitySupportProject__listItemImg}
                 />
-                <div
-                  className={
-                    styles.loyalitySupportProject__listItemTexts
-                  }
-                >
-                  <p
-                    className={
-                      styles.loyalitySupportProject__listItemName
-                    }
-                  >
+                <div className={styles.loyalitySupportProject__listItemTexts}>
+                  <p className={styles.loyalitySupportProject__listItemName}>
                     {task.name}
                   </p>
-                  <p
-                    className={
-                      styles.loyalitySupportProject__listItemDescription
-                    }
-                  >
+                  <p className={styles.loyalitySupportProject__listItemDescription}>
                     {task.description}
                   </p>
                 </div>
-                <div
-                  className={
-                    styles.loyalitySupportProject__listItemActions
-                  }
-                >
+                <div className={styles.loyalitySupportProject__listItemActions}>
                   <button
                     disabled={task.subscription}
-                    className={
-                      styles.loyalitySupportProject__subscribeBtn
-                    }
+                    className={styles.loyalitySupportProject__subscribeBtn}
                   >
                     {task.subscription
-                      ? "Подписан"
+                      ? subscribedText[language]
                       : task.byLink
-                      ? "Посетить"
-                      : "Подписаться"}
+                      ? visitText[language]
+                      : subscribeText[language]}
                   </button>
                   <button
                     disabled={!task.subscription}
                     className={styles.loyalitySupportProject__getBtn}
                   >
-                    <div
-                      className={
-                        styles.loyalitySupportProject__getBtnInner
-                      }
-                    >
-                      <span>Получить : {task.price}LP</span>
+                    <div className={styles.loyalitySupportProject__getBtnInner}>
+                      <span>{getText[language]} {task.price}LP</span>
                       <img
                         src={lpImage}
                         alt="LP"
-                        className={
-                          styles.loyalitySupportProject__getBtnImg
-                        }
+                        className={styles.loyalitySupportProject__getBtnImg}
                       />
                     </div>
                   </button>
@@ -161,7 +154,7 @@ const LoyalitySupportProject = () => {
         style={TransitionStyleTypes.bottom}
         className={styles.loyalitySupportProject__availableInText}
       >
-        Все доступные задания будут обновляться через: 6д 12ч
+        {availableInText[language]}
       </TransitionProvider>
     </div>
   );

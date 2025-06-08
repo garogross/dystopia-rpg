@@ -16,37 +16,46 @@ import { useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { ELanguages } from "../../../constants/ELanguages";
 
-const tasks = [
+const { availableInText,
+  pvpBattlesText,
+  pveBattlesText,
+  clanTerritoryText, } =
+  TRANSLATIONS.loyality.tasks;
+
+const tasks = (language: ELanguages) => [
   {
     image: task1Image,
     imageWebp: task1ImageWebp,
-    description: "Проведите PvP боев: 1",
+    description: `${pvpBattlesText[language]} 1`,
     progress: [1, 1],
     income: 1,
   },
   {
     image: task2Image,
     imageWebp: task2ImageWebp,
-    description: "Проведите PvE боев: 5",
+    description: `${pveBattlesText[language]} 5`,
     progress: [1, 5],
     income: 3,
   },
   {
     image: task3Image,
     imageWebp: task3ImageWebp,
-    description: "Проведите победных клановых захватов территории: 1",
+    description: `${clanTerritoryText[language]} 1`,
     progress: [0, 1],
     income: 3,
   },
 ];
 
 const LoyalityTasks = () => {
+  const language = useAppSelector(state => state.ui.language)
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <div className={styles.loyalityTasks}>
       <div className={styles.loyalityTasks__list}>
-        {tasks.map((task, index) => {
+        {tasks(language).map((task, index) => {
           const progressInPercent = (task.progress[0] / task.progress[1]) * 100;
           return (
             <TransitionProvider
@@ -68,29 +77,19 @@ const LoyalityTasks = () => {
                   className={styles.loyalityTasks__itemImg}
                 />
                 <div className={styles.loyalityTasks__itemMain}>
-                  <p
-                    className={
-                      styles.loyalityTasks__listItemDescriptionText
-                    }
-                  >
+                  <p className={styles.loyalityTasks__listItemDescriptionText}>
                     {task.description}
                   </p>
                   <div className={styles.loyalityTasks__progressBar}>
-                    <div
-                      className={styles.loyalityTasks__progressBarMain}
-                    >
+                    <div className={styles.loyalityTasks__progressBarMain}>
                       <div
                         style={{
                           width: `${progressInPercent}%`,
                         }}
-                        className={
-                          styles.loyalityTasks__progressBarInner
-                        }
+                        className={styles.loyalityTasks__progressBarInner}
                       ></div>
                     </div>
-                    <span
-                      className={styles.loyalityTasks__progressBarText}
-                    >
+                    <span className={styles.loyalityTasks__progressBarText}>
                       {task.progress[0]}/{task.progress[1]}
                     </span>
                   </div>
@@ -102,9 +101,7 @@ const LoyalityTasks = () => {
                     alt=""
                     className={styles.loyalityTasks__listItemIncomeImg}
                   />
-                  <span
-                    className={styles.loyalityTasks__listItemIncomeText}
-                  >
+                  <span className={styles.loyalityTasks__listItemIncomeText}>
                     {task.income}LP
                   </span>
                 </div>
@@ -119,7 +116,7 @@ const LoyalityTasks = () => {
         style={TransitionStyleTypes.bottom}
         className={styles.loyalityTasks__availableIn}
       >
-        Все доступные задания будут обновляться через: <br /> 22ч 25м
+        {availableInText[language]}
       </TransitionProvider>
     </div>
   );

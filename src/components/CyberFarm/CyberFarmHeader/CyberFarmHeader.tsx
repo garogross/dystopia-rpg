@@ -18,10 +18,12 @@ import StatImg from "../../layout/StatImg/StatImg";
 import { EStats } from "../../../constants/EStats";
 import { WalletIcon } from "../../layout/icons/CyberFarm/CyberFarmHeader";
 import CyberFarmBonuses from "../CyberFarmBonuses/CyberFarmBonuses";
-
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+const {balancesText} = TRANSLATIONS.cyberFarm.header
 const CyberFarmHeader = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
   const [bonusesOpened, setBonusesOpened] = useState(false);
 
   const linkActiveClass =
@@ -73,7 +75,7 @@ const CyberFarmHeader = () => {
         className={styles.cyberFarmHeader__walletBtn}
       >
         <WalletIcon />
-        <span>Балансы</span>
+        <span>{balancesText[language]}</span>
       </button>
       <div
         className={`${styles.cyberFarmHeader__cornerBlock} ${styles.cyberFarmHeader__cornerBlock_right}`}

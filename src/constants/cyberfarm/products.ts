@@ -23,74 +23,89 @@ import {
     plasmaMushroomImageWebp,
 } from "../../assets/imageMaps"
 import { EPlants } from "../EPlants"
+import { TRANSLATIONS } from "../TRANSLATIONS"
 import { EFactoryProducts } from "./EFactoryProducts"
+
+const {
+    metal,
+    bioGel,
+    edibleBrick,
+    energy,
+    energyCore,
+    organicMeat,
+    plasma,
+    repairKit,
+    metalCactus,
+    plasmaMushroom,
+    bioBacteria,
+} = TRANSLATIONS.cyberFarm.products
 
 export const products = {
     [EFactoryProducts.Metal]: {
         src: metalImage,
         srcSet: metalImageWebp,
-        name: "Металл",
+        name: metal,
         type: "factory"
     },
     [EFactoryProducts.BioGel]: {
         src: bioGelImage,
         srcSet: bioGelImageWebp,
-        name: "Биогель",
+        name: bioGel,
         type: "factory"
     },
     [EFactoryProducts.EdibleBrick]: {
         src: edibleBrickImage,
         srcSet: edibleBrickImageWebp,
-        name: "Съед. брикет",
+        name: edibleBrick,
         type: "factory"
     },
     [EFactoryProducts.Energy]: {
         src: energyImage,
         srcSet: energyImageWebp,
-        name: "Энергия",
+        name: energy,
         type: "factory"
     },
     [EFactoryProducts.EnergyCore]: {
         src: energyCoreImage,
         srcSet: energyCoreImageWebp,
-        name: "Энергоядро",
+        name: energyCore,
         type: "factory"
     },
     [EFactoryProducts.OrganicMeat]: {
         src: organicMeatImage,
         srcSet: organicMeatImageWebp,
-        name: "Орг. мясо",
+        name: organicMeat,
         type: "factory"
     },
     [EFactoryProducts.Plasma]: {
         src: plasmaImage,
         srcSet: plasmaImageWebp,
-        name: "Плазма",
+        name: plasma,
         type: "factory"
     },
     [EFactoryProducts.RepairKit]: {
         src: repairKitImage,
         srcSet: repairKitImageWebp,
-        name: "Ремкомплект",
+        name: repairKit,
         type: "factory"
     },
     // plants
     [EPlants.MetalCactus]: {
         src: metalCactusImage,
         srcSet: metalCactusImageWebp,
-        name: "Металокактусы",
+        name: metalCactus,
         type: "plant"
     },
     [EPlants.PlasmaMushroom]: {
         src: plasmaMushroomImage,
         srcSet: plasmaMushroomImageWebp,
-        name: "Плазмогрибы",
+        name: plasmaMushroom,
         type: "plant"
     },
     [EPlants.BioBacteria]: {
         src: bioBacteriaImage,
         srcSet: bioBacteriaImageWebp,
-        name: "Биобактерии",
+        name: bioBacteria,
         type: "plant"
     },
 }

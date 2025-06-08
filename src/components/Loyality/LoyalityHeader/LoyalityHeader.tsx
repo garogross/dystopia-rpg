@@ -7,10 +7,15 @@ import { useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+
+const {titleText} = TRANSLATIONS.loyality.header
 
 const LoyalityHeader = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+    const language = useAppSelector(state => state.ui.language)
+
   return (
     <TransitionProvider
       className={styles.loyalityHeader}
@@ -18,7 +23,7 @@ const LoyalityHeader = () => {
       inProp={gameInited}
     >
       <HeaderWithBackButton onClose={() => navigate(-1)} />
-      <TitleH3>Лояльность проекту</TitleH3>
+      <TitleH3>{titleText[language]}</TitleH3>
     </TransitionProvider>
   );
 };

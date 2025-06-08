@@ -6,6 +6,8 @@ import CyberFarmWrapperWithList from "../../CyberFarmWrapperWithList/CyberFarmWr
 import CyberFarmFieldsBuyModal from "../CyberFarmFieldsBuyModal/CyberFarmFieldsBuyModal";
 import CyberFarmFieldsBuildModal from "../CyberFarmFieldsBuildModal/CyberFarmFieldsBuildModal";
 import CyberFarmFieldsBuildOptionsModal from "../CyberFarmFieldsBuildOptionsModal/CyberFarmFieldsBuildOptionsModal";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../hooks/redux";
 
 const fields: IFarmField[] = [
   {
@@ -124,17 +126,19 @@ const fields: IFarmField[] = [
     blocked: true,
   },
 ];
+const {titleText} = TRANSLATIONS.cyberFarm.fields
 
 const CyberFarmFields = () => {
+    const language = useAppSelector(state => state.ui.language)
+
   const [buyModalOpened, setBuyModalOpened] = useState(false);
   const [buildModalOpened, setBuildModalOpened] = useState(false);
   const [plantOptionsModalOpened, setPlantOptionsModalOpened] = useState(false);
   const [buildOptionsModalOpened, setBuildOptionsModalOpened] = useState(false);
-
   return (
     <main className="cyberFarmContainer fullheight">
       <CyberFarmWrapperWithList
-        title={"Поля"}
+        title={titleText[language]}
         data={fields}
         onBuyItem={() => setBuyModalOpened(true)}
         onBuildItem={() => setBuildModalOpened(true)}

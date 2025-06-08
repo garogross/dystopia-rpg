@@ -15,6 +15,7 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../hooks/redux";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 
 interface Props {
   isFarm?: boolean;
@@ -35,7 +36,16 @@ const weekData = [
   },
 ];
 
+const {
+  availableInText,
+  receivedText,
+  lootboxForAdText,
+  lootboxForLPText,
+} = TRANSLATIONS.loyality.activity;
+
 const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
+  const language = useAppSelector((state) => state.ui.language);
+
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <div className={styles.loyalityActivity}>
@@ -52,9 +62,7 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
               <button
                 key={dayIndex}
                 className={`${styles.loyalityActivity__listItem} ${
-                  value === 1
-                    ? styles.loyalityActivity__listItem_active
-                    : ""
+                  value === 1 ? styles.loyalityActivity__listItem_active : ""
                 } ${
                   value === 1.1
                     ? styles.loyalityActivity__listItem_recieved
@@ -72,10 +80,8 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
                   {value}CP
                 </span>
                 {value === 1.1 && (
-                  <span
-                    className={styles.loyalityActivity__receivedText}
-                  >
-                    Получено
+                  <span className={styles.loyalityActivity__receivedText}>
+                    {receivedText[language]}
                   </span>
                 )}
               </button>
@@ -86,8 +92,7 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
       <LoyalityCollectReward disabled={true} />
       <div className={styles.loyalityActivity__availableIn}>
         <span className={styles.loyalityActivity__availableInText}>
-          Будет доступно через: 22ч 25м
-        </span>
+          {availableInText[language]}</span>
         <DotsLine />
       </div>
       {isFarm && (
@@ -102,7 +107,7 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
                 pictureClass={styles.loyalityActivity__luteBoxPicture}
               />
               <span className={styles.loyalityActivity__luteBoxBtnText}>
-                Лутбокс за рекламу
+                {lootboxForAdText[language]}
               </span>
             </div>
           </button>
@@ -116,7 +121,7 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
                 pictureClass={styles.loyalityActivity__luteBoxPicture}
               />
               <span className={styles.loyalityActivity__luteBoxBtnText}>
-                Лутбокс за ЛП
+                {lootboxForLPText[language]}
               </span>
             </div>
           </button>

@@ -7,6 +7,8 @@ import { SocialStoreIcon } from "../../../layout/icons/CyberFarm/CyberFarmWareho
 import styles from "./CyberFarmWarehouse.module.scss";
 import CyberFarmWarehouseProductInfo from "../CyberFarmWarehouseProductInfo/CyberFarmWarehouseProductInfo";
 import CyberFarmWarehouseSocialStoreModal from "../CyberFarmWarehouseSocialStoreModal/CyberFarmWarehouseSocialStoreModal";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../hooks/redux";
 
 const warehouseProducts: IWarehouseProduct[] = [
   {
@@ -47,7 +49,14 @@ const warehouseProducts: IWarehouseProduct[] = [
   },
 ];
 
+const {
+  titleText,
+socialStoreButtonText,
+} = TRANSLATIONS.cyberFarm.warehouse
+
 const CyberFarmWarehouse = () => {
+    const language = useAppSelector(state => state.ui.language)
+
   const [socialStoreShow, setSocialStoreShow] = useState(false);
   const [infoShow, setInfoShow] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
@@ -62,7 +71,7 @@ const CyberFarmWarehouse = () => {
     >
       <div className={styles.cyberFarmWarehouse__main}>
         <CyberFarmWrapperWithList
-          title={"Склад"}
+          title={titleText[language]}
           data={warehouseProducts}
           isWarehouse
           onSellItem={(item) => {
@@ -84,7 +93,7 @@ const CyberFarmWarehouse = () => {
       >
         <div className={styles.cyberFarmWarehouse__socialStorebtnInner}>
           <SocialStoreIcon />
-          <span>Социальный магазин</span>
+          <span>{socialStoreButtonText[language]}</span>
         </div>
       </button>
       <CyberFarmWarehouseSocialStoreModal

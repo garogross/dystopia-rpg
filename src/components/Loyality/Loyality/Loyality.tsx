@@ -13,62 +13,59 @@ import {
   LoyalitySupportProjectIcon,
   LoyalityStoreIcon,
 } from "../../layout/icons/Loyality/tabbar";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../hooks/redux";
 
 interface Props {
   isFarm?: boolean;
 }
+const {activity,tasks,store,supportProject} = TRANSLATIONS.loyality.tabs
 
 const tabs = [
   {
-    name: "Активность",
+    name: activity.name,
     key: "activity",
     icon: <LoyalityActivityIcon />,
     component: <LoyalityActivity />,
-    title: "Ежедневная активность",
-    text: "Получаете бонусы за ежедневный вход.Система прогрессивная: чем больше дней подряд — тем выше награда.",
-    statText: "Входов подряд: 1 день",
+    title: activity.title,
+    text: activity.text,
+    statText: activity.statText,
   },
   {
-    name: "Задания",
+    name: tasks.name,
     key: "tasks",
     icon: <LoyalityTasksIcon />,
     component: <LoyalityTasks />,
-    title: "Ежедневные задания",
-    text: (
-      <>
-        Выполняете PvE, PvP и клановые миссии — получаете LP. <br /> Чем больше
-        задач — тем выше награда.
-      </>
-    ),
-    statText: "Выполнено заданий: 1",
+    title: tasks.title,
+    text: tasks.text,
+    statText: tasks.statText,
     disabledForFarm: true,
   },
   {
-    name: "Поддержка проекта",
+    name: supportProject.name,
     key: "support-project",
     icon: <LoyalitySupportProjectIcon />,
     component: <LoyalitySupportProject />,
-    title: "Поддержка проекта",
-    text: (
-      <>
-        Участвуй в развитии вселенной Dystopia — получай очки лояльности (LP).{" "}
-        <br /> Подписывайся, следи за проектами, забирай награды
-      </>
-    ),
-    statText: "Выполнено: 1 из 7",
+    title: supportProject.title,
+    text: supportProject.text,
+    statText: supportProject.statText,
   },
   {
-    name: "Магазин",
+    name: store.name,
     key: "store",
     icon: <LoyalityStoreIcon />,
     component: <LoyalityStore />,
-    title: "Магазин лояльности",
-    text: "Обменивай свои очки лояльности (LP) на эксклюзивное оружие, броню и скины! Поддерживай проект — открывай доступ к уникальным наградам, недоступным за кредиты.",
-    statText: "",
+    title: store.title,
+    text: store.text,
+    statText: store.statText,
     disabledForFarm: true,
   },
 ];
+
+
 const Loyality: React.FC<Props> = ({ isFarm }) => {
+    const language = useAppSelector(state => state.ui.language)
+
   const [activeTab, setActiveTab] = useState<string>(tabs[0].key);
 
   const activeTabDetails = tabs.find((tab) => tab.key === activeTab);
@@ -83,9 +80,9 @@ const Loyality: React.FC<Props> = ({ isFarm }) => {
       />
       {activeTabDetails && (
         <LoyalityInfo
-          title={activeTabDetails?.title}
-          text={activeTabDetails?.text}
-          statText={activeTabDetails?.statText}
+          title={activeTabDetails?.title[language]}
+          text={activeTabDetails?.text[language]}
+          statText={activeTabDetails?.statText[language]}
         />
       )}
       {activeTabDetails && activeTabDetails.component}

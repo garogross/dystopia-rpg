@@ -4,12 +4,13 @@ import { useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
+import { TranslationItemType } from "../../../types/TranslationItemType";
 
 interface Props {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   tabs: {
-    name: string;
+    name: TranslationItemType;
     key: string;
     component: React.ReactNode;
     icon: React.ReactNode;
@@ -25,6 +26,8 @@ const LoyalityTabbar: React.FC<Props> = ({
   isFarm,
 }) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+    const language = useAppSelector(state => state.ui.language)
+
 
   const filteredTabs = isFarm
     ? tabs.filter((tab) => !tab.disabledForFarm)
@@ -45,7 +48,7 @@ const LoyalityTabbar: React.FC<Props> = ({
         >
           <div className={styles.loyalityTabbar__inner}>
             {tab.icon}
-            <span>{tab.name}</span>
+            <span>{tab.name[language]}</span>
           </div>
         </button>
       ))}

@@ -9,6 +9,7 @@ import HeaderBtn from "../../../layout/HeaderBtn/HeaderBtn";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
+import { useAppSelector } from "../../../../hooks/redux";
 
 interface Props {
   show: boolean;
@@ -21,6 +22,8 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
   item,
   onClose,
 }) => {
+    const language = useAppSelector(state => state.ui.language)
+
   const [counter, setCounter] = useState(1);
   const price = 0.000137;
   const product = products[item.product];
@@ -55,13 +58,13 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
       <div className={styles.cyberFarmWarehouseProductInfo__main}>
         <ImageWebp
           src={product.src}
-          alt={product.name}
+          alt={product.name[language]}
           className={styles.cyberFarmWarehouseProductInfo__mainImg}
           srcSet={product.srcSet}
         />
         <div className={styles.cyberFarmWarehouseProductInfo__infoTexts}>
           <p className={styles.cyberFarmWarehouseProductInfo__text}>
-            {product.name}
+            {product.name[language]}
           </p>
           <div className={styles.cyberFarmWarehouseProductInfo__textCol}>
             <p className={styles.cyberFarmWarehouseProductInfo__text}>

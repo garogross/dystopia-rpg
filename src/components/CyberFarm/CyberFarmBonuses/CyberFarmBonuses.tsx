@@ -13,6 +13,8 @@ import {
   WithdrawIcon,
 } from "../../layout/icons/CyberFarmBonuses";
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../hooks/redux";
 
 interface Props {
   show: boolean;
@@ -24,30 +26,47 @@ interface FormFieldProps {
   commission?: string;
 }
 
+const {
+  bonusesText,
+  walletText,
+  walletPlaceholder,
+  withdrawAmountText,
+  withdrawAmountPlaceholder,
+  commissionText,
+  totalToReceiveText,
+  totalToReceivePlaceholder,
+  watchAdText,
+  depositText,
+  withdrawText,
+} = TRANSLATIONS.cyberFarm.bonuses;
+
 const Formfield: React.FC<FormFieldProps> = ({
   headerText,
   placeholder,
   commission,
-}) => (
-  <label className="{styles.cyberFarmBonuses__form}">
-    <div className={styles.cyberFarmBonuses__formFieldHeader}>
-      <p className={styles.cyberFarmBonuses__formFieldHeaderText}>
-        {headerText}
-      </p>
-      <FormFieldWind />
-    </div>
-    <input
-      type="text"
-      placeholder={placeholder}
-      className={styles.cyberFarmBonuses__input}
-    />
-    {commission && (
-      <p className={styles.cyberFarmBonuses__formFieldDescriptionText}>
-        Комиссия: {commission}
-      </p>
-    )}
-  </label>
-);
+}) => {
+  const language = useAppSelector((state) => state.ui.language);
+  return (
+    <label className="{styles.cyberFarmBonuses__form}">
+      <div className={styles.cyberFarmBonuses__formFieldHeader}>
+        <p className={styles.cyberFarmBonuses__formFieldHeaderText}>
+          {headerText}
+        </p>
+        <FormFieldWind />
+      </div>
+      <input
+        type="text"
+        placeholder={placeholder}
+        className={styles.cyberFarmBonuses__input}
+      />
+      {commission && (
+        <p className={styles.cyberFarmBonuses__formFieldDescriptionText}>
+          {commissionText[language]}: {commission}
+        </p>
+      )}
+    </label>
+  );
+};
 
 const FormBtn = ({ children }: { children: ReactNode }) => (
   <div className={styles.cyberFarmBonuses__btnWrapper}>
@@ -63,8 +82,14 @@ const FormBtn = ({ children }: { children: ReactNode }) => (
   </div>
 );
 const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
+  const language = useAppSelector((state) => state.ui.language);
   return (
-    <ModalWithAdd titleLg="Бонусы" show={show} onClose={onClose} fullHeught>
+    <ModalWithAdd
+      titleLg={bonusesText[language]}
+      show={show}
+      onClose={onClose}
+      fullHeught
+    >
       <div className={styles.cyberFarmBonuses}>
         <button className={styles.cyberFarmBonuses__getByAddBtn}>
           <div className={styles.cyberFarmBonuses__getByAddBtnInner}>
@@ -75,31 +100,31 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
               className={styles.cyberFarmBonuses__getByAddBtnImg}
               pictureClass={styles.cyberFarmBonuses__getByAddBtnPicture}
             />
-            <span>Получайте +1 CP за просмотр рекламы</span>
+            <span>{watchAdText[language]}</span>
           </div>
         </button>
         <FormBtn>
           <Walleticon />
-          <span>Пополнить</span>
+          <span>{depositText[language]}</span>
         </FormBtn>
         <h3 className={styles.cyberFarmBonuses__title}>TON</h3>
         <form className={styles.cyberFarmBonuses__form}>
           <Formfield
-            headerText={"Ваш кошелёк"}
-            placeholder={"Вставлять номер кошелька..."}
+            headerText={walletText[language]}
+            placeholder={walletPlaceholder[language]}
           />
           <Formfield
-            headerText={"Сумма вывода (TON)"}
-            placeholder={"0,5"}
+            headerText={withdrawAmountText[language]}
+            placeholder={withdrawAmountPlaceholder[language]}
             commission="0.003 TON"
           />
           <Formfield
-            headerText={"Итого к получению"}
-            placeholder={"Авторасчёт = сумма - комиссия..."}
+            headerText={totalToReceiveText[language]}
+            placeholder={totalToReceivePlaceholder[language]}
           />
           <FormBtn>
             <WithdrawIcon />
-            <span>Вывести</span>
+            <span>{withdrawText[language]}</span>
           </FormBtn>
         </form>
       </div>

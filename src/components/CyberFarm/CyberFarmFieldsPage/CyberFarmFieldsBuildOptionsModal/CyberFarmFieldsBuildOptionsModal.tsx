@@ -10,21 +10,31 @@ import {
   cyberFarmFarmImage,
   cyberFarmFarmImageWebp,
 } from "../../../../assets/imageMaps";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../hooks/redux";
 
 interface Props {
   show: boolean;
   onClose: () => void;
 }
 
+const {
+  titleText,
+farmButtonText,
+factoryButtonText,
+} = TRANSLATIONS.cyberFarm.fields.buildOptionsModal
+
 const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   show,
   onClose,
 }) => {
+    const language = useAppSelector(state => state.ui.language)
+
   return (
     <ModalWithAdd
       show={show}
       onClose={onClose}
-      title="Выберите что построить"
+      title={titleText[language]}
     >
       <div className={styles.cyberFarmFieldsBuildOptionsModal}>
         <button className={styles.cyberFarmFieldsBuildOptionsModal__btn}>
@@ -36,7 +46,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
               pictureClass={styles.cyberFarmFieldsBuildOptionsModal__picture}
               className={styles.cyberFarmFieldsBuildOptionsModal__btnImg}
             />
-            <span>Ферма</span>
+            <span>{farmButtonText[language]}</span>
           </div>
         </button>
         <button className={styles.cyberFarmFieldsBuildOptionsModal__btn}>
@@ -48,7 +58,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
               pictureClass={styles.cyberFarmFieldsBuildOptionsModal__picture}
               className={styles.cyberFarmFieldsBuildOptionsModal__btnImg}
             />
-            <span>Завод</span>
+            <span>{factoryButtonText[language]}</span>
           </div>
         </button>
       </div>

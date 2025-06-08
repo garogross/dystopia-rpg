@@ -6,12 +6,27 @@ import { products } from "../../../../constants/cyberfarm/products";
 import { cpLgImage, cpLgImageWebp } from "../../../../assets/imageMaps";
 import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
 import { ConfirmIcon } from "../../../layout/icons/CyberFarm/CyberFarmWarehousePage";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../hooks/redux";
 
 interface Props {
   show: boolean;
   onClose: () => void;
 }
 
+
+const {
+  titleLgText,
+titleText,
+confirmButtonText,
+exchangeOptions
+} = TRANSLATIONS.cyberFarm.warehouse.socialStoreModal
+
+const {
+  cactusToCp,
+cactusToRepairKit,
+cactusToEnergy,
+} = exchangeOptions
 const changeOptions = [
   {
     fromImg: products.MetalCactus,
@@ -19,17 +34,17 @@ const changeOptions = [
       src: cpLgImage,
       srcSet: cpLgImageWebp,
     },
-    text: "-1 кактус на 1 CP",
+    text: cactusToCp,
   },
   {
     fromImg: products.MetalCactus,
     toImg: products.RepairKit,
-    text: "-2 кактус на 10 ремкомплектов",
+    text: cactusToRepairKit,
   },
   {
     fromImg: products.MetalCactus,
     toImg: products.Energy,
-    text: "-3 кактус на 20 энергии",
+    text: cactusToEnergy,
   },
 ];
 
@@ -37,13 +52,15 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
   show,
   onClose,
 }) => {
+    const language = useAppSelector(state => state.ui.language)
+
   return (
     <ModalWithAdd
       show={show}
       onClose={onClose}
       withoutFrame
-      titleLg="Социальный магазин"
-      title="Выберите предмет для обмена"
+      titleLg={titleLgText[language]}
+      title={titleText[language]}
     >
       <div className={styles.cyberFarmWarehouseSocialStoreModal}>
         <div className={styles.cyberFarmWarehouseSocialStoreModal__lsit}>
@@ -71,7 +88,7 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
                 <span
                   className={styles.cyberFarmWarehouseSocialStoreModal__text}
                 >
-                  {option.text}
+                  {option.text[language]}
                 </span>
                 <ImageWebp
                   src={option.toImg.src}
@@ -96,7 +113,7 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
               styles.cyberFarmWarehouseSocialStoreModal__confirmBtnInner
             }
           >
-            <span>Потвердить обмен</span>
+            <span>{confirmButtonText[language]}</span>
             <ConfirmIcon />
           </div>
         </button>

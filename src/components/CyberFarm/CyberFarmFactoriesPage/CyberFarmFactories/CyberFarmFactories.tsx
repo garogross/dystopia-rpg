@@ -2,6 +2,8 @@ import React from "react";
 import { EFactoryProducts } from "../../../../constants/cyberfarm/EFactoryProducts";
 import { IFarmField } from "../../../../models/IFarmField";
 import CyberFarmWrapperWithList from "../../CyberFarmWrapperWithList/CyberFarmWrapperWithList";
+import { useAppSelector } from "../../../../hooks/redux";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 
 const factories: IFarmField[] = [
   {
@@ -42,11 +44,15 @@ const factories: IFarmField[] = [
   },
 ];
 
+const {titleText} = TRANSLATIONS.cyberFarm.factories
+
 const CyberFarmFactories = () => {
+    const language = useAppSelector(state => state.ui.language)
+
   return (
     <main className="cyberFarmContainer fullheight">
       <CyberFarmWrapperWithList
-        title={"Заводы"}
+        title={titleText[language]}
         data={factories}
         productsType={"factory"}
       />
