@@ -308,8 +308,8 @@ export const TRANSLATIONS = {
   loyality: {
     header: {
       titleText: {
-        [ELanguages.en]: "Loyalty Program",
-        [ELanguages.ru]: "Программа лояльности",
+        [ELanguages.en]: "Support Center",
+        [ELanguages.ru]: "Центр Поддержки",
       },
     },
     tabs: {
