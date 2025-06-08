@@ -7,11 +7,15 @@ import OnBoardingSaveSelectBlock from "../OnBoardingSaveSelectBlock/OnBoardingSa
 import { useNavigate } from "react-router-dom";
 import { getLSItem } from "../../../helpers/localStorage";
 import { lsProps } from "../../../utils/lsProps";
+import { useTelegram } from "../../../hooks/useTelegram";
+import { TaddyWeb } from "taddy-sdk-web";
+import eruda from "eruda";
 
 const OnBoarding = () => {
   const navigate = useNavigate();
   const [rememberSelect, setRememberSelect] = useState(false);
   const [selectedGameLinkChecked, setSelectedGameLinkChecked] = useState(false);
+  const tg = useTelegram();
 
   useEffect(() => {
     getLSItem(lsProps.selectedGameLink)
@@ -23,6 +27,38 @@ const OnBoarding = () => {
       .catch((error) => console.error(error))
       .finally(() => setSelectedGameLinkChecked(true));
   }, [navigate]);
+
+  useEffect(() => {
+    if (!tg) return;
+    if (process.env.NODE_ENV === "development") {
+    }
+    eruda.init();
+    tg.ready();
+    const taddyPublicId = process.env.REACT_APP_TADDY_PUBLIC_ID
+    if(taddyPublicId) {
+      const taddy = new TaddyWeb(taddyPublicId);
+
+      console.log({ taddy });
+      taddy.ready();
+      const exchange = taddy.exchange();
+      console.log({ exchange });
+  
+      exchange
+        .feed({
+          limit: 8, // default: 4
+          imageFormat: "png", // default: webp
+          autoImpressions: true, // impressions event will be called
+        })
+        .then((items) => {
+          console.log({ items });
+  
+          // render(items)
+        })
+        .catch((err) => console.log({ err }));
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!selectedGameLinkChecked) return null;
 

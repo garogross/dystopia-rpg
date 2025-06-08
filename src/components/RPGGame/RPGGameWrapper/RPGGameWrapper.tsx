@@ -9,7 +9,6 @@ import { useTelegram } from "../../../hooks/useTelegram";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import AppLoader from "../../AppLoader/AppLoader";
 import { setGameInited } from "../../../store/slices/uiSlice";
-import eruda from "eruda";
 import { setLSItem } from "../../../helpers/localStorage";
 import { lsProps } from "../../../utils/lsProps";
 
@@ -31,9 +30,7 @@ const RPGGameWrapper: React.FC<Props> = (props) => {
     // if (!tg) return;
     // open fullscreen
 
-    if (process.env.NODE_ENV === "development") {
-      eruda.init();
-    }
+  
 
     tg.expand();
     if (tg.isVersionAtLeast("8.0")) {
