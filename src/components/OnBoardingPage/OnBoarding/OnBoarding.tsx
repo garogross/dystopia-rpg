@@ -31,18 +31,20 @@ const OnBoarding = () => {
   useEffect(() => {
     if (!tg) return;
     if (process.env.NODE_ENV === "development") {
+      eruda.init();
     }
-    eruda.init();
     tg.ready();
-    const taddyPublicId = process.env.REACT_APP_TADDY_PUBLIC_ID
-    if(taddyPublicId) {
+    const taddyPublicId = process.env.REACT_APP_TADDY_PUBLIC_ID;
+    console.log({ taddyPublicId });
+
+    if (taddyPublicId) {
       const taddy = new TaddyWeb(taddyPublicId);
 
       console.log({ taddy });
       taddy.ready();
       const exchange = taddy.exchange();
       console.log({ exchange });
-  
+
       exchange
         .feed({
           limit: 8, // default: 4
@@ -51,7 +53,7 @@ const OnBoarding = () => {
         })
         .then((items) => {
           console.log({ items });
-  
+
           // render(items)
         })
         .catch((err) => console.log({ err }));
