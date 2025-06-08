@@ -1,0 +1,54 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.cyberFarmFieldsBuyModal {
+  margin-top: 16px;
+  @include flexCol();
+  gap: 18px;
+
+  &__btn {
+    max-width: 94px;
+    width: 100%;
+    padding: 1px;
+    @include button($color-primary);
+  }
+
+  &__btnInner {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    @include flexCol();
+    gap: 5px;
+    background: radial-gradient(50% 50% at 50% 50%, #523ba6 0%, #170e35 100%);
+    @include setFont(12px, 400);
+  }
+
+  &__btn:nth-child(1),
+  &__btn:nth-child(1) &__btnInner {
+    clip-path: polygon(
+      100% 0%,
+      100% 0%,
+      100% 100%,
+      6% 100%,
+      0% 90%,
+      0% 10%,
+      6% 0%,
+      100% 0%
+    );
+  }
+  &__btn:nth-child(2),
+  &__btn:nth-child(2) &__btnInner {
+    clip-path: polygon(
+      5.5% 0%,
+      0% 0.6%,
+      0% 100%,
+      95.2% 100%,
+      97.7% 94.9%,
+      100% 90%,
+      100% 10.1%,
+      97.6% 5.4%,
+      95.1% 0%,
+      5.5% 0%
+    );
+  }
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./CyberFarmWrapperWithList.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
@@ -9,36 +9,100 @@ import {
   cyberFarmEmptyFieldImageWebp,
   cyberFarmFactoryImage,
   cyberFarmFactoryImageWebp,
+  cyberFarmFarmImage,
+  cyberFarmFarmImageWebp,
 } from "../../../assets/imageMaps";
 import { plantImages } from "../../../constants/cyberfarm/plantImages";
 import { IWarehouseProduct } from "../../../models/IWarehouseProduct";
-import { productImages } from "../../../constants/cyberfarm/productImages";
+import { products } from "../../../constants/cyberfarm/products";
 import {
   Blockedicon,
   Completedicon,
   InProgressIcon,
 } from "../../layout/icons/CyberFarm/CyberFarmWrapperWithList";
+import { useAppSelector } from "../../../hooks/redux";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../providers/TransitionProvider";
+import { getFarmFieldProgress } from "../../../utils/getFarmFieldProgress";
+import CyberFarmProcessModal from "../CyberFarmProcessModal/CyberFarmProcessModal";
+import CyberFarmOptionsModal from "../CyberFarmOptionsModal/CyberFarmOptionsModal";
 
-interface Props {
+interface Props<T extends IFarmField | IWarehouseProduct> {
   title: string;
-  data: IFarmField[] | IWarehouseProduct[];
+  data: T[];
   isWarehouse?: boolean;
+  onSellItem?: (item: T) => void;
+  onBuyItem?: (item: T) => void;
+  onBuildItem?: (item: T) => void;
+  onCloseOptionsModal?: () => void;
+  optionsModalOpenedArg?: boolean;
+  productsType?: "plant" | "factory";
 }
 
-const CyberFarmWrapperWithList: React.FC<Props> = ({
+const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   title,
   data,
   isWarehouse,
-}) => {
+  onSellItem,
+  onBuildItem,
+  onBuyItem,
+  optionsModalOpenedArg,
+  onCloseOptionsModal,
+  productsType,
+}: Props<T>) => {
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const [progressModalOpened, setProgressModalOpened] = useState(false);
+  const [activeProgresModalItemId, setActiveProgresModalItemId] = useState<
+    IFarmField["id"] | null
+  >(null);
+  const [optionsModalOpened, setOptionsModalOpened] = useState(false);
+
+  const activeProgresModalItem = data.find(
+    (field) => field.id === activeProgresModalItemId
+  );
+
+  useEffect(() => {
+    if (optionsModalOpenedArg) setOptionsModalOpened(true);
+  }, [optionsModalOpenedArg]);
+  useEffect(() => {
+    if (optionsModalOpened) onCloseOptionsModal?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [optionsModalOpened]);
+
+  const onClickItem = (field: T) => {
+    if ("count" in field) {
+      onSellItem?.(field)
+    } else {
+      if (field.blocked) onBuyItem?.(field);
+      else if (field.process) {
+        setActiveProgresModalItemId(field.id);
+        setProgressModalOpened(true);
+      } else onBuildItem ? onBuildItem?.(field) : setOptionsModalOpened(true);
+    }
+  };
+
   return (
     <section className={styles.cyberFarmWrapperWithList}>
       <div className={styles.cyberFarmWrapperWithList__header}>
-        <div className={styles.cyberFarmWrapperWithList__headerWings}>
+        <TransitionProvider
+          className={styles.cyberFarmWrapperWithList__headerWings}
+          style={TransitionStyleTypes.opacity}
+          inProp={gameInited}
+        >
           <HeaderWings />
-        </div>
-        <h2 className={styles.cyberFarmWrapperWithList__titleText}>{title}</h2>
+        </TransitionProvider>
+        <h2
+          className={`${gameInited ? "typeAnimation" : ""} ${
+            styles.cyberFarmWrapperWithList__titleText
+          }`}
+        >
+          {title}
+        </h2>
       </div>
-      <div
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.bottom}
         className={`${styles.cyberFarmWrapperWithList__main} ${
           isWarehouse ? styles.cyberFarmWrapperWithList__main_warehouse : ""
         }`}
@@ -51,16 +115,15 @@ const CyberFarmWrapperWithList: React.FC<Props> = ({
 
           let progressPercent =
             !("count" in field) && field.process
-              ? ((Date.now() - new Date(field.process.startDate).getTime()) /
-                  (new Date(field.process.endDate).getTime() -
-                    new Date(field.process.startDate).getTime())) *
-                100
+              ? getFarmFieldProgress(
+                  field.process.startDate,
+                  field.process.endDate
+                ).progress
               : null;
-          if (progressPercent && progressPercent > 100) progressPercent = 100;
 
           if ("count" in field) {
             // check if IWarehouseProduct
-            curImage = productImages[field.product];
+            curImage = products[field.product];
           } else if (field.type === "factory") {
             curImage = {
               src: cyberFarmFactoryImage,
@@ -71,12 +134,18 @@ const CyberFarmWrapperWithList: React.FC<Props> = ({
               plantImages[field.plant][
                 field.type === "farm" ? "inFarm" : "onField"
               ];
+          } else if (field.type === "farm" && !field.plant) {
+            curImage = {
+              src: cyberFarmFarmImage,
+              srcSet: cyberFarmFarmImageWebp,
+            };
           }
 
           return (
             <div
               key={field.id}
               className={styles.cyberFarmWrapperWithList__item}
+              onClick={() => onClickItem(field)}
             >
               <ImageWebp
                 src={curImage.src}
@@ -130,7 +199,21 @@ const CyberFarmWrapperWithList: React.FC<Props> = ({
             </div>
           );
         })}
-      </div>
+      </TransitionProvider>
+      {activeProgresModalItem && !("count" in activeProgresModalItem) && (
+        <CyberFarmProcessModal
+          show={progressModalOpened}
+          onClose={() => setProgressModalOpened(false)}
+          item={activeProgresModalItem as IFarmField}
+        />
+      )}
+      {productsType && (
+        <CyberFarmOptionsModal
+          show={optionsModalOpened}
+          onClose={() => setOptionsModalOpened(false)}
+          type={productsType}
+        />
+      )}
     </section>
   );
 };
