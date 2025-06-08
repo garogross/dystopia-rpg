@@ -1,0 +1,1 @@
+export {Walleticon} from "./Walleticon"
