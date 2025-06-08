@@ -38,7 +38,7 @@ const OnBoardingSaveSelectBlock: React.FC<Props> = ({
             </h6>
           </button>
           <p className={styles.onBoardingSaveSelectBlock__description}>
-            {descriptionText[language]}
+            {descriptionText[language].map((text,index) => (<span key={index}>{text}</span>))}
           </p>
         </div>
       </div>

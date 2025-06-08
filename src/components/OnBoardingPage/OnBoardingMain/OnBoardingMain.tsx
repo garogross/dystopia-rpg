@@ -5,7 +5,6 @@ import {
   CyberFarmIcon,
   RPGIcon,
   MiniGamesIcon,
-  StrategyIcon,
 } from "../../layout/icons/OnBoarding";
 import { cyberFarmPagePath, rpgGamePagePath } from "../../../router/constants";
 import { Link } from "react-router-dom";
@@ -37,12 +36,12 @@ const onBoardingVideos = [
 const randomOnBoardingVideo = onBoardingVideos[0];
 // Math.floor(Math.random() * onBoardingVideos.length)
 
-
 const options = [
   {
     icon: <CyberFarmIcon />,
     titleKey: "titleTonCyberFarm",
     link: cyberFarmPagePath,
+    smallText: "(Pay2Earn)",
   },
   {
     icon: <MiniGamesIcon />,
@@ -54,20 +53,15 @@ const options = [
     titleKey: "titleRPG",
     link: process.env.NODE_ENV === "development" ? rpgGamePagePath : "",
   },
-  {
-    icon: <StrategyIcon />,
-    titleKey: "titleStrategy",
-    link: "",
-  },
+  // {
+  //   icon: <StrategyIcon />,
+  //   titleKey: "titleStrategy",
+  //   link: "",
+  // },
 ];
 
-const {
-      talkText,
-      titleTonCyberFarm,
-      titleMiniGames,
-      titleRPG,
-      titleStrategy,
-    } = TRANSLATIONS.onBoarding.main;
+const { talkText, titleTonCyberFarm, titleMiniGames, titleRPG, titleStrategy } =
+  TRANSLATIONS.onBoarding.main;
 
 const titleKeysMap: Record<string, { [key: string]: string }> = {
   titleTonCyberFarm,
@@ -78,8 +72,8 @@ const titleKeysMap: Record<string, { [key: string]: string }> = {
 
 const OnBoardingMain: React.FC<Props> = ({ rememberSelect }) => {
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const language = useAppSelector(state => state.ui.language)
-  
+  const language = useAppSelector((state) => state.ui.language);
+
   const onClickLink = (link: string) => {
     if (rememberSelect) {
       setLSItem(lsProps.selectedGameLink, link);
@@ -128,6 +122,13 @@ const OnBoardingMain: React.FC<Props> = ({ rememberSelect }) => {
                 {option.icon}
                 <span>
                   {titleKeysMap[option.titleKey][language]}
+                  {option.smallText && (
+                    <span
+                      className={styles.onBoardingMain__optionLinkSmallText}
+                    >
+                      {option.smallText}
+                    </span>
+                  )}
                 </span>
               </div>
             </Link>

@@ -32,9 +32,9 @@ export const TRANSLATIONS = {
     main: {
       talkText: {
         [ELanguages.en]:
-          "Well, handsome, you're in the game. Here, everyone survives in their own way…<br />Some build empires. Others steal from corporations. And some just race through the streets at night in chrome. Choose how you want to start — and I'll make sure everything goes smoothly 💋",
+          "Hey there, darling, want to play with me? I have different options for you: a Play2Earn game (Ton Cyber Farm), mini games, and RPG, but it's still in development. Choose any one, and I'll make sure everything goes smoothly 💋",
         [ELanguages.ru]:
-          "Ну что, красавчик, ты в игре. Тут каждый выживает по-своему… <br />Одни строят империю. Другие воруют у корпораций. А кое-кто просто гоняет ночью по улицам в хроме.Выбирай, как хочешь начать — а я прослежу, чтобы всё пошло гладко 💋",
+          "Привет, дорогуша, хочешь поиграть со мной? У меня для тебя есть различные варианты: Play2Earn игра (Тон Кибер Ферма), мини игры и RPG, но она пока еще в разработке. Выбирай любую, а я прослежу, чтобы всё пошло гладко 💋",
       },
 
       titleTonCyberFarm: {
@@ -63,10 +63,14 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Запомнить выбор",
       },
       descriptionText: {
-        [ELanguages.en]:
+        [ELanguages.en]: [
           "Next time, you'll go straight to your chosen place. Don't worry — you can always change it in the settings.",
-        [ELanguages.ru]:
-          "В следующий раз ты сразу попадёшь туда, что выбрал. Не волнуйся — в любой момент можно изменить в настройках",
+          "By launching games you automatically agree to the terms of service.",
+        ],
+        [ELanguages.ru]: [
+          "В следующий раз ты сразу попадёшь туда, что выбрал. Не волнуйся — в любой момент можно изменить в настройках.",
+          "Запуская игры ты автоматически соглашаешься с пользовательским соглашением.",
+        ],
       },
     },
   },
@@ -506,10 +510,10 @@ export const TRANSLATIONS = {
       },
     },
     collectReward: {
-    collectRewardText: {
-      [ELanguages.en]: "Collect reward",
-      [ELanguages.ru]: "Получать награду",
+      collectRewardText: {
+        [ELanguages.en]: "Collect reward",
+        [ELanguages.ru]: "Получать награду",
+      },
     },
-    }
   },
 };
