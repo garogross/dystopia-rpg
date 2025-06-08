@@ -10,7 +10,7 @@ import CyberFarmBottomNavbar from '../CyberFarmBottomNavbar/CyberFarmBottomNavba
 const CyberFarmWrapper = () => {
     const dispatch = useAppDispatch()
     const imagesLoading = false; // useImageLoader();
-    const [loading, setLoading] = useState(false); //true
+    const [loading] = useState(false); //true
     const [loaderTimerFinished, setLoaderTimerFinished] = useState(false);
 
     const appLoading = imagesLoading || loading;
