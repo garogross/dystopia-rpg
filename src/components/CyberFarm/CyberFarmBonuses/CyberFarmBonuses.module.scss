@@ -1,0 +1,120 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.cyberFarmBonuses {
+  @include flexCol();
+  flex-direction: column;
+  &__getByAddBtn {
+    max-width: 185px;
+    width: 100%;
+    padding: 1px;
+    @include button($color-primary);
+    margin-bottom: 16px;
+  }
+  &__getByAddBtnInner {
+    padding: 10px 15px 6px;
+    width: 100%;
+    background: radial-gradient(50% 50% at 50% 50%, #523ba6 0%, #170e35 100%);
+    @include flexCol();
+    gap: 4px;
+    @include setFont(11px, 400);
+  }
+  &__getByAddBtn,
+  &__getByAddBtnInner {
+    clip-path: polygon(
+      100% 1%,
+      100% 91%,
+      97% 96%,
+      94% 100%,
+      6% 100%,
+      3% 96%,
+      0% 91%,
+      0% 1%
+    );
+  }
+  &__getByAddBtnPicture {
+    width: 30%;
+  }
+  &__getByAddBtnImg {
+    width: 100%;
+  }
+  &__btnWrapper {
+    @include flexCol();
+    gap: 12px;
+  }
+
+  &__btnDotline {
+    width: 100%;
+
+    & svg {
+      width: 100%;
+    }
+  }
+  &__btn {
+    min-width: 114px;
+    @include button($color-primary);
+    padding: 1px;
+  }
+  &__btnInner {
+    background: radial-gradient(
+      74.72% 95.95% at 31.29% 50%,
+      rgb(61, 43, 126) 0%,
+      rgb(4, 0, 16) 98.07692170143127%
+    );
+    padding: 8px 12px;
+    width: 100%;
+    @include flexCol();
+    gap: 6px;
+    @include setFont(12px, 400);
+
+    & svg {
+      width: 20px;
+    }
+  }
+
+  &__btn,
+  &__btnInner {
+    clip-path: polygon(100% 50%, 90% 100%, 10% 100%, 0% 50%, 10% 0%, 90% 0%);
+  }
+
+  &__title {
+    @include setFont(12px, 400, $font-fam-h1);
+    text-align: center;
+    margin-block: 16px;
+  }
+  &__form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__formField {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  &__formFieldHeader {
+    @include flexCol(space-between);
+    margin-bottom: 10px;
+  }
+  &__formFieldHeaderText {
+    @include setFont(14px, 400);
+  }
+  &__input {
+    border: 1px solid $color-primary;
+    padding: 6px 12px;
+    width: 100%;
+    background-color: #1d1340;
+    @include setFont(12px, 400);
+    outline: none;
+
+    &::placeholder {
+      color: $color-primary;
+    }
+  }
+  &__formFieldDescriptionText {
+    @include setFont(12px, 400);
+    padding-top: 5px;
+  }
+}
