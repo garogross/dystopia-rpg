@@ -15,6 +15,8 @@ import lpImage from "../images/stats/lp.png";
 import lpImageWebp from "../images/stats/lp.webp";
 import cpImage from "../images/stats/cp.png";
 import cpImageWebp from "../images/stats/cp.webp";
+import cpLgImage from "../images/stats/cpLg.png";
+import cpLgImageWebp from "../images/stats/cpLg.webp";
 import tonImage from "../images/stats/ton.png";
 import tonImageWebp from "../images/stats/ton.webp";
 
@@ -210,6 +212,8 @@ export {
   cpImageWebp,
   tonImage,
   tonImageWebp,
+  cpLgImage,
+  cpLgImageWebp,
   // Models
   personModel1Image,
   personModel1ImageWebp,

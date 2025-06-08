@@ -49,6 +49,10 @@ import plasmaImageWebp from "../images/CyberFarm/products/factoryProducts/plasma
 import repairKitImage from "../images/CyberFarm/products/factoryProducts/repairKit.png";
 import repairKitImageWebp from "../images/CyberFarm/products/factoryProducts/repairKit.webp";
 
+// CyberFarmBonuses
+import cyberFarmBonusCpImage from "../images/CyberFarm/CyberFarmBonuses/cyberFarmBonusCp.png";
+import cyberFarmBonusCpImageWebp from "../images/CyberFarm/CyberFarmBonuses/cyberFarmBonusCp.webp";
+
 export {
   cyberFarmEmptyFieldImage,
   cyberFarmEmptyFieldImageWebp,
@@ -90,4 +94,6 @@ export {
   plasmaImageWebp,
   repairKitImage,
   repairKitImageWebp,
+  cyberFarmBonusCpImage,
+  cyberFarmBonusCpImageWebp,
 };
