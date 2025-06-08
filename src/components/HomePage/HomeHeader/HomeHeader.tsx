@@ -50,14 +50,14 @@ const HomeHeader = () => {
               </div>
               <span>Играть в браузере</span>
             </a>
-            <Link to={onBoardingPagePath} className={styles.homeHeader__link}>
-              <div className={styles.homeHeader__linkIconWrapper}>
-                <HomeTgIcon />
-              </div>
-              <span>Играть в Telegram</span>
-            </Link>{" "}
           </>
         )}
+        <Link to={onBoardingPagePath} className={styles.homeHeader__link}>
+          <div className={styles.homeHeader__linkIconWrapper}>
+            <HomeTgIcon />
+          </div>
+          <span>Играть в Telegram</span>
+        </Link>
       </div>
       <div className={styles.homeHeader__rightBlock}>
         <div className={styles.homeHeader__langSelect}>
