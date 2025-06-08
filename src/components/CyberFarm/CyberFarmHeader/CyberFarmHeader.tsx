@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./CyberFarmHeader.module.scss";
 import { useAppSelector } from "../../../hooks/redux";
 import {
@@ -17,11 +17,12 @@ import { removeLSItem } from "../../../helpers/localStorage";
 import StatImg from "../../layout/StatImg/StatImg";
 import { EStats } from "../../../constants/EStats";
 import { WalletIcon } from "../../layout/icons/CyberFarm/CyberFarmHeader";
+import CyberFarmBonuses from "../CyberFarmBonuses/CyberFarmBonuses";
 
 const CyberFarmHeader = () => {
   const navigate = useNavigate();
-
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const [bonusesOpened, setBonusesOpened] = useState(false);
 
   const linkActiveClass =
     (className?: string) =>
@@ -67,7 +68,10 @@ const CyberFarmHeader = () => {
           <span className={styles.cyberFarmHeader__statText}>126,90k</span>
         </div>
       </div>
-      <button className={styles.cyberFarmHeader__walletBtn}>
+      <button
+        onClick={() => setBonusesOpened(true)}
+        className={styles.cyberFarmHeader__walletBtn}
+      >
         <WalletIcon />
         <span>Балансы</span>
       </button>
@@ -103,6 +107,10 @@ const CyberFarmHeader = () => {
         </div>
         <div className={styles.cyberFarmHeader__hideBtn}></div>
       </div>
+      <CyberFarmBonuses
+        show={bonusesOpened}
+        onClose={() => setBonusesOpened(false)}
+      />
     </header>
   );
 };
