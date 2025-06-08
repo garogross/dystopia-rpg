@@ -25,6 +25,7 @@
     "react-spring": "^9.7.3",
     "sass": "^1.77.6",
     "swiper": "^11.1.14",
+    "taddy-sdk-web": "^1.2.6",
     "uuid": "^11.1.0"
   },
   "scripts": {
