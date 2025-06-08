@@ -1,8 +1,8 @@
-import { productImages } from "../constants/cyberfarm/productImages";
+import { products } from "../constants/cyberfarm/products";
 
 export interface IWarehouseProduct {
   id: string;
-  product: keyof typeof productImages;
+  product: keyof typeof products;
   type: "plant" | "factory";
   count: number;
 }
