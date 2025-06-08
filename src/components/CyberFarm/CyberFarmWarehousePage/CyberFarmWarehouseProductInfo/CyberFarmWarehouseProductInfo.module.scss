@@ -1,0 +1,118 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.cyberFarmWarehouseProductInfo {
+  width: 100%;
+
+  &__wrapper {
+    border: 1px solid $color-primary;
+    background: linear-gradient(90deg, #2e147f 0%, #090419 25.96%);
+    padding: 10px 10px 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+  }
+
+  &_closeBtn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+  &__main {
+    @include flexCol();
+    gap: 12px;
+  }
+  &__mainImg {
+    width: 74px;
+  }
+  &__infoTexts {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  &__text {
+    @include setFont(11px, 400);
+  }
+  &__textCol {
+    @include flexCol(space-between);
+  }
+
+  &__calculator {
+    @include flexCol();
+    gap: 3px;
+  }
+  &__calculatorBtn {
+    flex: 1;
+    padding: 1px;
+    @include button($color-primary);
+    height: 12px;
+  }
+  &__calculatorBtnInner {
+    background: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
+    width: 100%;
+    height: 100%;
+    @include flexCol();
+    @include setFont(11px, 400);
+  }
+
+  &__calculatorBtn_minus,
+  &__calculatorBtn_minus &__calculatorBtnInner {
+    clip-path: polygon(100% 0%, 100% 100%, 4% 100%, 0% 80%, 0% 20%, 4% 0%);
+  }
+
+  &__calculatorBtn_plus,
+  &__calculatorBtn_plus &__calculatorBtnInner {
+    clip-path: polygon(
+      96% 0%,
+      100% 20%,
+      100% 80%,
+      96% 100%,
+      0% 100%,
+      0% 0%,
+      96% 0%
+    );
+  }
+
+  &__calculatorCounter {
+    flex: 1.2;
+    height: 20px;
+    border: 1px solid $color-primary;
+    @include flexCol();
+    @include setFont(11px, 400);
+  }
+
+  &__footer {
+    @include flexCol(space-between);
+  }
+
+  &__sellBtn {
+    max-width: 96px;
+    padding: 1px;
+    @include button($color-primary);
+    height: 22px;
+    width: 100%;
+  }
+  &__sellBtnInner {
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      rgb(61, 43, 126) 0%,
+      rgb(4, 0, 16) 100%
+    );
+    width: 100%;
+    height: 100%;
+    @include flexCol();
+    gap: 4px;
+    @include setFont(11px, 400);
+
+    & svg {
+      width: 14px;
+    }
+  }
+
+  &__sellBtn,
+  &__sellBtnInner {
+    clip-path: polygon(100% 100%, 100% 80%, 96% 100%, 0% 100%, 0% 0%, 100% 0%);
+  }
+}

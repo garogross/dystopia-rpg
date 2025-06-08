@@ -7,6 +7,10 @@ import {
   lpImageWebp,
   tokenImage,
   tokenImageWebp,
+  cpImage,
+  cpImageWebp,
+  tonImage,
+  tonImageWebp,
 } from "../assets/imageMaps";
 import { EStats } from "./EStats";
 
@@ -26,5 +30,13 @@ export const statImages = {
   [EStats.lp]: {
     img: lpImage,
     imgWebp: lpImageWebp,
+  },
+  [EStats.cp]: {
+    img: cpImage,
+    imgWebp: cpImageWebp,
+  },
+  [EStats.ton]: {
+    img: tonImage,
+    imgWebp: tonImageWebp,
   },
 };

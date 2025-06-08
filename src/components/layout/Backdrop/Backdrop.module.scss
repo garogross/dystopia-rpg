@@ -1,0 +1,16 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000ab;
+  
+    &_high {
+      z-index: 9999;
+    }
+  
+    &_low {
+      z-index: 888;
+    }
+  }

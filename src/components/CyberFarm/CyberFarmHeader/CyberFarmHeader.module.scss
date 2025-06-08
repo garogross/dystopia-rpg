@@ -1,0 +1,189 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.cyberFarmHeader {
+  width: 100%;
+  height: 67px;
+  @include flexCol(space-between);
+  gap: 10px;
+  position: relative;
+  background: linear-gradient(178.36deg, $color-bg 61.64%, #362670 143.6%);
+  opacity: 0;
+
+  &_inited {
+    animation: init 0.3s linear 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.5s;
+  }
+
+  &__cornerBlock {
+    position: relative;
+    width: 157px;
+    min-width: 157px;
+    height: 100%;
+    padding-top: 6.5px;
+    @include flexCol(flex-start);
+    gap: 8px;
+    z-index: 2;
+
+    &_left {
+      padding-left: 5px;
+    }
+
+    &_right {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      padding-right: 5px;
+    }
+  }
+
+  &__headerBtnsBg {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 59px;
+    z-index: 1;
+
+    & svg {
+      height: 100%;
+    }
+  }
+  &__cornerBlock_right &__headerBtnsBg {
+    transform: rotateY(180deg);
+  }
+
+  &__mainBtn {
+    @include button($color-primary-dark-gradient);
+    @include flexCol();
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    z-index: 2;
+  }
+
+  &__navBtns {
+    @include flexCol(flex-start);
+    flex: 1;
+    gap: 2px;
+    z-index: 2;
+  }
+
+  &__cornerBlock_right &__navBtns {
+    justify-content: flex-end;
+  }
+
+  &__navBtn {
+    @include button($color-primary-dark-gradient);
+    width: 100%;
+    padding: 2px;
+    height: 17px;
+    @include flexCol();
+
+    & svg {
+      fill: $color-black;
+    }
+
+    &_active {
+      background: linear-gradient(180deg, #5d42ba 0%, #2a1e54 100%);
+
+      & svg {
+        fill: $color-text;
+      }
+    }
+  }
+  &__ratingBtn {
+    clip-path: path("M76 17H4.71582L0 8.5L4.71582 0H76V17Z");
+    margin-left: 33px;
+  }
+  &__refBtn {
+    margin-right: 33px;
+    clip-path: path("M71 0L76 8.5L71 17H0V0H71Z");
+  }
+
+  &__stat {
+    position: absolute;
+    top: 4px;
+    @include flexCol();
+    gap: 4px;
+  }
+
+  &__cornerBlock_right &__stat {
+    left: 0;
+    right: auto;
+  }
+  &__cornerBlock_left &__stat {
+    right: 0;
+  }
+
+  &__statText {
+    @include setFont(12px, 500, $font-fam-montserrat, $color-white);
+  }
+
+  &__walletBtn {
+    margin-top: 7px;
+    margin-inline: -40px;
+    clip-path: polygon(98% 1%, 100% 50%, 98% 99%, 2% 99%, 0% 50%, 2% 1%);
+    height: 11px;
+    width: 100%;
+    @include flexCol();
+    gap: 3px;
+    padding-inline: 4px;
+    @include button(linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%));
+    @include setFont(8px, 400);
+  }
+
+  &__bottomBlock {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    @include flexCol();
+    padding-inline: 11px;
+  }
+
+  &__bottomBlockBg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    opacity: 0.8;
+    z-index: 0;
+
+    svg {
+      width: 100%;
+    }
+  }
+
+  &__dotsLine {
+    position: absolute;
+    left: 50%;
+    top: calc(50% + 2.5px);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+
+  &__hideBtn {
+    @include button($color-primary-light-gradient);
+    max-width: 75px;
+    height: 10px;
+    width: 100%;
+    @include flexCol();
+    margin-bottom: 1px;
+    clip-path: path("M9.375 0H65.4079L75 10H0L9.375 0Z");
+  }
+}
+
+@keyframes init {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -11,7 +11,7 @@ import {
   generateOrder,
 } from "../utils/battleUtils";
 import { GameStatusType } from "../types/GameStatusType";
-import { EHitZones } from "../constants/EHitZones";
+import { EHitZones } from "../constants/cyberfarm/EHitZones";
 import { Game } from "../canvasModels/Game"; // Import Game for type hinting
 import { IBattle } from "../models/IBattle";
 import { IBattleAction } from "../models/IBattleAction";

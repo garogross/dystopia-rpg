@@ -1,0 +1,1 @@
+export {CollectIcon} from "./CollectIcon"

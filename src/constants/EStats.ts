@@ -3,4 +3,6 @@ export enum EStats {
     darkMatter = "darkMatter",
     token = "token",
     lp = "lp",
+    cp = "cp",
+    ton = "ton",
 }

@@ -1,7 +1,7 @@
 import React from "react";
 
 import styles from "./HeaderBtn.module.scss";
-import {InfoIcon,CloseIcon} from "../icons/RPGGame/Common";
+import { InfoIcon, CloseIcon } from "../icons/RPGGame/Common";
 
 interface Props {
   className?: string;

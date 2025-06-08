@@ -22,6 +22,11 @@ import {
   rpgGameClansPagePath,
   rpgGamePlayAreaPagePath,
   onBoardingPagePath,
+  cyberFarmPagePath,
+  cyberFarmFarmsPagePath,
+cyberFarmFactoriesPagePath,
+cyberFarmWarehousePagePath,
+cyberFarmSupportPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -32,6 +37,12 @@ import RPGGameCreateClanPage from "../pages/RPGGame/RPGGameCreateClanPage";
 import RPGGameSingeClanPage from "../pages/RPGGame/RPGGameSingeClanPage";
 import RPGGamePlayAreaPage from "../pages/RPGGame/RPGGamePlayAreaPage";
 import OnBoardingPage from "../pages/OnBoardingPage";
+import CyberFarmPage from "../pages/CyberFarm/CyberFarmPage";
+import CyberFarmFieldsPage from "../pages/CyberFarm/CyberFarmFieldsPage";
+import CyberFarmFarmsPage from "../pages/CyberFarm/CyberFarmFarmsPage";
+import CyberFarmFactoriesPage from "../pages/CyberFarm/CyberFarmFactoriesPage";
+import CyberFarmWarehousePage from "../pages/CyberFarm/CyberFarmWarehousePage";
+import CyberFarmSupportPage from "../pages/CyberFarm/CyberFarmSupportPage";
 
 export const homePagePath = "/";
 
@@ -56,7 +67,6 @@ export const routes: IRoute[] = [
     component: <RPGGamePage />,
     indexComponent: <RPGGameCharacterPage />,
     children: [
-    
       {
         path: rpgGameChallengesPagePath,
         component: <RPGGameChallengesPage />,
@@ -103,8 +113,30 @@ export const routes: IRoute[] = [
       },
     ],
   },
+  
+  // cyberfarm
   {
-    path: rpgGamePlayAreaPagePath,
-    component: <RPGGamePlayAreaPage />,
+    path: cyberFarmPagePath,
+    component: <CyberFarmPage />,
+    indexComponent: <CyberFarmFieldsPage />,
+    children: [
+      {
+        path: cyberFarmFarmsPagePath,
+        component: <CyberFarmFarmsPage />,
+      },
+      {
+        path: cyberFarmFactoriesPagePath,
+        component: <CyberFarmFactoriesPage />,
+      },
+      {
+        path: cyberFarmWarehousePagePath,
+        component: <CyberFarmWarehousePage />,
+      },
+      {
+        path: cyberFarmSupportPagePath,
+        component: <CyberFarmSupportPage />,
+      },
+      
+    ],
   },
 ];

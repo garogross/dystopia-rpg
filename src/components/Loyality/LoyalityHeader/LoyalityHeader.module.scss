@@ -1,0 +1,10 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.loyalityHeader {
+  padding-top: 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
