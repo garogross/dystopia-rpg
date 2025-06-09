@@ -10,9 +10,12 @@ import { lsProps } from "../../../utils/lsProps";
 import { useTelegram } from "../../../hooks/useTelegram";
 import { TaddyWeb } from "taddy-sdk-web";
 import eruda from "eruda";
+import { useAppDispatch } from "../../../hooks/redux";
+import { setTadyTasks } from "../../../store/slices/tasksSlice";
 
 const OnBoarding = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
   const [rememberSelect, setRememberSelect] = useState(false);
   const [selectedGameLinkChecked, setSelectedGameLinkChecked] = useState(false);
   const tg = useTelegram();
@@ -37,14 +40,11 @@ const OnBoarding = () => {
 
     // taddy integration test    //
     const taddyPublicId = process.env.REACT_APP_TADDY_PUBLIC_ID;
-    console.log({ taddyPublicId });
     if (taddyPublicId) {
       const taddy = new TaddyWeb(taddyPublicId);
 
-      console.log({ taddy });
       taddy.ready();
       const exchange = taddy.exchange();
-      console.log({ exchange });
 
       exchange
         .feed({
@@ -53,13 +53,12 @@ const OnBoarding = () => {
           autoImpressions: true, // impressions event will be called
         })
         .then((items) => {
-          console.log(items[0]);
-
+          console.log("taddy items",items);
+          dispatch(setTadyTasks(items))
           // render(items)
         })
         .catch((err) => console.log({ err }));
     }
-
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

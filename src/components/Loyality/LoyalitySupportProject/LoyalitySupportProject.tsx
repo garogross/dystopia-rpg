@@ -86,15 +86,106 @@ const tasks = (language: ELanguages) => [
   },
 ];
 
+const TADDY_TASK_PRICE = 1;
+
+interface TaskItemProps {
+  task: {
+    id: string | number;
+    title?: string;
+    name?: string;
+    description: string;
+    image: string;
+    price?: number;
+    subscription?: boolean;
+    byLink?: boolean;
+  };
+  index: number;
+  gameInited: boolean;
+  language: ELanguages;
+  isTaddyTask?: boolean;
+}
+
+const TaskItem: React.FC<TaskItemProps> = ({
+  task,
+  index,
+  gameInited,
+  language,
+  isTaddyTask,
+}) => {
+  const title = task.title || task.name;
+  const price = isTaddyTask ? TADDY_TASK_PRICE : task.price;
+
+  return (
+    <TransitionProvider
+      inProp={gameInited}
+      style={TransitionStyleTypes.bottom}
+      delay={index * 100}
+      className={`${styles.loyalitySupportProject__listItem} ${
+        task.subscription
+          ? styles.loyalitySupportProject__listItem_completed
+          : ""
+      }`}
+      key={task.id}
+    >
+      <div className={styles.loyalitySupportProject__listItemInner}>
+        <div className={styles.loyalitySupportProject__listItemMain}>
+          <img
+            src={task.image}
+            alt={title}
+            className={styles.loyalitySupportProject__listItemImg}
+          />
+          <div className={styles.loyalitySupportProject__listItemTexts}>
+            <p className={styles.loyalitySupportProject__listItemName}>
+              {title}
+            </p>
+            <p className={styles.loyalitySupportProject__listItemDescription}>
+              {task.description}
+            </p>
+          </div>
+          <div className={styles.loyalitySupportProject__listItemActions}>
+            <button
+              disabled={task.subscription}
+              className={styles.loyalitySupportProject__subscribeBtn}
+            >
+              {task.subscription
+                ? subscribedText[language]
+                : task.byLink
+                ? visitText[language]
+                : subscribeText[language]}
+            </button>
+            <button
+              disabled={!task.subscription}
+              className={styles.loyalitySupportProject__getBtn}
+            >
+              <div className={styles.loyalitySupportProject__getBtnInner}>
+                <span>
+                  {getText[language]} {price}LP
+                </span>
+                <img
+                  src={lpImage}
+                  alt="LP"
+                  className={styles.loyalitySupportProject__getBtnImg}
+                />
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </TransitionProvider>
+  );
+};
+
 const LoyalitySupportProject = () => {
   const traffyTasks = useRef(null);
+  const taddyTasks = useAppSelector((state) => state.tasks.taddyTasks);
 
   useEffect(() => {
     const traffyTasksVal = traffyTasks.current;
-    console.log("traffyTasksVal, window.Traffy",traffyTasksVal, window.Traffy);
 
     if (traffyTasksVal && window.Traffy) {
-      function onTaskLoad(tasks: TraffyTask[]) {console.log("traffy tasks",tasks)}
+      function onTaskLoad(tasks: TraffyTask[]) {
+        console.log("traffy tasks", tasks);
+      }
       function onTaskRender(
         changeReward: (str: string) => void,
         changeCardTitle: (str: string) => void,
@@ -126,67 +217,24 @@ const LoyalitySupportProject = () => {
         ref={traffyTasks}
       ></div>
       <div className={styles.loyalitySupportProject__list}>
-        {tasks(language).map((task, index) => (
-          <TransitionProvider
-            inProp={gameInited}
-            style={TransitionStyleTypes.bottom}
-            delay={index * 100}
-            className={`${styles.loyalitySupportProject__listItem} ${
-              task.subscription
-                ? styles.loyalitySupportProject__listItem_completed
-                : ""
-            }`}
+        {taddyTasks.map((task, index) => (
+          <TaskItem
             key={task.id}
-          >
-            <div className={styles.loyalitySupportProject__listItemInner}>
-              <div className={styles.loyalitySupportProject__listItemMain}>
-                <img
-                  src={task.image}
-                  alt={task.name}
-                  className={styles.loyalitySupportProject__listItemImg}
-                />
-                <div className={styles.loyalitySupportProject__listItemTexts}>
-                  <p className={styles.loyalitySupportProject__listItemName}>
-                    {task.name}
-                  </p>
-                  <p
-                    className={
-                      styles.loyalitySupportProject__listItemDescription
-                    }
-                  >
-                    {task.description}
-                  </p>
-                </div>
-                <div className={styles.loyalitySupportProject__listItemActions}>
-                  <button
-                    disabled={task.subscription}
-                    className={styles.loyalitySupportProject__subscribeBtn}
-                  >
-                    {task.subscription
-                      ? subscribedText[language]
-                      : task.byLink
-                      ? visitText[language]
-                      : subscribeText[language]}
-                  </button>
-                  <button
-                    disabled={!task.subscription}
-                    className={styles.loyalitySupportProject__getBtn}
-                  >
-                    <div className={styles.loyalitySupportProject__getBtnInner}>
-                      <span>
-                        {getText[language]} {task.price}LP
-                      </span>
-                      <img
-                        src={lpImage}
-                        alt="LP"
-                        className={styles.loyalitySupportProject__getBtnImg}
-                      />
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </TransitionProvider>
+            task={task}
+            index={index}
+            gameInited={gameInited}
+            language={language}
+            isTaddyTask={true}
+          />
+        ))}
+        {tasks(language).map((task, index) => (
+          <TaskItem
+            key={task.id}
+            task={task}
+            index={index}
+            gameInited={gameInited}
+            language={language}
+          />
         ))}
       </div>
       <TransitionProvider
