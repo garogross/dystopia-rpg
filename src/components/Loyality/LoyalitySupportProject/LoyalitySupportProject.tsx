@@ -33,6 +33,8 @@ const {
   task4DescriptionText,
   task5NameText,
   task5DescriptionText,
+  partnerTasksText,
+  openText,
 } = TRANSLATIONS.loyality.supportProject;
 
 type TraffyTask = {
@@ -208,6 +210,21 @@ const LoyalitySupportProject = () => {
     }
   }, []);
 
+  const onOpenBarzhaTasks = () => {
+    if (window.bQuest) {
+      const callbackTest = (data: unknown) => {
+        console.log("callbackTest", { data });
+      };
+      console.log("window.bQuestInstance");
+
+      window.bQuestInstance = new window.bQuest()
+        .withElementIdAsModal("modal")
+        .mount()
+        .onReward(callbackTest)
+        .openModal();
+    }
+  };
+
   const language = useAppSelector((state) => state.ui.language);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
@@ -217,6 +234,33 @@ const LoyalitySupportProject = () => {
         ref={traffyTasks}
       ></div>
       <div className={styles.loyalitySupportProject__list}>
+        {/* button for barzha modal */}
+        <TransitionProvider
+          inProp={gameInited}
+          style={TransitionStyleTypes.bottom}
+          className={styles.loyalitySupportProject__listItem}
+        >
+          <div className={styles.loyalitySupportProject__listItemInner}>
+            <div className={styles.loyalitySupportProject__listItemMain}>
+              <div className={styles.loyalitySupportProject__listItemTexts}>
+                <p className={styles.loyalitySupportProject__listItemName}>
+                  {partnerTasksText[language]}
+                </p>
+              </div>
+              <div className={styles.loyalitySupportProject__listItemActions}>
+                <button
+                  onClick={onOpenBarzhaTasks}
+                  className={styles.loyalitySupportProject__getBtn}
+                >
+                  <div className={styles.loyalitySupportProject__getBtnInner}>
+                    {openText[language]}
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </TransitionProvider>
+
         {taddyTasks.map((task, index) => (
           <TaskItem
             key={task.id}

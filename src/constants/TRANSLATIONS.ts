@@ -368,9 +368,9 @@ export const TRANSLATIONS = {
         },
         text: {
           [ELanguages.en]:
-            "Participate in the development of the Dystopia universe — get loyalty points (LP). Subscribe, follow projects, collect rewards",
+            "Participate in the development of the Dystopia universe. Subscribe, follow projects, collect rewards",
           [ELanguages.ru]:
-            "Участвуй в развитии вселенной Dystopia — получай очки лояльности (LP). Подписывайся, следи за проектами, забирай награды",
+            "Участвуй в развитии вселенной Dystopia. Подписывайся, следи за проектами, забирай награды",
         },
         statText: {
           [ELanguages.en]: "Completed: 1 of 7",
@@ -508,11 +508,19 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "One click - and you helped the project",
         [ELanguages.ru]: "Один клик — и ты помог проекту",
       },
+    partnerTasksText: {
+      [ELanguages.en]: "Additional partner tasks",
+      [ELanguages.ru]: "Дополнительные задания от партнеров",
+    },
+    openText: {
+      [ELanguages.en]: "Open",
+      [ELanguages.ru]: "Открыть",
+    },
     },
     collectReward: {
       collectRewardText: {
         [ELanguages.en]: "Collect reward",
-        [ELanguages.ru]: "Получать награду",
+        [ELanguages.ru]: "Получить награду",
       },
     },
   },
