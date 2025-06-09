@@ -15,6 +15,8 @@ import {
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
+import { useGlobalAdController } from "../../../hooks/useGlobalAdController";
+import { EAdTypes } from "../../../constants/EAdTypes";
 
 interface Props {
   show: boolean;
@@ -83,6 +85,8 @@ const FormBtn = ({ children }: { children: ReactNode }) => (
 );
 const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const language = useAppSelector((state) => state.ui.language);
+    const onShowAd = useGlobalAdController(EAdTypes.ADSGRAM_V, "11778");
+
   return (
     <ModalWithAdd
       titleLg={bonusesText[language]}
@@ -91,7 +95,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
       fullHeught
     >
       <div className={styles.cyberFarmBonuses}>
-        <button className={styles.cyberFarmBonuses__getByAddBtn}>
+        <button className={styles.cyberFarmBonuses__getByAddBtn} onClick={onShowAd}>
           <div className={styles.cyberFarmBonuses__getByAddBtnInner}>
             <ImageWebp
               src={cyberFarmBonusCpImage}

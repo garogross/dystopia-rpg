@@ -34,11 +34,13 @@ const OnBoarding = () => {
   useEffect(() => {
     if (!tg) return;
     if (process.env.NODE_ENV === "development") {
+      eruda.init();
     }
-    eruda.init();
     tg.ready();
 
     // taddy integration test    //
+    if(!tg.initDataUnsafe?.user?.id) return;
+
     const taddyPublicId = process.env.REACT_APP_TADDY_PUBLIC_ID;
     if (taddyPublicId) {
       const taddy = new TaddyWeb(taddyPublicId);
