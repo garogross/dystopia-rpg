@@ -91,8 +91,10 @@ const LoyalitySupportProject = () => {
 
   useEffect(() => {
     const traffyTasksVal = traffyTasks.current;
+    console.log("traffyTasksVal, window.Traffy",traffyTasksVal, window.Traffy);
+
     if (traffyTasksVal && window.Traffy) {
-      function onTaskLoad(tasks: TraffyTask[]) {}
+      function onTaskLoad(tasks: TraffyTask[]) {console.log("traffy tasks",tasks)}
       function onTaskRender(
         changeReward: (str: string) => void,
         changeCardTitle: (str: string) => void,
