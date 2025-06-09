@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import {
   lpImage,
@@ -33,7 +33,14 @@ const {
   task4DescriptionText,
   task5NameText,
   task5DescriptionText,
-} = TRANSLATIONS.loyality.supportProject
+} = TRANSLATIONS.loyality.supportProject;
+
+type TraffyTask = {
+  id: string;
+  title: string;
+  image_url: string | null;
+  link: string;
+};
 
 const tasks = (language: ELanguages) => [
   {
@@ -80,10 +87,42 @@ const tasks = (language: ELanguages) => [
 ];
 
 const LoyalitySupportProject = () => {
-  const language = useAppSelector(state => state.ui.language)
+  const traffyTasks = useRef(null);
+
+  useEffect(() => {
+    const traffyTasksVal = traffyTasks.current;
+    if (traffyTasksVal && window.Traffy) {
+      function onTaskLoad(tasks: TraffyTask[]) {}
+      function onTaskRender(
+        changeReward: (str: string) => void,
+        changeCardTitle: (str: string) => void,
+        changeDescription: (str: string) => void,
+        changeButtonCheckText: (str: string) => void
+      ) {
+        changeReward("200K");
+        changeCardTitle("Subscribe on: ");
+        changeButtonCheckText("Check");
+      }
+      function onTaskReward(task: TraffyTask, signedToken: string) {}
+      function onTaskReject(task: TraffyTask) {}
+      window.Traffy.renderTasks(traffyTasksVal, {
+        max_tasks: 3,
+        onTaskLoad,
+        onTaskRender,
+        onTaskReward,
+        onTaskReject,
+      });
+    }
+  }, []);
+
+  const language = useAppSelector((state) => state.ui.language);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <div className={styles.loyalitySupportProject}>
+      <div
+        className={styles.loyalitySupportProject__traffyContainer}
+        ref={traffyTasks}
+      ></div>
       <div className={styles.loyalitySupportProject__list}>
         {tasks(language).map((task, index) => (
           <TransitionProvider
@@ -108,7 +147,11 @@ const LoyalitySupportProject = () => {
                   <p className={styles.loyalitySupportProject__listItemName}>
                     {task.name}
                   </p>
-                  <p className={styles.loyalitySupportProject__listItemDescription}>
+                  <p
+                    className={
+                      styles.loyalitySupportProject__listItemDescription
+                    }
+                  >
                     {task.description}
                   </p>
                 </div>
@@ -128,7 +171,9 @@ const LoyalitySupportProject = () => {
                     className={styles.loyalitySupportProject__getBtn}
                   >
                     <div className={styles.loyalitySupportProject__getBtnInner}>
-                      <span>{getText[language]} {task.price}LP</span>
+                      <span>
+                        {getText[language]} {task.price}LP
+                      </span>
                       <img
                         src={lpImage}
                         alt="LP"
