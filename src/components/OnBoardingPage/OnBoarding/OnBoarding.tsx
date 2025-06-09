@@ -31,12 +31,13 @@ const OnBoarding = () => {
   useEffect(() => {
     if (!tg) return;
     if (process.env.NODE_ENV === "development") {
-      eruda.init();
     }
+    eruda.init();
     tg.ready();
+
+    // taddy integration test    //
     const taddyPublicId = process.env.REACT_APP_TADDY_PUBLIC_ID;
     console.log({ taddyPublicId });
-
     if (taddyPublicId) {
       const taddy = new TaddyWeb(taddyPublicId);
 
@@ -52,12 +53,13 @@ const OnBoarding = () => {
           autoImpressions: true, // impressions event will be called
         })
         .then((items) => {
-          console.log({ items });
+          console.log(items[0]);
 
           // render(items)
         })
         .catch((err) => console.log({ err }));
     }
+
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

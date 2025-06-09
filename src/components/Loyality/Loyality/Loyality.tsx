@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Loyality.module.scss";
 import LoyalityHeader from "../LoyalityHeader/LoyalityHeader";
 import LoyalityTabbar from "../LoyalityTabbar/LoyalityTabbar";
@@ -19,7 +19,7 @@ import { useAppSelector } from "../../../hooks/redux";
 interface Props {
   isFarm?: boolean;
 }
-const {activity,tasks,store,supportProject} = TRANSLATIONS.loyality.tabs
+const { activity, tasks, store, supportProject } = TRANSLATIONS.loyality.tabs;
 
 const tabs = [
   {
@@ -62,13 +62,29 @@ const tabs = [
   },
 ];
 
-
 const Loyality: React.FC<Props> = ({ isFarm }) => {
-    const language = useAppSelector(state => state.ui.language)
+  const language = useAppSelector((state) => state.ui.language);
 
   const [activeTab, setActiveTab] = useState<string>(tabs[0].key);
 
   const activeTabDetails = tabs.find((tab) => tab.key === activeTab);
+
+  useEffect(() => {
+    // barja integration test
+
+    // if (window.bQuest) {
+    //   const callbackTest = (data: unknown) => {
+    //     console.log("callbackTest", { data });
+    //   };
+    //   console.log("window.bQuestInstance");
+
+    //   window.bQuestInstance = new window.bQuest()
+    //     .withElementIdAsModal("modal")
+    //     .mount()
+    //     .onReward(callbackTest)
+    //     .openModal();
+    // }
+  }, []);
   return (
     <section className={`${styles.loyality} container`}>
       <LoyalityHeader />

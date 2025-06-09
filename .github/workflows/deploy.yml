@@ -23,6 +23,8 @@ jobs:
           echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL }}" >> .env.production
           echo "REACT_APP_SOCKET_URL=${{ secrets.REACT_APP_SOCKET_URL }}" >> .env.production
           echo "REACT_APP_TADDY_PUBLIC_ID=${{ secrets.REACT_APP_TADDY_PUBLIC_ID }}" >> .env.production
+          echo "REACT_APP_BARZHA_TOKEN=${{ secrets.REACT_APP_BARZHA_TOKEN }}" >> .env.production
+          echo "REACT_APP_TRAFFY_TOKEN=${{ secrets.REACT_APP_TRAFFY_TOKEN }}" >> .env.production
 
       - name: 📦 Install dependencies
         run: npm install

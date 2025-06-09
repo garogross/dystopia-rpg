@@ -19,13 +19,15 @@ import { EStats } from "../../../constants/EStats";
 import { WalletIcon } from "../../layout/icons/CyberFarm/CyberFarmHeader";
 import CyberFarmBonuses from "../CyberFarmBonuses/CyberFarmBonuses";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
-const {balancesText} = TRANSLATIONS.cyberFarm.header
+import { useGlobalAdController } from "../../../hooks/useGlobalAdController";
+import { EAdTypes } from "../../../constants/EAdTypes";
+const { balancesText } = TRANSLATIONS.cyberFarm.header;
 const CyberFarmHeader = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const language = useAppSelector((state) => state.ui.language);
   const [bonusesOpened, setBonusesOpened] = useState(false);
-
+  const onShowAd = useGlobalAdController(EAdTypes.ADSGRAM_V, "11778");
   const linkActiveClass =
     (className?: string) =>
     ({ isActive }: { isActive: boolean }) =>
@@ -71,7 +73,10 @@ const CyberFarmHeader = () => {
         </div>
       </div>
       <button
-        onClick={() => setBonusesOpened(true)}
+        onClick={() => {
+          onShowAd();
+          setBonusesOpened(true);
+        }}
         className={styles.cyberFarmHeader__walletBtn}
       >
         <WalletIcon />
