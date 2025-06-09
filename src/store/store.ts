@@ -5,6 +5,7 @@ import chalangesReducer from "./slices/chalangesSlice";
 import duelsReducer from "./slices/duelsSlice";
 import refferencesReducer from "./slices/refferencesSlice";
 import clanReducer from "./slices/clanSlice";
+import tasksSlice from "./slices/tasksSlice";
 
 const rootReducer = combineReducers({
   profile: ProfileReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   duels: duelsReducer,
   refferences: refferencesReducer,
   clan: clanReducer,
+  tasks: tasksSlice,
 });
 
 export const store = () => {
