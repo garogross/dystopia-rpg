@@ -1,7 +1,6 @@
-import { AdsgramController } from "./types/AdsgramController";
+import { AdsgramController } from "../types/AdsgramController";
 
-export {}; // обязательно, чтобы файл был модулем
-
+export {}; 
 
 interface TraffyTask {
     id: string;
@@ -25,7 +24,7 @@ interface Traffy {
       onTaskReward: (task: TraffyTask, signedToken: string) => void;
       onTaskReject: (task: TraffyTask) => void;
     }
-  ) => void;
+  ) => Promise<void>;
 }
 
 

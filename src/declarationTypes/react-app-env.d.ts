@@ -5,7 +5,6 @@ declare module "*.mp3" {
   export default src;
 }
 
-// export {}; // <--- This is required!
 // Add type declaration for window.bQuest
 declare global {
   interface Window {
