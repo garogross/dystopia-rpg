@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Loyality.module.scss";
 import LoyalityHeader from "../LoyalityHeader/LoyalityHeader";
 import LoyalityTabbar from "../LoyalityTabbar/LoyalityTabbar";
@@ -40,6 +40,8 @@ const tabs = [
     text: tasks.text,
     statText: tasks.statText,
     disabledForFarm: true,
+    total: 50
+
   },
   {
     name: supportProject.name,
@@ -48,7 +50,6 @@ const tabs = [
     component: <LoyalitySupportProject />,
     title: supportProject.title,
     text: supportProject.text,
-    statText: supportProject.statText,
   },
   {
     name: store.name,
@@ -59,6 +60,7 @@ const tabs = [
     text: store.text,
     statText: store.statText,
     disabledForFarm: true,
+    total: 50
   },
 ];
 
@@ -69,22 +71,6 @@ const Loyality: React.FC<Props> = ({ isFarm }) => {
 
   const activeTabDetails = tabs.find((tab) => tab.key === activeTab);
 
-  useEffect(() => {
-    // barja integration test
-
-    // if (window.bQuest) {
-    //   const callbackTest = (data: unknown) => {
-    //     console.log("callbackTest", { data });
-    //   };
-    //   console.log("window.bQuestInstance");
-
-    //   window.bQuestInstance = new window.bQuest()
-    //     .withElementIdAsModal("modal")
-    //     .mount()
-    //     .onReward(callbackTest)
-    //     .openModal();
-    // }
-  }, []);
   return (
     <section className={`${styles.loyality} container`}>
       <LoyalityHeader />
@@ -98,7 +84,13 @@ const Loyality: React.FC<Props> = ({ isFarm }) => {
         <LoyalityInfo
           title={activeTabDetails?.title[language]}
           text={activeTabDetails?.text[language]}
-          statText={activeTabDetails?.statText[language]}
+          statText={
+            activeTabDetails?.statText
+              ? activeTabDetails?.statText[language]
+              : ""
+          }
+    total={activeTabDetails.total}
+
         />
       )}
       {activeTabDetails && activeTabDetails.component}

@@ -15,13 +15,14 @@ interface Props {
   title: string;
   text: React.ReactNode;
   statText: string;
+  total?: number;
 }
 
-const {totalText} = TRANSLATIONS.loyality.info
+const { totalText } = TRANSLATIONS.loyality.info;
 
-const LoyalityInfo: React.FC<Props> = ({ title, text, statText }) => {
+const LoyalityInfo: React.FC<Props> = ({ title, text, statText, total }) => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(true);
-    const language = useAppSelector(state => state.ui.language)
+  const language = useAppSelector((state) => state.ui.language);
 
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
@@ -57,13 +58,21 @@ const LoyalityInfo: React.FC<Props> = ({ title, text, statText }) => {
           <HeaderWings />
         </div>
         <div className={styles.loyalityInfo__bottomBlockValue}>
-          <span className={styles.loyalityInfo__bottomBlockText}>
-            {totalText[language]} : 50
-          </span>
+          {total && (
+            <>
+              <span className={styles.loyalityInfo__bottomBlockText}>
+                {totalText[language]} : {total}
+              </span>
 
-          <StatImg stat={EStats.lp} />
+              <StatImg stat={EStats.lp} />
+            </>
+          )}
         </div>
-        <span className={styles.loyalityInfo__bottomBlockText}>{statText}</span>
+        {statText && (
+          <span className={styles.loyalityInfo__bottomBlockText}>
+            {statText}
+          </span>
+        )}
       </div>
     </TransitionProvider>
   );
