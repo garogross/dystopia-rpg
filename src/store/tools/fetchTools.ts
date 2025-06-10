@@ -4,13 +4,8 @@ import { getLSItem } from "../../helpers/localStorage";
 export type FetchMethods = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export const baseUrl = process.env.REACT_APP_BACKEND_URL;
-export const baseConfig = {
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
 
-export const authConfig = async (isFormData?: boolean) => {
+export const authConfig = async (isFormData: boolean) => {
   const token = await getLSItem(ELSProps.token);
 
   const headers: HeadersInit = {};
@@ -30,11 +25,11 @@ export const fetchRequest = async <Res, Body extends object = {}>(
   body: Body | null = null,
   config?: RequestInit
 ) => {
-  config = config || (await authConfig());
+  const isFormData = body instanceof FormData;
+  config = config || (await authConfig(isFormData));
 
   const filteredBody: Partial<Body> = {};
 
-  const isFormData = body instanceof FormData;
   if (body && !isFormData) {
     for (let key in body) {
       if (body[key]) {
