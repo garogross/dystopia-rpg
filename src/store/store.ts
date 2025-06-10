@@ -6,6 +6,7 @@ import duelsReducer from "./slices/duelsSlice";
 import refferencesReducer from "./slices/refferencesSlice";
 import clanReducer from "./slices/clanSlice";
 import tasksSlice from "./slices/tasksSlice";
+import { cyberfarmReducer } from "./slices/cyberFarm";
 
 const rootReducer = combineReducers({
   profile: ProfileReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   refferences: refferencesReducer,
   clan: clanReducer,
   tasks: tasksSlice,
+  cyberfarm: cyberfarmReducer,
 });
 
 export const store = () => {

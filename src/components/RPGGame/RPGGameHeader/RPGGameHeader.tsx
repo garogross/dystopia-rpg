@@ -28,8 +28,6 @@ import {
 } from "../../../router/constants";
 import { EStats } from "../../../constants/EStats";
 import StatImg from "../../layout/StatImg/StatImg";
-import { removeLSItem } from "../../../helpers/localStorage";
-import { lsProps } from "../../../utils/lsProps";
 
 const RPGGameHeader: React.FC = () => {
   const navigate = useNavigate();
@@ -45,7 +43,7 @@ const RPGGameHeader: React.FC = () => {
         : `${styles.rpgGameHeader__navBtn} ${className || ""}`;
 
   const onSwith = () => {
-    removeLSItem(lsProps.selectedGameLink);
+    // removeLSItem(lsProps.selectedGameLink);
     navigate(onBoardingPagePath);
   };
 

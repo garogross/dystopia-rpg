@@ -14,10 +14,10 @@ import {
   onBoardingGirlTumbNail2Image,
   onBoardingGirlTumbNail2WebpImage,
 } from "../../../assets/imageMaps";
-import { removeLSItem, setLSItem } from "../../../helpers/localStorage";
-import { lsProps } from "../../../utils/lsProps";
 import { useAppSelector } from "../../../hooks/redux";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { AppGameMode } from "../../../types/AppGameMode";
+import { setStartChoice } from "../../../api/onBoarding/startChioce";
 
 interface Props {
   rememberSelect: boolean;
@@ -35,13 +35,21 @@ const onBoardingVideos = [
 
 const randomOnBoardingVideo = onBoardingVideos[0];
 // Math.floor(Math.random() * onBoardingVideos.length)
+type Option = {
+  icon: JSX.Element;
+  titleKey: string;
+  link: string;
+  smallText?: string;
+  gameModeKey?: AppGameMode;
+};
 
-const options = [
+const options: Option[] = [
   {
     icon: <CyberFarmIcon />,
     titleKey: "titleTonCyberFarm",
     link: cyberFarmPagePath,
     smallText: "(Pay2Earn)",
+    gameModeKey: "ton_cyber_farm",
   },
   {
     icon: <MiniGamesIcon />,
@@ -74,11 +82,13 @@ const OnBoardingMain: React.FC<Props> = ({ rememberSelect }) => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const language = useAppSelector((state) => state.ui.language);
 
-  const onClickLink = (link: string) => {
+  const onClickLink = (mode?: AppGameMode) => {
+    if (!mode) return;
     if (rememberSelect) {
-      setLSItem(lsProps.selectedGameLink, link);
+      setStartChoice(mode);
+      // setLSItem(lsProps.selectedGameLink, link);
     } else {
-      removeLSItem(lsProps.selectedGameLink);
+      // removeLSItem(lsProps.selectedGameLink);
     }
   };
   return (
@@ -113,7 +123,7 @@ const OnBoardingMain: React.FC<Props> = ({ rememberSelect }) => {
         <div className={styles.onBoardingMain__optionLinks}>
           {options.map((option, index) => (
             <Link
-              onClick={() => onClickLink(option.link)}
+              onClick={() => onClickLink(option.gameModeKey)}
               to={option.link}
               key={index}
               className={styles.onBoardingMain__optionLink}

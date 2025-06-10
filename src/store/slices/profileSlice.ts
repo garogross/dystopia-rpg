@@ -2,19 +2,27 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { fetchRequest } from "../tools/fetchTools";
 import { fetchRequest } from "../tools/fetchTools";
 import { AuthUserResponse } from "../../models/api/AuthUserResponse";
-import { setLSItem } from "../../helpers/localStorage";
-import { lsProps } from "../../utils/lsProps";
+import { getLSItem, setLSItem } from "../../helpers/localStorage";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { EStats } from "../../constants/EStats";
+import { GetAccountDetailsResponse } from "../../models/api/GetAccountDetailsResponse";
+import { AppDispatch } from "../store";
+import { AppGameMode } from "../../types/AppGameMode";
+import { ELSProps } from "../../constants/ELSProps";
+import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
-const authUserUrl = "/auth";
 
 export interface ProfileState {
   id: string;
   tgId: string | number;
   token: string;
   username: string;
+  stats: {
+    [key in EStats]: number;
+  };
+  accountDetailsReceived: boolean
 }
 
 const initUserData =
@@ -33,7 +41,17 @@ const initUserData =
 const initialState: ProfileState = {
   id: "",
   ...initUserData,
+  stats: {
+    [EStats.kredit]: 0,
+    [EStats.darkMatter]: 0,
+    [EStats.token]: 0,
+    [EStats.lp]: 0,
+    [EStats.cp]: 0,
+    [EStats.ton]: 0,
+  },
+  accountDetailsReceived: false
 };
+const authUserUrl = "/auth";
 
 export const authUser = createAsyncThunk<AuthUserResponse, string>(
   "profile/authUser",
@@ -48,7 +66,7 @@ export const authUser = createAsyncThunk<AuthUserResponse, string>(
       );
 
       if (resData.token) {
-        setLSItem(lsProps.token, resData.token);
+        setLSItem(ELSProps.token, resData.token);
       }
       console.log({ resData });
       return resData;
@@ -59,6 +77,66 @@ export const authUser = createAsyncThunk<AuthUserResponse, string>(
   }
 );
 
+const getAccountDetailsUrl = "/account/";
+
+export const getAccountDetails =
+  (mode?: AppGameMode) => async (dispatch: AppDispatch) => {
+    const resData = await fetchRequest<GetAccountDetailsResponse>(
+      `${getAccountDetailsUrl}${mode ? `?mode=${mode}` : ""}`
+    );
+
+    dispatch(receiveAccountDetails())
+    dispatch(
+      updateStats({
+        [EStats.cp]: resData.user?.profile.cash_point || 0,
+        [EStats.ton]: resData.ton_cyber_farm?.ton || 0,
+      })
+    );
+
+    console.log({ resData });
+    return resData;
+  };
+
+export const authorizeUser =
+  (initData: string, mode?: AppGameMode) => async (dispatch: AppDispatch) => {
+    // for test in dev mode
+    if (process.env.NODE_ENV === "development") {
+      const testToken = process.env.REACT_APP_TEST_TOKEN;
+      if (!testToken) return;
+      setLSItem(ELSProps.token, process.env.REACT_APP_TEST_TOKEN);
+    }
+    // /////
+    const locStoreToken = await getLSItem(ELSProps.token);
+
+    if (!locStoreToken) {
+      await dispatch(authUser(initData));
+    }
+
+    try {
+      const res = await dispatch(getAccountDetails(mode));
+      
+
+      if(res.ton_cyber_farm) {
+        dispatch(initCyberFarm())
+      }
+
+
+      return res.mode
+    } catch (error: any) {
+      if (error?.status === 401) {
+        // in case invalid token
+        await dispatch(authUser(initData));
+      }
+
+      if (
+        error?.message?.error &&
+        error.message.error?.startsWith("Нет запомненного выбора")
+      ) {
+        return "";
+      }
+    }
+  };
+
 export const profileSlice = createSlice({
   name: "profileSlice",
   initialState,
@@ -67,17 +145,22 @@ export const profileSlice = createSlice({
       state.id = payload.id;
       state.tgId = payload.tgId;
     },
+    updateStats(state, { payload }) {
+      state.stats = { ...state.stats, ...payload };
+    },
+    receiveAccountDetails(state) {
+      state.accountDetailsReceived = true
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(authUser.fulfilled, (state, { payload }) => {
       state.token = payload.token;
       state.username = payload.user.username;
       state.tgId = payload.user.id_tgrm;
-      state.username = payload.user.username;
     });
   },
 });
 
-export const { setUser } = profileSlice.actions;
+export const { setUser, updateStats,receiveAccountDetails } = profileSlice.actions;
 
 export default profileSlice.reducer;

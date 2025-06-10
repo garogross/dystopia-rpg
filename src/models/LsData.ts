@@ -1,7 +1,5 @@
-import { lsProps } from "../utils/lsProps";
-
+import { ELSProps } from "../constants/ELSProps";
 
 export interface LsData {
-    [lsProps.isRegistered]: boolean
-    [lsProps.token]: string
+  [ELSProps.token]: string;
 }

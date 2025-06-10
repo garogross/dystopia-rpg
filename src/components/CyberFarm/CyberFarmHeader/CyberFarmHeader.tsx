@@ -11,9 +11,7 @@ import {
 } from "../../layout/icons/Common/Header";
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { NavLink, useNavigate } from "react-router-dom";
-import { lsProps } from "../../../utils/lsProps";
 import { onBoardingPagePath } from "../../../router/constants";
-import { removeLSItem } from "../../../helpers/localStorage";
 import StatImg from "../../layout/StatImg/StatImg";
 import { EStats } from "../../../constants/EStats";
 import { WalletIcon } from "../../layout/icons/CyberFarm/CyberFarmHeader";
@@ -35,7 +33,6 @@ const CyberFarmHeader = () => {
         : `${styles.cyberFarmHeader__navBtn} ${className || ""}`;
 
   const onSwith = () => {
-    removeLSItem(lsProps.selectedGameLink);
     navigate(onBoardingPagePath);
   };
   return (

@@ -1,5 +1,5 @@
+import { ELSProps } from "../../constants/ELSProps";
 import { getLSItem } from "../../helpers/localStorage";
-import { lsProps } from "../../utils/lsProps";
 
 export type FetchMethods = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
@@ -11,10 +11,7 @@ export const baseConfig = {
 };
 
 export const authConfig = async (isFormData?: boolean) => {
-  let token = "";
-  try {
-    token = await getLSItem(lsProps.token);
-  } catch (error) {}
+  const token = await getLSItem(ELSProps.token);
 
   const headers: HeadersInit = {};
 

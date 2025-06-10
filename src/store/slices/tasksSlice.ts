@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FeedItem } from "taddy-sdk-web";
 
-export interface ClanState {
+export interface TasksState {
   taddyTasks: FeedItem[];
 }
 
-const initialState: ClanState = {
+const initialState: TasksState = {
   taddyTasks: [],
 };
 

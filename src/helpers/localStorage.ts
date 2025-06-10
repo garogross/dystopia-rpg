@@ -1,22 +1,25 @@
-export function getLSItem(key: string): Promise<any> {
-  return new Promise((resolve, reject) => {
+import { ELSProps } from "../constants/ELSProps";
+import { LsData } from '../models/LsData';
+
+export function getLSItem(key: ELSProps): Promise<LsData[typeof key] | undefined> {
+  return new Promise((resolve) => {
     if (!window.Telegram?.WebApp.initData) {
       const data = localStorage.getItem(key);
       if (!data) {
-        reject("data not found");
+        resolve(undefined);
         return;
       }
       try {
-        resolve(JSON.parse(data));
+        resolve(JSON.parse(data)  as LsData[typeof key]);
       } catch {
-        resolve(data);
+        resolve(data  as LsData[typeof key]);
       }
       return;
     }
 
     window.Telegram.WebApp.CloudStorage.getItem(key, (error: string | null, value: any) => {
       if (error) {
-        reject(error);
+        resolve(undefined);
       } else {
         resolve(value);
       }
@@ -24,8 +27,8 @@ export function getLSItem(key: string): Promise<any> {
   });
 }
 
-export function getLSItems(keys: string[]): Promise<Record<string, string>> {
-  return new Promise((resolve, reject) => {
+export function getLSItems(keys: string[]): Promise<Record<string, string> | undefined> {
+  return new Promise((resolve) => {
     if (!window.Telegram?.WebApp.initData) {
       const result: Record<string, any> = {};
       let error: string | null = null;
@@ -45,7 +48,8 @@ export function getLSItems(keys: string[]): Promise<Record<string, string>> {
       });
 
       if (error) {
-        reject(error);
+        resolve(undefined);
+
       } else {
         resolve(result);
       }
@@ -54,7 +58,8 @@ export function getLSItems(keys: string[]): Promise<Record<string, string>> {
 
     window.Telegram.WebApp.CloudStorage.getItems(keys, (error, values) => {
       if (error || !values) {
-        reject(error);
+        resolve(undefined);
+
       } else {
         resolve(values);
       }
