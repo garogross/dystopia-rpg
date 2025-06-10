@@ -8,7 +8,10 @@ import TransitionProvider, {
 import WrapperWithFrame from "../WrapperWithFrame/WrapperWithFrame";
 import NewPortalProvider from "../../../providers/NewPortalProvider";
 import HeaderBtn from "../HeaderBtn/HeaderBtn";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../hooks/redux";
 
+const { somethingWentWrong } = TRANSLATIONS.errors;
 interface Props {
   show: boolean;
   onClose: () => void;
@@ -16,7 +19,9 @@ interface Props {
   titleLg?: string;
   withoutFrame?: boolean;
   children: ReactNode;
-  fullHeught?: boolean
+  fullHeught?: boolean;
+  loading?: boolean;
+  errored?: boolean;
 }
 
 const ModalWithAdd: React.FC<Props> = ({
@@ -26,8 +31,11 @@ const ModalWithAdd: React.FC<Props> = ({
   children,
   titleLg,
   withoutFrame,
-  fullHeught
+  fullHeught,
+  loading,
+  errored,
 }) => {
+  const language = useAppSelector((state) => state.ui.language);
   const content = (
     <>
       <HeaderBtn
@@ -40,17 +48,27 @@ const ModalWithAdd: React.FC<Props> = ({
       )}
       {title && <h4 className={styles.modalWithAdd__titleText}>{title}</h4>}{" "}
       <div className={styles.modalWithAdd__content}>{children}</div>
+      <TransitionProvider
+        inProp={!!errored}
+        style={TransitionStyleTypes.height}
+        height={30}
+        className={styles.modalWithAdd__error}
+      >
+        <span>{somethingWentWrong[language]}</span>
+      </TransitionProvider>
       <div className={styles.modalWithAdd__adWrapper}></div>
     </>
   );
   return (
     <>
-      <Backdrop inProp={show} onClose={onClose} />
+      <Backdrop inProp={show} onClose={loading ? () => {} : onClose} />
       <NewPortalProvider>
         <TransitionProvider
           inProp={show}
           style={TransitionStyleTypes.opacity}
-          className={`${styles.modalWithAdd} ${fullHeught ? styles.modalWithAdd_full : ""}`}
+          className={`${styles.modalWithAdd} ${
+            fullHeught ? styles.modalWithAdd_full : ""
+          }`}
         >
           {!withoutFrame ? (
             <WrapperWithFrame
@@ -63,6 +81,14 @@ const ModalWithAdd: React.FC<Props> = ({
           ) : (
             <div className={styles.modalWithAdd__wrapper}>{content}</div>
           )}
+
+          <TransitionProvider
+            inProp={!!loading}
+            style={TransitionStyleTypes.opacity}
+            className={styles.modalWithAdd__loadingOverlay}
+          >
+            <span>Loading...</span>
+          </TransitionProvider>
         </TransitionProvider>
       </NewPortalProvider>
     </>
