@@ -17,10 +17,12 @@ import { EStats } from "../../../constants/EStats";
 import { WalletIcon } from "../../layout/icons/CyberFarm/CyberFarmHeader";
 import CyberFarmBonuses from "../CyberFarmBonuses/CyberFarmBonuses";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { formatNumber } from "../../../utils/formatNumber";
 const { balancesText } = TRANSLATIONS.cyberFarm.header;
 const CyberFarmHeader = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const stats = useAppSelector((state) => state.profile.stats);
   const language = useAppSelector((state) => state.ui.language);
   const [bonusesOpened, setBonusesOpened] = useState(false);
   const linkActiveClass =
@@ -63,7 +65,9 @@ const CyberFarmHeader = () => {
         </div>
         <div className={styles.cyberFarmHeader__stat}>
           <StatImg stat={EStats.cp} size={19} />
-          <span className={styles.cyberFarmHeader__statText}>126,90k</span>
+          <span className={styles.cyberFarmHeader__statText}>
+            {formatNumber(stats.cp)}
+          </span>
         </div>
       </div>
       <button
@@ -97,7 +101,9 @@ const CyberFarmHeader = () => {
         </div>
         <div className={styles.cyberFarmHeader__stat}>
           <StatImg stat={EStats.ton} size={19} />
-          <span className={styles.cyberFarmHeader__statText}>126,90k</span>
+          <span className={styles.cyberFarmHeader__statText}>
+            {formatNumber(stats.ton)}
+          </span>
         </div>
       </div>
 

@@ -1,6 +1,12 @@
 import { ELanguages } from "./ELanguages";
 
 export const TRANSLATIONS = {
+  errors: {
+    somethingWentWrong: {
+      [ELanguages.en]: "Something went wrong",
+      [ELanguages.ru]: "Что-то пошло не так",
+    },
+  },
   home: {
     titleText: {
       [ELanguages.en]:
@@ -132,6 +138,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Fields",
         [ELanguages.ru]: "Поля",
       },
+      emptyText: {
+      [ELanguages.en]: "You don't have any fields",
+      [ELanguages.ru]: "У вас нет полей",
+      },
       buyModal: {
         titleText: {
           [ELanguages.en]: "Are you sure you want to buy this field for 1 CP?",
@@ -180,18 +190,30 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Farms",
         [ELanguages.ru]: "Фермы",
       },
+      emptyText: {
+        [ELanguages.en]: "You don't have any farms",
+        [ELanguages.ru]: "У вас нет ферм",
+        },
     },
     factories: {
       titleText: {
         [ELanguages.en]: "Factories",
         [ELanguages.ru]: "Заводы",
       },
+      emptyText: {
+        [ELanguages.en]: "You don't have any factories",
+        [ELanguages.ru]: "У вас нет заводов",
+        },
     },
     warehouse: {
       titleText: {
         [ELanguages.en]: "Warehouse",
         [ELanguages.ru]: "Склад",
       },
+       emptyText: {
+        [ELanguages.en]: "Warehouse is empty",
+        [ELanguages.ru]: "Склад пуст",
+        },
       socialStoreButtonText: {
         [ELanguages.en]: "Social Store",
         [ELanguages.ru]: "Социальный магазин",

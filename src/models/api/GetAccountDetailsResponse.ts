@@ -1,3 +1,4 @@
+import { EFarmSlotTypes } from "../../constants/cyberfarm/EFarmSlotTypes";
 import { AppGameMode } from "../../types/AppGameMode";
 
 
@@ -15,7 +16,7 @@ export interface GetAccountDetailsResponse {
     };
   };
   ton_cyber_farm?: {
-    slots: {};
+    slots: Record<string,{type: EFarmSlotTypes}>;
     timers: {};
     resources: {};
     ton: number;

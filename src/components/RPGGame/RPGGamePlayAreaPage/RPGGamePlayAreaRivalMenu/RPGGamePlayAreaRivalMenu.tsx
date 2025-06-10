@@ -5,7 +5,7 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import { PositionPlace } from "../../../../canvasModels/PositionPlace";
-import { EHitZones } from "../../../../constants/cyberfarm/EHitZones";
+import { EHitZones } from "../../../../constants/rpgGame/EHitZones";
 import {
   HeadShotIcon,
   BodyShotIcon,

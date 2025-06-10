@@ -10,6 +10,7 @@ import { AppDispatch } from "../store";
 import { AppGameMode } from "../../types/AppGameMode";
 import { ELSProps } from "../../constants/ELSProps";
 import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
+import { getCyberFarmSlots } from "./cyberFarm/slotsSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -92,6 +93,9 @@ export const getAccountDetails =
         [EStats.ton]: resData.ton_cyber_farm?.ton || 0,
       })
     );
+    if(resData.ton_cyber_farm) {
+      dispatch(getCyberFarmSlots(resData.ton_cyber_farm.slots))
+    }
 
     console.log({ resData });
     return resData;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CyberFarmWrapperWithList from "../../CyberFarmWrapperWithList/CyberFarmWrapperWithList";
 import { IWarehouseProduct } from "../../../../models/IWarehouseProduct";
 import { EFactoryProducts } from "../../../../constants/cyberfarm/EFactoryProducts";
-import { EPlants } from "../../../../constants/EPlants";
+import { EPlants } from "../../../../constants/cyberfarm/EPlants";
 import { SocialStoreIcon } from "../../../layout/icons/CyberFarm/CyberFarmWarehousePage";
 import styles from "./CyberFarmWarehouse.module.scss";
 import CyberFarmWarehouseProductInfo from "../CyberFarmWarehouseProductInfo/CyberFarmWarehouseProductInfo";
@@ -49,13 +49,11 @@ const warehouseProducts: IWarehouseProduct[] = [
   },
 ];
 
-const {
-  titleText,
-socialStoreButtonText,
-} = TRANSLATIONS.cyberFarm.warehouse
+const { titleText, emptyText, socialStoreButtonText } =
+  TRANSLATIONS.cyberFarm.warehouse;
 
 const CyberFarmWarehouse = () => {
-    const language = useAppSelector(state => state.ui.language)
+  const language = useAppSelector((state) => state.ui.language);
 
   const [socialStoreShow, setSocialStoreShow] = useState(false);
   const [infoShow, setInfoShow] = useState(false);
@@ -73,6 +71,7 @@ const CyberFarmWarehouse = () => {
         <CyberFarmWrapperWithList
           title={titleText[language]}
           data={warehouseProducts}
+          emptyText={emptyText[language]}
           isWarehouse
           onSellItem={(item) => {
             setSelectedItemId(item.id);

@@ -1,15 +1,15 @@
 import { EFactoryProducts } from "../constants/cyberfarm/EFactoryProducts";
-import { EPlants } from "../constants/EPlants";
-
+import { EFarmSlotTypes } from "../constants/cyberfarm/EFarmSlotTypes";
+import { EPlants } from "../constants/cyberfarm/EPlants";
 
 export interface IFarmField {
-    id: string,
-    type: "field" | "farm" | "factory",
-    blocked?: boolean
-    plant?: EPlants,
-    factoryProduct?: EFactoryProducts,
-    process?: {
-        startDate: string,
-        endDate: string,
-    }
+  id: string;
+  type: EFarmSlotTypes;
+  blocked?: boolean;
+  plant?: EPlants;
+  factoryProduct?: EFactoryProducts;
+  process?: {
+    startDate: string;
+    endDate: string;
+  };
 }

@@ -12,13 +12,17 @@ interface Props {
   show: boolean;
   onClose: () => void;
   type: "plant" | "factory";
+  slotId: string
 }
 
 const { titleText, plantTitleText } = TRANSLATIONS.cyberFarm.optionsModal;
 
-const CyberFarmOptionsModal: React.FC<Props> = ({ show, onClose, type }) => {
+const CyberFarmOptionsModal: React.FC<Props> = ({ show, onClose, type ,slotId}) => {
   const language = useAppSelector((state) => state.ui.language);
 
+
+
+  
   return (
     <ModalWithAdd
       show={show}

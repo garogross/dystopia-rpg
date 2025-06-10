@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./CyberFarmFieldsBuyModal.module.scss";
 import ModalWithAdd from "../../../layout/ModalWithAdd/ModalWithAdd";
@@ -7,30 +7,57 @@ import {
   CancelIcon,
 } from "../../../layout/icons/CyberFarm/CyberFarmFieldsPage";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
-import { useAppSelector } from "../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { buySlot } from "../../../../store/slices/cyberFarm/slotsSlice";
+import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 
 interface Props {
   show: boolean;
+  buyingSlotId: string;
   onClose: () => void;
 }
 
-const {
-  titleText,
-buyButtonText,
-cancelButtonText,
-} = TRANSLATIONS.cyberFarm.fields.buyModal
+const { titleText, buyButtonText, cancelButtonText } =
+  TRANSLATIONS.cyberFarm.fields.buyModal;
+const CyberFarmFieldsBuyModal: React.FC<Props> = ({
+  show,
+  onClose,
+  buyingSlotId,
+}) => {
+  const dispath = useAppDispatch();
+  const language = useAppSelector((state) => state.ui.language);
+  const [loading, setLoading] = useState(false);
+  const [errored, setErrored] = useState(false);
 
-const CyberFarmFieldsBuyModal: React.FC<Props> = ({ show, onClose }) => {
-    const language = useAppSelector(state => state.ui.language)
+  useEffect(() => {
+    if (!show) setErrored(false);
+  }, [show]);
+
+  const onBuy = async () => {
+    try {
+      setLoading(true);
+      setErrored(false);
+      await dispath(
+        buySlot({ id: buyingSlotId, type: EFarmSlotTypes.FIELDS })
+      ).unwrap();
+      onClose();
+    } catch (error) {
+      setErrored(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <ModalWithAdd
       show={show}
       onClose={onClose}
       title={titleText[language]}
+      loading={loading}
+      errored={errored}
     >
       <div className={styles.cyberFarmFieldsBuyModal}>
-        <button className={styles.cyberFarmFieldsBuyModal__btn}>
+        <button onClick={onBuy} className={styles.cyberFarmFieldsBuyModal__btn}>
           <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
             <BuyIcon />
             <span>{buyButtonText[language]}</span>
@@ -46,6 +73,7 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({ show, onClose }) => {
           </div>
         </button>
       </div>
+     
     </ModalWithAdd>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styles from "./CyberFarmFieldsBuildOptionsModal.module.scss";
 import ModalWithAdd from "../../../layout/ModalWithAdd/ModalWithAdd";
@@ -11,33 +11,49 @@ import {
   cyberFarmFarmImageWebp,
 } from "../../../../assets/imageMaps";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
-import { useAppSelector } from "../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { buySlot } from "../../../../store/slices/cyberFarm/slotsSlice";
+import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 
 interface Props {
   show: boolean;
   onClose: () => void;
+  slotId: string;
 }
 
-const {
-  titleText,
-farmButtonText,
-factoryButtonText,
-} = TRANSLATIONS.cyberFarm.fields.buildOptionsModal
+const { titleText, farmButtonText, factoryButtonText } =
+  TRANSLATIONS.cyberFarm.fields.buildOptionsModal;
 
 const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   show,
   onClose,
+  slotId,
 }) => {
-    const language = useAppSelector(state => state.ui.language)
+  const dispatch = useAppDispatch();
+  const language = useAppSelector((state) => state.ui.language);
+  const [loading, setLoading] = useState(false);
+  const [errored, setErrored] = useState(false);
+
+  const onBuild = async (type: EFarmSlotTypes) => {
+    try {
+      setLoading(true);
+      setErrored(false);
+      await dispatch(buySlot({ id: slotId, type })).unwrap();
+      onClose();
+    } catch (error) {
+      setErrored(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <ModalWithAdd
-      show={show}
-      onClose={onClose}
-      title={titleText[language]}
-    >
+    <ModalWithAdd show={show} onClose={onClose} title={titleText[language]} loading={loading} errored={errored}>
       <div className={styles.cyberFarmFieldsBuildOptionsModal}>
-        <button className={styles.cyberFarmFieldsBuildOptionsModal__btn}>
+        <button
+          onClick={() => onBuild(EFarmSlotTypes.FARM)}
+          className={styles.cyberFarmFieldsBuildOptionsModal__btn}
+        >
           <div className={styles.cyberFarmFieldsBuildOptionsModal__btnInner}>
             <ImageWebp
               srcSet={cyberFarmFarmImageWebp}
@@ -49,7 +65,10 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
             <span>{farmButtonText[language]}</span>
           </div>
         </button>
-        <button className={styles.cyberFarmFieldsBuildOptionsModal__btn}>
+        <button
+          onClick={() => onBuild(EFarmSlotTypes.FACTORY)}
+          className={styles.cyberFarmFieldsBuildOptionsModal__btn}
+        >
           <div className={styles.cyberFarmFieldsBuildOptionsModal__btnInner}>
             <ImageWebp
               srcSet={cyberFarmFactoryImage}

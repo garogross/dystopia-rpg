@@ -4,7 +4,7 @@ import WrapperWithFrame from "../../../layout/WrapperWithFrame/WrapperWithFrame"
 import RPGGameCharacterTrainingRedistribution from "./RPGGameCharacterTrainingRedistribution/RPGGameCharacterTrainingRedistribution";
 import RPGGameCharacterTrainingDevelopment from "./RPGGameCharacterTrainingDevelopment/RPGGameCharacterTrainingDevelopment";
 import RPGGameCharacterTrainingCybernetics from "./RPGGameCharacterTrainingCybernetics/RPGGameCharacterTrainingCybernetics";
-import { ETrainingTabs } from "../../../../constants/cyberfarm/ETrainingTabs";
+import { ETrainingTabs } from "../../../../constants/rpgGame/ETrainingTabs";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";

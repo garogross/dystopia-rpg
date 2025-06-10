@@ -30,6 +30,7 @@ import CyberFarmOptionsModal from "../CyberFarmOptionsModal/CyberFarmOptionsModa
 
 interface Props<T extends IFarmField | IWarehouseProduct> {
   title: string;
+  emptyText: string;
   data: T[];
   isWarehouse?: boolean;
   onSellItem?: (item: T) => void;
@@ -37,17 +38,20 @@ interface Props<T extends IFarmField | IWarehouseProduct> {
   onBuildItem?: (item: T) => void;
   onCloseOptionsModal?: () => void;
   optionsModalOpenedArg?: boolean;
+  producingSlotIdArg?: string | null;
   productsType?: "plant" | "factory";
 }
 
 const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   title,
+  emptyText,
   data,
   isWarehouse,
   onSellItem,
   onBuildItem,
   onBuyItem,
   optionsModalOpenedArg,
+  producingSlotIdArg,
   onCloseOptionsModal,
   productsType,
 }: Props<T>) => {
@@ -57,6 +61,7 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
     IFarmField["id"] | null
   >(null);
   const [optionsModalOpened, setOptionsModalOpened] = useState(false);
+  const [producingSlotId, setProducingSlotId] = useState<string | null>(null);
 
   const activeProgresModalItem = data.find(
     (field) => field.id === activeProgresModalItemId
@@ -65,6 +70,11 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   useEffect(() => {
     if (optionsModalOpenedArg) setOptionsModalOpened(true);
   }, [optionsModalOpenedArg]);
+
+  useEffect(() => {
+    if (producingSlotIdArg) setProducingSlotId(producingSlotIdArg);
+  }, [producingSlotIdArg]);
+
   useEffect(() => {
     if (optionsModalOpened) onCloseOptionsModal?.();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,13 +82,18 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
 
   const onClickItem = (field: T) => {
     if ("count" in field) {
-      onSellItem?.(field)
+      onSellItem?.(field);
     } else {
       if (field.blocked) onBuyItem?.(field);
       else if (field.process) {
         setActiveProgresModalItemId(field.id);
         setProgressModalOpened(true);
-      } else onBuildItem ? onBuildItem?.(field) : setOptionsModalOpened(true);
+      } else {
+        if (onBuildItem) onBuildItem?.(field);
+        else {
+          setProducingSlotId(field.id)
+          setOptionsModalOpened(true);}
+      }
     }
   };
 
@@ -100,106 +115,114 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
           {title}
         </h2>
       </div>
-      <TransitionProvider
-        inProp={gameInited}
-        style={TransitionStyleTypes.bottom}
-        className={`${styles.cyberFarmWrapperWithList__main} ${
-          isWarehouse ? styles.cyberFarmWrapperWithList__main_warehouse : ""
-        }`}
-      >
-        {data.map((field) => {
-          let curImage = {
-            src: cyberFarmEmptyFieldImage,
-            srcSet: cyberFarmEmptyFieldImageWebp,
-          };
-
-          let progressPercent =
-            !("count" in field) && field.process
-              ? getFarmFieldProgress(
-                  field.process.startDate,
-                  field.process.endDate
-                ).progress
-              : null;
-
-          if ("count" in field) {
-            // check if IWarehouseProduct
-            curImage = products[field.product];
-          } else if (field.type === "factory") {
-            curImage = {
-              src: cyberFarmFactoryImage,
-              srcSet: cyberFarmFactoryImageWebp,
+      {data.length ? (
+        <TransitionProvider
+          inProp={gameInited}
+          style={TransitionStyleTypes.bottom}
+          className={`${styles.cyberFarmWrapperWithList__main} ${
+            isWarehouse ? styles.cyberFarmWrapperWithList__main_warehouse : ""
+          }`}
+        >
+          {data.map((field) => {
+            let curImage = {
+              src: cyberFarmEmptyFieldImage,
+              srcSet: cyberFarmEmptyFieldImageWebp,
             };
-          } else if (field.plant) {
-            curImage =
-              plantImages[field.plant][
-                field.type === "farm" ? "inFarm" : "onField"
-              ];
-          } else if (field.type === "farm" && !field.plant) {
-            curImage = {
-              src: cyberFarmFarmImage,
-              srcSet: cyberFarmFarmImageWebp,
-            };
-          }
 
-          return (
-            <div
-              key={field.id}
-              className={styles.cyberFarmWrapperWithList__item}
-              onClick={() => onClickItem(field)}
-            >
-              <ImageWebp
-                src={curImage.src}
-                alt={field.type}
-                className={styles.cyberFarmWrapperWithList__itemImg}
-                pictureClass={styles.cyberFarmWrapperWithList__itemPicture}
-                srcSet={curImage.srcSet}
-              />
-              {"count" in field ? (
-                <span className={styles.cyberFarmWrapperWithList__itemCount}>
-                  {field.count}
-                </span>
-              ) : (
-                <>
-                  {field.process && (
-                    <>
-                      <div
-                        className={styles.cyberFarmWrapperWithList__itemStatus}
-                      >
-                        {progressPercent === 100 ? (
-                          <Completedicon />
-                        ) : (
-                          <InProgressIcon />
-                        )}
-                      </div>
+            let progressPercent =
+              !("count" in field) && field.process
+                ? getFarmFieldProgress(
+                    field.process.startDate,
+                    field.process.endDate
+                  ).progress
+                : null;
+
+            if ("count" in field) {
+              // check if IWarehouseProduct
+              curImage = products[field.product];
+            } else if (field.type === "factory") {
+              curImage = {
+                src: cyberFarmFactoryImage,
+                srcSet: cyberFarmFactoryImageWebp,
+              };
+            } else if (field.plant) {
+              curImage =
+                plantImages[field.plant][
+                  field.type === "farm" ? "inFarm" : "onField"
+                ];
+            } else if (field.type === "farm" && !field.plant) {
+              curImage = {
+                src: cyberFarmFarmImage,
+                srcSet: cyberFarmFarmImageWebp,
+              };
+            }
+
+            return (
+              <div
+                key={field.id}
+                className={styles.cyberFarmWrapperWithList__item}
+                onClick={() => onClickItem(field)}
+              >
+                <ImageWebp
+                  src={curImage.src}
+                  alt={field.type}
+                  className={styles.cyberFarmWrapperWithList__itemImg}
+                  pictureClass={styles.cyberFarmWrapperWithList__itemPicture}
+                  srcSet={curImage.srcSet}
+                />
+                {"count" in field ? (
+                  <span className={styles.cyberFarmWrapperWithList__itemCount}>
+                    {field.count}
+                  </span>
+                ) : (
+                  <>
+                    {field.process && (
+                      <>
+                        <div
+                          className={
+                            styles.cyberFarmWrapperWithList__itemStatus
+                          }
+                        >
+                          {progressPercent === 100 ? (
+                            <Completedicon />
+                          ) : (
+                            <InProgressIcon />
+                          )}
+                        </div>
+                        <div
+                          className={
+                            styles.cyberFarmWrapperWithList__itemProgress
+                          }
+                        >
+                          <div
+                            style={{ width: `${progressPercent}%` }}
+                            className={
+                              styles.cyberFarmWrapperWithList__itemProgressInner
+                            }
+                          ></div>
+                        </div>
+                      </>
+                    )}
+                    {field.blocked && (
                       <div
                         className={
-                          styles.cyberFarmWrapperWithList__itemProgress
+                          styles.cyberFarmWrapperWithList__itemBlockOverlay
                         }
                       >
-                        <div
-                          style={{ width: `${progressPercent}%` }}
-                          className={
-                            styles.cyberFarmWrapperWithList__itemProgressInner
-                          }
-                        ></div>
+                        <Blockedicon />
                       </div>
-                    </>
-                  )}
-                  {field.blocked && (
-                    <div
-                      className={
-                        styles.cyberFarmWrapperWithList__itemBlockOverlay
-                      }
-                    >
-                      <Blockedicon />
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          );
-        })}
-      </TransitionProvider>
+                    )}
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </TransitionProvider>
+      ) : (
+        <p className={styles.cyberFarmWrapperWithList__emptyText}>
+          {emptyText}
+        </p>
+      )}
       {activeProgresModalItem && !("count" in activeProgresModalItem) && (
         <CyberFarmProcessModal
           show={progressModalOpened}
@@ -207,11 +230,12 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
           item={activeProgresModalItem as IFarmField}
         />
       )}
-      {productsType && (
+      {productsType && producingSlotId && (
         <CyberFarmOptionsModal
           show={optionsModalOpened}
           onClose={() => setOptionsModalOpened(false)}
           type={productsType}
+          slotId={producingSlotId}
         />
       )}
     </section>

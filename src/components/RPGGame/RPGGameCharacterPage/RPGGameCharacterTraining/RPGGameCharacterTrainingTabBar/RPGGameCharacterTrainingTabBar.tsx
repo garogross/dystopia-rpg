@@ -8,7 +8,7 @@ import {
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../../providers/TransitionProvider";
-import { ETrainingTabs } from "../../../../../constants/cyberfarm/ETrainingTabs";
+import { ETrainingTabs } from "../../../../../constants/rpgGame/ETrainingTabs";
 import { useAppSelector } from "../../../../../hooks/redux";
 interface Props {
   activeTab: ETrainingTabs;

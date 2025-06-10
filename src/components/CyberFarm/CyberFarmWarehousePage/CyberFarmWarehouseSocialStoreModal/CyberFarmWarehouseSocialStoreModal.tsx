@@ -8,6 +8,8 @@ import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
 import { ConfirmIcon } from "../../../layout/icons/CyberFarm/CyberFarmWarehousePage";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../../hooks/redux";
+import { EPlants } from "../../../../constants/cyberfarm/EPlants";
+import { EFactoryProducts } from "../../../../constants/cyberfarm/EFactoryProducts";
 
 interface Props {
   show: boolean;
@@ -29,7 +31,7 @@ cactusToEnergy,
 } = exchangeOptions
 const changeOptions = [
   {
-    fromImg: products.MetalCactus,
+    fromImg: products[EPlants.MetalCactus],
     toImg: {
       src: cpLgImage,
       srcSet: cpLgImageWebp,
@@ -37,13 +39,13 @@ const changeOptions = [
     text: cactusToCp,
   },
   {
-    fromImg: products.MetalCactus,
-    toImg: products.RepairKit,
+    fromImg: products[EPlants.MetalCactus],
+    toImg: products[EFactoryProducts.RepairKit],
     text: cactusToRepairKit,
   },
   {
-    fromImg: products.MetalCactus,
-    toImg: products.Energy,
+    fromImg: products[EPlants.MetalCactus],
+    toImg: products[EFactoryProducts.Energy],
     text: cactusToEnergy,
   },
 ];
