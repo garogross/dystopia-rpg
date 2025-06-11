@@ -1,6 +1,7 @@
 import { EFarmSlotTypes } from "../../constants/cyberfarm/EFarmSlotTypes";
 import { AppGameMode } from "../../types/AppGameMode";
 import { CyberFarmProductType } from "../../types/CyberFarmProductType";
+import { FarmSlotCostsType } from "../../types/FarmSlotCostsType";
 
 
 
@@ -23,6 +24,7 @@ export interface GetAccountDetailsResponse {
     ton: number;
   };
   game_settings?: {
-    base_costs: Record<string,{type: EFarmSlotTypes}>
+    base_costs: Record<string,number>,
+    slot_costs: FarmSlotCostsType
   }
 }

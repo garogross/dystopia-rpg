@@ -96,7 +96,7 @@ export const getAccountDetails =
     );
     if (resData.ton_cyber_farm) {
       // store slots
-      dispatch(getCyberFarmSlots(resData.ton_cyber_farm.slots));
+      dispatch(getCyberFarmSlots({slots: resData.ton_cyber_farm.slots,slotCosts: resData.game_settings?.slot_costs}));
 
       // store resources
       if (resData.game_settings) {

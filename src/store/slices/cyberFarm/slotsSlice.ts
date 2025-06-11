@@ -3,13 +3,17 @@ import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import { BuySlotResponse } from "../../../models/api/CyberFarm/Slots";
 import { fetchRequest } from "../../tools/fetchTools";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
+import { IFarmSlot } from "../../../models/CyberFarm/IFarmSlot";
+import { FarmSlotCostsType } from "../../../types/FarmSlotCostsType";
 
 export interface SlotsState {
-  slots: Record<string, { type: EFarmSlotTypes }> | null;
+  slots: Record<string, IFarmSlot> | null;
+  slotCosts: FarmSlotCostsType | null
 }
 
 const initialState: SlotsState = {
   slots: null,
+  slotCosts: null
 };
 
 const buySlotUrl = "/ton_cyber_farm/buy_slot/";
@@ -52,7 +56,8 @@ export const slotsSlice = createSlice({
   initialState,
   reducers: {
     getCyberFarmSlots: (state, action) => {
-      state.slots = action.payload;
+      state.slots = action.payload.slots;
+      state.slotCosts = action.payload.slotCosts;
     },
   },
   extraReducers: (builder) => {
