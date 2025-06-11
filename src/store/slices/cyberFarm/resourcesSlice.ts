@@ -5,8 +5,8 @@ import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import { BuyProductResponse } from "../../../models/api/CyberFarm/Resources";
 
 export interface ResourcesState {
-  resources: Record<keyof typeof products, number>;
-  productCosts: Record<keyof typeof products, number>;
+  resources: Record<CyberFarmProductType, number>;
+  productCosts: Record<CyberFarmProductType, number>;
 }
 
 const initialResources = Object.keys(products).reduce((acc, cur) => {

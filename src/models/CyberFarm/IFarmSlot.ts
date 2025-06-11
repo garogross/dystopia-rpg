@@ -1,9 +1,9 @@
 import { EFarmSlotTypes } from "../../constants/cyberfarm/EFarmSlotTypes";
-import { products } from "../../constants/cyberfarm/products";
+import { CyberFarmProductType } from "../../types/CyberFarmProductType";
 
 export interface IFarmSlot {
   type: EFarmSlotTypes;
-  product: keyof typeof products;
+  product: CyberFarmProductType;
   start_time: number;
   finish_time: number;
 }
