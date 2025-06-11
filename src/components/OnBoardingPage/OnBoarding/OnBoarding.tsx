@@ -37,6 +37,8 @@ const OnBoarding = () => {
     };
     if (!accountDetailsReceived) {
       fetchData(tg.initData);
+    } else {
+      setLoading(false);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,8 +77,9 @@ const OnBoarding = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log({ loading });
 
-  if (!loading) return null;
+  if (loading) return null;
 
   return (
     <main className={`${styles.onBoarding} gameContainer`}>
