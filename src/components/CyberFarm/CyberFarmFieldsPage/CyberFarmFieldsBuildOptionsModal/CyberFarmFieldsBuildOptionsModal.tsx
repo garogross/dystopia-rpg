@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./CyberFarmFieldsBuildOptionsModal.module.scss";
 import ModalWithAdd from "../../../layout/ModalWithAdd/ModalWithAdd";
@@ -14,6 +14,7 @@ import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { buySlot } from "../../../../store/slices/cyberFarm/slotsSlice";
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
+import { useSlotCost } from "../../../../hooks/useSlotCost";
 
 interface Props {
   show: boolean;
@@ -23,7 +24,6 @@ interface Props {
 
 const { titleText, farmButtonText, factoryButtonText } =
   TRANSLATIONS.cyberFarm.fields.buildOptionsModal;
-
 const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   show,
   onClose,
@@ -33,8 +33,24 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   const language = useAppSelector((state) => state.ui.language);
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
+  const getSlotCostTexts = useSlotCost();
+  const [errorText, setErrorText] = useState("");
+
+  useEffect(() => {
+    if (show) {
+      setErrorText("");
+      setErrored(false);
+    }
+  }, [show]);
 
   const onBuild = async (type: EFarmSlotTypes) => {
+    const { notEnoughResourcesText, errored } = getSlotCostTexts(type);
+
+    if (errored) {
+      setErrorText(notEnoughResourcesText);
+      return;
+    }
+
     try {
       setLoading(true);
       setErrored(false);
@@ -48,7 +64,14 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   };
 
   return (
-    <ModalWithAdd show={show} onClose={onClose} title={titleText[language]} loading={loading} errored={errored}>
+    <ModalWithAdd
+      show={show}
+      onClose={onClose}
+      title={titleText[language]}
+      loading={loading}
+      errored={errored || !!errorText}
+      errorText={errorText}
+    >
       <div className={styles.cyberFarmFieldsBuildOptionsModal}>
         <button
           onClick={() => onBuild(EFarmSlotTypes.FARM)}

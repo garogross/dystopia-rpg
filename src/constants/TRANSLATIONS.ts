@@ -6,6 +6,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Something went wrong",
       [ELanguages.ru]: "Что-то пошло не так",
     },
+    notEnoughResourcesText: {
+      [ELanguages.en]: "You don't have enough",
+      [ELanguages.ru]: "У тебя не хватает",
+    },
   },
   home: {
     titleText: {
@@ -155,10 +159,7 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Cancel",
           [ELanguages.ru]: "Отмена",
         },
-        notEnoughResourcesText: {
-          [ELanguages.en]: "You don't have enough",
-          [ELanguages.ru]: "У тебя не хватает",
-        },
+  
       },
       buildModal: {
         titleText: {
