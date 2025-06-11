@@ -144,8 +144,8 @@ export const TRANSLATIONS = {
       },
       buyModal: {
         titleText: {
-          [ELanguages.en]: "Are you sure you want to buy this field for 1 CP?",
-          [ELanguages.ru]: "Вы точно хотите купить этот участок за 1 CP?",
+          [ELanguages.en]: "Are you sure you want to buy this field for",
+          [ELanguages.ru]: "Вы точно хотите купить этот участок за",
         },
         buyButtonText: {
           [ELanguages.en]: "Buy",
@@ -154,6 +154,10 @@ export const TRANSLATIONS = {
         cancelButtonText: {
           [ELanguages.en]: "Cancel",
           [ELanguages.ru]: "Отмена",
+        },
+        notEnoughResourcesText: {
+          [ELanguages.en]: "You don't have enough",
+          [ELanguages.ru]: "У тебя не хватает",
         },
       },
       buildModal: {

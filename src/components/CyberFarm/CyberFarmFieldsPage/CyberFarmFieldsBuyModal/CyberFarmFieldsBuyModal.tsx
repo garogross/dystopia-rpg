@@ -10,6 +10,7 @@ import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { buySlot } from "../../../../store/slices/cyberFarm/slotsSlice";
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
+import { products } from "../../../../constants/cyberfarm/products";
 
 interface Props {
   show: boolean;
@@ -17,7 +18,7 @@ interface Props {
   onClose: () => void;
 }
 
-const { titleText, buyButtonText, cancelButtonText } =
+const { titleText, buyButtonText, cancelButtonText,notEnoughResourcesText: notEnoughText } =
   TRANSLATIONS.cyberFarm.fields.buyModal;
 const CyberFarmFieldsBuyModal: React.FC<Props> = ({
   show,
@@ -26,9 +27,50 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
 }) => {
   const dispath = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const slotCosts = useAppSelector((state) => state.cyberfarm.slots.slotCosts);
+  const slots = useAppSelector((state) => state.cyberfarm.slots.slots);
+  const cp = useAppSelector((state) => state.profile.stats.cp);
+  const resources = useAppSelector((state) => state.cyberfarm.resources.resources);
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
 
+  const newSlotIndex = slots ? Object.keys(slots).length + 1 : 1;
+  console.log({ slotCosts, newSlotIndex });
+
+  const newSlotCost = slotCosts
+    ? slotCosts?.fields.find(
+        (cost) => cost.range[0] <= newSlotIndex && cost.range[1] >= newSlotIndex
+      )
+    : null;
+  let costText = "";
+
+  let notEnoughResourcesText = ""
+  
+  if (newSlotCost) {
+    for (const [k, value] of Object.entries(newSlotCost)) {
+      console.log(value);
+      const key = k as keyof typeof newSlotCost;
+      
+      if (key === "range" || !value) {
+        continue;
+      }
+      const costValue = value as number
+      
+      if (key === "cash_point") {
+        costText += `${value} cp, `;
+        if(cp < costValue) {
+          notEnoughResourcesText += `${costValue - cp} cp, `
+        }
+      } else {
+        costText += `${value} ${products[key].name[language]}, `;
+        if(resources[key] < costValue) {
+          notEnoughResourcesText += `${ costValue - resources[key]} ${products[key].name[language]}, `
+        }      }
+    }
+    
+    costText = costText.length ? costText.slice(0, costText.length - 2) : costText;
+    notEnoughResourcesText = notEnoughResourcesText.length ? notEnoughResourcesText.slice(0, notEnoughResourcesText.length - 2) : notEnoughResourcesText;
+  }
   useEffect(() => {
     if (!show) setErrored(false);
   }, [show]);
@@ -52,12 +94,13 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
     <ModalWithAdd
       show={show}
       onClose={onClose}
-      title={titleText[language]}
+      title={`${titleText[language]} ${costText}?`}
       loading={loading}
-      errored={errored}
+      errored={errored || !!notEnoughResourcesText}
+      errorText={`${notEnoughText[language]} ${notEnoughResourcesText}`}
     >
       <div className={styles.cyberFarmFieldsBuyModal}>
-        <button onClick={onBuy} className={styles.cyberFarmFieldsBuyModal__btn}>
+        <button onClick={onBuy} disabled={!!notEnoughResourcesText || loading} className={styles.cyberFarmFieldsBuyModal__btn}>
           <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
             <BuyIcon />
             <span>{buyButtonText[language]}</span>
@@ -73,7 +116,6 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
           </div>
         </button>
       </div>
-     
     </ModalWithAdd>
   );
 };

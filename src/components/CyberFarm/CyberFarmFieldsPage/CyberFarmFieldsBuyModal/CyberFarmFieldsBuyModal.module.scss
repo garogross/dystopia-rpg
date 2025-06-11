@@ -11,6 +11,11 @@
     width: 100%;
     padding: 1px;
     @include button($color-primary);
+    transition: $transition;
+
+    &:disabled {
+      background: transparent;
+    }
   }
 
   &__btnInner {
@@ -21,6 +26,20 @@
     gap: 5px;
     background: radial-gradient(50% 50% at 50% 50%, #523ba6 0%, #170e35 100%);
     @include setFont(12px, 400);
+    transition: $transition;
+
+    & svg {
+      fill: $color-text;
+      transition: $transition;
+    }
+  }
+
+  &__btn:disabled &__btnInner {
+    color: $color-disabledText;
+
+    & svg {
+      fill: $color-disabledText;
+    }
   }
 
   &__btn:nth-child(1),
@@ -51,6 +70,4 @@
       5.5% 0%
     );
   }
-
- 
 }
