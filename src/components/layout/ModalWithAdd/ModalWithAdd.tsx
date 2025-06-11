@@ -23,6 +23,7 @@ interface Props {
   fullHeught?: boolean;
   loading?: boolean;
   errored?: boolean;
+  errorText?: string;
 }
 
 const ModalWithAdd: React.FC<Props> = ({
@@ -35,6 +36,7 @@ const ModalWithAdd: React.FC<Props> = ({
   fullHeught,
   loading,
   errored,
+  errorText
 }) => {
   const language = useAppSelector((state) => state.ui.language);
   const content = (
@@ -55,7 +57,7 @@ const ModalWithAdd: React.FC<Props> = ({
         height={30}
         className={styles.modalWithAdd__error}
       >
-        <span>{somethingWentWrong[language]}</span>
+        <span>{errorText || somethingWentWrong[language]}</span>
       </TransitionProvider>
       <div className={styles.modalWithAdd__adWrapper}></div>
     </>

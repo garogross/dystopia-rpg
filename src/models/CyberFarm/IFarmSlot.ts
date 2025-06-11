@@ -3,7 +3,7 @@ import { CyberFarmProductType } from "../../types/CyberFarmProductType";
 
 export interface IFarmSlot {
   type: EFarmSlotTypes;
-  product: CyberFarmProductType;
-  start_time: number;
-  finish_time: number;
+  product?: CyberFarmProductType;
+  start_time?: number;
+  finish_time?: number;
 }

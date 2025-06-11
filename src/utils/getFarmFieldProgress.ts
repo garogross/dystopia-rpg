@@ -1,4 +1,4 @@
-export const getFarmFieldProgress = (startDate: string, endDate: string) => {
+export const getFarmFieldProgress = (startDate: number, endDate: number) => {
   let progress =
     ((Date.now() - new Date(startDate).getTime()) /
       (new Date(endDate).getTime() - new Date(startDate).getTime())) *

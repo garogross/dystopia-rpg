@@ -9,7 +9,7 @@ export interface IFarmField {
   plant?: EPlants;
   factoryProduct?: EFactoryProducts;
   process?: {
-    startDate: string;
-    endDate: string;
+    startDate: number;
+    endDate: number;
   };
 }
