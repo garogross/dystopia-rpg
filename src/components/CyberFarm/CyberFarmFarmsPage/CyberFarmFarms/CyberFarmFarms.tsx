@@ -1,5 +1,5 @@
 import React from "react";
-import { IFarmField } from "../../../../models/IFarmField";
+import { IFarmField } from "../../../../models/CyberFarm/IFarmField";
 import CyberFarmWrapperWithList from "../../CyberFarmWrapperWithList/CyberFarmWrapperWithList";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../../hooks/redux";

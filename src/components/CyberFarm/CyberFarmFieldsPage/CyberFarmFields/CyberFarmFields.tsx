@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IFarmField } from "../../../../models/IFarmField";
+import { IFarmField } from "../../../../models/CyberFarm/IFarmField";
 import CyberFarmWrapperWithList from "../../CyberFarmWrapperWithList/CyberFarmWrapperWithList";
 import CyberFarmFieldsBuyModal from "../CyberFarmFieldsBuyModal/CyberFarmFieldsBuyModal";
 import CyberFarmFieldsBuildModal from "../CyberFarmFieldsBuildModal/CyberFarmFieldsBuildModal";
@@ -17,6 +17,7 @@ const CyberFarmFields = () => {
   const [buyModalOpened, setBuyModalOpened] = useState(false);
   const [buyingSlotId, setBuyingSlotId] = useState<string | null>(null);
   const [buildSlotId, setBuildSlotId] = useState<string | null>(null);
+  const [producingSlotId, setProducingSlotId] = useState<string | null>(null);
   const [buildModalOpened, setBuildModalOpened] = useState(false);
   const [plantOptionsModalOpened, setPlantOptionsModalOpened] = useState(false);
   const [buildOptionsModalOpened, setBuildOptionsModalOpened] = useState(false);
@@ -54,6 +55,7 @@ const CyberFarmFields = () => {
         }}
         onCloseOptionsModal={() => setBuildOptionsModalOpened(false)}
         optionsModalOpenedArg={plantOptionsModalOpened}
+        producingSlotIdArg={producingSlotId}
         productsType={"plant"}
       />
       ;
@@ -68,7 +70,10 @@ const CyberFarmFields = () => {
         show={buildModalOpened}
         onClose={() => setBuildModalOpened(false)}
         onBuild={() => setBuildOptionsModalOpened(true)}
-        onPlant={() => setPlantOptionsModalOpened(true)}
+        onPlant={() => {
+          setProducingSlotId(buildSlotId);
+          setPlantOptionsModalOpened(true);
+        }}
       />
       {buildSlotId && (
         <CyberFarmFieldsBuildOptionsModal

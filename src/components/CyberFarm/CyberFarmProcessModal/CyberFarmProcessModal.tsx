@@ -5,14 +5,10 @@ import ModalWithAdd from "../../layout/ModalWithAdd/ModalWithAdd";
 
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import { products } from "../../../constants/cyberfarm/products";
-import { IFarmField } from "../../../models/IFarmField";
+import { IFarmField } from "../../../models/CyberFarm/IFarmField";
 import { getFarmFieldProgress } from "../../../utils/getFarmFieldProgress";
 import { formatTime } from "../../../utils/formatTime";
-import {
-  adImage,
-  cpImage,
-  cpImageWebp,
-} from "../../../assets/imageMaps";
+import { adImage, cpImage, cpImageWebp } from "../../../assets/imageMaps";
 import { CollectIcon } from "../../layout/icons/CyberFarm/CyberFarmProcessModal";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
@@ -29,10 +25,10 @@ const {
   collectButtonText,
   speedUpCpButtonText,
   speedUpAdButtonText,
-} = TRANSLATIONS.cyberFarm.processModal
+} = TRANSLATIONS.cyberFarm.processModal;
 
 const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
-    const language = useAppSelector(state => state.ui.language)
+  const language = useAppSelector((state) => state.ui.language);
 
   const productKey = item.factoryProduct || item.plant;
   if (!productKey || !item.process) return null;
@@ -41,7 +37,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
     item.process.endDate
   );
   const productdetails = products[productKey];
-const isReadyToCollect = progress >= 100
+  const isReadyToCollect = progress >= 100;
   return (
     <ModalWithAdd show={show} onClose={onClose} title={titleText[language]}>
       <div className={styles.cyberFarmProcessModal}>
@@ -68,45 +64,47 @@ const isReadyToCollect = progress >= 100
                 </div>
               </div>
               <p className={styles.cyberFarmProcessModal__text}>
-                {isReadyToCollect ? readyToCollectText[language] : `${timeRemainingText[language]} ${formatTime(remainingTimeInSecs)}`}
+                {isReadyToCollect
+                  ? readyToCollectText[language]
+                  : `${timeRemainingText[language]} ${formatTime(
+                      remainingTimeInSecs
+                    )}`}
               </p>
             </div>
           </div>
           <div className={styles.cyberFarmProcessModal__actions}>
-            {
-              isReadyToCollect ? (
+            {isReadyToCollect ? (
+              <button className={styles.cyberFarmProcessModal__btn}>
+                <div className={styles.cyberFarmProcessModal__btnInner}>
+                  <span>{collectButtonText[language]}</span>
+                  <CollectIcon />
+                </div>
+              </button>
+            ) : (
+              <>
                 <button className={styles.cyberFarmProcessModal__btn}>
                   <div className={styles.cyberFarmProcessModal__btnInner}>
-                    <span>{collectButtonText[language]}</span>
-                    <CollectIcon/>
+                    <span>{speedUpCpButtonText[language]}</span>
+                    <ImageWebp
+                      src={cpImage}
+                      srcSet={cpImageWebp}
+                      alt="cash point"
+                      className={styles.cyberFarmProcessModal__btnImg}
+                    />
                   </div>
                 </button>
-              ) : (
-                <>
-                  <button className={styles.cyberFarmProcessModal__btn}>
-                    <div className={styles.cyberFarmProcessModal__btnInner}>
-                      <span>{speedUpCpButtonText[language]}</span>
-                      <ImageWebp
-                        src={cpImage}
-                        srcSet={cpImageWebp}
-                        alt="cash point"
-                        className={styles.cyberFarmProcessModal__btnImg}
-                      />
-                    </div>
-                  </button>
-                  <button className={styles.cyberFarmProcessModal__btn}>
-                    <div className={styles.cyberFarmProcessModal__btnInner}>
-                      <span>{speedUpAdButtonText[language]}</span>
-                      <img
-                        src={adImage}
-                        alt="cash point"
-                        className={styles.cyberFarmProcessModal__btnImg}
-                      />
-                    </div>
-                  </button>
-                </>
-              )
-            }
+                <button className={styles.cyberFarmProcessModal__btn}>
+                  <div className={styles.cyberFarmProcessModal__btnInner}>
+                    <span>{speedUpAdButtonText[language]}</span>
+                    <img
+                      src={adImage}
+                      alt="cash point"
+                      className={styles.cyberFarmProcessModal__btnImg}
+                    />
+                  </div>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import styles from "./CyberFarmWrapperWithList.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
-import { IFarmField } from "../../../models/IFarmField";
+import { IFarmField } from "../../../models/CyberFarm/IFarmField";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
   cyberFarmEmptyFieldImage,
@@ -91,8 +91,9 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
       } else {
         if (onBuildItem) onBuildItem?.(field);
         else {
-          setProducingSlotId(field.id)
-          setOptionsModalOpened(true);}
+          setProducingSlotId(field.id);
+          setOptionsModalOpened(true);
+        }
       }
     }
   };
