@@ -8,6 +8,8 @@
   padding-top: 20px;
   height: 100%;
   padding-bottom: 12px;
+  flex: 1;
+  overflow: auto;
 
   &__header {
     position: relative;

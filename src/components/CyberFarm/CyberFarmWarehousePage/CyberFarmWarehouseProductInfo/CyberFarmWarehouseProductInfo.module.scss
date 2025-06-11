@@ -34,6 +34,11 @@
   }
   &__text {
     @include setFont(11px, 400);
+    transition: $transition;
+    
+    &_invalid {
+      color: $color-red;
+    }
   }
   &__textCol {
     @include flexCol(space-between);
@@ -48,6 +53,12 @@
     padding: 1px;
     @include button($color-primary);
     height: 12px;
+    transition: $transition;
+
+    &:disabled {
+      background-color: transparent;
+      opacity: 0.8;
+    }
   }
   &__calculatorBtnInner {
     background: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
@@ -83,6 +94,17 @@
     @include setFont(11px, 400);
   }
 
+  &__error {
+    @include setFont(12px, 400, $font-fam-main, $color-red);
+    text-align: center;
+    opacity: 0;
+    transition: $transition;
+
+    &_active {
+      opacity: 1;
+    }
+  }
+
   &__footer {
     @include flexCol(space-between);
   }
@@ -93,7 +115,13 @@
     @include button($color-primary);
     height: 22px;
     width: 100%;
+    transition: $transition;
+    &:disabled {
+      background: transparent;
+      cursor: default;
+    }
   }
+
   &__sellBtnInner {
     background: radial-gradient(
       88.89% 88.89% at 50% 50%,
@@ -105,14 +133,23 @@
     @include flexCol();
     gap: 4px;
     @include setFont(11px, 400);
-
+    transition: $transition;
     & svg {
       width: 14px;
+      fill: $color-text;
+      transition: $transition;
     }
   }
 
   &__sellBtn,
   &__sellBtnInner {
     clip-path: polygon(100% 100%, 100% 80%, 96% 100%, 0% 100%, 0% 0%, 100% 0%);
+  }
+  &__sellBtn:disabled &__sellBtnInner {
+    color: #6a4cd7;
+
+    & svg {
+      fill: #6a4cd7;
+    }
   }
 }

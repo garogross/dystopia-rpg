@@ -10,6 +10,7 @@ import NewPortalProvider from "../../../providers/NewPortalProvider";
 import HeaderBtn from "../HeaderBtn/HeaderBtn";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
+import LoadingOverlay from "../LoadingOverlay/LoadingOverlay";
 
 const { somethingWentWrong } = TRANSLATIONS.errors;
 interface Props {
@@ -82,13 +83,7 @@ const ModalWithAdd: React.FC<Props> = ({
             <div className={styles.modalWithAdd__wrapper}>{content}</div>
           )}
 
-          <TransitionProvider
-            inProp={!!loading}
-            style={TransitionStyleTypes.opacity}
-            className={styles.modalWithAdd__loadingOverlay}
-          >
-            <span>Loading...</span>
-          </TransitionProvider>
+         <LoadingOverlay loading={!!loading}/>
         </TransitionProvider>
       </NewPortalProvider>
     </>

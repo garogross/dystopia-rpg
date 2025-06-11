@@ -139,8 +139,8 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Поля",
       },
       emptyText: {
-      [ELanguages.en]: "You don't have any fields",
-      [ELanguages.ru]: "У вас нет полей",
+        [ELanguages.en]: "You don't have any fields",
+        [ELanguages.ru]: "У вас нет полей",
       },
       buyModal: {
         titleText: {
@@ -193,7 +193,7 @@ export const TRANSLATIONS = {
       emptyText: {
         [ELanguages.en]: "You don't have any farms",
         [ELanguages.ru]: "У вас нет ферм",
-        },
+      },
     },
     factories: {
       titleText: {
@@ -203,22 +203,51 @@ export const TRANSLATIONS = {
       emptyText: {
         [ELanguages.en]: "You don't have any factories",
         [ELanguages.ru]: "У вас нет заводов",
-        },
+      },
     },
     warehouse: {
       titleText: {
         [ELanguages.en]: "Warehouse",
         [ELanguages.ru]: "Склад",
       },
-       emptyText: {
+      emptyText: {
         [ELanguages.en]: "Warehouse is empty",
         [ELanguages.ru]: "Склад пуст",
-        },
+      },
       socialStoreButtonText: {
         [ELanguages.en]: "Social Store",
         [ELanguages.ru]: "Социальный магазин",
       },
-
+      productInfo: {
+        youHaveText: {
+          [ELanguages.en]: "You have:",
+          [ELanguages.ru]: "У вас:",
+        },
+        priceText: {
+          [ELanguages.en]: "Price:",
+          [ELanguages.ru]: "Цена:",
+        },
+        youWillGetText: {
+          [ELanguages.en]: "You will get:",
+          [ELanguages.ru]: "Вы получите:",
+        },
+        youWillSpendText: {
+          [ELanguages.en]: "You will spend:",
+          [ELanguages.ru]: "Вы тратите:",
+        },
+        buyButtonText: {
+          [ELanguages.en]: "Buy",
+          [ELanguages.ru]: "Купить",
+        },
+        sellButtonText: {
+          [ELanguages.en]: "Sell",
+          [ELanguages.ru]: "Продать",
+        },
+        piecesText: {
+          [ELanguages.en]: "pcs",
+          [ELanguages.ru]: "шт.",
+        },
+      },
       socialStoreModal: {
         titleLgText: {
           [ELanguages.en]: "Social Store",
@@ -530,14 +559,14 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "One click - and you helped the project",
         [ELanguages.ru]: "Один клик — и ты помог проекту",
       },
-    partnerTasksText: {
-      [ELanguages.en]: "Additional partner tasks",
-      [ELanguages.ru]: "Дополнительные задания от партнеров",
-    },
-    openText: {
-      [ELanguages.en]: "Open",
-      [ELanguages.ru]: "Открыть",
-    },
+      partnerTasksText: {
+        [ELanguages.en]: "Additional partner tasks",
+        [ELanguages.ru]: "Дополнительные задания от партнеров",
+      },
+      openText: {
+        [ELanguages.en]: "Open",
+        [ELanguages.ru]: "Открыть",
+      },
     },
     collectReward: {
       collectRewardText: {
