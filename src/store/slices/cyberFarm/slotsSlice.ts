@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import { BuySlotResponse } from "../../../models/api/CyberFarm/Slots";
 import { fetchRequest } from "../../tools/fetchTools";
-import { products } from "../../../constants/cyberfarm/products";
+import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 
 export interface SlotsState {
   slots: Record<string, { type: EFarmSlotTypes }> | null;
@@ -32,7 +32,7 @@ export const buySlot = createAsyncThunk<
 const produceSlotUrl = "/ton_cyber_farm/produce/";
 export const produceSlot = createAsyncThunk<
   BuySlotResponse,
-  { id: string; product: keyof typeof products }
+  { id: string; product: CyberFarmProductType }
 >("slots/produceSlot", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<BuySlotResponse>(produceSlotUrl, "POST", {

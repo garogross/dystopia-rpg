@@ -25,6 +25,7 @@ import {
 import { EPlants } from "./EPlants";
 import { TRANSLATIONS } from "../TRANSLATIONS";
 import { EFactoryProducts } from "./EFactoryProducts";
+import { TranslationItemType } from "../../types/TranslationItemType";
 
 const {
   metal,
@@ -40,7 +41,15 @@ const {
   bioBacteria,
 } = TRANSLATIONS.cyberFarm.products;
 
-export const products = {
+export const products: {
+  [key in EFactoryProducts | EPlants]: {
+    src: string;
+    srcSet: string;
+    name: TranslationItemType;
+    type: "factory" | "plant";
+    forSale?: boolean;
+  };
+} = {
   [EFactoryProducts.Metal]: {
     src: metalImage,
     srcSet: metalImageWebp,
@@ -52,12 +61,14 @@ export const products = {
     srcSet: bioGelImageWebp,
     name: bioGel,
     type: "factory",
+    forSale: true,
   },
   [EFactoryProducts.EdibleBrick]: {
     src: edibleBrickImage,
     srcSet: edibleBrickImageWebp,
     name: edibleBrick,
     type: "factory",
+    forSale: true,
   },
   [EFactoryProducts.Energy]: {
     src: energyImage,
@@ -76,6 +87,7 @@ export const products = {
     srcSet: organicMeatImageWebp,
     name: organicMeat,
     type: "factory",
+    forSale: true,
   },
   [EFactoryProducts.Plasma]: {
     src: plasmaImage,

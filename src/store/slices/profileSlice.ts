@@ -11,6 +11,7 @@ import { AppGameMode } from "../../types/AppGameMode";
 import { ELSProps } from "../../constants/ELSProps";
 import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
 import { getCyberFarmSlots } from "./cyberFarm/slotsSlice";
+import { buyProduct, getCyberFarmResources } from "./cyberFarm/resourcesSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -23,7 +24,7 @@ export interface ProfileState {
   stats: {
     [key in EStats]: number;
   };
-  accountDetailsReceived: boolean
+  accountDetailsReceived: boolean;
 }
 
 const initUserData =
@@ -50,7 +51,7 @@ const initialState: ProfileState = {
     [EStats.cp]: 0,
     [EStats.ton]: 0,
   },
-  accountDetailsReceived: false
+  accountDetailsReceived: false,
 };
 const authUserUrl = "/auth";
 
@@ -86,15 +87,26 @@ export const getAccountDetails =
       `${getAccountDetailsUrl}${mode ? `?mode=${mode}` : ""}`
     );
 
-    dispatch(receiveAccountDetails())
+    dispatch(receiveAccountDetails());
     dispatch(
       updateStats({
         [EStats.cp]: resData.user?.profile.cash_point || 0,
         [EStats.ton]: resData.ton_cyber_farm?.ton || 0,
       })
     );
-    if(resData.ton_cyber_farm) {
-      dispatch(getCyberFarmSlots(resData.ton_cyber_farm.slots))
+    if (resData.ton_cyber_farm) {
+      // store slots
+      dispatch(getCyberFarmSlots(resData.ton_cyber_farm.slots));
+
+      // store resources
+      if (resData.game_settings) {
+        dispatch(
+          getCyberFarmResources({
+            resources: resData.ton_cyber_farm.resources,
+            productCosts: resData.game_settings.base_costs,
+          })
+        );
+      }
     }
 
     console.log({ resData });
@@ -118,14 +130,12 @@ export const authorizeUser =
 
     try {
       const res = await dispatch(getAccountDetails(mode));
-      
 
-      if(res.ton_cyber_farm) {
-        dispatch(initCyberFarm())
+      if (res.ton_cyber_farm) {
+        dispatch(initCyberFarm());
       }
 
-
-      return res.mode
+      return res.mode;
     } catch (error: any) {
       if (error?.status === 401) {
         // in case invalid token
@@ -153,8 +163,8 @@ export const profileSlice = createSlice({
       state.stats = { ...state.stats, ...payload };
     },
     receiveAccountDetails(state) {
-      state.accountDetailsReceived = true
-    }
+      state.accountDetailsReceived = true;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(authUser.fulfilled, (state, { payload }) => {
@@ -162,9 +172,15 @@ export const profileSlice = createSlice({
       state.username = payload.user.username;
       state.tgId = payload.user.id_tgrm;
     });
+
+    // cyberfarm
+    builder.addCase(buyProduct.fulfilled, (state, { payload }) => {
+      state.stats.cp = payload.cash_point_left;
+    });
   },
 });
 
-export const { setUser, updateStats,receiveAccountDetails } = profileSlice.actions;
+export const { setUser, updateStats, receiveAccountDetails } =
+  profileSlice.actions;
 
 export default profileSlice.reducer;

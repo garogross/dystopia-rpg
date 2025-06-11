@@ -1,65 +1,36 @@
 import React, { useState } from "react";
 import CyberFarmWrapperWithList from "../../CyberFarmWrapperWithList/CyberFarmWrapperWithList";
 import { IWarehouseProduct } from "../../../../models/IWarehouseProduct";
-import { EFactoryProducts } from "../../../../constants/cyberfarm/EFactoryProducts";
-import { EPlants } from "../../../../constants/cyberfarm/EPlants";
 import { SocialStoreIcon } from "../../../layout/icons/CyberFarm/CyberFarmWarehousePage";
 import styles from "./CyberFarmWarehouse.module.scss";
 import CyberFarmWarehouseProductInfo from "../CyberFarmWarehouseProductInfo/CyberFarmWarehouseProductInfo";
 import CyberFarmWarehouseSocialStoreModal from "../CyberFarmWarehouseSocialStoreModal/CyberFarmWarehouseSocialStoreModal";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../../hooks/redux";
+import { products } from "../../../../constants/cyberfarm/products";
+import { CyberFarmProductType } from "../../../../types/CyberFarmProductType";
 
-const warehouseProducts: IWarehouseProduct[] = [
-  {
-    id: "1",
-    product: EFactoryProducts.Metal,
-    type: "factory",
-    count: 5,
-  },
-  {
-    id: "2",
-    product: EFactoryProducts.Plasma,
-    type: "factory",
-    count: 3,
-  },
-  {
-    id: "3",
-    product: EFactoryProducts.EnergyCore,
-    type: "factory",
-    count: 2,
-  },
-  {
-    id: "4",
-    product: EPlants.MetalCactus,
-    type: "plant",
-    count: 4,
-  },
-  {
-    id: "5",
-    product: EPlants.PlasmaMushroom,
-    type: "plant",
-    count: 6,
-  },
-  {
-    id: "6",
-    product: EPlants.BioBacteria,
-    type: "plant",
-    count: 2,
-  },
-];
 
 const { titleText, emptyText, socialStoreButtonText } =
   TRANSLATIONS.cyberFarm.warehouse;
 
 const CyberFarmWarehouse = () => {
   const language = useAppSelector((state) => state.ui.language);
-
+const resources = useAppSelector(state => state.cyberfarm.resources.resources)
   const [socialStoreShow, setSocialStoreShow] = useState(false);
   const [infoShow, setInfoShow] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
-  const selectedItem = warehouseProducts.find(
+const data: IWarehouseProduct[] = Object.entries(products)
+  .map(([key, res]) => ({
+    id: key,
+    product: key as CyberFarmProductType,
+    type: res.type,
+    count: resources[key as CyberFarmProductType],
+  }))
+  .sort((a, b) => b.count - a.count);
+
+  const selectedItem = data.find(
     (item) => item.id === selectedItemId
   );
 
@@ -70,7 +41,7 @@ const CyberFarmWarehouse = () => {
       <div className={styles.cyberFarmWarehouse__main}>
         <CyberFarmWrapperWithList
           title={titleText[language]}
-          data={warehouseProducts}
+          data={data}
           emptyText={emptyText[language]}
           isWarehouse
           onSellItem={(item) => {

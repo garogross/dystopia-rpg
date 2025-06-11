@@ -18,6 +18,10 @@
     @include flexCol();
     gap: 4px;
     @include setFont(11px, 400);
+
+    & svg {
+      fill: $color-text;
+    }
   }
   &__getByAddBtn,
   &__getByAddBtnInner {

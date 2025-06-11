@@ -1,8 +1,8 @@
-import { products } from "../constants/cyberfarm/products";
+import { CyberFarmProductType } from "../types/CyberFarmProductType";
 
 export interface IWarehouseProduct {
   id: string;
-  product: keyof typeof products;
+  product: CyberFarmProductType;
   type: "plant" | "factory";
   count: number;
 }
