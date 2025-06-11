@@ -28,7 +28,7 @@
     }
 
     &:disabled {
-      border-color: #6a4cd7;
+      border-color: $color-disabledText;
       background: radial-gradient(
         50% 50% at 50% 50%,
         #523ba680 0%,

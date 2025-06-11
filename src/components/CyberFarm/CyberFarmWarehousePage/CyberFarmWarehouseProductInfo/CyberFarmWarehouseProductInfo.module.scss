@@ -146,10 +146,10 @@
     clip-path: polygon(100% 100%, 100% 80%, 96% 100%, 0% 100%, 0% 0%, 100% 0%);
   }
   &__sellBtn:disabled &__sellBtnInner {
-    color: #6a4cd7;
+    color: $color-disabledText;
 
     & svg {
-      fill: #6a4cd7;
+      fill: $color-disabledText;
     }
   }
 }
