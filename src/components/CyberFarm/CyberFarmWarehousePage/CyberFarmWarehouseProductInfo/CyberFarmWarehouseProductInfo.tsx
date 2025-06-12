@@ -102,7 +102,6 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
       setLoading(false);
     }
   };
-  console.log({ inputValue });
 
   return (
     <TransitionProvider

@@ -36,10 +36,6 @@ export const useFarmFieldProgress = (
 
   useEffect(
     () => {
-      console.log(
-        "dependencies.some((item) => !item)",
-        dependencies?.some((item) => !item)
-      );
 
       if (!process) return;
       if (dependencies && dependencies.some((item) => !item)) return;

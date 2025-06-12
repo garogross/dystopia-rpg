@@ -76,7 +76,6 @@ const OnBoarding = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log({ loading });
 
   if (loading) return null;
 
