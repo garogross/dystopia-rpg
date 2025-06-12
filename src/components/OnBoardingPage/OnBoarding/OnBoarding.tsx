@@ -27,7 +27,6 @@ const OnBoarding = () => {
     const fetchData = async (initData: string) => {
       try {
         const res = await dispatch(authorizeUser(initData));
-        console.log({ res });
         if (res === "ton_cyber_farm") navigate(cyberFarmPagePath);
       } catch (error) {
         console.error(error);

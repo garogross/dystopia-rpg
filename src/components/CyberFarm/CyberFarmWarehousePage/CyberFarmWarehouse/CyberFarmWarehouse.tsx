@@ -10,29 +10,28 @@ import { useAppSelector } from "../../../../hooks/redux";
 import { products } from "../../../../constants/cyberfarm/products";
 import { CyberFarmProductType } from "../../../../types/CyberFarmProductType";
 
-
 const { titleText, emptyText, socialStoreButtonText } =
   TRANSLATIONS.cyberFarm.warehouse;
 
 const CyberFarmWarehouse = () => {
   const language = useAppSelector((state) => state.ui.language);
-const resources = useAppSelector(state => state.cyberfarm.resources.resources)
+  const resources = useAppSelector(
+    (state) => state.cyberfarm.resources.resources
+  );
   const [socialStoreShow, setSocialStoreShow] = useState(false);
   const [infoShow, setInfoShow] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
-const data: IWarehouseProduct[] = Object.entries(products)
-  .map(([key, res]) => ({
-    id: key,
-    product: key as CyberFarmProductType,
-    type: res.type,
-    count: resources[key as CyberFarmProductType],
-  }))
-  .sort((a, b) => b.count - a.count);
-
-  const selectedItem = data.find(
-    (item) => item.id === selectedItemId
+  const data: IWarehouseProduct[] = Object.entries(products).map(
+    ([key, res]) => ({
+      id: key,
+      product: key as CyberFarmProductType,
+      type: res.type,
+      count: resources[key as CyberFarmProductType],
+    })
   );
+
+  const selectedItem = data.find((item) => item.id === selectedItemId);
 
   return (
     <main

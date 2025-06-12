@@ -17,16 +17,15 @@ import { IWarehouseProduct } from "../../../models/IWarehouseProduct";
 import { products } from "../../../constants/cyberfarm/products";
 import {
   Blockedicon,
-  Completedicon,
-  InProgressIcon,
 } from "../../layout/icons/CyberFarm/CyberFarmWrapperWithList";
 import { useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
-import { getFarmFieldProgress } from "../../../utils/getFarmFieldProgress";
 import CyberFarmProcessModal from "../CyberFarmProcessModal/CyberFarmProcessModal";
 import CyberFarmOptionsModal from "../CyberFarmOptionsModal/CyberFarmOptionsModal";
+import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
+import CyberFarmWrapperWithListItemProgress from "./CyberFarmWrapperWithListItemProgress/CyberFarmWrapperWithListItemProgress";
 
 interface Props<T extends IFarmField | IWarehouseProduct> {
   title: string;
@@ -39,7 +38,7 @@ interface Props<T extends IFarmField | IWarehouseProduct> {
   onCloseOptionsModal?: () => void;
   optionsModalOpenedArg?: boolean;
   producingSlotIdArg?: string | null;
-  productsType?: "plant" | "factory";
+  productsType?: EFarmSlotTypes;
 }
 
 const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
@@ -76,7 +75,7 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   }, [producingSlotIdArg]);
 
   useEffect(() => {
-    if (optionsModalOpened) onCloseOptionsModal?.();
+    if (!optionsModalOpened) onCloseOptionsModal?.();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionsModalOpened]);
 
@@ -130,14 +129,6 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
               srcSet: cyberFarmEmptyFieldImageWebp,
             };
 
-            let progressPercent =
-              !("count" in field) && field.process
-                ? getFarmFieldProgress(
-                    field.process.startDate,
-                    field.process.endDate
-                  ).progress
-                : null;
-
             if ("count" in field) {
               // check if IWarehouseProduct
               curImage = products[field.product];
@@ -178,31 +169,9 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
                 ) : (
                   <>
                     {field.process && (
-                      <>
-                        <div
-                          className={
-                            styles.cyberFarmWrapperWithList__itemStatus
-                          }
-                        >
-                          {progressPercent === 100 ? (
-                            <Completedicon />
-                          ) : (
-                            <InProgressIcon />
-                          )}
-                        </div>
-                        <div
-                          className={
-                            styles.cyberFarmWrapperWithList__itemProgress
-                          }
-                        >
-                          <div
-                            style={{ width: `${progressPercent}%` }}
-                            className={
-                              styles.cyberFarmWrapperWithList__itemProgressInner
-                            }
-                          ></div>
-                        </div>
-                      </>
+                      <CyberFarmWrapperWithListItemProgress
+                        process={field.process}
+                      />
                     )}
                     {field.blocked && (
                       <div

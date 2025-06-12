@@ -70,7 +70,6 @@ export const authUser = createAsyncThunk<AuthUserResponse, string>(
       if (resData.token) {
         setLSItem(ELSProps.token, resData.token);
       }
-      console.log({ resData });
       return resData;
     } catch (error: any) {
       console.error("error", error);
@@ -104,12 +103,12 @@ export const getAccountDetails =
           getCyberFarmResources({
             resources: resData.ton_cyber_farm.resources,
             productCosts: resData.game_settings.base_costs,
+            resourceDeficit: resData.resource_deficit,
           })
         );
       }
     }
 
-    console.log({ resData });
     return resData;
   };
 

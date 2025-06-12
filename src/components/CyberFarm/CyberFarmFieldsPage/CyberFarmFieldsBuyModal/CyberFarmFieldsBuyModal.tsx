@@ -11,6 +11,8 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { buySlot } from "../../../../store/slices/cyberFarm/slotsSlice";
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 import { useSlotCost } from "../../../../hooks/useSlotCost";
+import { useTooltip } from "../../../../hooks/useTooltip";
+import Tooltip from "../../../layout/Tooltip/Tooltip";
 
 interface Props {
   show: boolean;
@@ -18,11 +20,8 @@ interface Props {
   onClose: () => void;
 }
 
-const {
-  titleText,
-  buyButtonText,
-  cancelButtonText,
-} = TRANSLATIONS.cyberFarm.fields.buyModal;
+const { titleText, buyButtonText, cancelButtonText, successText } =
+  TRANSLATIONS.cyberFarm.fields.buyModal;
 const CyberFarmFieldsBuyModal: React.FC<Props> = ({
   show,
   onClose,
@@ -30,11 +29,16 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
 }) => {
   const dispath = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const { show: showTooltip, openTooltip } = useTooltip();
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
 
   const getSlotCostTexts = useSlotCost();
-const { costText, notEnoughResourcesText,errored: notEnoughResources } = getSlotCostTexts(EFarmSlotTypes.FIELDS)
+  const {
+    costText,
+    notEnoughResourcesText,
+    errored: notEnoughResources,
+  } = getSlotCostTexts(EFarmSlotTypes.FIELDS);
   useEffect(() => {
     if (!show) setErrored(false);
   }, [show]);
@@ -46,6 +50,7 @@ const { costText, notEnoughResourcesText,errored: notEnoughResources } = getSlot
       await dispath(
         buySlot({ id: buyingSlotId, type: EFarmSlotTypes.FIELDS })
       ).unwrap();
+      await openTooltip();
       onClose();
     } catch (error) {
       setErrored(true);
@@ -66,7 +71,7 @@ const { costText, notEnoughResourcesText,errored: notEnoughResources } = getSlot
       <div className={styles.cyberFarmFieldsBuyModal}>
         <button
           onClick={onBuy}
-          disabled={!!notEnoughResourcesText || loading}
+          disabled={!!notEnoughResources || loading}
           className={styles.cyberFarmFieldsBuyModal__btn}
         >
           <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
@@ -84,6 +89,7 @@ const { costText, notEnoughResourcesText,errored: notEnoughResources } = getSlot
           </div>
         </button>
       </div>
+      <Tooltip show={showTooltip} text={successText[language]} />
     </ModalWithAdd>
   );
 };

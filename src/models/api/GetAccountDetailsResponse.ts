@@ -1,6 +1,7 @@
 import { EFarmSlotTypes } from "../../constants/cyberfarm/EFarmSlotTypes";
 import { AppGameMode } from "../../types/AppGameMode";
 import { CyberFarmProductType } from "../../types/CyberFarmProductType";
+import { FarmResourceDeficitType } from "../../types/FarmResourceDeficitType";
 import { FarmSlotCostsType } from "../../types/FarmSlotCostsType";
 
 
@@ -27,4 +28,5 @@ export interface GetAccountDetailsResponse {
     base_costs: Record<string,number>,
     slot_costs: FarmSlotCostsType
   }
+  resource_deficit?: FarmResourceDeficitType
 }

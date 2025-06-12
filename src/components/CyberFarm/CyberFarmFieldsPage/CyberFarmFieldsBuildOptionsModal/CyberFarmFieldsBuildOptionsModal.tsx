@@ -15,6 +15,8 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { buySlot } from "../../../../store/slices/cyberFarm/slotsSlice";
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 import { useSlotCost } from "../../../../hooks/useSlotCost";
+import { useTooltip } from "../../../../hooks/useTooltip";
+import Tooltip from "../../../layout/Tooltip/Tooltip";
 
 interface Props {
   show: boolean;
@@ -22,7 +24,7 @@ interface Props {
   slotId: string;
 }
 
-const { titleText, farmButtonText, factoryButtonText } =
+const { titleText, farmButtonText, factoryButtonText,successText } =
   TRANSLATIONS.cyberFarm.fields.buildOptionsModal;
 const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   show,
@@ -35,6 +37,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   const [errored, setErrored] = useState(false);
   const getSlotCostTexts = useSlotCost();
   const [errorText, setErrorText] = useState("");
+  const {show: showtooltip,openTooltip} = useTooltip()
 
   useEffect(() => {
     if (show) {
@@ -55,6 +58,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
       setLoading(true);
       setErrored(false);
       await dispatch(buySlot({ id: slotId, type })).unwrap();
+      await openTooltip()
       onClose();
     } catch (error) {
       setErrored(true);
@@ -104,6 +108,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
           </div>
         </button>
       </div>
+      <Tooltip show={showtooltip} text={successText[language]}/>
     </ModalWithAdd>
   );
 };

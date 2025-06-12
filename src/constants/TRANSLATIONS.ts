@@ -159,7 +159,10 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Cancel",
           [ELanguages.ru]: "Отмена",
         },
-  
+      successText: {
+        [ELanguages.en]: "Field purchase completed",
+        [ELanguages.ru]: "Покупка участка выполнена",
+      },
       },
       buildModal: {
         titleText: {
@@ -188,6 +191,10 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Factory",
           [ELanguages.ru]: "Завод",
         },
+      successText: {
+        [ELanguages.en]: "Building completed",
+        [ELanguages.ru]: "Постройка выполнена",
+      },
       },
     },
     farms: {
@@ -252,6 +259,10 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "pcs",
           [ELanguages.ru]: "шт.",
         },
+      successText: {
+        [ELanguages.en]: "Purchase completed successfully",
+        [ELanguages.ru]: "Покупка выполнена успешно",
+      },
       },
       socialStoreModal: {
         titleLgText: {
@@ -307,6 +318,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Speed up with ad",
         [ELanguages.ru]: "Ускорить за рекламу",
       },
+    harvestCollectedText: {
+      [ELanguages.en]: "Harvest collected!",
+      [ELanguages.ru]: "Урожай собран!",
+    },
     },
     optionsModal: {
       titleText: {
@@ -317,6 +332,14 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Choose what to plant",
         [ELanguages.ru]: "Выберите что посадить",
       },
+    successText: {
+      [ELanguages.en]: "Processing started successfully!",
+      [ELanguages.ru]: "Переработка выполнена успешно!",
+    },
+    plantSuccessText: {
+      [ELanguages.en]: "Planting started successfully!",
+      [ELanguages.ru]: "Посадка выполнена успешно!",
+    },
     },
     products: {
       metal: {

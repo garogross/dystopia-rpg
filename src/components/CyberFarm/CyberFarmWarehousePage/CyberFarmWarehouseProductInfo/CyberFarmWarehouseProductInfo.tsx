@@ -13,6 +13,8 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { buyProduct } from "../../../../store/slices/cyberFarm/resourcesSlice";
 import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import Tooltip from "../../../layout/Tooltip/Tooltip";
+import { useTooltip } from "../../../../hooks/useTooltip";
 
 interface Props {
   show: boolean;
@@ -29,6 +31,7 @@ const {
   buyButtonText,
   sellButtonText,
   piecesText,
+  successText,
 } = TRANSLATIONS.cyberFarm.warehouse.productInfo;
 
 const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
@@ -42,9 +45,11 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
     (state) => state.cyberfarm.resources.productCosts
   );
   const cp = useAppSelector((state) => state.profile.stats.cp);
+  const { show: showTooltip, openTooltip } = useTooltip();
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
   const [counter, setCounter] = useState(1);
+  const [inputValue, setInputValue] = useState(counter.toString());
   const product = products[item.product];
 
   const cost = productCosts[item.product];
@@ -52,19 +57,24 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
   const isForSale = !!product.forSale;
   const price = 0.5;
 
+  const onChangeCount = (value: number) => {
+    setInputValue(value.toString());
+    setCounter(value);
+  };
+
   useEffect(() => {
     setCounter(1);
     setErrored(false);
   }, [item]);
 
   const onCalculate = (type: "minus" | "plus") => {
-    setCounter((prev) => {
-      if (type === "minus") {
-        return Math.max(1, prev - 1);
-      } else {
-        return isForSale ? Math.min(item.count, prev + 1) : prev + 1;
-      }
-    });
+    let value = counter;
+    if (type === "minus") {
+      value = Math.max(1, value - 1);
+    } else {
+      value = isForSale ? Math.min(item.count, value + 1) : value + 1;
+    }
+    onChangeCount(value);
   };
 
   const onBuy = async () => {
@@ -74,6 +84,7 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
       await dispatch(
         buyProduct({ amount: counter, product: item.product })
       ).unwrap();
+      openTooltip();
     } catch (error) {
       setErrored(true);
     } finally {
@@ -91,6 +102,7 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
       setLoading(false);
     }
   };
+  console.log({ inputValue });
 
   return (
     <TransitionProvider
@@ -138,13 +150,20 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
                   -
                 </span>
               </button>
-              <div
+              <input
+                type="number"
                 className={
                   styles.cyberFarmWarehouseProductInfo__calculatorCounter
                 }
-              >
-                {counter}
-              </div>
+                value={inputValue}
+                onBlur={() => {
+                  if(!inputValue) setInputValue(counter.toString())
+                }}
+                onFocus={() => setInputValue("")}
+                onChange={(e) => onChangeCount(+e.target.value)}
+                min={1}
+              />
+
               <button
                 disabled={isForSale && item.count < counter}
                 onClick={() => onCalculate("plus")}
@@ -178,7 +197,7 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
           >
             {isForSale
               ? `${youWillGetText[language]} ${price * counter} TON`
-              : `${youWillSpendText[language]} ${totalCost} CP`}
+              : `${youWillSpendText[language]} ${+totalCost.toFixed(2)} CP`}
           </p>
           <button
             onClick={isForSale ? onSell : onBuy}
@@ -193,6 +212,7 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
         </div>
         <LoadingOverlay loading={loading} />
       </div>
+      <Tooltip show={showTooltip} text={successText[language]} />
     </TransitionProvider>
   );
 };

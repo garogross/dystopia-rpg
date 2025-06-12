@@ -30,13 +30,12 @@ export const useSlotCost = () => {
 
   const getSlotCostTexts = (type: EFarmSlotTypes) => {
     const newSlotCost = getSlotCost(type);
+    
     let costText = "";
-
     let notEnoughResourcesText = "";
 
     if (newSlotCost) {
       for (const [k, value] of Object.entries(newSlotCost)) {
-        console.log(value);
         const key = k as keyof FarmSlotCostsType["fields"][0];
 
         if (key === "range" || !value) {
