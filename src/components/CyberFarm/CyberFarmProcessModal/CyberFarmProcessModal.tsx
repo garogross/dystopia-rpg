@@ -57,8 +57,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
     try {
       setLoading(true);
       setErrored(false);
-      await dispatch(harvest({ id: item.id })).unwrap();
-      await openTooltip();
+      await dispatch(harvest({ id: item.id,clb: openTooltip })).unwrap();
       onClose();
     } catch (error) {
       setErrored(true);

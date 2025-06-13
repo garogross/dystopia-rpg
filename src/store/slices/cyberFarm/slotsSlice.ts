@@ -59,20 +59,21 @@ export const produceSlot = createAsyncThunk<
 });
 
 const harvestUrl = "/ton_cyber_farm/harvest/";
-export const harvest = createAsyncThunk<HarvestResponse, { id: string }>(
-  "slots/harvest",
-  async (payload, { rejectWithValue }) => {
-    try {
-      const resData = await fetchRequest<HarvestResponse>(harvestUrl, "POST", {
-        slot_id: payload.id,
-      });
+export const harvest = createAsyncThunk<
+  HarvestResponse,
+  { id: string; clb?: () => Promise<void> }
+>("slots/harvest", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<HarvestResponse>(harvestUrl, "POST", {
+      slot_id: payload.id,
+    });
+    await payload.clb?.();
 
-      return resData;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
+    return resData;
+  } catch (error) {
+    return rejectWithValue(error);
   }
-);
+});
 
 export const slotsSlice = createSlice({
   name: "slotsSlice",

@@ -33,12 +33,19 @@ interface Adsgram {
   init: (options: { blockId: string }) => AdsgramController;
 }
 
+interface OnClickaMini {
+  isInit: boolean;
+  goId: (id: string) => void;
+}
+
+
 
 declare global {
-    interface Window {
-        bQuest?: any;
-        bQuestInstance?: any;
-        Traffy?: Traffy;
-        Adsgram?: Adsgram
+  interface Window {
+    bQuest?: any;
+    bQuestInstance?: any;
+    Traffy?: Traffy;
+    Adsgram?: Adsgram
+    onclickaMini?: OnClickaMini;
     }
   }

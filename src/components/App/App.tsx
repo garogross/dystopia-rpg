@@ -21,6 +21,17 @@ const loadScripts = (tg: WebApp) => {
     traffyScript.async = true;
     document.body.appendChild(traffyScript);
   }
+
+  // load onclicka script
+  const onclickaCode = process.env.REACT_APP_ONCLICKA_CODE;
+
+  if (onclickaCode) {
+    const onclickaScript = document.createElement("script");
+    onclickaScript.src = "https://js.onclckmn.com/banner/oncbanner.m.js";
+    onclickaScript.setAttribute("data-onclicka-banner", onclickaCode);
+    onclickaScript.async = true;
+    document.body.appendChild(onclickaScript);
+  }
 };
 
 export const App = () => {
@@ -52,7 +63,6 @@ export const App = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   useEffect(() => {
     loadScripts(tg);
