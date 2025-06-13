@@ -154,9 +154,9 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
             <span>{somethingWentWrong[language]}</span>
           </TransitionProvider>
         </div>
-        <LoadingOverlay loading={loading} />
         <Tooltip show={showTooltip} text={harvestCollectedText[language]} />
       </div>
+      <LoadingOverlay loading={loading} />
     </ModalWithAdd>
   );
 };
