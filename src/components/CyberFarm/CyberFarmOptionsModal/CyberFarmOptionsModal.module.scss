@@ -4,17 +4,19 @@
 .cyberFarmOptionsModal {
   margin-top: 20px;
   @include flexCol();
+  flex-direction: column;
   gap: 6px;
+  width: 100%;
 
-  &_factory {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    gap: 10px;
+  &_col {
+    max-width: 300px;
+    @include flexCol();
+    gap: 6px;
+    width: 100%;
   }
 
   &__btn {
-    max-width: 96px;
-    width: 100%;
+    flex: 1;
     padding: 1px;
     @include button($color-primary);
   }

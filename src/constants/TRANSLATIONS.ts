@@ -386,6 +386,14 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Bio Bacteria",
         [ELanguages.ru]: "Биобактерии",
       },
+    algae: {
+      [ELanguages.en]: "Algae",
+      [ELanguages.ru]: "Водоросли",
+    },
+    modifiedInsects: {
+      [ELanguages.en]: "Modified Insects",
+      [ELanguages.ru]: "ГМ насекомые",
+    },
     },
   },
   loyality: {

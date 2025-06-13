@@ -21,6 +21,10 @@ import {
   metalCactusImageWebp,
   plasmaMushroomImage,
   plasmaMushroomImageWebp,
+  algaeImage,
+  algaeImageWebp,
+  insectsImage,
+  insectsImageWebp,
 } from "../../assets/imageMaps";
 import { EPlants } from "./EPlants";
 import { TRANSLATIONS } from "../TRANSLATIONS";
@@ -39,6 +43,8 @@ const {
   metalCactus,
   plasmaMushroom,
   bioBacteria,
+  algae,
+  modifiedInsects,
 } = TRANSLATIONS.cyberFarm.products;
 
 export const products: {
@@ -118,6 +124,18 @@ export const products: {
     src: bioBacteriaImage,
     srcSet: bioBacteriaImageWebp,
     name: bioBacteria,
+    type: "plant",
+  },
+  [EPlants.Algae]: {
+    src: algaeImage,
+    srcSet: algaeImageWebp,
+    name: algae,
+    type: "plant",
+  },
+  [EPlants.ModifiedInsects]: {
+    src: insectsImage,
+    srcSet: insectsImageWebp,
+    name: modifiedInsects,
     type: "plant",
   },
 };

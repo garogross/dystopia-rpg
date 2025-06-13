@@ -23,6 +23,16 @@ import plasmaMushroomInFarmImageWebp from "../images/CyberFarm/plants/plasmaMush
 import plasmaMushroomOnFieldImage from "../images/CyberFarm/plants/plasmaMushroomOnField.png";
 import plasmaMushroomOnFieldImageWebp from "../images/CyberFarm/plants/plasmaMushroomOnField.webp";
 
+import algaeInFarmImage from "../images/CyberFarm/plants/аlgaeInFarm.png";
+import algaeInFarmImageWebp from "../images/CyberFarm/plants/аlgaeInFarm.webp";
+import algaeOnFieldImage from "../images/CyberFarm/plants/аlgaeOnField.png";
+import algaeOnFieldImageWebp from "../images/CyberFarm/plants/аlgaeOnField.webp";
+
+import insectsInFarmImage from "../images/CyberFarm/plants/insectsInFarm.png";
+import insectsInFarmImageWebp from "../images/CyberFarm/plants/insectsInFarm.webp";
+import insectsOnFieldImage from "../images/CyberFarm/plants/insectsOnField.png";
+import insectsOnFieldImageWebp from "../images/CyberFarm/plants/insectsOnField.webp";
+
 // products
 // // plant products
 import bioBacteriaImage from "../images/CyberFarm/products/plantProducts/bioBacteria.png";
@@ -31,6 +41,11 @@ import metalCactusImage from "../images/CyberFarm/products/plantProducts/metalCa
 import metalCactusImageWebp from "../images/CyberFarm/products/plantProducts/metalCactus.webp";
 import plasmaMushroomImage from "../images/CyberFarm/products/plantProducts/plasmaMushroom.png";
 import plasmaMushroomImageWebp from "../images/CyberFarm/products/plantProducts/plasmaMushroom.webp";
+import algaeImage from "../images/CyberFarm/products/plantProducts/аlgae.png";
+import algaeImageWebp from "../images/CyberFarm/products/plantProducts/аlgae.webp";
+import insectsImage from "../images/CyberFarm/products/plantProducts/insects.png";
+import insectsImageWebp from "../images/CyberFarm/products/plantProducts/insects.webp";
+
 // // factory products
 import bioGelImage from "../images/CyberFarm/products/factoryProducts/bioGel.png";
 import bioGelImageWebp from "../images/CyberFarm/products/factoryProducts/bioGel.webp";
@@ -96,4 +111,16 @@ export {
   repairKitImageWebp,
   cyberFarmBonusCpImage,
   cyberFarmBonusCpImageWebp,
+  algaeImage,
+  algaeImageWebp,
+  insectsImage,
+  insectsImageWebp,
+  algaeInFarmImage,
+  algaeInFarmImageWebp,
+  algaeOnFieldImage,
+  algaeOnFieldImageWebp,
+  insectsInFarmImage,
+  insectsInFarmImageWebp,
+  insectsOnFieldImage,
+  insectsOnFieldImageWebp,
 };

@@ -75,6 +75,14 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   };
 
   const productType = type === EFarmSlotTypes.FACTORY ? "factory" : "plant";
+
+  const data = Object.entries(products).filter(
+    ([_, product]) => product.type === productType
+  );
+
+  const col1 = data.slice(0, Math.ceil(data.length / 2));
+  const col2 = data.slice(Math.ceil(data.length / 2));
+
   return (
     <ModalWithAdd
       show={show}
@@ -86,33 +94,31 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
       errored={errored}
       errorText={errorText}
     >
-      <div
-        className={`${styles.cyberFarmOptionsModal} ${
-          type === EFarmSlotTypes.FACTORY
-            ? styles.cyberFarmOptionsModal_factory
-            : ""
-        }`}
-      >
-        {Object.entries(products)
-          .filter(([_, product]) => product.type === productType)
-          .map(([key, product]) => (
-            <button
-              className={styles.cyberFarmOptionsModal__btn}
-              key={product.name[language]}
-              onClick={() => onProduce(key as CyberFarmProductType)}
-            >
-              <div className={styles.cyberFarmOptionsModal__btnInner}>
-                <ImageWebp
-                  srcSet={product.srcSet}
-                  src={product.src}
-                  alt={product.name[language]}
-                  pictureClass={styles.cyberFarmOptionsModal__picture}
-                  className={styles.cyberFarmOptionsModal__btnImg}
-                />
-                <span>{product.name[language]}</span>
-              </div>
-            </button>
-          ))}
+      <div className={styles.cyberFarmOptionsModal}>
+        {[col1, col2].map((col, colIndex) => (
+          <div key={colIndex} className={styles.cyberFarmOptionsModal_col}>
+            {col
+              .filter(([_, product]) => product.type === productType)
+              .map(([key, product]) => (
+                <button
+                  className={styles.cyberFarmOptionsModal__btn}
+                  key={product.name[language]}
+                  onClick={() => onProduce(key as CyberFarmProductType)}
+                >
+                  <div className={styles.cyberFarmOptionsModal__btnInner}>
+                    <ImageWebp
+                      srcSet={product.srcSet}
+                      src={product.src}
+                      alt={product.name[language]}
+                      pictureClass={styles.cyberFarmOptionsModal__picture}
+                      className={styles.cyberFarmOptionsModal__btnImg}
+                    />
+                    <span>{product.name[language]}</span>
+                  </div>
+                </button>
+              ))}
+          </div>
+        ))}
       </div>
       <Tooltip
         show={showTooltip}
