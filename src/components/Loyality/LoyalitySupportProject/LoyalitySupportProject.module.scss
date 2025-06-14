@@ -61,7 +61,7 @@
   }
   &__subscribeBtn {
     @include button();
-    @include setFont(12px, 700, $font-fam-main, #6a4cd7);
+    @include setFont(12px, 700, $font-fam-main, $color-disabledText);
     transition: $transition;
     &:disabled {
       color: #6a4cd780;

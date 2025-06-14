@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   cyberFarmFactoriesPagePath,
   cyberFarmFarmsPagePath,
@@ -20,6 +20,9 @@ import { useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
+import { adBannerRenderers } from "../../../utils/adBannerRenderers";
+
+const ONCLICKA_SPOT_ID = "6077990";
 
 const links = [
   {
@@ -51,6 +54,13 @@ const CyberFarmBottomNavbar = () => {
       ? `${styles.cyberFarmBottomNavbar__link_active} ${styles.cyberFarmBottomNavbar__link}`
       : `${styles.cyberFarmBottomNavbar__link}`;
 
+  const onClicka = adBannerRenderers.onclicka;
+
+  useEffect(() => {
+    onClicka.init(ONCLICKA_SPOT_ID);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <TransitionProvider
       inProp={gameInited}
@@ -74,7 +84,9 @@ const CyberFarmBottomNavbar = () => {
           </NavLink>
         ))}
       </div>
-      <div className={styles.cyberFarmBottomNavbar__banner}></div>
+      <div className={styles.cyberFarmBottomNavbar__banner}>
+        {onClicka.render(ONCLICKA_SPOT_ID)}
+      </div>
     </TransitionProvider>
   );
 };

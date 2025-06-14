@@ -12,7 +12,9 @@ import { useTelegram } from "../../../hooks/useTelegram";
 const CyberFarmWrapper = () => {
   const tg = useTelegram();
   const dispatch = useAppDispatch();
-  const cyberFarmInited = useAppSelector(state => state.cyberfarm.global.dataReceived)
+  const cyberFarmInited = useAppSelector(
+    (state) => state.cyberfarm.global.dataReceived
+  );
   const imagesLoading = false; // useImageLoader();
   const [loading, setLoading] = useState(false); //true
   const [loaderTimerFinished, setLoaderTimerFinished] = useState(false);
@@ -29,19 +31,17 @@ const CyberFarmWrapper = () => {
   useEffect(() => {
     const fetchData = async (initData: string) => {
       try {
-        const res = await dispatch(authorizeUser(initData, "ton_cyber_farm"));
-        console.log({ res });
+        await dispatch(authorizeUser(initData, "ton_cyber_farm"));
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
       }
     };
-    if(!cyberFarmInited) {
-
+    if (!cyberFarmInited) {
       fetchData(tg.initData);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

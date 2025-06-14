@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./CyberFarmProcessModal.module.scss";
 import ModalWithAdd from "../../layout/ModalWithAdd/ModalWithAdd";
 
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import { products } from "../../../constants/cyberfarm/products";
-import { IFarmField } from "../../../models/IFarmField";
-import { getFarmFieldProgress } from "../../../utils/getFarmFieldProgress";
+import { IFarmField } from "../../../models/CyberFarm/IFarmField";
 import { formatTime } from "../../../utils/formatTime";
-import {
-  adImage,
-  cpImage,
-  cpImageWebp,
-} from "../../../assets/imageMaps";
+import { adImage, cpImage, cpImageWebp } from "../../../assets/imageMaps";
 import { CollectIcon } from "../../layout/icons/CyberFarm/CyberFarmProcessModal";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { harvest } from "../../../store/slices/cyberFarm/slotsSlice";
+import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
+import Tooltip from "../../layout/Tooltip/Tooltip";
+import { useTooltip } from "../../../hooks/useTooltip";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../providers/TransitionProvider";
+import { useFarmFieldProgress } from "../../../hooks/useFarmFieldProgress";
 
 interface Props {
   show: boolean;
@@ -29,19 +32,45 @@ const {
   collectButtonText,
   speedUpCpButtonText,
   speedUpAdButtonText,
-} = TRANSLATIONS.cyberFarm.processModal
+  harvestCollectedText,
+} = TRANSLATIONS.cyberFarm.processModal;
+const { somethingWentWrong } = TRANSLATIONS.errors;
 
 const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
-    const language = useAppSelector(state => state.ui.language)
-
+  const dispatch = useAppDispatch();
+  const language = useAppSelector((state) => state.ui.language);
+  const { show: showTooltip, openTooltip } = useTooltip();
+  const [loading, setLoading] = useState(false);
+  const [errored, setErrored] = useState(false);
   const productKey = item.factoryProduct || item.plant;
+  const { progressPercent: progress, remainingTimeInSecs } =
+    useFarmFieldProgress(item.process, [show]);
+
+  useEffect(() => {
+    if (!show) {
+      setErrored(false);
+      setLoading(false);
+    }
+  }, [show]);
+
+  const onHarvest = async () => {
+    try {
+      setLoading(true);
+      setErrored(false);
+      await dispatch(harvest({ id: item.id,clb: openTooltip })).unwrap();
+      onClose();
+    } catch (error) {
+      setErrored(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!productKey || !item.process) return null;
-  const { progress, remainingTimeInSecs } = getFarmFieldProgress(
-    item.process.startDate,
-    item.process.endDate
-  );
+
   const productdetails = products[productKey];
-const isReadyToCollect = progress >= 100
+  const isReadyToCollect = progress && progress >= 100;
+
   return (
     <ModalWithAdd show={show} onClose={onClose} title={titleText[language]}>
       <div className={styles.cyberFarmProcessModal}>
@@ -68,48 +97,65 @@ const isReadyToCollect = progress >= 100
                 </div>
               </div>
               <p className={styles.cyberFarmProcessModal__text}>
-                {isReadyToCollect ? readyToCollectText[language] : `${timeRemainingText[language]} ${formatTime(remainingTimeInSecs)}`}
+                {isReadyToCollect
+                  ? readyToCollectText[language]
+                  : remainingTimeInSecs
+                  ? `${timeRemainingText[language]} ${formatTime(
+                      remainingTimeInSecs
+                    )}`
+                  : ""}
               </p>
             </div>
           </div>
           <div className={styles.cyberFarmProcessModal__actions}>
-            {
-              isReadyToCollect ? (
+            {isReadyToCollect ? (
+              <button
+                onClick={onHarvest}
+                className={styles.cyberFarmProcessModal__btn}
+              >
+                <div className={styles.cyberFarmProcessModal__btnInner}>
+                  <span>{collectButtonText[language]}</span>
+                  <CollectIcon />
+                </div>
+              </button>
+            ) : (
+              <>
                 <button className={styles.cyberFarmProcessModal__btn}>
                   <div className={styles.cyberFarmProcessModal__btnInner}>
-                    <span>{collectButtonText[language]}</span>
-                    <CollectIcon/>
+                    <span>{speedUpCpButtonText[language]}</span>
+                    <ImageWebp
+                      src={cpImage}
+                      srcSet={cpImageWebp}
+                      alt="cash point"
+                      className={styles.cyberFarmProcessModal__btnImg}
+                    />
                   </div>
                 </button>
-              ) : (
-                <>
-                  <button className={styles.cyberFarmProcessModal__btn}>
-                    <div className={styles.cyberFarmProcessModal__btnInner}>
-                      <span>{speedUpCpButtonText[language]}</span>
-                      <ImageWebp
-                        src={cpImage}
-                        srcSet={cpImageWebp}
-                        alt="cash point"
-                        className={styles.cyberFarmProcessModal__btnImg}
-                      />
-                    </div>
-                  </button>
-                  <button className={styles.cyberFarmProcessModal__btn}>
-                    <div className={styles.cyberFarmProcessModal__btnInner}>
-                      <span>{speedUpAdButtonText[language]}</span>
-                      <img
-                        src={adImage}
-                        alt="cash point"
-                        className={styles.cyberFarmProcessModal__btnImg}
-                      />
-                    </div>
-                  </button>
-                </>
-              )
-            }
+                <button className={styles.cyberFarmProcessModal__btn}>
+                  <div className={styles.cyberFarmProcessModal__btnInner}>
+                    <span>{speedUpAdButtonText[language]}</span>
+                    <img
+                      src={adImage}
+                      alt="cash point"
+                      className={styles.cyberFarmProcessModal__btnImg}
+                    />
+                  </div>
+                </button>
+              </>
+            )}
           </div>
+          <TransitionProvider
+            inProp={errored}
+            style={TransitionStyleTypes.height}
+            height={40}
+            className={styles.cyberFarmProcessModal__error}
+          >
+            <span>{somethingWentWrong[language]}</span>
+          </TransitionProvider>
         </div>
+        <Tooltip show={showTooltip} text={harvestCollectedText[language]} />
       </div>
+      <LoadingOverlay loading={loading} />
     </ModalWithAdd>
   );
 };

@@ -10,6 +10,9 @@ import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { buySlot } from "../../../../store/slices/cyberFarm/slotsSlice";
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
+import { useSlotCost } from "../../../../hooks/useSlotCost";
+import { useTooltip } from "../../../../hooks/useTooltip";
+import Tooltip from "../../../layout/Tooltip/Tooltip";
 
 interface Props {
   show: boolean;
@@ -17,7 +20,7 @@ interface Props {
   onClose: () => void;
 }
 
-const { titleText, buyButtonText, cancelButtonText } =
+const { titleText, buyButtonText, cancelButtonText, successText } =
   TRANSLATIONS.cyberFarm.fields.buyModal;
 const CyberFarmFieldsBuyModal: React.FC<Props> = ({
   show,
@@ -26,9 +29,16 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
 }) => {
   const dispath = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const { show: showTooltip, openTooltip } = useTooltip();
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
 
+  const getSlotCostTexts = useSlotCost();
+  const {
+    costText,
+    notEnoughResourcesText,
+    errored: notEnoughResources,
+  } = getSlotCostTexts(EFarmSlotTypes.FIELDS);
   useEffect(() => {
     if (!show) setErrored(false);
   }, [show]);
@@ -40,6 +50,7 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
       await dispath(
         buySlot({ id: buyingSlotId, type: EFarmSlotTypes.FIELDS })
       ).unwrap();
+      await openTooltip();
       onClose();
     } catch (error) {
       setErrored(true);
@@ -52,12 +63,17 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
     <ModalWithAdd
       show={show}
       onClose={onClose}
-      title={titleText[language]}
+      title={`${titleText[language]} ${costText}?`}
       loading={loading}
-      errored={errored}
+      errored={errored || !!notEnoughResources}
+      errorText={notEnoughResourcesText}
     >
       <div className={styles.cyberFarmFieldsBuyModal}>
-        <button onClick={onBuy} className={styles.cyberFarmFieldsBuyModal__btn}>
+        <button
+          onClick={onBuy}
+          disabled={!!notEnoughResources || loading}
+          className={styles.cyberFarmFieldsBuyModal__btn}
+        >
           <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
             <BuyIcon />
             <span>{buyButtonText[language]}</span>
@@ -73,7 +89,7 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
           </div>
         </button>
       </div>
-     
+      <Tooltip show={showTooltip} text={successText[language]} />
     </ModalWithAdd>
   );
 };

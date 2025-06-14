@@ -1,0 +1,41 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.tootlip {
+  position: fixed;
+  bottom: 10px;
+  width: calc(100% - 20px);
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  z-index: 9999;
+  text-align: center;
+  @include flexCol();
+  padding: 2px;
+  background-color: $color-primary;
+  &__wrapper {
+    width: 100%;
+    padding: 20px 10px;
+    background-color: $color-bg;
+  }
+
+  &,
+  &__wrapper {
+    clip-path: polygon(
+      94% 1%,
+      100% 10%,
+      100% 90%,
+      94% 99%,
+      6% 99%,
+      0% 90%,
+      0% 10%,
+      6% 1%
+    );
+  }
+
+  &__text {
+    @include setFont(16px, 400);
+    text-align: center;
+  }
+}

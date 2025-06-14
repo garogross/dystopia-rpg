@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IFarmField } from "../../../../models/IFarmField";
+import { IFarmField } from "../../../../models/CyberFarm/IFarmField";
 import CyberFarmWrapperWithList from "../../CyberFarmWrapperWithList/CyberFarmWrapperWithList";
 import CyberFarmFieldsBuyModal from "../CyberFarmFieldsBuyModal/CyberFarmFieldsBuyModal";
 import CyberFarmFieldsBuildModal from "../CyberFarmFieldsBuildModal/CyberFarmFieldsBuildModal";
@@ -8,6 +8,7 @@ import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../../hooks/redux";
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 import { v4 } from "uuid";
+import { getFarmFieldsFromSlots } from "../../../../utils/getFarmFieldsFromSlots";
 
 const { titleText, emptyText } = TRANSLATIONS.cyberFarm.fields;
 
@@ -17,17 +18,13 @@ const CyberFarmFields = () => {
   const [buyModalOpened, setBuyModalOpened] = useState(false);
   const [buyingSlotId, setBuyingSlotId] = useState<string | null>(null);
   const [buildSlotId, setBuildSlotId] = useState<string | null>(null);
+  const [producingSlotId, setProducingSlotId] = useState<string | null>(null);
   const [buildModalOpened, setBuildModalOpened] = useState(false);
   const [plantOptionsModalOpened, setPlantOptionsModalOpened] = useState(false);
   const [buildOptionsModalOpened, setBuildOptionsModalOpened] = useState(false);
   const slots = useAppSelector((state) => state.cyberfarm.slots.slots);
 
-  const fields: IFarmField[] = slots
-    ? Object.entries(slots).map(([key, slot]) => ({
-        id: key,
-        type: slot.type,
-      }))
-    : [];
+  const fields = getFarmFieldsFromSlots(slots)
 
   const data: IFarmField[] = [
     ...fields.filter((item) => item.type === EFarmSlotTypes.FIELDS),
@@ -52,9 +49,10 @@ const CyberFarmFields = () => {
           setBuildSlotId(item.id);
           setBuildModalOpened(true);
         }}
-        onCloseOptionsModal={() => setBuildOptionsModalOpened(false)}
+        onCloseOptionsModal={() => setPlantOptionsModalOpened(false)}
         optionsModalOpenedArg={plantOptionsModalOpened}
-        productsType={"plant"}
+        producingSlotIdArg={producingSlotId}
+        productsType={EFarmSlotTypes.FIELDS}
       />
       ;
       {buyingSlotId && (
@@ -68,7 +66,10 @@ const CyberFarmFields = () => {
         show={buildModalOpened}
         onClose={() => setBuildModalOpened(false)}
         onBuild={() => setBuildOptionsModalOpened(true)}
-        onPlant={() => setPlantOptionsModalOpened(true)}
+        onPlant={() => {
+          setProducingSlotId(buildSlotId);
+          setPlantOptionsModalOpened(true);
+        }}
       />
       {buildSlotId && (
         <CyberFarmFieldsBuildOptionsModal

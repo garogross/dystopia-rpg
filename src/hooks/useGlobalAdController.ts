@@ -31,7 +31,6 @@ export const useGlobalAdController = (
 
   const onShowAd = () => {
     const showCurAd = () => {
-      console.log("showCurAd", type);
 
       switch (type) {
         case "adsgram-v": {

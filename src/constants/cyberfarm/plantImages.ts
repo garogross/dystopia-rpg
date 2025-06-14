@@ -1,11 +1,23 @@
 import { EPlants } from "./EPlants";
 import {
+  algaeImage,
+  algaeImageWebp,
+  algaeInFarmImage,
+  algaeInFarmImageWebp,
+  algaeOnFieldImage,
+  algaeOnFieldImageWebp,
   bioBacteriaImage,
   bioBacteriaImageWebp,
   bioBacteriaInFarmImage,
   bioBacteriaInFarmImageWebp,
   bioBacteriaOnFieldImage,
   bioBacteriaOnFieldImageWebp,
+  insectsImage,
+  insectsImageWebp,
+  insectsInFarmImage,
+  insectsInFarmImageWebp,
+  insectsOnFieldImage,
+  insectsOnFieldImageWebp,
   metalCactusImage,
   metalCactusImageWebp,
   metalCactusInFarmImage,
@@ -61,6 +73,34 @@ export const plantImages = {
     inFarm: {
       src: plasmaMushroomInFarmImage,
       srcSet: plasmaMushroomInFarmImageWebp,
+    },
+  },
+  [EPlants.Algae]: {
+    main: {
+      src: algaeImage,
+      srcSet: algaeImageWebp,
+    },
+    onField: {
+      src: algaeOnFieldImage,
+      srcSet: algaeOnFieldImageWebp,
+    },
+    inFarm: {
+      src: algaeInFarmImage,
+      srcSet: algaeInFarmImageWebp,
+    },
+  },
+  [EPlants.ModifiedInsects]: {
+    main: {
+      src: insectsImage,
+      srcSet: insectsImageWebp,
+    },
+    onField: {
+      src: insectsOnFieldImage,
+      srcSet: insectsOnFieldImageWebp,
+    },
+    inFarm: {
+      src: insectsInFarmImage,
+      srcSet: insectsInFarmImageWebp,
     },
   },
 };

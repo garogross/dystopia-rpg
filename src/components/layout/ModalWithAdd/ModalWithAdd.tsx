@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 
 import styles from "./ModalWithAdd.module.scss";
 import Backdrop from "../Backdrop/Backdrop";
@@ -11,6 +11,9 @@ import HeaderBtn from "../HeaderBtn/HeaderBtn";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
 import LoadingOverlay from "../LoadingOverlay/LoadingOverlay";
+import { adBannerRenderers } from "../../../utils/adBannerRenderers";
+
+const ONCLICKA_SLOT = "6077989"
 
 const { somethingWentWrong } = TRANSLATIONS.errors;
 interface Props {
@@ -23,6 +26,7 @@ interface Props {
   fullHeught?: boolean;
   loading?: boolean;
   errored?: boolean;
+  errorText?: string;
 }
 
 const ModalWithAdd: React.FC<Props> = ({
@@ -35,8 +39,17 @@ const ModalWithAdd: React.FC<Props> = ({
   fullHeught,
   loading,
   errored,
+  errorText
 }) => {
   const language = useAppSelector((state) => state.ui.language);
+  const onClicka = adBannerRenderers.onclicka
+
+
+useEffect(() => {
+  onClicka.init(ONCLICKA_SLOT)
+// eslint-disable-next-line react-hooks/exhaustive-deps
+},[])
+
   const content = (
     <>
       <HeaderBtn
@@ -55,9 +68,11 @@ const ModalWithAdd: React.FC<Props> = ({
         height={30}
         className={styles.modalWithAdd__error}
       >
-        <span>{somethingWentWrong[language]}</span>
+        <span>{errorText || somethingWentWrong[language]}</span>
       </TransitionProvider>
-      <div className={styles.modalWithAdd__adWrapper}></div>
+      <div className={styles.modalWithAdd__adWrapper}>
+        {onClicka.render(ONCLICKA_SLOT)}
+      </div>
     </>
   );
   return (

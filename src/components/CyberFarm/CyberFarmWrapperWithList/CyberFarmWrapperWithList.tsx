@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import styles from "./CyberFarmWrapperWithList.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
-import { IFarmField } from "../../../models/IFarmField";
+import { IFarmField } from "../../../models/CyberFarm/IFarmField";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
   cyberFarmEmptyFieldImage,
@@ -17,16 +17,15 @@ import { IWarehouseProduct } from "../../../models/IWarehouseProduct";
 import { products } from "../../../constants/cyberfarm/products";
 import {
   Blockedicon,
-  Completedicon,
-  InProgressIcon,
 } from "../../layout/icons/CyberFarm/CyberFarmWrapperWithList";
 import { useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
-import { getFarmFieldProgress } from "../../../utils/getFarmFieldProgress";
 import CyberFarmProcessModal from "../CyberFarmProcessModal/CyberFarmProcessModal";
 import CyberFarmOptionsModal from "../CyberFarmOptionsModal/CyberFarmOptionsModal";
+import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
+import CyberFarmWrapperWithListItemProgress from "./CyberFarmWrapperWithListItemProgress/CyberFarmWrapperWithListItemProgress";
 
 interface Props<T extends IFarmField | IWarehouseProduct> {
   title: string;
@@ -39,7 +38,7 @@ interface Props<T extends IFarmField | IWarehouseProduct> {
   onCloseOptionsModal?: () => void;
   optionsModalOpenedArg?: boolean;
   producingSlotIdArg?: string | null;
-  productsType?: "plant" | "factory";
+  productsType?: EFarmSlotTypes;
 }
 
 const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
@@ -76,7 +75,7 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   }, [producingSlotIdArg]);
 
   useEffect(() => {
-    if (optionsModalOpened) onCloseOptionsModal?.();
+    if (!optionsModalOpened) onCloseOptionsModal?.();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionsModalOpened]);
 
@@ -91,8 +90,9 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
       } else {
         if (onBuildItem) onBuildItem?.(field);
         else {
-          setProducingSlotId(field.id)
-          setOptionsModalOpened(true);}
+          setProducingSlotId(field.id);
+          setOptionsModalOpened(true);
+        }
       }
     }
   };
@@ -128,14 +128,6 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
               src: cyberFarmEmptyFieldImage,
               srcSet: cyberFarmEmptyFieldImageWebp,
             };
-
-            let progressPercent =
-              !("count" in field) && field.process
-                ? getFarmFieldProgress(
-                    field.process.startDate,
-                    field.process.endDate
-                  ).progress
-                : null;
 
             if ("count" in field) {
               // check if IWarehouseProduct
@@ -177,31 +169,9 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
                 ) : (
                   <>
                     {field.process && (
-                      <>
-                        <div
-                          className={
-                            styles.cyberFarmWrapperWithList__itemStatus
-                          }
-                        >
-                          {progressPercent === 100 ? (
-                            <Completedicon />
-                          ) : (
-                            <InProgressIcon />
-                          )}
-                        </div>
-                        <div
-                          className={
-                            styles.cyberFarmWrapperWithList__itemProgress
-                          }
-                        >
-                          <div
-                            style={{ width: `${progressPercent}%` }}
-                            className={
-                              styles.cyberFarmWrapperWithList__itemProgressInner
-                            }
-                          ></div>
-                        </div>
-                      </>
+                      <CyberFarmWrapperWithListItemProgress
+                        process={field.process}
+                      />
                     )}
                     {field.blocked && (
                       <div

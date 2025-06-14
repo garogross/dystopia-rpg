@@ -12,6 +12,7 @@ import { ELSProps } from "../../constants/ELSProps";
 import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
 import { getCyberFarmSlots } from "./cyberFarm/slotsSlice";
 import { buyProduct, getCyberFarmResources } from "./cyberFarm/resourcesSlice";
+import { claimDailyReward, setDailyReward } from "./cyberFarm/activitySlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -70,7 +71,6 @@ export const authUser = createAsyncThunk<AuthUserResponse, string>(
       if (resData.token) {
         setLSItem(ELSProps.token, resData.token);
       }
-      console.log({ resData });
       return resData;
     } catch (error: any) {
       console.error("error", error);
@@ -95,8 +95,20 @@ export const getAccountDetails =
       })
     );
     if (resData.ton_cyber_farm) {
+      // update dailyReward
+      dispatch(
+        setDailyReward(
+          !!resData.ton_cyber_farm?.timers?.daily_login_claimed
+            ?.reward_available
+        )
+      );
       // store slots
-      dispatch(getCyberFarmSlots(resData.ton_cyber_farm.slots));
+      dispatch(
+        getCyberFarmSlots({
+          slots: resData.ton_cyber_farm.slots,
+          slotCosts: resData.game_settings?.slot_costs,
+        })
+      );
 
       // store resources
       if (resData.game_settings) {
@@ -104,12 +116,12 @@ export const getAccountDetails =
           getCyberFarmResources({
             resources: resData.ton_cyber_farm.resources,
             productCosts: resData.game_settings.base_costs,
+            resourceDeficit: resData.resource_deficit,
           })
         );
       }
     }
 
-    console.log({ resData });
     return resData;
   };
 
@@ -176,6 +188,9 @@ export const profileSlice = createSlice({
     // cyberfarm
     builder.addCase(buyProduct.fulfilled, (state, { payload }) => {
       state.stats.cp = payload.cash_point_left;
+    });
+    builder.addCase(claimDailyReward.fulfilled, (state, { payload }) => {
+      state.stats.cp = payload.cash_point;
     });
   },
 });

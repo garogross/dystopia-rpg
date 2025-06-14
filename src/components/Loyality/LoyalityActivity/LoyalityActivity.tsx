@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./LoyalityActivity.module.scss";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
@@ -14,8 +14,11 @@ import LoyalityCollectReward from "../LoyalityCollectReward/LoyalityCollectRewar
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { claimDailyReward } from "../../../store/slices/cyberFarm/activitySlice";
+import { useTooltip } from "../../../hooks/useTooltip";
+import Tooltip from "../../layout/Tooltip/Tooltip";
 
 interface Props {
   isFarm?: boolean;
@@ -41,12 +44,36 @@ const {
   receivedText,
   lootboxForAdText,
   lootboxForLPText,
+  dailyRewardReceivedText,
 } = TRANSLATIONS.loyality.activity;
+const { somethingWentWrong } = TRANSLATIONS.errors;
 
 const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
+  const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-
+  const dailyRewardAvailable = useAppSelector(
+    (state) => state.cyberfarm.activity.dailyRewardAvailable
+  );
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const [loading, setLoading] = useState(false);
+  const [tooltipText, setTooltipText] = useState(dailyRewardReceivedText);
+  const { show, openTooltip } = useTooltip();
+
+  const onReward = async () => {
+    try {
+      await dispatch(claimDailyReward()).unwrap();
+      setTooltipText(dailyRewardReceivedText);
+      openTooltip();
+    } catch (error) {
+      openTooltip();
+      setTooltipText(somethingWentWrong);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  console.log({ dailyRewardAvailable });
+
   return (
     <div className={styles.loyalityActivity}>
       <div className={styles.loyalityActivity__list}>
@@ -89,11 +116,15 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
           </TransitionProvider>
         ))}
       </div>
-      <LoyalityCollectReward disabled={true} />
+      <LoyalityCollectReward
+        disabled={!dailyRewardAvailable || loading}
+        onClick={onReward}
+      />
       <div className={styles.loyalityActivity__availableIn}>
         <span className={styles.loyalityActivity__availableInText}>
-          {availableInText[language]}</span>
-        <DotsLine />
+          {availableInText[language]}
+        </span>
+        {!isFarm && <DotsLine />}
       </div>
       {isFarm && (
         <div className={styles.loyalityActivity__lutBoxes}>
@@ -127,6 +158,7 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
           </button>
         </div>
       )}
+      <Tooltip show={show} text={tooltipText[language]} />
     </div>
   );
 };
