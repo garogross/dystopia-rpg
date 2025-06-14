@@ -8,6 +8,8 @@ import CyberFarmHeader from "../CyberFarmHeader/CyberFarmHeader";
 import CyberFarmBottomNavbar from "../CyberFarmBottomNavbar/CyberFarmBottomNavbar";
 import { authorizeUser } from "../../../store/slices/profileSlice";
 import { useTelegram } from "../../../hooks/useTelegram";
+import * as cyberfarmImages from "../../../assets/imageMaps/cyberfarmImages";
+import { useImageLoader } from "../../../hooks/useImageLoader";
 
 const CyberFarmWrapper = () => {
   const tg = useTelegram();
@@ -15,7 +17,7 @@ const CyberFarmWrapper = () => {
   const cyberFarmInited = useAppSelector(
     (state) => state.cyberfarm.global.dataReceived
   );
-  const imagesLoading = false; // useImageLoader();
+  const imagesLoading =  useImageLoader(Object.values(cyberfarmImages).filter(img => img.endsWith("webp")));
   const [loading, setLoading] = useState(false); //true
   const [loaderTimerFinished, setLoaderTimerFinished] = useState(false);
 

@@ -17,6 +17,11 @@ import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 import { useSlotCost } from "../../../../hooks/useSlotCost";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
+import { useNavigate } from "react-router-dom";
+import {
+  cyberFarmFactoriesPagePath,
+  cyberFarmFarmsPagePath,
+} from "../../../../router/constants";
 
 interface Props {
   show: boolean;
@@ -24,7 +29,7 @@ interface Props {
   slotId: string;
 }
 
-const { titleText, farmButtonText, factoryButtonText,successText } =
+const { titleText, farmButtonText, factoryButtonText, successText } =
   TRANSLATIONS.cyberFarm.fields.buildOptionsModal;
 const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   show,
@@ -32,12 +37,13 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   slotId,
 }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const language = useAppSelector((state) => state.ui.language);
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
   const getSlotCostTexts = useSlotCost();
   const [errorText, setErrorText] = useState("");
-  const {show: showtooltip,openTooltip} = useTooltip()
+  const { show: showtooltip, openTooltip } = useTooltip();
 
   useEffect(() => {
     if (show) {
@@ -58,8 +64,13 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
       setLoading(true);
       setErrored(false);
       await dispatch(buySlot({ id: slotId, type })).unwrap();
-      await openTooltip()
+      await openTooltip();
       onClose();
+      navigate(
+        type === EFarmSlotTypes.FACTORY
+          ? cyberFarmFactoriesPagePath
+          : cyberFarmFarmsPagePath
+      );
     } catch (error) {
       setErrored(true);
     } finally {
@@ -108,7 +119,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
           </div>
         </button>
       </div>
-      <Tooltip show={showtooltip} text={successText[language]}/>
+      <Tooltip show={showtooltip} text={successText[language]} />
     </ModalWithAdd>
   );
 };

@@ -57,9 +57,9 @@ const CyberFarmBottomNavbar = () => {
   const onClicka = adBannerRenderers.onclicka;
 
   useEffect(() => {
-    onClicka.init(ONCLICKA_SPOT_ID);
+    if (gameInited) onClicka.init(ONCLICKA_SPOT_ID);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [gameInited]);
 
   return (
     <TransitionProvider
