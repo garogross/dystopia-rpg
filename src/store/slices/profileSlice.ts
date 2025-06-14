@@ -12,6 +12,7 @@ import { ELSProps } from "../../constants/ELSProps";
 import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
 import { getCyberFarmSlots } from "./cyberFarm/slotsSlice";
 import { buyProduct, getCyberFarmResources } from "./cyberFarm/resourcesSlice";
+import { claimDailyReward, setDailyReward } from "./cyberFarm/activitySlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -94,8 +95,20 @@ export const getAccountDetails =
       })
     );
     if (resData.ton_cyber_farm) {
+      // update dailyReward
+      dispatch(
+        setDailyReward(
+          !!resData.ton_cyber_farm?.timers?.daily_login_claimed
+            ?.reward_available
+        )
+      );
       // store slots
-      dispatch(getCyberFarmSlots({slots: resData.ton_cyber_farm.slots,slotCosts: resData.game_settings?.slot_costs}));
+      dispatch(
+        getCyberFarmSlots({
+          slots: resData.ton_cyber_farm.slots,
+          slotCosts: resData.game_settings?.slot_costs,
+        })
+      );
 
       // store resources
       if (resData.game_settings) {
@@ -175,6 +188,9 @@ export const profileSlice = createSlice({
     // cyberfarm
     builder.addCase(buyProduct.fulfilled, (state, { payload }) => {
       state.stats.cp = payload.cash_point_left;
+    });
+    builder.addCase(claimDailyReward.fulfilled, (state, { payload }) => {
+      state.stats.cp = payload.cash_point;
     });
   },
 });

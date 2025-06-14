@@ -7,11 +7,12 @@ import { useAppSelector } from "../../../hooks/redux";
 
 interface Props {
   disabled?: boolean;
+  onClick?: () => Promise<void>
 }
 
 const { collectRewardText } = TRANSLATIONS.loyality.collectReward;
 
-const LoyalityCollectReward = ({ disabled }: Props) => {
+const LoyalityCollectReward = ({ disabled,onClick }: Props) => {
   const language = useAppSelector((state) => state.ui.language);
 
   return (
@@ -21,6 +22,7 @@ const LoyalityCollectReward = ({ disabled }: Props) => {
       </div>
       <button
         disabled={disabled}
+        onClick={onClick}
         className={styles.loyalityCollectReward__button}
       >
         <div className={styles.loyalityCollectReward__buttonInner}>

@@ -508,6 +508,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Lootbox for LP",
         [ELanguages.ru]: "Лутбокс за ЛП",
       },
+    dailyRewardReceivedText: {
+      [ELanguages.en]: "Daily reward received",
+      [ELanguages.ru]: "Ежедневная награда получена",
+    },
     },
     tasks: {
       availableInText: {
