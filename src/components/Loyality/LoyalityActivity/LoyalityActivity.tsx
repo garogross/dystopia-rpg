@@ -72,7 +72,6 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
     }
   };
 
-  console.log({ dailyRewardAvailable });
 
   return (
     <div className={styles.loyalityActivity}>
