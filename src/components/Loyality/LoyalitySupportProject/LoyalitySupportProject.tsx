@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from "react";
 
 import {
   lpImage,
-  supportTask1Image,
-  supportTask2Image,
-  supportTask3Image,
-  supportTask4Image,
-  supportTask5Image,
+  // supportTask1Image,
+  // supportTask2Image,
+  // supportTask3Image,
+  // supportTask4Image,
+  // supportTask5Image,
 } from "../../../assets/imageMaps";
 import styles from "./LoyalitySupportProject.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
@@ -23,16 +23,16 @@ const {
   subscribedText,
   visitText,
   getText,
-  task1NameText,
-  task1DescriptionText,
-  task2NameText,
-  task2DescriptionText,
-  task3NameText,
-  task3DescriptionText,
-  task4NameText,
-  task4DescriptionText,
-  task5NameText,
-  task5DescriptionText,
+  // task1NameText,
+  // task1DescriptionText,
+  // task2NameText,
+  // task2DescriptionText,
+  // task3NameText,
+  // task3DescriptionText,
+  // task4NameText,
+  // task4DescriptionText,
+  // task5NameText,
+  // task5DescriptionText,
   partnerTasksText,
   openText,
 } = TRANSLATIONS.loyality.supportProject;
@@ -44,49 +44,49 @@ type TraffyTask = {
   link: string;
 };
 
-const tasks = (language: ELanguages) => [
-  {
-    id: "1",
-    name: task1NameText[language],
-    description: task1DescriptionText[language],
-    image: supportTask1Image,
-    price: 5,
-    subscription: true,
-  },
-  {
-    id: "2",
-    name: task2NameText[language],
-    description: task2DescriptionText[language],
-    image: supportTask2Image,
-    price: 7,
-    subscription: false,
-  },
-  {
-    id: "3",
-    name: task3NameText[language],
-    description: task3DescriptionText[language],
-    image: supportTask3Image,
-    price: 10,
-    subscription: false,
-  },
-  {
-    id: "4",
-    name: task4NameText[language],
-    description: task4DescriptionText[language],
-    image: supportTask4Image,
-    price: 3,
-    subscription: false,
-    byLink: true,
-  },
-  {
-    id: "5",
-    name: task5NameText[language],
-    description: task5DescriptionText[language],
-    image: supportTask5Image,
-    price: 3,
-    subscription: false,
-  },
-];
+// const tasks = (language: ELanguages) => [
+//   {
+//     id: "1",
+//     name: task1NameText[language],
+//     description: task1DescriptionText[language],
+//     image: supportTask1Image,
+//     price: 5,
+//     subscription: true,
+//   },
+//   {
+//     id: "2",
+//     name: task2NameText[language],
+//     description: task2DescriptionText[language],
+//     image: supportTask2Image,
+//     price: 7,
+//     subscription: false,
+//   },
+//   {
+//     id: "3",
+//     name: task3NameText[language],
+//     description: task3DescriptionText[language],
+//     image: supportTask3Image,
+//     price: 10,
+//     subscription: false,
+//   },
+//   {
+//     id: "4",
+//     name: task4NameText[language],
+//     description: task4DescriptionText[language],
+//     image: supportTask4Image,
+//     price: 3,
+//     subscription: false,
+//     byLink: true,
+//   },
+//   {
+//     id: "5",
+//     name: task5NameText[language],
+//     description: task5DescriptionText[language],
+//     image: supportTask5Image,
+//     price: 3,
+//     subscription: false,
+//   },
+// ];
 
 const TADDY_TASK_PRICE = 1;
 
@@ -271,7 +271,7 @@ const LoyalitySupportProject = () => {
             isTaddyTask={true}
           />
         ))}
-        {tasks(language).map((task, index) => (
+        {/* {tasks(language).map((task, index) => (
           <TaskItem
             key={task.id}
             task={task}
@@ -279,7 +279,7 @@ const LoyalitySupportProject = () => {
             gameInited={gameInited}
             language={language}
           />
-        ))}
+        ))} */}
       </div>
       <TransitionProvider
         inProp={gameInited}
