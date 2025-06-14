@@ -1,4 +1,6 @@
 export const initOnClicka = (id: string) => {
+  console.log(window.onclickaMini);
+  
   const handlerGo = () => {
     window.onclickaMini?.goId(id);
   };

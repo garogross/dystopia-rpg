@@ -13,7 +13,7 @@ import { useAppSelector } from "../../../hooks/redux";
 import LoadingOverlay from "../LoadingOverlay/LoadingOverlay";
 import { adBannerRenderers } from "../../../utils/adBannerRenderers";
 
-const ONCLICKA_SLOT = "6077989"
+const ONCLICKA_SLOT = "6077989";
 
 const { somethingWentWrong } = TRANSLATIONS.errors;
 interface Props {
@@ -39,16 +39,15 @@ const ModalWithAdd: React.FC<Props> = ({
   fullHeught,
   loading,
   errored,
-  errorText
+  errorText,
 }) => {
   const language = useAppSelector((state) => state.ui.language);
-  const onClicka = adBannerRenderers.onclicka
+  const onClicka = adBannerRenderers.onclicka;
 
-
-useEffect(() => {
-  onClicka.init(ONCLICKA_SLOT)
-// eslint-disable-next-line react-hooks/exhaustive-deps
-},[])
+  useEffect(() => {
+    if (show) onClicka.init(ONCLICKA_SLOT);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [show]);
 
   const content = (
     <>
@@ -98,7 +97,7 @@ useEffect(() => {
             <div className={styles.modalWithAdd__wrapper}>{content}</div>
           )}
 
-         <LoadingOverlay loading={!!loading}/>
+          <LoadingOverlay loading={!!loading} />
         </TransitionProvider>
       </NewPortalProvider>
     </>
