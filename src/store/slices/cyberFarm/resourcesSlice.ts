@@ -4,7 +4,7 @@ import { products } from "../../../constants/cyberfarm/products";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import { BuyProductResponse } from "../../../models/api/CyberFarm/Resources";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
-import { harvest, produceSlot } from "./slotsSlice";
+import { buySlot, harvest, produceSlot } from "./slotsSlice";
 
 export interface ResourcesState {
   resources: Record<CyberFarmProductType, number>;
@@ -65,6 +65,20 @@ export const resourcesSlice = createSlice({
         [payload.product]: state.resources[payload.product] + payload.amount,
       };
     });
+    builder.addCase(buySlot.fulfilled, (state, { payload }) => {
+      if (payload.cost && "cash_point" in payload.cost) {
+        const { cash_point, ...resources } = payload.cost;
+        state.resources = {
+          ...state.resources,
+          ...resources,
+        };
+      } else {
+        state.resources = {
+          ...state.resources,
+          ...payload.cost,
+        };
+      }
+    });
     builder.addCase(harvest.fulfilled, (state, { payload }) => {
       state.resources = {
         ...state.resources,
@@ -72,7 +86,6 @@ export const resourcesSlice = createSlice({
       };
     });
     builder.addCase(produceSlot.fulfilled, (state, { payload }) => {
-
       if (state.resourceDeficit) {
         const curProductResourceDeficit =
           state.resourceDeficit[payload.type]?.[payload.product];
@@ -93,7 +106,6 @@ export const resourcesSlice = createSlice({
         }
       }
     });
-    
   },
 });
 

@@ -2,9 +2,11 @@ import { EFarmSlotTypes } from "../constants/cyberfarm/EFarmSlotTypes";
 import { products } from "../constants/cyberfarm/products";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
 import { FarmSlotCostsType } from "../types/FarmSlotCostsType";
+import { getSlotCost } from "../utils/getSlotCost";
 import { useAppSelector } from "./redux";
 
-const {notEnoughResourcesText: notEnoughText} = TRANSLATIONS.errors
+const { notEnoughResourcesText: notEnoughText } = TRANSLATIONS.errors;
+const { orText } = TRANSLATIONS.common;
 
 export const useSlotCost = () => {
   const language = useAppSelector((state) => state.ui.language);
@@ -16,21 +18,9 @@ export const useSlotCost = () => {
     (state) => state.cyberfarm.resources.resources
   );
 
-  const getSlotCost = (type: EFarmSlotTypes) => {
-    if (!slotCosts) return null;
+  const getSlotCostTexts = (type: EFarmSlotTypes, byCp?: boolean) => {
+    const newSlotCost = getSlotCost(type, slotCosts, newSlotIndex);
 
-    if (type === EFarmSlotTypes.FIELDS) {
-      return slotCosts.fields.find(
-        (cost) => newSlotIndex >= cost.range[0] && newSlotIndex <= cost.range[1]
-      );
-    } else {
-      return slotCosts[type];
-    }
-  };
-
-  const getSlotCostTexts = (type: EFarmSlotTypes) => {
-    const newSlotCost = getSlotCost(type);
-    
     let costText = "";
     let notEnoughResourcesText = "";
 
@@ -44,13 +34,16 @@ export const useSlotCost = () => {
         const costValue = value as number;
 
         if (key === "cash_point") {
-          costText += `${value} cp, `;
-          if (cp < costValue) {
+          const baseText = costText.length
+            ? costText.slice(0, costText.length - 2)
+            : costText;
+          costText = `${baseText} ${orText[language]} ${value} cp, `;
+          if (cp < costValue && byCp) {
             notEnoughResourcesText += `${costValue - cp} cp, `;
           }
         } else {
           costText += `${value} ${products[key].name[language]}, `;
-          if (resources[key] < costValue) {
+          if (resources[key] < costValue && !byCp) {
             notEnoughResourcesText += `${costValue - resources[key]} ${
               products[key].name[language]
             }, `;
@@ -65,10 +58,13 @@ export const useSlotCost = () => {
         ? notEnoughResourcesText.slice(0, notEnoughResourcesText.length - 2)
         : notEnoughResourcesText;
 
+      const { cash_point, ...productCosts } = newSlotCost;
+
       return {
         costText,
         notEnoughResourcesText: `${notEnoughText[language]} ${notEnoughResourcesText}`,
-        errored: !!notEnoughResourcesText
+        errored: !!notEnoughResourcesText,
+        cost: byCp ? { cash_point } : productCosts,
       };
     }
 

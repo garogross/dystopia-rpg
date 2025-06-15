@@ -5,10 +5,14 @@ import { ClaimDailyRewardResponse } from "../../../models/api/CyberFarm/Activity
 
 export interface ActivityState {
   dailyRewardAvailable: boolean;
+  dailyRewardAvailableDay: number;
+  rewardsByDay: number[];
 }
 
 const initialState: ActivityState = {
   dailyRewardAvailable: false,
+  dailyRewardAvailableDay: 0,
+  rewardsByDay: [],
 };
 
 const claimDailyRewardUrl = "/ton_cyber_farm/claim_daily_login/";
@@ -34,8 +38,10 @@ export const activitySlice = createSlice({
   name: "activitySlice",
   initialState,
   reducers: {
-    setDailyReward: (state, action) => {
-      state.dailyRewardAvailable = action.payload;
+    initDailyReward: (state, action) => {
+      state.dailyRewardAvailable = action.payload.dailyRewardAvailable;
+      state.dailyRewardAvailableDay = action.payload.dailyRewardAvailableDay;
+      state.rewardsByDay = action.payload.rewardsByDay;
     },
   },
   extraReducers: (builder) => {
@@ -45,6 +51,6 @@ export const activitySlice = createSlice({
   },
 });
 
-export const { setDailyReward } = activitySlice.actions;
+export const { initDailyReward } = activitySlice.actions;
 
 export default activitySlice.reducer;

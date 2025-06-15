@@ -11,6 +11,12 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "У тебя не хватает",
     },
   },
+  common: {
+    orText: {
+      [ELanguages.en]: "or",
+      [ELanguages.ru]: "или",
+    },
+  },
   home: {
     titleText: {
       [ELanguages.en]:
@@ -151,18 +157,22 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Are you sure you want to buy this field for",
           [ELanguages.ru]: "Вы точно хотите купить этот участок за",
         },
-        buyButtonText: {
-          [ELanguages.en]: "Buy",
-          [ELanguages.ru]: "Купить",
+        buyByCpButtonText: {
+          [ELanguages.en]: "Buy by CP",
+          [ELanguages.ru]: "Купить за CP",
+        },
+        buyByMetalButtonText: {
+          [ELanguages.en]: "Buy by Metal",
+          [ELanguages.ru]: "Купить за Металл",
         },
         cancelButtonText: {
           [ELanguages.en]: "Cancel",
           [ELanguages.ru]: "Отмена",
         },
-      successText: {
-        [ELanguages.en]: "Field purchase completed",
-        [ELanguages.ru]: "Покупка участка выполнена",
-      },
+        successText: {
+          [ELanguages.en]: "Field purchase completed",
+          [ELanguages.ru]: "Покупка участка выполнена",
+        },
       },
       buildModal: {
         titleText: {
@@ -191,10 +201,18 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Factory",
           [ELanguages.ru]: "Завод",
         },
-      successText: {
-        [ELanguages.en]: "Building completed",
-        [ELanguages.ru]: "Постройка выполнена",
-      },
+        successText: {
+          [ELanguages.en]: "Building completed",
+          [ELanguages.ru]: "Постройка выполнена",
+        },
+        buildByCpButtonText: {
+          [ELanguages.en]: "Build by CP",
+          [ELanguages.ru]: "Построить за CP",
+        },
+        buildByMetalButtonText: {
+          [ELanguages.en]: "Build by Metal",
+          [ELanguages.ru]: "Построить за Металл",
+        },
       },
     },
     farms: {
@@ -259,10 +277,10 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "pcs",
           [ELanguages.ru]: "шт.",
         },
-      successText: {
-        [ELanguages.en]: "Purchase completed successfully",
-        [ELanguages.ru]: "Покупка выполнена успешно",
-      },
+        successText: {
+          [ELanguages.en]: "Purchase completed successfully",
+          [ELanguages.ru]: "Покупка выполнена успешно",
+        },
       },
       socialStoreModal: {
         titleLgText: {
@@ -311,17 +329,21 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Собрать урожай",
       },
       speedUpCpButtonText: {
-        [ELanguages.en]: "Speed up for 0.1 CP",
-        [ELanguages.ru]: "Ускорить за 0,1CP",
+        [ELanguages.en]: "Speed up for NUMBERCP",
+        [ELanguages.ru]: "Ускорить за NUMBERCP",
       },
       speedUpAdButtonText: {
         [ELanguages.en]: "Speed up with ad",
         [ELanguages.ru]: "Ускорить за рекламу",
       },
-    harvestCollectedText: {
-      [ELanguages.en]: "Harvest collected!",
-      [ELanguages.ru]: "Урожай собран!",
-    },
+      harvestCollectedText: {
+        [ELanguages.en]: "Harvest collected!",
+        [ELanguages.ru]: "Урожай собран!",
+      },
+      speedUpCompleteText: {
+        [ELanguages.en]: "Speed up complete!",
+        [ELanguages.ru]: "Ускорение завершено!",
+      },
     },
     optionsModal: {
       titleText: {
@@ -332,14 +354,14 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Choose what to plant",
         [ELanguages.ru]: "Выберите что посадить",
       },
-    successText: {
-      [ELanguages.en]: "Processing started successfully!",
-      [ELanguages.ru]: "Переработка выполнена успешно!",
-    },
-    plantSuccessText: {
-      [ELanguages.en]: "Planting started successfully!",
-      [ELanguages.ru]: "Посадка выполнена успешно!",
-    },
+      successText: {
+        [ELanguages.en]: "Processing started successfully!",
+        [ELanguages.ru]: "Переработка выполнена успешно!",
+      },
+      plantSuccessText: {
+        [ELanguages.en]: "Planting started successfully!",
+        [ELanguages.ru]: "Посадка выполнена успешно!",
+      },
     },
     products: {
       metal: {
@@ -386,14 +408,14 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Bio Bacteria",
         [ELanguages.ru]: "Биобактерии",
       },
-    algae: {
-      [ELanguages.en]: "Algae",
-      [ELanguages.ru]: "Водоросли",
-    },
-    modifiedInsects: {
-      [ELanguages.en]: "Modified Insects",
-      [ELanguages.ru]: "ГМ насекомые",
-    },
+      algae: {
+        [ELanguages.en]: "Algae",
+        [ELanguages.ru]: "Водоросли",
+      },
+      modifiedInsects: {
+        [ELanguages.en]: "Modified Insects",
+        [ELanguages.ru]: "ГМ насекомые",
+      },
     },
   },
   loyality: {
@@ -420,8 +442,8 @@ export const TRANSLATIONS = {
             "Получаете бонусы за ежедневный вход. Система прогрессивная: чем больше дней подряд — тем выше награда.",
         },
         statText: {
-          [ELanguages.en]: "Consecutive logins: 1 day",
-          [ELanguages.ru]: "Входов подряд: 1 день",
+          [ELanguages.en]: "Consecutive logins: NUMBER day",
+          [ELanguages.ru]: "Входов подряд: NUMBER день",
         },
       },
       tasks: {
@@ -508,10 +530,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Lootbox for LP",
         [ELanguages.ru]: "Лутбокс за ЛП",
       },
-    dailyRewardReceivedText: {
-      [ELanguages.en]: "Daily reward received",
-      [ELanguages.ru]: "Ежедневная награда получена",
-    },
+      dailyRewardReceivedText: {
+        [ELanguages.en]: "Daily reward received",
+        [ELanguages.ru]: "Ежедневная награда получена",
+      },
     },
     tasks: {
       availableInText: {

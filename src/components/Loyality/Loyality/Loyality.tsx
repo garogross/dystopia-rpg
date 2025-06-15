@@ -30,6 +30,7 @@ const tabs = [
     title: activity.title,
     text: activity.text,
     statText: activity.statText,
+    statValue: 0,
   },
   {
     name: tasks.name,
@@ -40,8 +41,7 @@ const tabs = [
     text: tasks.text,
     statText: tasks.statText,
     disabledForFarm: true,
-    total: 50
-
+    total: 50,
   },
   {
     name: supportProject.name,
@@ -60,16 +60,20 @@ const tabs = [
     text: store.text,
     statText: store.statText,
     disabledForFarm: true,
-    total: 50
+    total: 50,
   },
 ];
 
 const Loyality: React.FC<Props> = ({ isFarm }) => {
   const language = useAppSelector((state) => state.ui.language);
-
+  const dailyRewardAvailableDay = useAppSelector(
+    (state) => state.cyberfarm.activity.dailyRewardAvailableDay
+  );
   const [activeTab, setActiveTab] = useState<string>(tabs[0].key);
-
   const activeTabDetails = tabs.find((tab) => tab.key === activeTab);
+  const updatedTabs = tabs.map((tab, index) =>
+    index === 0 ? { ...tab, statValue: dailyRewardAvailableDay } : tab
+  );
 
   return (
     <section className={`${styles.loyality} container`}>
@@ -77,7 +81,7 @@ const Loyality: React.FC<Props> = ({ isFarm }) => {
       <LoyalityTabbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        tabs={tabs}
+        tabs={updatedTabs}
         isFarm={isFarm}
       />
       {activeTabDetails && (
@@ -89,8 +93,7 @@ const Loyality: React.FC<Props> = ({ isFarm }) => {
               ? activeTabDetails?.statText[language]
               : ""
           }
-    total={activeTabDetails.total}
-
+          total={activeTabDetails.total}
         />
       )}
       {activeTabDetails && activeTabDetails.component}

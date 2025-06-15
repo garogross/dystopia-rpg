@@ -25,3 +25,13 @@ export interface HarvestResponse {
     [key in CyberFarmProductType]: number;
   };
 }
+
+export interface SpeedUpResponse {
+  status: string;
+  slot_id: string;
+  speed_bonus_cost: number;
+  actual_cost: number;
+  cash_point_left: number;
+  time_left_before: number;
+  time_left_after: number;
+}

@@ -5,9 +5,16 @@
   margin-top: 16px;
   @include flexCol();
   gap: 18px;
+  flex-direction: column;
+
+  &__btnsWrapper {
+    width: 100%;
+    @include flexCol();
+    gap: 18px;
+  }
 
   &__btn {
-    max-width: 94px;
+    max-width: 140px;
     width: 100%;
     padding: 1px;
     @include button($color-primary);
@@ -55,8 +62,8 @@
       100% 0%
     );
   }
-  &__btn:nth-child(2),
-  &__btn:nth-child(2) &__btnInner {
+  &__btn:nth-child(2):not(&__btn_cancel),
+  &__btn:nth-child(2):not(&__btn_cancel) &__btnInner {
     clip-path: polygon(
       5.5% 0%,
       0% 0.6%,
@@ -69,5 +76,27 @@
       95.1% 0%,
       5.5% 0%
     );
+  }
+  &__btn_cancel,
+  &__btn_cancel &__btnInner {
+    clip-path: polygon(
+      5.5% 0%,
+      0% 10%,
+      0% 90%,
+      5.5% 100%,
+      95.2% 100%,
+      97.7% 94.9%,
+      100% 90%,
+      100% 10%,
+      97.6% 5.4%,
+      95.1% 0%,
+      5.5% 0%
+    );
+  }
+
+  &__btnInnerImg {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
   }
 }

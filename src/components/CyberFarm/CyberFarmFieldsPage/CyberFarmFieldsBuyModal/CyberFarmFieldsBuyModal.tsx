@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import styles from "./CyberFarmFieldsBuyModal.module.scss";
 import ModalWithAdd from "../../../layout/ModalWithAdd/ModalWithAdd";
-import {
-  BuyIcon,
-  CancelIcon,
-} from "../../../layout/icons/CyberFarm/CyberFarmFieldsPage";
+import { CancelIcon } from "../../../layout/icons/CyberFarm/CyberFarmFieldsPage";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { buySlot } from "../../../../store/slices/cyberFarm/slotsSlice";
@@ -13,6 +10,13 @@ import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 import { useSlotCost } from "../../../../hooks/useSlotCost";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
+import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
+import {
+  cpImage,
+  cpImageWebp,
+  metalImage,
+  metalImageWebp,
+} from "../../../../assets/imageMaps";
 
 interface Props {
   show: boolean;
@@ -20,8 +24,13 @@ interface Props {
   onClose: () => void;
 }
 
-const { titleText, buyButtonText, cancelButtonText, successText } =
-  TRANSLATIONS.cyberFarm.fields.buyModal;
+const {
+  titleText,
+  buyByCpButtonText,
+  buyByMetalButtonText,
+  cancelButtonText,
+  successText,
+} = TRANSLATIONS.cyberFarm.fields.buyModal;
 const CyberFarmFieldsBuyModal: React.FC<Props> = ({
   show,
   onClose,
@@ -32,23 +41,38 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
   const { show: showTooltip, openTooltip } = useTooltip();
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
+  const [errorText, setErrorText] = useState("");
 
   const getSlotCostTexts = useSlotCost();
-  const {
-    costText,
-    notEnoughResourcesText,
-    errored: notEnoughResources,
-  } = getSlotCostTexts(EFarmSlotTypes.FIELDS);
+  const { costText } = getSlotCostTexts(EFarmSlotTypes.FIELDS);
+
   useEffect(() => {
-    if (!show) setErrored(false);
+    if (!show) {
+      setErrored(false);
+      setErrorText("");
+    }
   }, [show]);
 
-  const onBuy = async () => {
+  const onBuy = async (byCp?: boolean) => {
+    const { notEnoughResourcesText, errored, cost } = getSlotCostTexts(
+      EFarmSlotTypes.FIELDS,
+      byCp
+    );
+
+    if (errored) {
+      setErrorText(notEnoughResourcesText);
+      return;
+    }
     try {
       setLoading(true);
       setErrored(false);
       await dispath(
-        buySlot({ id: buyingSlotId, type: EFarmSlotTypes.FIELDS })
+        buySlot({
+          id: buyingSlotId,
+          type: EFarmSlotTypes.FIELDS,
+          byCp: byCp,
+          cost,
+        })
       ).unwrap();
       await openTooltip();
       onClose();
@@ -65,23 +89,45 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
       onClose={onClose}
       title={`${titleText[language]} ${costText}?`}
       loading={loading}
-      errored={errored || !!notEnoughResources}
-      errorText={notEnoughResourcesText}
+      errored={errored}
+      errorText={errorText}
     >
       <div className={styles.cyberFarmFieldsBuyModal}>
-        <button
-          onClick={onBuy}
-          disabled={!!notEnoughResources || loading}
-          className={styles.cyberFarmFieldsBuyModal__btn}
-        >
-          <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
-            <BuyIcon />
-            <span>{buyButtonText[language]}</span>
-          </div>
-        </button>
+        <div className={styles.cyberFarmFieldsBuyModal__btnsWrapper}>
+          <button
+            onClick={() => onBuy(true)}
+            disabled={loading}
+            className={styles.cyberFarmFieldsBuyModal__btn}
+          >
+            <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
+              <ImageWebp
+                srcSet={cpImageWebp}
+                src={cpImage}
+                alt={"CP"}
+                className={styles.cyberFarmFieldsBuyModal__btnInnerImg}
+              />
+              <span>{buyByCpButtonText[language]}</span>
+            </div>
+          </button>
+          <button
+            disabled={loading}
+            onClick={() => onBuy()}
+            className={styles.cyberFarmFieldsBuyModal__btn}
+          >
+            <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
+              <ImageWebp
+                srcSet={metalImageWebp}
+                src={metalImage}
+                alt={"CP"}
+                className={styles.cyberFarmFieldsBuyModal__btnInnerImg}
+              />
+              <span>{buyByMetalButtonText[language]}</span>
+            </div>
+          </button>
+        </div>
         <button
           onClick={onClose}
-          className={styles.cyberFarmFieldsBuyModal__btn}
+          className={`${styles.cyberFarmFieldsBuyModal__btn} ${styles.cyberFarmFieldsBuyModal__btn_cancel}`}
         >
           <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
             <CancelIcon />

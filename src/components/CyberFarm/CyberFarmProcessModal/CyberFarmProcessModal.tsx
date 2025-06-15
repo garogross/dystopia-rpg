@@ -11,7 +11,7 @@ import { adImage, cpImage, cpImageWebp } from "../../../assets/imageMaps";
 import { CollectIcon } from "../../layout/icons/CyberFarm/CyberFarmProcessModal";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { harvest } from "../../../store/slices/cyberFarm/slotsSlice";
+import { harvest, speedUp } from "../../../store/slices/cyberFarm/slotsSlice";
 import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { useTooltip } from "../../../hooks/useTooltip";
@@ -19,6 +19,8 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { useFarmFieldProgress } from "../../../hooks/useFarmFieldProgress";
+import { useGlobalAdController } from "../../../hooks/useGlobalAdController";
+import { EAdTypes } from "../../../constants/EAdTypes";
 
 interface Props {
   show: boolean;
@@ -33,19 +35,29 @@ const {
   speedUpCpButtonText,
   speedUpAdButtonText,
   harvestCollectedText,
+  speedUpCompleteText,
 } = TRANSLATIONS.cyberFarm.processModal;
 const { somethingWentWrong } = TRANSLATIONS.errors;
 
 const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const { show: showTooltip, openTooltip } = useTooltip();
+  const speedUpCosts = useAppSelector(
+    (state) => state.cyberfarm.slots.speedUpCosts
+  );
+  const onShowAd = useGlobalAdController(EAdTypes.ADSGRAM_V, "11778", () => {
+    onSpeedUp(true);
+  });
+
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
+
+  const { show: showTooltip, openTooltip } = useTooltip();
+
   const productKey = item.factoryProduct || item.plant;
   const { progressPercent: progress, remainingTimeInSecs } =
     useFarmFieldProgress(item.process, [show]);
-
+  const [tooltipText, setTooltipText] = useState(speedUpCompleteText);
   useEffect(() => {
     if (!show) {
       setErrored(false);
@@ -57,8 +69,22 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
     try {
       setLoading(true);
       setErrored(false);
-      await dispatch(harvest({ id: item.id,clb: openTooltip })).unwrap();
+      setTooltipText(harvestCollectedText);
+      await dispatch(harvest({ id: item.id, clb: openTooltip })).unwrap();
       onClose();
+    } catch (error) {
+      setErrored(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const onSpeedUp = async (byAd?: boolean) => {
+    try {
+      setLoading(true);
+      setErrored(false);
+      setTooltipText(speedUpCompleteText);
+      await dispatch(speedUp({ id: item.id, clb: openTooltip, byAd })).unwrap();
+      onHarvest();
     } catch (error) {
       setErrored(true);
     } finally {
@@ -70,6 +96,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
 
   const productdetails = products[productKey];
   const isReadyToCollect = progress && progress >= 100;
+  const speedUpCost = speedUpCosts?.[item.type] || 0;
 
   return (
     <ModalWithAdd show={show} onClose={onClose} title={titleText[language]}>
@@ -120,9 +147,17 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
               </button>
             ) : (
               <>
-                <button className={styles.cyberFarmProcessModal__btn}>
+                <button
+                  onClick={() => onSpeedUp()}
+                  className={styles.cyberFarmProcessModal__btn}
+                >
                   <div className={styles.cyberFarmProcessModal__btnInner}>
-                    <span>{speedUpCpButtonText[language]}</span>
+                    <span>
+                      {speedUpCpButtonText[language].replace(
+                        "NUMBER",
+                        speedUpCost.toString()
+                      )}
+                    </span>
                     <ImageWebp
                       src={cpImage}
                       srcSet={cpImageWebp}
@@ -131,7 +166,10 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
                     />
                   </div>
                 </button>
-                <button className={styles.cyberFarmProcessModal__btn}>
+                <button
+                  onClick={onShowAd}
+                  className={styles.cyberFarmProcessModal__btn}
+                >
                   <div className={styles.cyberFarmProcessModal__btnInner}>
                     <span>{speedUpAdButtonText[language]}</span>
                     <img
@@ -153,7 +191,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
             <span>{somethingWentWrong[language]}</span>
           </TransitionProvider>
         </div>
-        <Tooltip show={showTooltip} text={harvestCollectedText[language]} />
+        <Tooltip show={showTooltip} text={tooltipText[language]} />
       </div>
       <LoadingOverlay loading={loading} />
     </ModalWithAdd>

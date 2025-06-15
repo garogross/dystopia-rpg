@@ -9,7 +9,6 @@ import {
   luteboxForLpImage,
   luteboxForLpImageWebp,
 } from "../../../assets/imageMaps";
-import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import LoyalityCollectReward from "../LoyalityCollectReward/LoyalityCollectReward";
 import TransitionProvider, {
   TransitionStyleTypes,
@@ -24,23 +23,7 @@ interface Props {
   isFarm?: boolean;
 }
 
-const weekData = [
-  {
-    days: [1, 1.1, 1.2, 1.3, 1.4, 1.5, 2],
-  },
-  {
-    days: [2, 2.1, 2.2, 2.3, 2.4, 2.5, 3],
-  },
-  {
-    days: [3, 3.1, 3.2, 3.3, 3.4, 3.5, 4],
-  },
-  {
-    days: [4, 4.1, 4.2, 4.3, 4.4, 4.5, 5],
-  },
-];
-
 const {
-  availableInText,
   receivedText,
   lootboxForAdText,
   lootboxForLPText,
@@ -53,6 +36,12 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
   const language = useAppSelector((state) => state.ui.language);
   const dailyRewardAvailable = useAppSelector(
     (state) => state.cyberfarm.activity.dailyRewardAvailable
+  );
+  const dailyRewardAvailableDay = useAppSelector(
+    (state) => state.cyberfarm.activity.dailyRewardAvailableDay
+  );
+  const rewardsByDay = useAppSelector(
+    (state) => state.cyberfarm.activity.rewardsByDay
   );
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const [loading, setLoading] = useState(false);
@@ -72,59 +61,52 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
     }
   };
 
-
   return (
     <div className={styles.loyalityActivity}>
-      <div className={styles.loyalityActivity__list}>
-        {weekData.map((col, colIndex) => (
-          <TransitionProvider
-            key={colIndex}
-            className={styles.loyalityActivity__listCol}
-            style={TransitionStyleTypes.top}
-            inProp={gameInited}
-            delay={colIndex * 100}
-          >
-            {col.days.map((value, dayIndex) => (
-              <button
-                key={dayIndex}
-                className={`${styles.loyalityActivity__listItem} ${
-                  value === 1 ? styles.loyalityActivity__listItem_active : ""
-                } ${
-                  value === 1.1
-                    ? styles.loyalityActivity__listItem_recieved
-                    : ""
-                }`}
-              >
-                <ImageWebp
-                  src={cpImage}
-                  srcSet={cpImageWebp}
-                  alt="loyalty"
-                  className={styles.loyalityActivity__itemImg}
-                  pictureClass={styles.loyalityActivity__itemPicture}
-                />
-                <span className={styles.loyalityActivity__itemText}>
-                  {value}CP
+      <TransitionProvider
+        style={TransitionStyleTypes.bottom}
+        inProp={gameInited}
+        className={styles.loyalityActivity__list}
+      >
+        {Array.from({ length: 28 }).map((_, dayIndex) => {
+          const isReceived = dailyRewardAvailable
+            ? dayIndex < dailyRewardAvailableDay
+            : dayIndex <= dailyRewardAvailableDay;
+          const isAvailable =
+            dayIndex === dailyRewardAvailableDay && dailyRewardAvailable;
+          return (
+            <button
+              key={dayIndex}
+              className={`${styles.loyalityActivity__listItem} ${
+                isAvailable ? styles.loyalityActivity__listItem_active : ""
+              } ${
+                isReceived ? styles.loyalityActivity__listItem_recieved : ""
+              }`}
+            >
+              <ImageWebp
+                src={cpImage}
+                srcSet={cpImageWebp}
+                alt="loyalty"
+                className={styles.loyalityActivity__itemImg}
+                pictureClass={styles.loyalityActivity__itemPicture}
+              />
+              <span className={styles.loyalityActivity__itemText}>
+                {rewardsByDay[dayIndex] ? `${rewardsByDay[dayIndex]}CP` : ""}
+              </span>
+              {isReceived && (
+                <span className={styles.loyalityActivity__receivedText}>
+                  {receivedText[language]}
                 </span>
-                {value === 1.1 && (
-                  <span className={styles.loyalityActivity__receivedText}>
-                    {receivedText[language]}
-                  </span>
-                )}
-              </button>
-            ))}
-          </TransitionProvider>
-        ))}
-      </div>
+              )}
+            </button>
+          );
+        })}
+      </TransitionProvider>
       <LoyalityCollectReward
         disabled={!dailyRewardAvailable || loading}
         onClick={onReward}
       />
-      <div className={styles.loyalityActivity__availableIn}>
-        <span className={styles.loyalityActivity__availableInText}>
-          {availableInText[language]}
-        </span>
-        {!isFarm && <DotsLine />}
-      </div>
+
       {isFarm && (
         <div className={styles.loyalityActivity__lutBoxes}>
           <button className={styles.loyalityActivity__luteBoxBtn}>

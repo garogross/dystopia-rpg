@@ -4,10 +4,17 @@
 .cyberFarmFieldsBuildOptionsModal {
   margin-top: 20px;
   @include flexCol();
-  gap: 6px;
+  gap: 10px;
+  flex-direction: column;
 
-  &__btn {
-    max-width: 96px;
+  &__col {
+    @include flexCol();
+    gap: 6px;
+    width: 100%;
+  }
+
+  &__typeBtn {
+    max-width: 160px;
     width: 100%;
     padding: 1px;
     @include button($color-primary);
@@ -18,7 +25,7 @@
     }
   }
 
-  &__btnInner {
+  &__typeBtnInner {
     width: 100%;
     height: 58px;
     padding: 5px;
@@ -30,12 +37,21 @@
     transition: $transition;
   }
 
-  &__btn:disabled &__btnInner {
+  &__typeBtn:disabled &__typeBtnInner {
     color: $color-disabledText;
   }
 
-  &__btn:first-child,
-  &__btn:first-child &__btnInner {
+  &__typeBtn_active &__typeBtnInner {
+    background: radial-gradient(
+      71.72% 71.72% at 50% 50%,
+      #3d2b7e 0%,
+      #5a41b5 100%
+    );
+    color: $color-black;
+  }
+
+  &__typeBtn:first-child,
+  &__typeBtn:first-child &__typeBtnInner {
     clip-path: polygon(
       100% 0%,
       100% 0%,
@@ -47,8 +63,8 @@
       100% 0%
     );
   }
-  &__btn:last-child,
-  &__btn:last-child &__btnInner {
+  &__typeBtn:last-child,
+  &__typeBtn:last-child &__typeBtnInner {
     clip-path: polygon(
       5.5% 0%,
       0% 0.6%,
@@ -70,9 +86,80 @@
     justify-content: center;
   }
 
-  &__btnImg {
+  &__typeBtnImg {
     max-width: 100%;
     max-height: 100%;
+    object-fit: contain;
+  }
+
+  &__btn {
+    max-width: 160px;
+    width: 100%;
+    padding: 1px;
+    @include button($color-primary);
+    transition: $transition;
+
+    &:disabled {
+      background: transparent;
+    }
+  }
+
+  &__btnInner {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    @include flexCol();
+    gap: 5px;
+    background: radial-gradient(50% 50% at 50% 50%, #523ba6 0%, #170e35 100%);
+    @include setFont(12px, 400);
+    transition: $transition;
+
+    & svg {
+      fill: $color-text;
+      transition: $transition;
+    }
+  }
+
+  &__btn:disabled &__btnInner {
+    color: $color-disabledText;
+
+    & svg {
+      fill: $color-disabledText;
+    }
+  }
+
+  &__btn:nth-child(1),
+  &__btn:nth-child(1) &__btnInner {
+    clip-path: polygon(
+      100% 0%,
+      100% 0%,
+      100% 100%,
+      6% 100%,
+      0% 90%,
+      0% 10%,
+      6% 0%,
+      100% 0%
+    );
+  }
+  &__btn:nth-child(2):not(&__btn_cancel),
+  &__btn:nth-child(2):not(&__btn_cancel) &__btnInner {
+    clip-path: polygon(
+      5.5% 0%,
+      0% 0.6%,
+      0% 100%,
+      95.2% 100%,
+      97.7% 94.9%,
+      100% 90%,
+      100% 10.1%,
+      97.6% 5.4%,
+      95.1% 0%,
+      5.5% 0%
+    );
+  }
+
+  &__btnInnerImg {
+    width: 14px;
+    height: 14px;
     object-fit: contain;
   }
 }
