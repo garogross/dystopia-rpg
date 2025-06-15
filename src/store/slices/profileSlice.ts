@@ -10,9 +10,9 @@ import { AppDispatch } from "../store";
 import { AppGameMode } from "../../types/AppGameMode";
 import { ELSProps } from "../../constants/ELSProps";
 import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
-import { getCyberFarmSlots } from "./cyberFarm/slotsSlice";
+import { buySlot, getCyberFarmSlots, speedUp } from "./cyberFarm/slotsSlice";
 import { buyProduct, getCyberFarmResources } from "./cyberFarm/resourcesSlice";
-import { claimDailyReward, setDailyReward } from "./cyberFarm/activitySlice";
+import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -96,17 +96,32 @@ export const getAccountDetails =
     );
     if (resData.ton_cyber_farm) {
       // update dailyReward
+      const { day_number, reward_available, rewards_by_day } =
+        resData.claim_daily_login;
       dispatch(
-        setDailyReward(
-          !!resData.ton_cyber_farm?.timers?.daily_login_claimed
-            ?.reward_available
-        )
+        initDailyReward({
+          dailyRewardAvailable: reward_available,
+          dailyRewardAvailableDay: day_number,
+          rewardsByDay: Object.values(rewards_by_day),
+        })
       );
       // store slots
+
+      const speedCosts = Object.entries(
+        resData.game_settings?.production_settings || {}
+      ).reduce(
+        (acc, [type, settings]) => ({
+          ...acc,
+          [type]: settings.speedup_bonus,
+        }),
+        {}
+      );
+
       dispatch(
         getCyberFarmSlots({
           slots: resData.ton_cyber_farm.slots,
           slotCosts: resData.game_settings?.slot_costs,
+          speedUpCosts: speedCosts,
         })
       );
 
@@ -189,8 +204,17 @@ export const profileSlice = createSlice({
     builder.addCase(buyProduct.fulfilled, (state, { payload }) => {
       state.stats.cp = payload.cash_point_left;
     });
+    builder.addCase(buySlot.fulfilled, (state, { payload }) => {
+      if (payload.cost?.cash_point) {
+        state.stats.cp = state.stats.cp - payload.cost?.cash_point;
+      }
+    });
+
     builder.addCase(claimDailyReward.fulfilled, (state, { payload }) => {
       state.stats.cp = payload.cash_point;
+    });
+    builder.addCase(speedUp.fulfilled, (state, { payload }) => {
+      state.stats.cp = payload.cash_point_left;
     });
   },
 });

@@ -31,6 +31,19 @@ export interface GetAccountDetailsResponse {
   game_settings?: {
     base_costs: Record<string, number>;
     slot_costs: FarmSlotCostsType;
+    production_settings: {
+      [key in EFarmSlotTypes]: {
+        products: CyberFarmProductType[];
+        speedup_bonus: number;
+        production_time_hours: number;
+      };
+    };
   };
   resource_deficit?: FarmResourceDeficitType;
+  claim_daily_login: {
+    next_reward: number;
+    day_number: number;
+    reward_available: boolean;
+    rewards_by_day: Record<string, number>; // {"1": 1}
+  };
 }

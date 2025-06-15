@@ -215,7 +215,6 @@ const LoyalitySupportProject = () => {
       const callbackTest = (data: unknown) => {
         console.log("callbackTest", { data });
       };
-      console.log("window.bQuestInstance");
 
       window.bQuestInstance = new window.bQuest()
         .withElementIdAsModal("modal")

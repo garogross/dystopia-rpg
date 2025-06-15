@@ -6,16 +6,10 @@
   flex-direction: column;
 
   &__list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-
-  &__listCol {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 2.4fr;
-    gap: 5px;
+    gap: 10px 5px;
+    margin-bottom: 12px;
   }
 
   &__listItem {
@@ -31,7 +25,7 @@
     color: $color-text;
     position: relative;
 
-    &:not(&:last-child) {
+    &:not(&:nth-child(7n)) {
       flex-direction: column;
       aspect-ratio: 1/1;
       justify-content: space-between;
@@ -61,7 +55,7 @@
     gap: 4px;
   }
 
-  &__listItem:not(&__listItem:last-child) &__itemPicture {
+  &__listItem:not(&__listItem:nth-child(7n)) &__itemPicture {
     flex: 1;
   }
 
@@ -89,7 +83,7 @@
     @include setFont(10px, 400, $font-fam-h3, inherit);
   }
 
-  &__listItem:last-child &__itemText {
+  &__listItem:nth-child(7n) &__itemText {
     font-size: 20px;
   }
 
