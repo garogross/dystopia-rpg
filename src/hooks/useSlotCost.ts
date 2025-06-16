@@ -21,7 +21,8 @@ export const useSlotCost = () => {
   const getSlotCostTexts = (type: EFarmSlotTypes, byCp?: boolean) => {
     const newSlotCost = getSlotCost(type, slotCosts, newSlotIndex);
 
-    let costText = "";
+    let costTextInCp = "";
+    let costTextInMetal = "";
     let notEnoughResourcesText = "";
 
     if (newSlotCost) {
@@ -34,15 +35,12 @@ export const useSlotCost = () => {
         const costValue = value as number;
 
         if (key === "cash_point") {
-          const baseText = costText.length
-            ? costText.slice(0, costText.length - 2)
-            : costText;
-          costText = `${baseText} ${orText[language]} ${value} cp, `;
+          costTextInCp = `${value} cp`;
           if (cp < costValue && byCp) {
             notEnoughResourcesText += `${costValue - cp} cp, `;
           }
         } else {
-          costText += `${value} ${products[key].name[language]}, `;
+          costTextInMetal += `${value} ${products[key].name[language]}, `;
           if (resources[key] < costValue && !byCp) {
             notEnoughResourcesText += `${costValue - resources[key]} ${
               products[key].name[language]
@@ -51,9 +49,13 @@ export const useSlotCost = () => {
         }
       }
 
-      costText = costText.length
-        ? costText.slice(0, costText.length - 2)
-        : costText;
+      costTextInMetal = costTextInMetal.length
+        ? costTextInMetal.slice(0, costTextInMetal.length - 2)
+        : costTextInMetal;
+
+      const costText = `${
+        costTextInMetal ? costTextInMetal : `0 ${products.metal.name[language]}`
+      } ${orText[language]} ${costTextInCp}`;
       notEnoughResourcesText = notEnoughResourcesText.length
         ? notEnoughResourcesText.slice(0, notEnoughResourcesText.length - 2)
         : notEnoughResourcesText;
