@@ -16,10 +16,16 @@
   }
 
   &__btn {
-    flex: 1;
     padding: 1px;
     @include button($color-primary);
     overflow: hidden;
+
+    &:not(&_plant) {
+      flex: 1;
+    }
+    &_plant {
+      width: calc(100% / 3 - 4px);
+    }
   }
 
   &__btnInner {
