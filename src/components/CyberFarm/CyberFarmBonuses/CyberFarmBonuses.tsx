@@ -7,7 +7,6 @@ import {
   cyberFarmBonusCpImage,
   cyberFarmBonusCpImageWebp,
 } from "../../../assets/imageMaps";
-import { Walleticon } from "../../layout/icons/Common";
 import {
   FormFieldWind,
   WithdrawIcon,
@@ -38,7 +37,6 @@ const {
   totalToReceiveText,
   totalToReceivePlaceholder,
   watchAdText,
-  depositText,
   withdrawText,
 } = TRANSLATIONS.cyberFarm.bonuses;
 
@@ -85,7 +83,7 @@ const FormBtn = ({ children }: { children: ReactNode }) => (
 );
 const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const language = useAppSelector((state) => state.ui.language);
-    const onShowAd = useGlobalAdController(EAdTypes.ADSGRAM_V, "11778");
+  const onShowAd = useGlobalAdController(EAdTypes.ADSGRAM_V, "11778");
 
   return (
     <ModalWithAdd
@@ -95,7 +93,10 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
       fullHeught
     >
       <div className={styles.cyberFarmBonuses}>
-        <button className={styles.cyberFarmBonuses__getByAddBtn} onClick={onShowAd}>
+        <button
+          className={styles.cyberFarmBonuses__getByAddBtn}
+          onClick={onShowAd}
+        >
           <div className={styles.cyberFarmBonuses__getByAddBtnInner}>
             <ImageWebp
               src={cyberFarmBonusCpImage}
@@ -107,10 +108,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             <span>{watchAdText[language]}</span>
           </div>
         </button>
-        <FormBtn>
-          <Walleticon />
-          <span>{depositText[language]}</span>
-        </FormBtn>
+
         <h3 className={styles.cyberFarmBonuses__title}>TON</h3>
         <form className={styles.cyberFarmBonuses__form}>
           <Formfield
