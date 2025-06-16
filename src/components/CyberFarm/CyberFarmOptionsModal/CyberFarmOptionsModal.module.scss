@@ -9,7 +9,7 @@
   width: 100%;
 
   &_col {
-    max-width: 300px;
+    max-width: 400px;
     @include flexCol();
     gap: 6px;
     width: 100%;
@@ -19,6 +19,7 @@
     flex: 1;
     padding: 1px;
     @include button($color-primary);
+    overflow: hidden;
   }
 
   &__btnInner {
@@ -30,6 +31,14 @@
     gap: 5px;
     background: radial-gradient(50% 50% at 50% 50%, #523ba6 0%, #170e35 100%);
     @include setFont(12px, 400);
+    overflow: hidden;
+
+    & span {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
   &_factory &__btnInner {
     font-size: 11px;
