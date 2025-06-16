@@ -69,7 +69,7 @@
   }
   &__getBtn {
     max-width: 100%;
-    width: 93px;
+    width: 110px;
     @include button($color-primary);
     padding: 1px;
     transition: $transition;
@@ -82,7 +82,7 @@
   &__getBtnInner {
     width: 100%;
     @include flexCol();
-    padding: 4px;
+    padding: 8px;
     gap: 1px;
     @include setFont(8px, 400);
     background: linear-gradient(180deg, #3d2b7e -35.56%, #040010 132.26%);
