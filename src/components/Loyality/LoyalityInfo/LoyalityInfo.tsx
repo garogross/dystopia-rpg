@@ -16,11 +16,18 @@ interface Props {
   text: React.ReactNode;
   statText: string;
   total?: number;
+  statValue?: number;
 }
 
 const { totalText } = TRANSLATIONS.loyality.info;
 
-const LoyalityInfo: React.FC<Props> = ({ title, text, statText, total }) => {
+const LoyalityInfo: React.FC<Props> = ({
+  title,
+  text,
+  statText,
+  total,
+  statValue,
+}) => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(true);
   const language = useAppSelector((state) => state.ui.language);
 
@@ -70,7 +77,7 @@ const LoyalityInfo: React.FC<Props> = ({ title, text, statText, total }) => {
         </div>
         {statText && (
           <span className={styles.loyalityInfo__bottomBlockText}>
-            {statText}
+            {statText.replace("NUMBER", statValue?.toString() || "0")}
           </span>
         )}
       </div>
