@@ -18,7 +18,6 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { ELanguages } from "../../../constants/ELanguages";
 
 const {
-  availableInText,
   subscribeText,
   subscribedText,
   visitText,
@@ -286,13 +285,6 @@ const LoyalitySupportProject = () => {
         className={styles.loyalitySupportProject__wings}
       >
         <HeaderWings reversed />
-      </TransitionProvider>
-      <TransitionProvider
-        inProp={gameInited}
-        style={TransitionStyleTypes.bottom}
-        className={styles.loyalitySupportProject__availableInText}
-      >
-        {availableInText[language]}
       </TransitionProvider>
     </div>
   );
