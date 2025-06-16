@@ -101,7 +101,11 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
               .filter(([_, product]) => product.type === productType)
               .map(([key, product]) => (
                 <button
-                  className={styles.cyberFarmOptionsModal__btn}
+                  className={`${styles.cyberFarmOptionsModal__btn} ${
+                    type !== EFarmSlotTypes.FACTORY
+                      ? styles.cyberFarmOptionsModal__btn_plant
+                      : ""
+                  }`}
                   key={product.name[language]}
                   onClick={() => onProduce(key as CyberFarmProductType)}
                 >

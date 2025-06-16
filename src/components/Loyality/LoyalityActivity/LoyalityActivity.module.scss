@@ -97,6 +97,9 @@
 
   &__availableInText {
     @include setFont(12px, 400);
+    text-align: center;
+    transition: $transition;
+    margin-block: 5px;
   }
 
   &__lutBoxes {

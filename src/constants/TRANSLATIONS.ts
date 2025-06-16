@@ -534,6 +534,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Daily reward received",
         [ELanguages.ru]: "Ежедневная награда получена",
       },
+      willBeAvailableInText: {
+        [ELanguages.en]: "Will be available in:",
+        [ELanguages.ru]: "Будет доступно через:",
+      },
     },
     tasks: {
       availableInText: {

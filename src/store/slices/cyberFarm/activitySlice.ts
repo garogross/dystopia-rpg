@@ -7,12 +7,14 @@ export interface ActivityState {
   dailyRewardAvailable: boolean;
   dailyRewardAvailableDay: number;
   rewardsByDay: number[];
+  lastClaimedDate: null | number;
 }
 
 const initialState: ActivityState = {
   dailyRewardAvailable: false,
   dailyRewardAvailableDay: 0,
   rewardsByDay: [],
+  lastClaimedDate: null,
 };
 
 const claimDailyRewardUrl = "/ton_cyber_farm/claim_daily_login/";
@@ -42,11 +44,14 @@ export const activitySlice = createSlice({
       state.dailyRewardAvailable = action.payload.dailyRewardAvailable;
       state.dailyRewardAvailableDay = action.payload.dailyRewardAvailableDay;
       state.rewardsByDay = action.payload.rewardsByDay;
+      state.lastClaimedDate = action.payload.lastClaimedDate;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(claimDailyReward.fulfilled, (state) => {
       state.dailyRewardAvailable = false;
+      state.dailyRewardAvailableDay += 1;
+      state.lastClaimedDate = Date.now();
     });
   },
 });

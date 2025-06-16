@@ -20,7 +20,7 @@ export interface GetAccountDetailsResponse {
     slots: Record<string, { type: EFarmSlotTypes }>;
     timers: {
       daily_login_claimed: {
-        last_claim_ts: null;
+        last_claim_ts: null | number;
         reward_available: boolean;
         day_number: null;
       };

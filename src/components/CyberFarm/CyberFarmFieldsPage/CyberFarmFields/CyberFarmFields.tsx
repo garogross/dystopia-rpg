@@ -23,16 +23,23 @@ const CyberFarmFields = () => {
   const [plantOptionsModalOpened, setPlantOptionsModalOpened] = useState(false);
   const [buildOptionsModalOpened, setBuildOptionsModalOpened] = useState(false);
   const slots = useAppSelector((state) => state.cyberfarm.slots.slots);
+  const slotCosts = useAppSelector((state) => state.cyberfarm.slots.slotCosts);
 
-  const fields = getFarmFieldsFromSlots(slots)
+  const fields = getFarmFieldsFromSlots(slots);
+  const maxSlotCount =
+    slotCosts && slotCosts.fields[slotCosts.fields.length - 1].range[1];
 
   const data: IFarmField[] = [
     ...fields.filter((item) => item.type === EFarmSlotTypes.FIELDS),
-    {
-      id: v4(),
-      type: EFarmSlotTypes.FIELDS,
-      blocked: true,
-    },
+    ...(maxSlotCount && slots && maxSlotCount > Object.keys(slots).length
+      ? [
+          {
+            id: v4(),
+            type: EFarmSlotTypes.FIELDS,
+            blocked: true,
+          },
+        ]
+      : []),
   ];
 
   return (

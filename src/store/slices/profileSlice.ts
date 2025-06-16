@@ -103,6 +103,8 @@ export const getAccountDetails =
           dailyRewardAvailable: reward_available,
           dailyRewardAvailableDay: day_number,
           rewardsByDay: Object.values(rewards_by_day),
+          lastClaimedDate:
+            resData.ton_cyber_farm.timers?.daily_login_claimed || null,
         })
       );
       // store slots

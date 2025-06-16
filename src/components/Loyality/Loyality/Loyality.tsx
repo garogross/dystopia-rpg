@@ -70,10 +70,10 @@ const Loyality: React.FC<Props> = ({ isFarm }) => {
     (state) => state.cyberfarm.activity.dailyRewardAvailableDay
   );
   const [activeTab, setActiveTab] = useState<string>(tabs[0].key);
-  const activeTabDetails = tabs.find((tab) => tab.key === activeTab);
   const updatedTabs = tabs.map((tab, index) =>
     index === 0 ? { ...tab, statValue: dailyRewardAvailableDay } : tab
   );
+  const activeTabDetails = updatedTabs.find((tab) => tab.key === activeTab);
 
   return (
     <section className={`${styles.loyality} container`}>
@@ -93,6 +93,7 @@ const Loyality: React.FC<Props> = ({ isFarm }) => {
               ? activeTabDetails?.statText[language]
               : ""
           }
+          statValue={activeTabDetails.statValue}
           total={activeTabDetails.total}
         />
       )}
