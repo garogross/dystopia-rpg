@@ -57,6 +57,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   const [type, setType] = useState<
     EFarmSlotTypes.FARM | EFarmSlotTypes.FACTORY
   >(EFarmSlotTypes.FARM);
+  const { costTextInCp, costTextInMetal } = getSlotCostTexts(type);
 
   useEffect(() => {
     if (show) {
@@ -155,13 +156,20 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
             className={styles.cyberFarmFieldsBuildOptionsModal__btn}
           >
             <div className={styles.cyberFarmFieldsBuildOptionsModal__btnInner}>
-              <ImageWebp
-                srcSet={cpImageWebp}
-                src={cpImage}
-                alt={"CP"}
-                className={styles.cyberFarmFieldsBuildOptionsModal__btnInnerImg}
-              />
-              <span>{buildByCpButtonText[language]}</span>
+              <div className={styles.cyberFarmFieldsBuildOptionsModal__btnMain}>
+                <ImageWebp
+                  srcSet={cpImageWebp}
+                  src={cpImage}
+                  alt={"CP"}
+                  className={
+                    styles.cyberFarmFieldsBuildOptionsModal__btnInnerImg
+                  }
+                />
+                <span>{buildByCpButtonText[language]}</span>
+              </div>
+              <p className={styles.cyberFarmFieldsBuildOptionsModal__btnCost}>
+                ({costTextInCp})
+              </p>
             </div>
           </button>
           <button
@@ -170,13 +178,20 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
             className={styles.cyberFarmFieldsBuildOptionsModal__btn}
           >
             <div className={styles.cyberFarmFieldsBuildOptionsModal__btnInner}>
-              <ImageWebp
-                srcSet={metalImageWebp}
-                src={metalImage}
-                alt={"Metal"}
-                className={styles.cyberFarmFieldsBuildOptionsModal__btnInnerImg}
-              />
-              <span>{buildByMetalButtonText[language]}</span>
+              <div className={styles.cyberFarmFieldsBuildOptionsModal__btnMain}>
+                <ImageWebp
+                  srcSet={metalImageWebp}
+                  src={metalImage}
+                  alt={"Metal"}
+                  className={
+                    styles.cyberFarmFieldsBuildOptionsModal__btnInnerImg
+                  }
+                />
+                <span>{buildByMetalButtonText[language]}</span>
+              </div>
+              <p className={styles.cyberFarmFieldsBuildOptionsModal__btnCost}>
+                ({costTextInMetal})
+              </p>
             </div>
           </button>
         </div>
