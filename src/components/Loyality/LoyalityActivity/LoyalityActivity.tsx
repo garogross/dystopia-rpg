@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./LoyalityActivity.module.scss";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
@@ -18,6 +18,8 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { claimDailyReward } from "../../../store/slices/cyberFarm/activitySlice";
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
+import { formatTime } from "../../../utils/formatTime";
+import { ELanguages } from "../../../constants/ELanguages";
 
 interface Props {
   isFarm?: boolean;
@@ -28,8 +30,41 @@ const {
   lootboxForAdText,
   lootboxForLPText,
   dailyRewardReceivedText,
+  willBeAvailableInText,
 } = TRANSLATIONS.loyality.activity;
 const { somethingWentWrong } = TRANSLATIONS.errors;
+
+const getAvailableInSecs = () => {
+  const tomorrowDateInSec =
+    new Date(new Date().setHours(24, 0, 0, 0)).getTime() / 1000;
+  const currentDateInSec = Date.now() / 1000;
+  return tomorrowDateInSec - currentDateInSec;
+};
+
+const LoayalityActivityAvailableIn = ({
+  language,
+}: {
+  language: ELanguages;
+}) => {
+  const [availableInSec, setAvailableInSec] = useState(getAvailableInSecs);
+  const intervalRef = useRef<NodeJS.Timer | null>(null);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setAvailableInSec(getAvailableInSecs());
+    }, 1000);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  return (
+    <p className={styles.loyalityActivity__availableInText}>
+      {willBeAvailableInText[language]} {formatTime(availableInSec)}
+    </p>
+  );
+};
 
 const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
   const dispatch = useAppDispatch();
@@ -69,9 +104,7 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
         className={styles.loyalityActivity__list}
       >
         {Array.from({ length: 28 }).map((_, dayIndex) => {
-          const isReceived = dailyRewardAvailable
-            ? dayIndex < dailyRewardAvailableDay
-            : dayIndex <= dailyRewardAvailableDay;
+          const isReceived = dayIndex < dailyRewardAvailableDay;
           const isAvailable =
             dayIndex === dailyRewardAvailableDay && dailyRewardAvailable;
           return (
@@ -106,7 +139,13 @@ const LoyalityActivity: React.FC<Props> = ({ isFarm }) => {
         disabled={!dailyRewardAvailable || loading}
         onClick={onReward}
       />
-
+      <TransitionProvider
+        inProp={!dailyRewardAvailable}
+        style={TransitionStyleTypes.height}
+        height={100}
+      >
+        <LoayalityActivityAvailableIn language={language} />
+      </TransitionProvider>
       {isFarm && (
         <div className={styles.loyalityActivity__lutBoxes}>
           <button className={styles.loyalityActivity__luteBoxBtn}>
