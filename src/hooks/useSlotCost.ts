@@ -64,6 +64,8 @@ export const useSlotCost = () => {
 
       return {
         costText,
+        costTextInMetal,
+        costTextInCp,
         notEnoughResourcesText: `${notEnoughText[language]} ${notEnoughResourcesText}`,
         errored: !!notEnoughResourcesText,
         cost: byCp ? { cash_point } : productCosts,
