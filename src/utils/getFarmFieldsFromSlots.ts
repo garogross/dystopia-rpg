@@ -4,29 +4,31 @@ import { EPlants } from "../constants/cyberfarm/EPlants";
 import { IFarmField } from "../models/CyberFarm/IFarmField";
 import { SlotsState } from "../store/slices/cyberFarm/slotsSlice";
 
-
 export const getFarmFieldsFromSlots = (slots: SlotsState["slots"]) => {
-    const fields: IFarmField[] = slots
-    ? Object.entries(slots).map(([key, slot]) => ({
-        id: key,
-        type: slot.type,
-        plant:
-          slot.type === EFarmSlotTypes.FACTORY
-            ? undefined
-            : (slot.product as EPlants),
-        factoryProduct:
-          slot.type !== EFarmSlotTypes.FACTORY
-            ? undefined
-            : (slot.product as EFactoryProducts),
-        process:
-          slot.start_time && slot.finish_time
-            ? {
-                startDate: slot.start_time,
-                endDate: slot.finish_time,
-              }
-            : undefined,
-      }))
+  const fields: IFarmField[] = slots
+    ? Object.entries(slots)
+        .map(([key, slot]) => ({
+          id: key,
+          type: slot.type,
+          plant:
+            slot.type === EFarmSlotTypes.FACTORY
+              ? undefined
+              : (slot.product as EPlants),
+          factoryProduct:
+            slot.type !== EFarmSlotTypes.FACTORY
+              ? undefined
+              : (slot.product as EFactoryProducts),
+          process:
+            slot.start_time && slot.finish_time
+              ? {
+                  startDate: slot.start_time,
+                  endDate: slot.finish_time,
+                }
+              : undefined,
+          updated_at: slot.updated_at,
+        }))
+        .sort((a, b) => a.updated_at - b.updated_at)
     : [];
 
-    return fields
-}
+  return fields;
+};

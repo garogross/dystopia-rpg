@@ -3,6 +3,7 @@ import { AppGameMode } from "../../types/AppGameMode";
 import { CyberFarmProductType } from "../../types/CyberFarmProductType";
 import { FarmResourceDeficitType } from "../../types/FarmResourceDeficitType";
 import { FarmSlotCostsType } from "../../types/FarmSlotCostsType";
+import { SocialShopType } from "../../types/SocialShopType";
 
 export interface GetAccountDetailsResponse {
   mode: AppGameMode;
@@ -46,4 +47,5 @@ export interface GetAccountDetailsResponse {
     reward_available: boolean;
     rewards_by_day: Record<string, number>; // {"1": 1}
   };
+  social_shop: SocialShopType;
 }

@@ -45,6 +45,19 @@ const {
   bioBacteria,
   algae,
   modifiedInsects,
+  metalTwisted,
+  bioGelTwisted,
+  edibleBrickTwisted,
+  energyTwisted,
+  energyCoreTwisted,
+  organicMeatTwisted,
+  plasmaTwisted,
+  repairKitTwisted,
+  metalCactusTwisted,
+  plasmaMushroomTwisted,
+  bioBacteriaTwisted,
+  algaeTwisted,
+  modifiedInsectsTwisted,
 } = TRANSLATIONS.cyberFarm.products;
 
 export const products: {
@@ -52,6 +65,7 @@ export const products: {
     src: string;
     srcSet: string;
     name: TranslationItemType;
+    twistedName: TranslationItemType;
     type: "factory" | "plant";
     forSale?: boolean;
   };
@@ -60,12 +74,14 @@ export const products: {
     src: metalImage,
     srcSet: metalImageWebp,
     name: metal,
+    twistedName: metalTwisted,
     type: "factory",
   },
   [EFactoryProducts.BioGel]: {
     src: bioGelImage,
     srcSet: bioGelImageWebp,
     name: bioGel,
+    twistedName: bioGelTwisted,
     type: "factory",
     forSale: true,
   },
@@ -73,6 +89,7 @@ export const products: {
     src: edibleBrickImage,
     srcSet: edibleBrickImageWebp,
     name: edibleBrick,
+    twistedName: edibleBrickTwisted,
     type: "factory",
     forSale: true,
   },
@@ -80,18 +97,21 @@ export const products: {
     src: energyImage,
     srcSet: energyImageWebp,
     name: energy,
+    twistedName: energyTwisted,
     type: "factory",
   },
   [EFactoryProducts.EnergyCore]: {
     src: energyCoreImage,
     srcSet: energyCoreImageWebp,
     name: energyCore,
+    twistedName: energyCoreTwisted,
     type: "factory",
   },
   [EFactoryProducts.OrganicMeat]: {
     src: organicMeatImage,
     srcSet: organicMeatImageWebp,
     name: organicMeat,
+    twistedName: organicMeatTwisted,
     type: "factory",
     forSale: true,
   },
@@ -99,12 +119,14 @@ export const products: {
     src: plasmaImage,
     srcSet: plasmaImageWebp,
     name: plasma,
+    twistedName: plasmaTwisted,
     type: "factory",
   },
   [EFactoryProducts.RepairKit]: {
     src: repairKitImage,
     srcSet: repairKitImageWebp,
     name: repairKit,
+    twistedName: repairKitTwisted,
     type: "factory",
   },
   // plants
@@ -112,30 +134,35 @@ export const products: {
     src: metalCactusImage,
     srcSet: metalCactusImageWebp,
     name: metalCactus,
+    twistedName: metalCactusTwisted,
     type: "plant",
   },
   [EPlants.PlasmaMushroom]: {
     src: plasmaMushroomImage,
     srcSet: plasmaMushroomImageWebp,
     name: plasmaMushroom,
+    twistedName: plasmaMushroomTwisted,
     type: "plant",
   },
   [EPlants.BioBacteria]: {
     src: bioBacteriaImage,
     srcSet: bioBacteriaImageWebp,
     name: bioBacteria,
+    twistedName: bioBacteriaTwisted,
     type: "plant",
   },
   [EPlants.Algae]: {
     src: algaeImage,
     srcSet: algaeImageWebp,
     name: algae,
+    twistedName: algaeTwisted,
     type: "plant",
   },
   [EPlants.ModifiedInsects]: {
     src: insectsImage,
     srcSet: insectsImageWebp,
     name: modifiedInsects,
+    twistedName: modifiedInsectsTwisted,
     type: "plant",
   },
 };

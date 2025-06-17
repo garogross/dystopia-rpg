@@ -6,4 +6,5 @@ export interface IFarmSlot {
   product?: CyberFarmProductType;
   start_time?: number;
   finish_time?: number;
+  updated_at: number;
 }

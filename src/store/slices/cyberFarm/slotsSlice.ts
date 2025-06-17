@@ -116,7 +116,7 @@ export const slotsSlice = createSlice({
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
       state.slots = {
         ...state.slots,
-        [payload.slot_id]: { type: payload.type },
+        [payload.slot_id]: { type: payload.type, updated_at: Date.now() },
       };
     });
     builder.addCase(produceSlot.fulfilled, (state, { payload }) => {
