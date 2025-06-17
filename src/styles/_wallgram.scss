@@ -1,0 +1,23 @@
+// wallgram
+.wgs-bottom-sheet {
+  &__content {
+    background: $color-black !important;
+    border: 2px solid $color-primary;
+  }
+
+  .wg-text-h2 {
+    color: $color-primary !important;
+    font-family: $font-fam-h1 !important;
+  }
+  .wg-text-13-reg,
+  .wg-text-16 {
+    color: $color-white;
+  }
+  .wg-bg-white {
+    background: transparent !important;
+  }
+
+  .wg-cursor-pointer svg {
+    stroke: $color-primary;
+  }
+}
