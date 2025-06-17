@@ -141,7 +141,14 @@ export const getAccountDetails =
       if (resData.social_shop)
         if (resData.social_shop) {
           // social shop
-          dispatch(initSocialShop(resData.social_shop));
+          dispatch(
+            initSocialShop({
+              socialShop: resData.social_shop,
+              availableIn:
+                resData.ton_cyber_farm.timers?.social_shop?.cooldown_until_ts ||
+                null,
+            })
+          );
         }
     }
 

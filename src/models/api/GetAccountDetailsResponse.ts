@@ -25,6 +25,10 @@ export interface GetAccountDetailsResponse {
         reward_available: boolean;
         day_number: null;
       };
+      social_shop?: {
+        last_purchase_ts: number;
+        cooldown_until_ts: number;
+      };
     };
     resources: Partial<Record<CyberFarmProductType, number>>;
     ton: number;

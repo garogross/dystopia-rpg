@@ -309,6 +309,10 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Exchange completed",
           [ELanguages.ru]: "Обмен выполнен",
         },
+        availableInText: {
+          [ELanguages.en]: "Available in:",
+          [ELanguages.ru]: "Доступно через:",
+        },
       },
     },
     processModal: {

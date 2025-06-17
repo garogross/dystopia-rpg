@@ -6,10 +6,12 @@ import { fetchRequest } from "../../tools/fetchTools";
 
 export interface SocialShopState {
   socialShop: SocialShopType | null;
+  availableIn: null | number;
 }
 
 const initialState: SocialShopState = {
   socialShop: null,
+  availableIn: null,
 };
 
 const exchangeUrl = "/ton_cyber_farm/social_shop/";
@@ -36,12 +38,20 @@ export const socialShopSlice = createSlice({
   initialState,
   reducers: {
     initSocialShop: (state, action) => {
-      state.socialShop = action.payload;
+      state.socialShop = action.payload.socialShop;
+      state.availableIn = action.payload.availableIn;
+    },
+    setAvailableIn: (state, action) => {
+      state.availableIn = action.payload;
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addCase(exchange.fulfilled, (state) => {
+      state.availableIn = Date.now() + 6 * 60 * 60 * 1000;
+    });
+  },
 });
 
-export const { initSocialShop } = socialShopSlice.actions;
+export const { initSocialShop, setAvailableIn } = socialShopSlice.actions;
 
 export default socialShopSlice.reducer;

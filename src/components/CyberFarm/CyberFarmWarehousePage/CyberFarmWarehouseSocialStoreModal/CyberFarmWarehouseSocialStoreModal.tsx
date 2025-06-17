@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import styles from "./CyberFarmWarehouseSocialStoreModal.module.scss";
 import ModalWithAdd from "../../../layout/ModalWithAdd/ModalWithAdd";
@@ -9,9 +9,17 @@ import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { CPOrProductType } from "../../../../types/CPOrProductType";
 import { getResProductDetails } from "../../../../utils/cyberFarm/getResProductDetails";
-import { exchange } from "../../../../store/slices/cyberFarm/socialShopSlice";
+import {
+  exchange,
+  setAvailableIn,
+} from "../../../../store/slices/cyberFarm/socialShopSlice";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../../providers/TransitionProvider";
+import { formatTime } from "../../../../utils/formatTime";
+import { ELanguages } from "../../../../constants/ELanguages";
 
 interface Props {
   show: boolean;
@@ -24,7 +32,59 @@ const {
   confirmButtonText,
   exchangeOptions,
   exchangeCompleteText,
+  availableInText,
 } = TRANSLATIONS.cyberFarm.warehouse.socialStoreModal;
+
+const getAvailableInSecs = (availableIn: number | null) => {
+  return availableIn ? (availableIn - Date.now()) / 1000 : 0;
+};
+
+const Timer = ({
+  availableIn,
+  language,
+}: {
+  availableIn: number | null;
+  language: ELanguages;
+}) => {
+  const dispatch = useAppDispatch();
+  const [availableInSec, setAvailableInSec] = useState(
+    getAvailableInSecs(availableIn)
+  );
+  const intervalRef = useRef<NodeJS.Timer | null>(null);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setAvailableInSec(getAvailableInSecs(availableIn));
+    }, 1000);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    console.log({ availableInSec });
+
+    if (availableInSec <= 0) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      dispatch(setAvailableIn(null));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [availableInSec]);
+
+  return (
+    <TransitionProvider
+      inProp={!!availableIn && availableInSec > 0}
+      style={TransitionStyleTypes.height}
+      className={styles.cyberFarmWarehouseSocialStoreModal__timer}
+    >
+      <span className={styles.cyberFarmWarehouseSocialStoreModal__text}>
+        {availableInText[language]} {formatTime(availableInSec)}
+      </span>
+    </TransitionProvider>
+  );
+};
 
 const { toText } = exchangeOptions;
 
@@ -37,6 +97,9 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
   const socialShop = useAppSelector(
     (state) => state.cyberfarm.socialShop.socialShop
   );
+  const availableIn = useAppSelector(
+    (state) => state.cyberfarm.socialShop.availableIn
+  );
   const resources = useAppSelector(
     (state) => state.cyberfarm.resources.resources
   );
@@ -46,6 +109,7 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
+  console.log({ availableIn });
 
   const { show: showTooltip, openTooltip } = useTooltip();
   const onSubmit = async () => {
@@ -150,7 +214,7 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
             })}
         </div>
         <button
-          disabled={!selectedOptionKey}
+          disabled={!selectedOptionKey || !!availableIn}
           onClick={onSubmit}
           className={styles.cyberFarmWarehouseSocialStoreModal__confirmBtn}
         >
@@ -163,6 +227,9 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
             <ConfirmIcon />
           </div>
         </button>
+        {!!availableIn && (
+          <Timer availableIn={availableIn} language={language} />
+        )}
       </div>
       <Tooltip show={showTooltip} text={exchangeCompleteText[language]} />
     </ModalWithAdd>
