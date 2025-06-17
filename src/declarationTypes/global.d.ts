@@ -1,13 +1,13 @@
 import { AdsgramController } from "../types/AdsgramController";
 
-export {}; 
+export {};
 
 interface TraffyTask {
-    id: string;
-    title: string;
-    image_url: string | null;
-    link: string;
-  }
+  id: string;
+  title: string;
+  image_url: string | null;
+  link: string;
+}
 
 interface Traffy {
   renderTasks: (
@@ -27,8 +27,6 @@ interface Traffy {
   ) => Promise<void>;
 }
 
-
-
 interface Adsgram {
   init: (options: { blockId: string }) => AdsgramController;
 }
@@ -37,15 +35,26 @@ interface OnClickaMini {
   isInit: boolean;
   goId: (id: string) => void;
 }
-
-
+interface WallgramShowcase {
+  init: (
+    platformId: string,
+    options: {
+      container: string;
+      onLoad?: () => void;
+      onFinishTask?: (task: any) => void;
+      onStartTask?: (task: any) => void;
+    }
+  ) => void;
+  show: () => void;
+}
 
 declare global {
   interface Window {
     bQuest?: any;
     bQuestInstance?: any;
     Traffy?: Traffy;
-    Adsgram?: Adsgram
+    Adsgram?: Adsgram;
     onclickaMini?: OnClickaMini;
-    }
+    WallgramShowcase?: WallgramShowcase;
   }
+}

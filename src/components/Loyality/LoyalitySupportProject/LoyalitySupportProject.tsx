@@ -176,6 +176,44 @@ const TaskItem: React.FC<TaskItemProps> = ({
   );
 };
 
+const AdditionalTaskItem = ({
+  gameInited,
+  language,
+  onOpen,
+  index,
+}: {
+  gameInited: boolean;
+  language: ELanguages;
+  onOpen: () => void;
+  index: number;
+}) => (
+  <TransitionProvider
+    inProp={gameInited}
+    style={TransitionStyleTypes.bottom}
+    className={styles.loyalitySupportProject__listItem}
+  >
+    <div className={styles.loyalitySupportProject__listItemInner}>
+      <div className={styles.loyalitySupportProject__listItemMain}>
+        <div className={styles.loyalitySupportProject__listItemTexts}>
+          <p className={styles.loyalitySupportProject__listItemName}>
+            {partnerTasksText[language]} №{index}
+          </p>
+        </div>
+        <div className={styles.loyalitySupportProject__listItemActions}>
+          <button
+            onClick={onOpen}
+            className={styles.loyalitySupportProject__getBtn}
+          >
+            <div className={styles.loyalitySupportProject__getBtnInner}>
+              {openText[language]}
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </TransitionProvider>
+);
+
 const LoyalitySupportProject = () => {
   const traffyTasks = useRef(null);
   const taddyTasks = useAppSelector((state) => state.tasks.taddyTasks);
@@ -207,7 +245,30 @@ const LoyalitySupportProject = () => {
         onTaskReject,
       });
     }
+
+    // init wallgram
+    const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
+    if (wallgramPublicId) {
+      window.WallgramShowcase?.init(wallgramPublicId, {
+        container: "#wallgram_showcase",
+        onLoad: () => {
+          // Ваш код при загрузке витрины
+        },
+        onFinishTask: (task) => {
+          // Ваш код после успешного выполнения задания (обычно выдача вознаграждения пользователю)
+        },
+        onStartTask: (task) => {
+          // Ваш код при начале выполнения задания (не обязательно)
+        },
+      });
+    }
   }, []);
+
+  const onShowWallgramTasks = () => {
+    console.log("onShowWallgramTasks");
+
+    window.WallgramShowcase?.show();
+  };
 
   const onOpenBarzhaTasks = () => {
     if (window.bQuest) {
@@ -233,31 +294,18 @@ const LoyalitySupportProject = () => {
       ></div>
       <div className={styles.loyalitySupportProject__list}>
         {/* button for barzha modal */}
-        <TransitionProvider
-          inProp={gameInited}
-          style={TransitionStyleTypes.bottom}
-          className={styles.loyalitySupportProject__listItem}
-        >
-          <div className={styles.loyalitySupportProject__listItemInner}>
-            <div className={styles.loyalitySupportProject__listItemMain}>
-              <div className={styles.loyalitySupportProject__listItemTexts}>
-                <p className={styles.loyalitySupportProject__listItemName}>
-                  {partnerTasksText[language]}
-                </p>
-              </div>
-              <div className={styles.loyalitySupportProject__listItemActions}>
-                <button
-                  onClick={onOpenBarzhaTasks}
-                  className={styles.loyalitySupportProject__getBtn}
-                >
-                  <div className={styles.loyalitySupportProject__getBtnInner}>
-                    {openText[language]}
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
-        </TransitionProvider>
+        <AdditionalTaskItem
+          gameInited={gameInited}
+          language={language}
+          onOpen={onOpenBarzhaTasks}
+          index={1}
+        />
+        <AdditionalTaskItem
+          gameInited={gameInited}
+          language={language}
+          onOpen={onShowWallgramTasks}
+          index={2}
+        />
 
         {taddyTasks.map((task, index) => (
           <TaskItem
@@ -278,6 +326,8 @@ const LoyalitySupportProject = () => {
             language={language}
           />
         ))} */}
+
+        <div id="wallgram_showcase"></div>
       </div>
       <TransitionProvider
         inProp={gameInited}

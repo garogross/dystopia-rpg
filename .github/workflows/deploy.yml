@@ -26,6 +26,7 @@ jobs:
           echo "REACT_APP_BARZHA_TOKEN=${{ secrets.REACT_APP_BARZHA_TOKEN }}" >> .env.production
           echo "REACT_APP_TRAFFY_TOKEN=${{ secrets.REACT_APP_TRAFFY_TOKEN }}" >> .env.production
           echo "REACT_APP_ONCLICKA_CODE=${{ secrets.REACT_APP_ONCLICKA_CODE }}" >> .env.production
+          echo "REACT_APP_WALLGRAM_PUBLIC_ID=${{ secrets.REACT_APP_WALLGRAM_PUBLIC_ID }}" >> .env.production
 
       - name: 📦 Install dependencies
         run: npm install
