@@ -18,6 +18,10 @@
     padding: 1px;
     width: 100%;
     @include button($color-primary);
+
+    &:disabled {
+      background-color: transparent;
+    }
   }
   &__listItemInner {
     background: linear-gradient(
@@ -47,12 +51,21 @@
     );
   }
 
+  &__listItem_active &__listItemInner {
+    background: radial-gradient(
+      71.72% 71.72% at 50% 50%,
+      #3d2b7e 0%,
+      #5a41b5 100%
+    );
+    color: $color-black;
+  }
+
   &__listItemPicture {
     flex: 1;
     @include flexCol();
   }
   &__listItemImg {
-    height: 50px;
+    height: 42px;
     width: 100%;
     object-fit: contain;
   }
@@ -62,11 +75,20 @@
     text-align: center;
   }
 
+  &__listItem:disabled &__text {
+    color: $color-primary;
+  }
+
   &__confirmBtn {
     padding: 1px;
     @include button($color-primary);
     max-width: 140px;
     width: 100%;
+    transition: $transition;
+
+    &:disabled {
+      background-color: transparent;
+    }
   }
   &__confirmBtnInner {
     padding: 4px;
@@ -78,6 +100,7 @@
     @include flexCol();
     gap: 6px;
     @include setFont(11px, 400);
+    transition: $transition;
   }
 
   &__confirmBtn,
@@ -91,5 +114,9 @@
       0% 86%,
       0% 0%
     );
+  }
+
+  &__confirmBtn:disabled &__confirmBtnInner {
+    color: $color-primary;
   }
 }

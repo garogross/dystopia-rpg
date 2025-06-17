@@ -5,6 +5,7 @@ import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import { BuyProductResponse } from "../../../models/api/CyberFarm/Resources";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
 import { buySlot, harvest, produceSlot } from "./slotsSlice";
+import { exchange } from "./socialShopSlice";
 
 export interface ResourcesState {
   resources: Record<CyberFarmProductType, number>;
@@ -105,6 +106,23 @@ export const resourcesSlice = createSlice({
           };
         }
       }
+    });
+
+    builder.addCase(exchange.fulfilled, (state, { payload }) => {
+      const updatedRes: Partial<typeof state.resources> = {};
+
+      for (let k in payload.reward) {
+        const key = k as keyof typeof payload.reward;
+        if (key === "cash_point") continue;
+
+        updatedRes[key] = state.resources[key] + payload.reward[key];
+      }
+
+      state.resources = {
+        ...state.resources,
+        metal_cactus: payload.cactus_left,
+        ...updatedRes,
+      };
     });
   },
 });

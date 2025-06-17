@@ -16,6 +16,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "or",
       [ELanguages.ru]: "или",
     },
+    cpText: {
+      [ELanguages.en]: "cp",
+      [ELanguages.ru]: "cp",
+    },
   },
   home: {
     titleText: {
@@ -296,18 +300,14 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Подтвердить обмен",
         },
         exchangeOptions: {
-          cactusToCp: {
-            [ELanguages.en]: "-1 cactus for 1 CP",
-            [ELanguages.ru]: "-1 кактус на 1 CP",
+          toText: {
+            [ELanguages.en]: "for",
+            [ELanguages.ru]: "на",
           },
-          cactusToRepairKit: {
-            [ELanguages.en]: "-2 cactus for 10 repair kits",
-            [ELanguages.ru]: "-2 кактус на 10 ремкомплектов",
-          },
-          cactusToEnergy: {
-            [ELanguages.en]: "-3 cactus for 20 energy",
-            [ELanguages.ru]: "-3 кактус на 20 энергии",
-          },
+        },
+        exchangeCompleteText: {
+          [ELanguages.en]: "Exchange completed",
+          [ELanguages.ru]: "Обмен выполнен",
         },
       },
     },
@@ -368,53 +368,105 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Metal",
         [ELanguages.ru]: "Металл",
       },
+      metalTwisted: {
+        [ELanguages.en]: "Metal",
+        [ELanguages.ru]: "металла",
+      },
       bioGel: {
         [ELanguages.en]: "Bio Gel",
         [ELanguages.ru]: "Биогель",
+      },
+      bioGelTwisted: {
+        [ELanguages.en]: "Bio Gel",
+        [ELanguages.ru]: "биогеля",
       },
       edibleBrick: {
         [ELanguages.en]: "Edible Brick",
         [ELanguages.ru]: "Съед. брикет",
       },
+      edibleBrickTwisted: {
+        [ELanguages.en]: "Edible Brick",
+        [ELanguages.ru]: "съед. брикета",
+      },
       energy: {
         [ELanguages.en]: "Energy",
         [ELanguages.ru]: "Энергия",
+      },
+      energyTwisted: {
+        [ELanguages.en]: "Energy",
+        [ELanguages.ru]: "энергии",
       },
       energyCore: {
         [ELanguages.en]: "Energy Core",
         [ELanguages.ru]: "Энергоядро",
       },
+      energyCoreTwisted: {
+        [ELanguages.en]: "Energy Core",
+        [ELanguages.ru]: "энергоядра",
+      },
       organicMeat: {
         [ELanguages.en]: "Organic Meat",
         [ELanguages.ru]: "Орг. мясо",
+      },
+      organicMeatTwisted: {
+        [ELanguages.en]: "Organic Meat",
+        [ELanguages.ru]: "орг. мяса",
       },
       plasma: {
         [ELanguages.en]: "Plasma",
         [ELanguages.ru]: "Плазма",
       },
+      plasmaTwisted: {
+        [ELanguages.en]: "Plasma",
+        [ELanguages.ru]: "плазмы",
+      },
       repairKit: {
         [ELanguages.en]: "Repair Kit",
         [ELanguages.ru]: "Ремкомплект",
+      },
+      repairKitTwisted: {
+        [ELanguages.en]: "Repair Kit",
+        [ELanguages.ru]: "ремкомплектов",
       },
       metalCactus: {
         [ELanguages.en]: "Metal Cactus",
         [ELanguages.ru]: "Металокактусы",
       },
+      metalCactusTwisted: {
+        [ELanguages.en]: "Metal Cactus",
+        [ELanguages.ru]: "металокактусов",
+      },
       plasmaMushroom: {
         [ELanguages.en]: "Plasma Mushroom",
         [ELanguages.ru]: "Плазмогрибы",
+      },
+      plasmaMushroomTwisted: {
+        [ELanguages.en]: "Plasma Mushroom",
+        [ELanguages.ru]: "плазмогрибов",
       },
       bioBacteria: {
         [ELanguages.en]: "Bio Bacteria",
         [ELanguages.ru]: "Биобактерии",
       },
+      bioBacteriaTwisted: {
+        [ELanguages.en]: "Bio Bacteria",
+        [ELanguages.ru]: "биобактерий",
+      },
       algae: {
         [ELanguages.en]: "Algae",
         [ELanguages.ru]: "Водоросли",
       },
+      algaeTwisted: {
+        [ELanguages.en]: "Algae",
+        [ELanguages.ru]: "водорослей",
+      },
       modifiedInsects: {
         [ELanguages.en]: "Modified Insects",
         [ELanguages.ru]: "ГМ насекомые",
+      },
+      modifiedInsectsTwisted: {
+        [ELanguages.en]: "Modified Insects",
+        [ELanguages.ru]: "ГМ насекомых",
       },
     },
   },

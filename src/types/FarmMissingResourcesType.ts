@@ -1,3 +1,3 @@
-import { CyberFarmProductType } from "./CyberFarmProductType";
+import { CPOrProductType } from "./CPOrProductType";
 
-export type FarmMissingResourcesType = Record<CyberFarmProductType | "cash_point", number>;
+export type FarmMissingResourcesType = Record<CPOrProductType, number>;

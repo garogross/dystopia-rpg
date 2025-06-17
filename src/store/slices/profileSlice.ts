@@ -13,6 +13,7 @@ import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
 import { buySlot, getCyberFarmSlots, speedUp } from "./cyberFarm/slotsSlice";
 import { buyProduct, getCyberFarmResources } from "./cyberFarm/resourcesSlice";
 import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
+import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -137,6 +138,11 @@ export const getAccountDetails =
           })
         );
       }
+      if (resData.social_shop)
+        if (resData.social_shop) {
+          // social shop
+          dispatch(initSocialShop(resData.social_shop));
+        }
     }
 
     return resData;
@@ -217,6 +223,11 @@ export const profileSlice = createSlice({
     });
     builder.addCase(speedUp.fulfilled, (state, { payload }) => {
       state.stats.cp = payload.cash_point_left;
+    });
+    builder.addCase(exchange.fulfilled, (state, { payload }) => {
+      if (payload.reward.cash_point) {
+        state.stats.cp += payload.reward.cash_point;
+      }
     });
   },
 });
