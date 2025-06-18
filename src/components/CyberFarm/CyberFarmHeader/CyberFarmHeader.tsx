@@ -11,7 +11,10 @@ import {
 } from "../../layout/icons/Common/Header";
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { NavLink, useNavigate } from "react-router-dom";
-import { onBoardingPagePath } from "../../../router/constants";
+import {
+  cyberFarmReferalsPagePath,
+  onBoardingPagePath,
+} from "../../../router/constants";
 import StatImg from "../../layout/StatImg/StatImg";
 import { EStats } from "../../../constants/EStats";
 import { WalletIcon } from "../../layout/icons/CyberFarm/CyberFarmHeader";
@@ -57,7 +60,7 @@ const CyberFarmHeader = () => {
         </button>
         <div className={styles.cyberFarmHeader__navBtns}>
           <NavLink
-            to={`/ref`}
+            to={cyberFarmReferalsPagePath}
             className={linkActiveClass(styles.cyberFarmHeader__refBtn)}
           >
             <HeaderReferenceIcon />

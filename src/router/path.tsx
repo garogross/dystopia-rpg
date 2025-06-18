@@ -24,9 +24,10 @@ import {
   onBoardingPagePath,
   cyberFarmPagePath,
   cyberFarmFarmsPagePath,
-cyberFarmFactoriesPagePath,
-cyberFarmWarehousePagePath,
-cyberFarmSupportPagePath,
+  cyberFarmFactoriesPagePath,
+  cyberFarmWarehousePagePath,
+  cyberFarmSupportPagePath,
+  cyberFarmReferalsPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -43,6 +44,7 @@ import CyberFarmFarmsPage from "../pages/CyberFarm/CyberFarmFarmsPage";
 import CyberFarmFactoriesPage from "../pages/CyberFarm/CyberFarmFactoriesPage";
 import CyberFarmWarehousePage from "../pages/CyberFarm/CyberFarmWarehousePage";
 import CyberFarmSupportPage from "../pages/CyberFarm/CyberFarmSupportPage";
+import CyberFarmReferals from "../pages/CyberFarm/CyberFarmReferals";
 
 export const homePagePath = "/";
 
@@ -115,7 +117,7 @@ export const routes: IRoute[] = [
   },
   {
     path: rpgGamePlayAreaPagePath,
-    component: <RPGGamePlayAreaPage/>,
+    component: <RPGGamePlayAreaPage />,
   },
   // cyberfarm
   {
@@ -139,7 +141,10 @@ export const routes: IRoute[] = [
         path: cyberFarmSupportPagePath,
         component: <CyberFarmSupportPage />,
       },
-      
+      {
+        path: cyberFarmReferalsPagePath,
+        component: <CyberFarmReferals />,
+      },
     ],
   },
 ];

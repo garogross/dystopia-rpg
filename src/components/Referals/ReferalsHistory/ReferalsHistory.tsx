@@ -16,14 +16,19 @@ import TransitionProvider, {
 } from "../../../providers/TransitionProvider";
 import HeaderWithBackButton from "../../layout/HeaderWithBackButton/HeaderWithBackButton";
 import { ReferalsHistoryBottomBg } from "../../layout/icons/Referals";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 
 interface Props {
   show: boolean;
   onClose: () => void;
 }
 
+const { titleText, totalText } = TRANSLATIONS.referals.history;
+
 const ReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
   const refferences = useAppSelector((state) => state.refferences.refferences);
+  const language = useAppSelector((state) => state.ui.language);
+
   return (
     <TransitionProvider
       inProp={show}
@@ -35,7 +40,7 @@ const ReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
         className={styles.referalsHistory__header}
       />
       <TitleH3 className={styles.referalsHistory__title} wingsReverse={false}>
-        Рефералы
+        {titleText[language]}
       </TitleH3>
       <WrapperWithFrame
         className={styles.referalsHistory__wrapper}
@@ -44,7 +49,9 @@ const ReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
       >
         <div className={styles.referalsHistory__main}>
           <div className={styles.referalsHistory__mainHeader}>
-            <h6 className={styles.referalsHistory__mainHeaderTitle}>Всего</h6>
+            <h6 className={styles.referalsHistory__mainHeaderTitle}>
+              {totalText[language]}
+            </h6>
             <DotsLine />
             <span className={styles.referalsHistory__mainHeaderValueText}>
               1500

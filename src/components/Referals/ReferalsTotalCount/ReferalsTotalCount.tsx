@@ -7,7 +7,13 @@ import TransitionProvider from "../../../providers/TransitionProvider";
 import { TransitionStyleTypes } from "../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../hooks/redux";
 import { ReferalsTotalCountBottomBlock } from "../../layout/icons/Referals";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+
+const { titleText } = TRANSLATIONS.referals.totalCount;
+
 const ReferalsTotalCount = () => {
+  const language = useAppSelector((state) => state.ui.language);
+
   const [historyOpened, setHistoryOpened] = useState(false);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
@@ -19,7 +25,7 @@ const ReferalsTotalCount = () => {
         <WrapperWithFrame>
           <div className={styles.referalsTotalCount__inner}>
             <h6 className={styles.referalsTotalCount__title}>
-              Рефералы за всё время
+              {titleText[language]}
             </h6>
             <div className={styles.referalsTotalCount__dotsLine}>
               <DotsLine />

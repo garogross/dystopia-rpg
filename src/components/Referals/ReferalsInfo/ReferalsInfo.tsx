@@ -5,15 +5,15 @@ import { TransitionStyleTypes } from "../../../providers/TransitionProvider";
 import TransitionProvider from "../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../hooks/redux";
 import { ReferalsInfoBottomBg } from "../../layout/icons/Referals";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 
-const infoData = [
-  "Реферальные награды начисляются раз в сутке.",
-  "Ежедневное начисление жетонов зависит от активности ваших рефералов.",
-  "1% от трат кредитов вашими рефералами",
-];
+const { infoTexts } = TRANSLATIONS.referals.info;
 
 const ReferalsInfo = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
+
+  const infoData = infoTexts[language];
   return (
     <TransitionProvider
       inProp={gameInited}

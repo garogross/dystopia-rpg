@@ -697,4 +697,62 @@ export const TRANSLATIONS = {
       },
     },
   },
+  referals: {
+    main: {
+      titleText: {
+        [ELanguages.en]: "Friends",
+        [ELanguages.ru]: "Друзья",
+      },
+    },
+    totalEarnings: {
+      availableToCollectText: {
+        [ELanguages.en]: "Available to collect",
+        [ELanguages.ru]: "Доступно к сбору",
+      },
+      collectButtonText: {
+        [ELanguages.en]: "Collect",
+        [ELanguages.ru]: "Собрать",
+      },
+    },
+    totalCount: {
+      titleText: {
+        [ELanguages.en]: "Referrals for all time",
+        [ELanguages.ru]: "Рефералы за всё время",
+      },
+    },
+    history: {
+      titleText: {
+        [ELanguages.en]: "Referrals",
+        [ELanguages.ru]: "Рефералы",
+      },
+      totalText: {
+        [ELanguages.en]: "Total",
+        [ELanguages.ru]: "Всего",
+      },
+    },
+    shareButtons: {
+      copyLinkText: {
+        [ELanguages.en]: "Copy link",
+        [ELanguages.ru]: "Копировать ссылку",
+      },
+      inviteFriendText: {
+        [ELanguages.en]: "Invite friend",
+        [ELanguages.ru]: "Пригласить друга",
+      },
+    },
+    info: {
+      infoTexts: {
+        [ELanguages.en]: [
+          "Referral rewards are credited once a day.",
+          "Daily token accrual depends on the activity of your referrals.",
+          "10% of your referrals' credit spending",
+        ],
+        [ELanguages.ru]: [
+          "Реферальные награды начисляются раз в сутке.",
+          "Ежедневное начисление жетонов зависит от активности ваших рефералов.",
+          "10% от трат кредитов вашими рефералами",
+        ],
+      },
+    },
+  },
 };
