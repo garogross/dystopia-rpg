@@ -44,7 +44,7 @@ import CyberFarmFarmsPage from "../pages/CyberFarm/CyberFarmFarmsPage";
 import CyberFarmFactoriesPage from "../pages/CyberFarm/CyberFarmFactoriesPage";
 import CyberFarmWarehousePage from "../pages/CyberFarm/CyberFarmWarehousePage";
 import CyberFarmSupportPage from "../pages/CyberFarm/CyberFarmSupportPage";
-import CyberFarmReferals from "../pages/CyberFarm/CyberFarmReferals";
+import CyberFarmReferalsPage from "../pages/CyberFarm/CyberFarmReferalsPage";
 
 export const homePagePath = "/";
 
@@ -143,7 +143,7 @@ export const routes: IRoute[] = [
       },
       {
         path: cyberFarmReferalsPagePath,
-        component: <CyberFarmReferals />,
+        component: <CyberFarmReferalsPage />,
       },
     ],
   },
