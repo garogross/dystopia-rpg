@@ -248,6 +248,8 @@ const LoyalitySupportProject = () => {
 
     // init wallgram
     const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
+    console.log({ wallgramPublicId });
+
     if (wallgramPublicId) {
       window.WallgramShowcase?.init(wallgramPublicId, {
         container: "#wallgram_showcase",
@@ -265,7 +267,7 @@ const LoyalitySupportProject = () => {
   }, []);
 
   const onShowWallgramTasks = () => {
-    console.log("onShowWallgramTasks");
+    console.log("onShowWallgramTasks", window.WallgramShowcase);
 
     window.WallgramShowcase?.show();
   };

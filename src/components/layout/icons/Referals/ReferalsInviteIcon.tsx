@@ -1,6 +1,6 @@
 import React from "react";
 
-export const RPGGameReferalsInviteIcon = () => {
+export const ReferalsInviteIcon = () => {
   return (
     <svg
       width="20"
@@ -24,4 +24,3 @@ export const RPGGameReferalsInviteIcon = () => {
     </svg>
   );
 };
-

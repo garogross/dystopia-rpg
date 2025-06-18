@@ -1,6 +1,6 @@
 import React from "react";
 
-export const RPGGameReferalsInfoBottomBg = () => {
+export const ReferalsInfoBottomBg = () => {
   return (
     <svg viewBox="0 0 351 11" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -22,4 +22,3 @@ export const RPGGameReferalsInfoBottomBg = () => {
     </svg>
   );
 };
-

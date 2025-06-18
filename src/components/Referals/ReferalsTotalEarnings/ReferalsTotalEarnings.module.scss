@@ -1,7 +1,7 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
 
-.rpgGameReferalsTotalEarnings {
+.referalsTotalEarnings {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -58,11 +58,25 @@
     @include flexCol();
     padding: 12px;
     gap: 10px;
-    background: radial-gradient(85.56% 85.56% at 50% 50%, #3D2B7E 0%, #040010 98.08%);
-    @include setFont(12px,400)
+    background: radial-gradient(
+      85.56% 85.56% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 98.08%
+    );
+    @include setFont(12px, 400);
   }
 
-  &__collectBtn, &__collectBtnInner{
-    clip-path: polygon(0% 0%, 91.34% 0%, 96.21% 8.78%, 99.5% 14.06%, 99.5% 100%, 7.71% 100%, 0.5% 83.81%, 0.5% 0%);
+  &__collectBtn,
+  &__collectBtnInner {
+    clip-path: polygon(
+      0% 0%,
+      91.34% 0%,
+      96.21% 8.78%,
+      99.5% 14.06%,
+      99.5% 100%,
+      7.71% 100%,
+      0.5% 83.81%,
+      0.5% 0%
+    );
   }
 }

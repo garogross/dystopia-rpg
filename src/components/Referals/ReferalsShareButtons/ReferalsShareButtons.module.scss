@@ -1,7 +1,7 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
 
-.rpgGameReferalsShareButtons {
+.referalsShareButtons {
   @include flexCol();
   padding-inline: 12px;
   gap: 26px;

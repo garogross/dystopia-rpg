@@ -1,7 +1,7 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
 
-.rpgGameReferalsHistory {
+.referalsHistory {
   position: absolute;
   left: 0;
   top: 0;
@@ -12,7 +12,7 @@
   background-color: $color-black;
   display: flex;
   flex-direction: column;
- 
+
   &__header {
     margin-bottom: 14px;
   }
@@ -21,18 +21,17 @@
     transform: translateY(-100%);
   }
 
-  &__wrapper{
+  &__wrapper {
     overflow: hidden;
-  flex: 1;
-  @include flexCol();
-  flex-direction: column;
+    flex: 1;
+    @include flexCol();
+    flex-direction: column;
   }
-  
+
   &__inner {
     overflow: hidden;
     animation: accordion 0.5s ease-in-out;
   }
- 
 
   &__main {
     padding: 20px 16px;
@@ -94,13 +93,13 @@
   }
 
   &__mainTextDate {
-margin-left: auto;  }
+    margin-left: auto;
+  }
 
   &__bottomBg {
     width: 100%;
   }
 }
-
 
 @keyframes accordion {
   0% {

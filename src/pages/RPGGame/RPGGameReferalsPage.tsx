@@ -1,7 +1,7 @@
 import React from "react";
-import RPGGameReferalsMain from "../../components/RPGGame/RPGGameReferalsPage/RPGGameReferalsMain/RPGGameReferalsMain";
+import Referals from "../../components/Referals/Referals";
 const RPGGameReferalsPage = () => {
-  return <RPGGameReferalsMain />;
+  return <Referals />;
 };
 
 export default RPGGameReferalsPage;

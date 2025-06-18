@@ -1,12 +1,8 @@
 import React from "react";
 
-export const RPGGameReferalsHistoryBottomBg = () => {
+export const ReferalsHistoryBottomBg = () => {
   return (
-    <svg
-      viewBox="0 0 353 26"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg viewBox="0 0 353 26" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M284 13L288.775 8.41967H305.511L312.202 2H341L333.412 9.27323L329.53 13H284Z"
         fill="#2A1E54"
@@ -308,4 +304,3 @@ export const RPGGameReferalsHistoryBottomBg = () => {
     </svg>
   );
 };
-

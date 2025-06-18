@@ -1,7 +1,7 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
 
-.rpgGameReferalsTotalCount {
+.referalsTotalCount {
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -25,7 +25,7 @@
     width: 100%;
   }
   &__countText {
-    @include setFont(14px, 600,$font-fam-main, $color-primary);
+    @include setFont(14px, 600, $font-fam-main, $color-primary);
   }
   &__bottomBlock {
     width: 100%;

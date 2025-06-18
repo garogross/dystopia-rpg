@@ -1,6 +1,6 @@
 import React from "react";
 
-export const RPGGameReferalsBackIcon = () => {
+export const BackIcon = () => {
   return (
     <svg
       width="14"
@@ -16,4 +16,3 @@ export const RPGGameReferalsBackIcon = () => {
     </svg>
   );
 };
-
