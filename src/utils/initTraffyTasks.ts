@@ -7,7 +7,8 @@ type TraffyTask = {
 
 export const initTraffyTasks = (
   traffyTasksVal: HTMLElement | null,
-  onReward: (signedToken: string, id: string) => void
+  onReward: (signedToken: string, id: string) => void,
+  onReject: () => void
 ) => {
   if (traffyTasksVal && window.Traffy) {
     function onTaskLoad(tasks: TraffyTask[]) {
@@ -26,7 +27,9 @@ export const initTraffyTasks = (
     function onTaskReward(task: TraffyTask, signedToken: string) {
       onReward(signedToken, task.id);
     }
-    function onTaskReject(task: TraffyTask) {}
+    function onTaskReject(task: TraffyTask) {
+      onReject();
+    }
     window.Traffy.renderTasks(traffyTasksVal, {
       max_tasks: 3,
       onTaskLoad,
