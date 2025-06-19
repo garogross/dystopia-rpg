@@ -12,7 +12,7 @@ const initialState: TasksState = {
   taddyTasks: [],
 };
 
-const claimBarzhaRewardUrl = "/barzha/reward/";
+const claimBarzhaRewardUrl = "/reward/barzha/";
 export const claimBarzhaReward = createAsyncThunk<
   ClaimBarzhaRewardResponse,
   BquestCallbackDataType
