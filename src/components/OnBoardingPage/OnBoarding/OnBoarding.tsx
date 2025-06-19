@@ -6,10 +6,8 @@ import OnBoardingMain from "../OnBoardingMain/OnBoardingMain";
 import OnBoardingSaveSelectBlock from "../OnBoardingSaveSelectBlock/OnBoardingSaveSelectBlock";
 import { useNavigate } from "react-router-dom";
 import { useTelegram } from "../../../hooks/useTelegram";
-import { TaddyWeb } from "taddy-sdk-web";
 import eruda from "eruda";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { setTadyTasks } from "../../../store/slices/tasksSlice";
 import { authorizeUser } from "../../../store/slices/profileSlice";
 import { cyberFarmPagePath } from "../../../router/constants";
 
@@ -50,29 +48,7 @@ const OnBoarding = () => {
     }
     tg.ready();
 
-    // taddy integration    //
     if (!tg.initDataUnsafe?.user?.id) return;
-
-    const taddyPublicId = process.env.REACT_APP_TADDY_PUBLIC_ID;
-    if (taddyPublicId) {
-      const taddy = new TaddyWeb(taddyPublicId);
-
-      taddy.ready();
-      const exchange = taddy.exchange();
-
-      exchange
-        .feed({
-          limit: 8,
-          imageFormat: "png",
-          autoImpressions: true,
-        })
-        .then((items) => {
-          console.log("taddy items", items);
-          dispatch(setTadyTasks(items));
-          // render(items)
-        })
-        .catch((err) => console.log({ err }));
-    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

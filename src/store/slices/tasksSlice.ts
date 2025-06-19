@@ -1,17 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { FeedItem } from "taddy-sdk-web";
 import { fetchRequest } from "../tools/fetchTools";
 import { ClaimBarzhaRewardResponse } from "../../models/api/tasks/barzha";
 import { BquestCallbackDataType } from "../../types/BquestCallbackDataType";
 import { ClaimTraffyRewardResponse } from "../../models/api/tasks/traffy";
+import { ClaimTaddyRewardResponse } from "../../models/api/tasks/taddy";
+import { ClaimWallgramRewardResponse } from "../../models/api/tasks/wallgram";
 
-export interface TasksState {
-  taddyTasks: FeedItem[];
-}
+export interface TasksState {}
 
-const initialState: TasksState = {
-  taddyTasks: [],
-};
+const initialState: TasksState = {};
 
 const claimBarzhaRewardUrl = "/reward/barzha/";
 export const claimBarzhaReward = createAsyncThunk<
@@ -57,18 +54,60 @@ export const claimTraffyReward = createAsyncThunk<
     return rejectWithValue(error);
   }
 });
+const claimTaddyRewardUrl = "/reward/taddy/";
+export const claimTaddyReward = createAsyncThunk<
+  ClaimTaddyRewardResponse,
+  { id: string }
+>("tasks/claimTaddyReward", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<ClaimTaddyRewardResponse>(
+      claimTaddyRewardUrl,
+      "POST",
+      {
+        identifier: payload.id,
+        task_type: "exchange",
+      }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
+const claimWallgramRewardUrl = "/reward/wallgram/";
+export const claimWallgramReward = createAsyncThunk<
+  ClaimWallgramRewardResponse,
+  {
+    taskId: string;
+    value: number;
+  }
+>("tasks/claimWallgramReward", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<ClaimWallgramRewardResponse>(
+      claimWallgramRewardUrl,
+      "POST",
+      {
+        taskId: payload.taskId,
+        value: payload.value,
+      }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
 
 export const tasksSlice = createSlice({
   name: "tasksSlice",
   initialState,
-  reducers: {
-    setTadyTasks: (state, action) => {
-      state.taddyTasks = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {},
 });
 
-export const { setTadyTasks } = tasksSlice.actions;
+// export const {  } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
