@@ -26,6 +26,8 @@ import { initTraffyTasks } from "../../../utils/initTraffyTasks";
 import { FeedItem } from "taddy-sdk-web";
 import { WallgramFinishTaskItemType } from "../../../types/WallgramFinishTaskItemType";
 import { useTaddy } from "../../../context/TaddyContext";
+import { useTooltip } from "../../../hooks/useTooltip";
+import Tooltip from "../../layout/Tooltip/Tooltip";
 
 const {
   subscribeText,
@@ -44,6 +46,7 @@ const {
   // task5DescriptionText,
   partnerTasksText,
   openText,
+  taskNotCompletedText,
 } = TRANSLATIONS.loyality.supportProject;
 
 // const tasks = (language: ELanguages) => [
@@ -235,11 +238,14 @@ const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
   const traffyTasks = useRef<HTMLDivElement | null>(null);
   const tgId = useAppSelector((state) => state.profile.tgId);
+  const { show: showTooltip, openTooltip } = useTooltip();
   const { exchange, taddyTasks } = useTaddy();
   useEffect(() => {
     // init traffy
-    initTraffyTasks(traffyTasks.current, (signedToken, id) =>
-      dispatch(claimTraffyReward({ signedToken, id }))
+    initTraffyTasks(
+      traffyTasks.current,
+      (signedToken, id) => dispatch(claimTraffyReward({ signedToken, id })),
+      openTooltip
     );
 
     // init wallgram
@@ -365,6 +371,7 @@ const LoyalitySupportProject = () => {
       >
         <HeaderWings reversed />
       </TransitionProvider>
+      <Tooltip show={showTooltip} text={taskNotCompletedText[language]} />
     </div>
   );
 };

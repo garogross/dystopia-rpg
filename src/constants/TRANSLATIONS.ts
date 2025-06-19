@@ -859,6 +859,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Open",
         [ELanguages.ru]: "Открыть",
       },
+      taskNotCompletedText: {
+        [ELanguages.en]: "Task not completed",
+        [ELanguages.ru]: "Задание не выполнено",
+      },
     },
     collectReward: {
       collectRewardText: {
