@@ -4,7 +4,6 @@ import { useAppSelector } from "../../../hooks/redux";
 import {
   HeaderBottomBg,
   HeaderBtnsBg,
-  HeaderRatingIcon,
   HeaderReferenceIcon,
   HeaderSettingsIcon,
   HeaderSwitcherIcon,
@@ -12,12 +11,16 @@ import {
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
+  cyberFarmAchievmentsPagePath,
   cyberFarmReferalsPagePath,
   onBoardingPagePath,
 } from "../../../router/constants";
 import StatImg from "../../layout/StatImg/StatImg";
 import { EStats } from "../../../constants/EStats";
-import { WalletIcon } from "../../layout/icons/CyberFarm/CyberFarmHeader";
+import {
+  AchievmentsIcon,
+  WalletIcon,
+} from "../../layout/icons/CyberFarm/CyberFarmHeader";
 import CyberFarmBonuses from "../CyberFarmBonuses/CyberFarmBonuses";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { formatNumber } from "../../../utils/formatNumber";
@@ -96,10 +99,10 @@ const CyberFarmHeader = () => {
         </button>
         <div className={styles.cyberFarmHeader__navBtns}>
           <NavLink
-            to={"/rating"}
+            to={cyberFarmAchievmentsPagePath}
             className={linkActiveClass(styles.cyberFarmHeader__ratingBtn)}
           >
-            <HeaderRatingIcon />
+            <AchievmentsIcon />
           </NavLink>
         </div>
         <div className={styles.cyberFarmHeader__stat}>

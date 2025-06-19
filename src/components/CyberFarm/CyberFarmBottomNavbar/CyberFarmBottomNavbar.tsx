@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
 import {
-  cyberFarmAchievmentsPagePath,
   cyberFarmFactoriesPagePath,
   cyberFarmFarmsPagePath,
   cyberFarmSupportPagePath,
   cyberFarmWarehousePagePath,
 } from "../../../router/constants";
 import {
-  AchievementsIcon,
   FactoriesIcon,
   FarmsIcon,
   FieldsIcon,
@@ -43,10 +41,7 @@ const links = [
     link: cyberFarmWarehousePagePath,
     icon: <WarehouseIcon />,
   },
-  {
-    link: cyberFarmAchievmentsPagePath,
-    icon: <AchievementsIcon />,
-  },
+
   {
     link: cyberFarmSupportPagePath,
     icon: <SupportIcon />,
