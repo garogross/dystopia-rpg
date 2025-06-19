@@ -7,13 +7,16 @@ import { store } from "./store/store";
 import { App } from "./components/App/App";
 
 import "./styles/_style.scss";
+import { TaddyProvider } from "./context/TaddyContext";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(
   <Provider store={store()}>
-    <BrowserRouter>
+    <TaddyProvider>
+      <BrowserRouter>
         <App />
-    </BrowserRouter>
+      </BrowserRouter>
+    </TaddyProvider>
   </Provider>
 );

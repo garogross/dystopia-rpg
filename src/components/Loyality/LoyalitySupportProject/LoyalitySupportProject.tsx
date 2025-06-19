@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 import {
-  lpImage,
+  cpImage,
   // supportTask1Image,
   // supportTask2Image,
   // supportTask3Image,
@@ -17,7 +17,15 @@ import TransitionProvider, {
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { ELanguages } from "../../../constants/ELanguages";
 import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
-import { claimBarzhaReward } from "../../../store/slices/tasksSlice";
+import {
+  claimBarzhaReward,
+  claimTraffyReward,
+  claimWallgramReward,
+} from "../../../store/slices/tasksSlice";
+import { initTraffyTasks } from "../../../utils/initTraffyTasks";
+import { FeedItem } from "taddy-sdk-web";
+import { WallgramFinishTaskItemType } from "../../../types/WallgramFinishTaskItemType";
+import { useTaddy } from "../../../context/TaddyContext";
 
 const {
   subscribeText,
@@ -37,13 +45,6 @@ const {
   partnerTasksText,
   openText,
 } = TRANSLATIONS.loyality.supportProject;
-
-type TraffyTask = {
-  id: string;
-  title: string;
-  image_url: string | null;
-  link: string;
-};
 
 // const tasks = (language: ELanguages) => [
 //   {
@@ -101,11 +102,14 @@ interface TaskItemProps {
     price?: number;
     subscription?: boolean;
     byLink?: boolean;
+    taddyTasktype?: FeedItem["type"];
+    link?: string;
   };
   index: number;
   gameInited: boolean;
   language: ELanguages;
   isTaddyTask?: boolean;
+  onSubscribe: (item: FeedItem) => void;
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({
@@ -114,6 +118,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
   gameInited,
   language,
   isTaddyTask,
+  onSubscribe,
 }) => {
   const title = task.title || task.name;
   const price = isTaddyTask ? TADDY_TASK_PRICE : task.price;
@@ -147,6 +152,16 @@ const TaskItem: React.FC<TaskItemProps> = ({
           </div>
           <div className={styles.loyalitySupportProject__listItemActions}>
             <button
+              onClick={() =>
+                onSubscribe({
+                  id: task.id,
+                  title: task.title || "",
+                  description: task.description,
+                  image: task.image,
+                  type: task.taddyTasktype || "app",
+                  link: task.link || "",
+                })
+              }
               disabled={task.subscription}
               className={styles.loyalitySupportProject__subscribeBtn}
             >
@@ -162,11 +177,11 @@ const TaskItem: React.FC<TaskItemProps> = ({
             >
               <div className={styles.loyalitySupportProject__getBtnInner}>
                 <span>
-                  {getText[language]} {price}LP
+                  {getText[language]} {price}CP
                 </span>
                 <img
-                  src={lpImage}
-                  alt="LP"
+                  src={cpImage}
+                  alt="CP"
                   className={styles.loyalitySupportProject__getBtnImg}
                 />
               </div>
@@ -218,36 +233,14 @@ const AdditionalTaskItem = ({
 
 const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
-  const traffyTasks = useRef(null);
-  const taddyTasks = useAppSelector((state) => state.tasks.taddyTasks);
-
+  const traffyTasks = useRef<HTMLDivElement | null>(null);
+  const tgId = useAppSelector((state) => state.profile.tgId);
+  const { exchange, taddyTasks } = useTaddy();
   useEffect(() => {
-    const traffyTasksVal = traffyTasks.current;
-
-    if (traffyTasksVal && window.Traffy) {
-      function onTaskLoad(tasks: TraffyTask[]) {
-        console.log("traffy tasks", tasks);
-      }
-      function onTaskRender(
-        changeReward: (str: string) => void,
-        changeCardTitle: (str: string) => void,
-        changeDescription: (str: string) => void,
-        changeButtonCheckText: (str: string) => void
-      ) {
-        changeReward("200K");
-        changeCardTitle("Subscribe on: ");
-        changeButtonCheckText("Check");
-      }
-      function onTaskReward(task: TraffyTask, signedToken: string) {}
-      function onTaskReject(task: TraffyTask) {}
-      window.Traffy.renderTasks(traffyTasksVal, {
-        max_tasks: 3,
-        onTaskLoad,
-        onTaskRender,
-        onTaskReward,
-        onTaskReject,
-      });
-    }
+    // init traffy
+    initTraffyTasks(traffyTasks.current, (signedToken, id) =>
+      dispatch(claimTraffyReward({ signedToken, id }))
+    );
 
     // init wallgram
     const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
@@ -259,7 +252,13 @@ const LoyalitySupportProject = () => {
         onLoad: () => {
           // Ваш код при загрузке витрины
         },
-        onFinishTask: (task) => {
+        onFinishTask: (task: WallgramFinishTaskItemType) => {
+          dispatch(
+            claimWallgramReward({
+              taskId: task.data.taskId,
+              value: task.data.rewards[0].value,
+            })
+          );
           // Ваш код после успешного выполнения задания (обычно выдача вознаграждения пользователю)
         },
         onStartTask: (task) => {
@@ -267,27 +266,50 @@ const LoyalitySupportProject = () => {
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onShowWallgramTasks = () => {
-    console.log("onShowWallgramTasks", window.WallgramShowcase);
+  useEffect(() => {
+    if (tgId && exchange) {
+      exchange
+        .feed({
+          limit: 8,
+          imageFormat: "png",
+          autoImpressions: true,
+        })
+        .then((items) => {
+          console.log("taddy items", items);
+          // render(items)
+          exchange.impressions(items);
+        })
+        .catch((err) => console.log({ err }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exchange, tgId]);
 
-    window.WallgramShowcase?.show();
-  };
+  // const onShowWallgramTasks = () => {
+  //   console.log("onShowWallgramTasks", window.WallgramShowcase);
+
+  //   window.WallgramShowcase?.show();
+  // };
 
   const onOpenBarzhaTasks = () => {
     if (window.bQuest) {
-      const callbackTest = (data: BquestCallbackDataType) => {
-        console.log("callbackTest", { data });
+      const callback = (data: BquestCallbackDataType) => {
+        console.log("callback", { data });
         dispatch(claimBarzhaReward(data));
       };
 
       window.bQuestInstance = new window.bQuest()
         .withElementIdAsModal("modal")
         .mount()
-        .onReward(callbackTest)
+        .onReward(callback)
         .openModal();
     }
+  };
+
+  const onSubscribe = (item: FeedItem) => {
+    exchange?.open(item).then(() => {});
   };
 
   const language = useAppSelector((state) => state.ui.language);
@@ -306,21 +328,22 @@ const LoyalitySupportProject = () => {
           onOpen={onOpenBarzhaTasks}
           index={1}
         />
-        <AdditionalTaskItem
+        {/* <AdditionalTaskItem
           gameInited={gameInited}
           language={language}
           onOpen={onShowWallgramTasks}
           index={2}
-        />
+        /> */}
 
         {taddyTasks.map((task, index) => (
           <TaskItem
             key={task.id}
-            task={task}
+            task={{ ...task, taddyTasktype: task.type, link: task.link }}
             index={index}
             gameInited={gameInited}
             language={language}
             isTaddyTask={true}
+            onSubscribe={onSubscribe}
           />
         ))}
         {/* {tasks(language).map((task, index) => (
