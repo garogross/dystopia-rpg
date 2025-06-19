@@ -6,6 +6,9 @@ import { TRANSLATIONS } from "../../constants/TRANSLATIONS";
 import { AchievmentsFrame } from "../layout/icons/Achievments";
 
 import styles from "./Achievments.module.scss";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../providers/TransitionProvider";
 
 const levelColors = ["#7F5CFF", "#48A7FF", "#00FF88", "#EEFF00", "#E20000"];
 const { progressText } = TRANSLATIONS.achievments;
@@ -18,15 +21,24 @@ const dummyAchievments = [
 
 const Achievments = () => {
   const language = useAppSelector((state) => state.ui.language);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <div className={styles.achievments}>
       <TitleH3>Достижения</TitleH3>
       <div className={styles.achievments__wrapper}>
         <div className={styles.achievments__main}>
-          <div className={styles.achievments__frame}>
+          <TransitionProvider
+            inProp={gameInited}
+            style={TransitionStyleTypes.opacity}
+            className={styles.achievments__frame}
+          >
             <AchievmentsFrame />
-          </div>
-          <div className={styles.achievments__list}>
+          </TransitionProvider>
+          <TransitionProvider
+            inProp={gameInited}
+            style={TransitionStyleTypes.bottom}
+            className={styles.achievments__list}
+          >
             {dummyAchievments.map(({ level, progress }, index) => {
               const curAchievmentDetails =
                 CYBER_FARM_ACHIEVMENTS[index][level - 1];
@@ -54,7 +66,7 @@ const Achievments = () => {
                 </div>
               );
             })}
-          </div>
+          </TransitionProvider>
         </div>
       </div>
     </div>
