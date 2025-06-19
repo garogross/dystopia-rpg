@@ -64,8 +64,6 @@ const Timer = ({
   }, []);
 
   useEffect(() => {
-    console.log({ availableInSec });
-
     if (availableInSec <= 0) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       dispatch(setAvailableIn(null));
@@ -109,7 +107,6 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
-  console.log({ availableIn });
 
   const { show: showTooltip, openTooltip } = useTooltip();
   const onSubmit = async () => {

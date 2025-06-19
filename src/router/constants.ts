@@ -20,3 +20,4 @@ export const cyberFarmFactoriesPagePath = "factories";
 export const cyberFarmWarehousePagePath = "warehouse";
 export const cyberFarmSupportPagePath = "support";
 export const cyberFarmReferalsPagePath = "referals";
+export const cyberFarmAchievmentsPagePath = "achievments";
