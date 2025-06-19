@@ -14,6 +14,7 @@ import { buySlot, getCyberFarmSlots, speedUp } from "./cyberFarm/slotsSlice";
 import { buyProduct, getCyberFarmResources } from "./cyberFarm/resourcesSlice";
 import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
 import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
+import { claimBarzhaReward } from "./tasksSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -234,6 +235,13 @@ export const profileSlice = createSlice({
     builder.addCase(exchange.fulfilled, (state, { payload }) => {
       if (payload.reward.cash_point) {
         state.stats.cp += payload.reward.cash_point;
+      }
+    });
+
+    // tasks
+    builder.addCase(claimBarzhaReward.fulfilled, (state, { payload }) => {
+      if (+payload.reward) {
+        state.stats.cp += +payload.reward;
       }
     });
   },

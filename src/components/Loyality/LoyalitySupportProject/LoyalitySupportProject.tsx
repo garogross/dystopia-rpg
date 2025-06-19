@@ -10,12 +10,14 @@ import {
 } from "../../../assets/imageMaps";
 import styles from "./LoyalitySupportProject.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { ELanguages } from "../../../constants/ELanguages";
+import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
+import { claimBarzhaReward } from "../../../store/slices/tasksSlice";
 
 const {
   subscribeText,
@@ -215,6 +217,7 @@ const AdditionalTaskItem = ({
 );
 
 const LoyalitySupportProject = () => {
+  const dispatch = useAppDispatch();
   const traffyTasks = useRef(null);
   const taddyTasks = useAppSelector((state) => state.tasks.taddyTasks);
 
@@ -248,6 +251,8 @@ const LoyalitySupportProject = () => {
 
     // init wallgram
     const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
+    console.log({ wallgramPublicId });
+
     if (wallgramPublicId) {
       window.WallgramShowcase?.init(wallgramPublicId, {
         container: "#wallgram_showcase",
@@ -265,15 +270,16 @@ const LoyalitySupportProject = () => {
   }, []);
 
   const onShowWallgramTasks = () => {
-    console.log("onShowWallgramTasks");
+    console.log("onShowWallgramTasks", window.WallgramShowcase);
 
     window.WallgramShowcase?.show();
   };
 
   const onOpenBarzhaTasks = () => {
     if (window.bQuest) {
-      const callbackTest = (data: unknown) => {
+      const callbackTest = (data: BquestCallbackDataType) => {
         console.log("callbackTest", { data });
+        dispatch(claimBarzhaReward(data));
       };
 
       window.bQuestInstance = new window.bQuest()

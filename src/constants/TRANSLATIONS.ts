@@ -473,6 +473,176 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "ГМ насекомых",
       },
     },
+    achievments: {
+      store: {
+        level1: {
+          [ELanguages.en]: "Curious Visitor",
+          [ELanguages.ru]: "Любопытный заглянувший",
+        },
+        level2: {
+          [ELanguages.en]: "Purposeful Shopper",
+          [ELanguages.ru]: "Зашёл по делу",
+        },
+        level3: {
+          [ELanguages.en]: "Regular Customer",
+          [ELanguages.ru]: "Постоянный клиент",
+        },
+        level4: {
+          [ELanguages.en]: "Benefit Appreciator",
+          [ELanguages.ru]: "Ценитель выгод",
+        },
+        level5: {
+          [ELanguages.en]: "Store Tycoon",
+          [ELanguages.ru]: "Магазинный магнат",
+        },
+        desc1: {
+          [ELanguages.en]: "Visit the store 1 time",
+          [ELanguages.ru]: "Посетить магазин 1 раз",
+        },
+        desc2: {
+          [ELanguages.en]: "Visit the store 3 days in a row",
+          [ELanguages.ru]: "Посетить магазин 3 д. подряд",
+        },
+        desc3: {
+          [ELanguages.en]: "Visit the store 7 days in a row",
+          [ELanguages.ru]: "Посетить магазин 7 д. подряд",
+        },
+        desc4: {
+          [ELanguages.en]: "Visit the store 14 days in a row",
+          [ELanguages.ru]: "Посетить магазин 14 д. подряд",
+        },
+        desc5: {
+          [ELanguages.en]: "Visit the store 30 days in a row",
+          [ELanguages.ru]: "Посетить магазин 30 д. подряд",
+        },
+      },
+      field: {
+        level1: {
+          [ELanguages.en]: "First Sprout",
+          [ELanguages.ru]: "Первое прорастание",
+        },
+        level2: {
+          [ELanguages.en]: "Confident Gardener",
+          [ELanguages.ru]: "Уверенный садовод",
+        },
+        level3: {
+          [ELanguages.en]: "Cyber Agronomist",
+          [ELanguages.ru]: "Киберагроном",
+        },
+        level4: {
+          [ELanguages.en]: "Soil Master",
+          [ELanguages.ru]: "Повелитель почвы",
+        },
+        level5: {
+          [ELanguages.en]: "Field Master",
+          [ELanguages.ru]: "Мастер поля",
+        },
+        desc1: {
+          [ELanguages.en]: "Collect 10 harvests from fields",
+          [ELanguages.ru]: "Собрать 10 урожая на полях",
+        },
+        desc2: {
+          [ELanguages.en]: "Collect 50 harvests from fields",
+          [ELanguages.ru]: "Собрать 50 урожая на полях",
+        },
+        desc3: {
+          [ELanguages.en]: "Collect 150 harvests from fields",
+          [ELanguages.ru]: "Собрать 150 урожая на полях",
+        },
+        desc4: {
+          [ELanguages.en]: "Collect 300 harvests from fields",
+          [ELanguages.ru]: "Собрать 300 урожая на полях",
+        },
+        desc5: {
+          [ELanguages.en]: "Collect 500 harvests from fields",
+          [ELanguages.ru]: "Собрать 500 урожая на полях",
+        },
+      },
+      farm: {
+        level1: {
+          [ELanguages.en]: "Breeder's Apprentice",
+          [ELanguages.ru]: "Ученик заводчика",
+        },
+        level2: {
+          [ELanguages.en]: "Biofarm Overseer",
+          [ELanguages.ru]: "Надсмотрщик биофермы",
+        },
+        level3: {
+          [ELanguages.en]: "Fauna Engineer",
+          [ELanguages.ru]: "Инженер по фауне",
+        },
+        level4: {
+          [ELanguages.en]: "Life Cycle Controller",
+          [ELanguages.ru]: "Контролёр жизненного цикла",
+        },
+        level5: {
+          [ELanguages.en]: "Genetic Baron",
+          [ELanguages.ru]: "Генетический барон",
+        },
+        desc1: {
+          [ELanguages.en]: "Collect 10 harvests from farms",
+          [ELanguages.ru]: "Собрать 10 урожая на фермах",
+        },
+        desc2: {
+          [ELanguages.en]: "Collect 30 harvests from farms",
+          [ELanguages.ru]: "Собрать 30 урожая на фермах",
+        },
+        desc3: {
+          [ELanguages.en]: "Collect 100 harvests from farms",
+          [ELanguages.ru]: "Собрать 100 урожая на фермах",
+        },
+        desc4: {
+          [ELanguages.en]: "Collect 200 harvests from farms",
+          [ELanguages.ru]: "Собрать 200 урожая на фермах",
+        },
+        desc5: {
+          [ELanguages.en]: "Collect 400 harvests from farms",
+          [ELanguages.ru]: "Собрать 400 урожая на фермах",
+        },
+      },
+      factory: {
+        level1: {
+          [ELanguages.en]: "First Launch",
+          [ELanguages.ru]: "Первый запуск",
+        },
+        level2: {
+          [ELanguages.en]: "Production Operator",
+          [ELanguages.ru]: "Оператор производства",
+        },
+        level3: {
+          [ELanguages.en]: "Industrial Engineer",
+          [ELanguages.ru]: "Индустриальный инженер",
+        },
+        level4: {
+          [ELanguages.en]: "Mechanic Synthesizer",
+          [ELanguages.ru]: "Механик-синтезатор",
+        },
+        level5: {
+          [ELanguages.en]: "Cyber Tycoon",
+          [ELanguages.ru]: "Кибермагнат",
+        },
+        desc1: {
+          [ELanguages.en]: "Get 5 products from factories",
+          [ELanguages.ru]: "Получить 5 продукции с заводов",
+        },
+        desc2: {
+          [ELanguages.en]: "Get 20 products from factories",
+          [ELanguages.ru]: "Получить 20 продукции с заводов",
+        },
+        desc3: {
+          [ELanguages.en]: "Get 50 products from factories",
+          [ELanguages.ru]: "Получить 50 продукции с заводов",
+        },
+        desc4: {
+          [ELanguages.en]: "Get 100 products from factories",
+          [ELanguages.ru]: "Получить 100 продукции с заводов",
+        },
+        desc5: {
+          [ELanguages.en]: "Get 200 products from factories",
+          [ELanguages.ru]: "Получить 200 продукции с заводов",
+        },
+      },
+    },
   },
   loyality: {
     header: {
@@ -695,6 +865,70 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Collect reward",
         [ELanguages.ru]: "Получить награду",
       },
+    },
+  },
+  referals: {
+    main: {
+      titleText: {
+        [ELanguages.en]: "Friends",
+        [ELanguages.ru]: "Друзья",
+      },
+    },
+    totalEarnings: {
+      availableToCollectText: {
+        [ELanguages.en]: "Available to collect",
+        [ELanguages.ru]: "Доступно к сбору",
+      },
+      collectButtonText: {
+        [ELanguages.en]: "Collect",
+        [ELanguages.ru]: "Собрать",
+      },
+    },
+    totalCount: {
+      titleText: {
+        [ELanguages.en]: "Referrals for all time",
+        [ELanguages.ru]: "Рефералы за всё время",
+      },
+    },
+    history: {
+      titleText: {
+        [ELanguages.en]: "Referrals",
+        [ELanguages.ru]: "Рефералы",
+      },
+      totalText: {
+        [ELanguages.en]: "Total",
+        [ELanguages.ru]: "Всего",
+      },
+    },
+    shareButtons: {
+      copyLinkText: {
+        [ELanguages.en]: "Copy link",
+        [ELanguages.ru]: "Копировать ссылку",
+      },
+      inviteFriendText: {
+        [ELanguages.en]: "Invite friend",
+        [ELanguages.ru]: "Пригласить друга",
+      },
+    },
+    info: {
+      infoTexts: {
+        [ELanguages.en]: [
+          "Referral rewards are credited once a day.",
+          "Daily token accrual depends on the activity of your referrals.",
+          "10% of your referrals' credit spending",
+        ],
+        [ELanguages.ru]: [
+          "Реферальные награды начисляются раз в сутке.",
+          "Ежедневное начисление жетонов зависит от активности ваших рефералов.",
+          "10% от трат кредитов вашими рефералами",
+        ],
+      },
+    },
+  },
+  achievments: {
+    progressText: {
+      [ELanguages.en]: "Progress",
+      [ELanguages.ru]: "Прогресс",
     },
   },
 };

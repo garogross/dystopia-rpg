@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./HeaderWithBackButton.module.scss";
-import { RPGGameReferalsBackIcon } from "../icons/RPGGame/RPGGameReferalsPage";
+import { BackIcon } from "../icons/Common";
 interface Props {
   onClose: () => void;
   className?: string;
@@ -13,7 +13,7 @@ const HeaderWithBackButton: React.FC<Props> = ({ onClose, className }) => {
         onClick={onClose}
       >
         <div className={styles.headerWithBackButton__backBtnInner}>
-          <RPGGameReferalsBackIcon />
+          <BackIcon />
         </div>
       </button>
       <div className={styles.headerWithBackButton__wind}></div>

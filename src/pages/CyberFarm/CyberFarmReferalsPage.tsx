@@ -1,7 +1,8 @@
 import React from "react";
 import Referals from "../../components/Referals/Referals";
-const RPGGameReferalsPage = () => {
+
+const CyberFarmReferalsPage = () => {
   return <Referals />;
 };
 
-export default RPGGameReferalsPage;
+export default CyberFarmReferalsPage;
