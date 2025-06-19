@@ -3,6 +3,7 @@ import { FeedItem } from "taddy-sdk-web";
 import { fetchRequest } from "../tools/fetchTools";
 import { ClaimBarzhaRewardResponse } from "../../models/api/tasks/barzha";
 import { BquestCallbackDataType } from "../../types/BquestCallbackDataType";
+import { ClaimTraffyRewardResponse } from "../../models/api/tasks/traffy";
 
 export interface TasksState {
   taddyTasks: FeedItem[];
@@ -16,7 +17,7 @@ const claimBarzhaRewardUrl = "/reward/barzha/";
 export const claimBarzhaReward = createAsyncThunk<
   ClaimBarzhaRewardResponse,
   BquestCallbackDataType
->("activity/claimBarzhaReward", async (payload, { rejectWithValue }) => {
+>("tasks/claimBarzhaReward", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<ClaimBarzhaRewardResponse>(
       claimBarzhaRewardUrl,
@@ -25,6 +26,28 @@ export const claimBarzhaReward = createAsyncThunk<
         notification_uuid: payload.notification_uuid,
         reward: payload.reward,
         task_type: payload.task_type,
+      }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
+const claimTraffyRewardUrl = "/reward/traffy/";
+export const claimTraffyReward = createAsyncThunk<
+  ClaimTraffyRewardResponse,
+  { signedToken: string; id: string }
+>("tasks/claimTraffyReward", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<ClaimTraffyRewardResponse>(
+      claimTraffyRewardUrl,
+      "POST",
+      {
+        signedToken: payload.signedToken,
+        id: payload.id,
       }
     );
 

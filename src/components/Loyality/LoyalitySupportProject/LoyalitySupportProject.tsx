@@ -17,7 +17,10 @@ import TransitionProvider, {
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { ELanguages } from "../../../constants/ELanguages";
 import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
-import { claimBarzhaReward } from "../../../store/slices/tasksSlice";
+import {
+  claimBarzhaReward,
+  claimTraffyReward,
+} from "../../../store/slices/tasksSlice";
 
 const {
   subscribeText,
@@ -238,7 +241,9 @@ const LoyalitySupportProject = () => {
         changeCardTitle("Subscribe on: ");
         changeButtonCheckText("Check");
       }
-      function onTaskReward(task: TraffyTask, signedToken: string) {}
+      function onTaskReward(task: TraffyTask, signedToken: string) {
+        dispatch(claimTraffyReward({ signedToken, id: task.id }));
+      }
       function onTaskReject(task: TraffyTask) {}
       window.Traffy.renderTasks(traffyTasksVal, {
         max_tasks: 3,
@@ -267,6 +272,7 @@ const LoyalitySupportProject = () => {
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onShowWallgramTasks = () => {
