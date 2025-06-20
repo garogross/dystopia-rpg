@@ -143,7 +143,8 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
                 {youHaveText[language]} {item.count} {piecesText[language]}
               </p>
               <p className={styles.cyberFarmWarehouseProductInfo__text}>
-                {priceText[language]} {cost} {isForSale ? "TON" : "CP"}
+                {priceText[language]} {+(isForSale ? price : cost).toFixed(2)}{" "}
+                {isForSale ? "TON" : "CP"}
               </p>
             </div>
             <div className={styles.cyberFarmWarehouseProductInfo__calculator}>
