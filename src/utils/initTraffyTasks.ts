@@ -11,9 +11,7 @@ export const initTraffyTasks = (
   onReject: () => void
 ) => {
   if (traffyTasksVal && window.Traffy) {
-    function onTaskLoad(tasks: TraffyTask[]) {
-      console.log("traffy tasks", tasks);
-    }
+    function onTaskLoad(tasks: TraffyTask[]) {}
     function onTaskRender(
       changeReward: (str: string) => void,
       changeCardTitle: (str: string) => void,
