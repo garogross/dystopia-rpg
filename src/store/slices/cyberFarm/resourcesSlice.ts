@@ -2,7 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchRequest } from "../../tools/fetchTools";
 import { products } from "../../../constants/cyberfarm/products";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
-import { BuyProductResponse } from "../../../models/api/CyberFarm/Resources";
+import {
+  BuyProductResponse,
+  SellProductResponse,
+} from "../../../models/api/CyberFarm/Resources";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
 import { buySlot, harvest, produceSlot } from "./slotsSlice";
 import { exchange } from "./socialShopSlice";
@@ -11,6 +14,7 @@ export interface ResourcesState {
   resources: Record<CyberFarmProductType, number>;
   productCosts: Record<CyberFarmProductType, number>;
   resourceDeficit: FarmResourceDeficitType | null;
+  resourceTonValue: Partial<Record<CyberFarmProductType, number>>;
 }
 
 const initialResources = Object.keys(products).reduce((acc, cur) => {
@@ -22,6 +26,7 @@ const initialState: ResourcesState = {
   resources: initialResources,
   productCosts: initialResources,
   resourceDeficit: null,
+  resourceTonValue: {},
 };
 
 const buyProductUrl = "/ton_cyber_farm/buy_product/";
@@ -46,17 +51,42 @@ export const buyProduct = createAsyncThunk<
   }
 });
 
+const sellProductUrl = "/ton_cyber_farm/exchange_ton/";
+export const sellProduct = createAsyncThunk<
+  SellProductResponse,
+  { amount: number; product: CyberFarmProductType }
+>("resources/sellProduct", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<SellProductResponse>(
+      sellProductUrl,
+      "POST",
+      {
+        resource: payload.product,
+        amount: payload.amount,
+      }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
 export const resourcesSlice = createSlice({
   name: "resourcesSlice",
   initialState,
   reducers: {
     getCyberFarmResources: (
       state,
-      { payload: { resources, productCosts, resourceDeficit } }
+      {
+        payload: { resources, productCosts, resourceDeficit, resourceTonValue },
+      }
     ) => {
       state.resources = { ...state.resources, ...resources };
       state.productCosts = { ...state.resources, ...productCosts };
       if (resourceDeficit) state.resourceDeficit = resourceDeficit;
+      if (resourceTonValue) state.resourceTonValue = resourceTonValue;
     },
   },
   extraReducers: (builder) => {
@@ -64,6 +94,13 @@ export const resourcesSlice = createSlice({
       state.resources = {
         ...state.resources,
         [payload.product]: state.resources[payload.product] + payload.amount,
+      };
+    });
+    builder.addCase(sellProduct.fulfilled, (state, { payload }) => {
+      state.resources = {
+        ...state.resources,
+        [payload.resource]:
+          state.resources[payload.resource] - payload.amount_exchanged,
       };
     });
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {

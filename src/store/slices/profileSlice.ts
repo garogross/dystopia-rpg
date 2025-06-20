@@ -11,7 +11,11 @@ import { AppGameMode } from "../../types/AppGameMode";
 import { ELSProps } from "../../constants/ELSProps";
 import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
 import { buySlot, getCyberFarmSlots, speedUp } from "./cyberFarm/slotsSlice";
-import { buyProduct, getCyberFarmResources } from "./cyberFarm/resourcesSlice";
+import {
+  buyProduct,
+  getCyberFarmResources,
+  sellProduct,
+} from "./cyberFarm/resourcesSlice";
 import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
 import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
 import {
@@ -141,6 +145,7 @@ export const getAccountDetails =
             resources: resData.ton_cyber_farm.resources,
             productCosts: resData.game_settings.base_costs,
             resourceDeficit: resData.resource_deficit,
+            resourceTonValue: resData.ton_cyber_farm.resource_ton_value,
           })
         );
       }
@@ -224,6 +229,9 @@ export const profileSlice = createSlice({
     // cyberfarm
     builder.addCase(buyProduct.fulfilled, (state, { payload }) => {
       state.stats.cp = payload.cash_point_left;
+    });
+    builder.addCase(sellProduct.fulfilled, (state, { payload }) => {
+      state.stats.ton = payload.ton_total;
     });
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
       if (payload.cost?.cash_point) {

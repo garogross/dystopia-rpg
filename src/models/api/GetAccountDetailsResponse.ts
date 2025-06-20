@@ -32,6 +32,7 @@ export interface GetAccountDetailsResponse {
     };
     resources: Partial<Record<CyberFarmProductType, number>>;
     ton: number;
+    resource_ton_value: Partial<Record<CyberFarmProductType, number>>;
   };
   game_settings?: {
     base_costs: Record<string, number>;
