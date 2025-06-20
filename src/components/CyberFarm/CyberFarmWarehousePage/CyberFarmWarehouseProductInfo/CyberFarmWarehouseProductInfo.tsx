@@ -10,7 +10,10 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import { buyProduct } from "../../../../store/slices/cyberFarm/resourcesSlice";
+import {
+  buyProduct,
+  sellProduct,
+} from "../../../../store/slices/cyberFarm/resourcesSlice";
 import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
@@ -32,6 +35,7 @@ const {
   sellButtonText,
   piecesText,
   successText,
+  exchangeSuccessText,
 } = TRANSLATIONS.cyberFarm.warehouse.productInfo;
 
 const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
@@ -44,6 +48,9 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
   const productCosts = useAppSelector(
     (state) => state.cyberfarm.resources.productCosts
   );
+  const resourceTonValue = useAppSelector(
+    (state) => state.cyberfarm.resources.resourceTonValue
+  );
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const { show: showTooltip, openTooltip } = useTooltip();
   const [loading, setLoading] = useState(false);
@@ -52,10 +59,11 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
   const [inputValue, setInputValue] = useState(counter.toString());
   const product = products[item.product];
 
+  const isForSale = !!product.forSale;
   const cost = productCosts[item.product];
   const totalCost = productCosts[item.product] * counter;
-  const isForSale = !!product.forSale;
-  const price = 0.5;
+  const price =
+    productCosts[item.product] * (resourceTonValue[item.product] || 0);
 
   const onChangeCount = (value: number) => {
     setInputValue(value.toString());
@@ -95,7 +103,10 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
     try {
       setErrored(false);
       setLoading(true);
-      // sell logic
+      await dispatch(
+        sellProduct({ amount: counter, product: item.product })
+      ).unwrap();
+      openTooltip();
     } catch (error) {
       setErrored(true);
     } finally {
@@ -156,7 +167,7 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
                 }
                 value={inputValue}
                 onBlur={() => {
-                  if(!inputValue) setInputValue(counter.toString())
+                  if (!inputValue) setInputValue(counter.toString());
                 }}
                 onFocus={() => setInputValue("")}
                 onChange={(e) => onChangeCount(+e.target.value)}
@@ -211,7 +222,10 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
         </div>
         <LoadingOverlay loading={loading} />
       </div>
-      <Tooltip show={showTooltip} text={successText[language]} />
+      <Tooltip
+        show={showTooltip}
+        text={(isForSale ? exchangeSuccessText : successText)[language]}
+      />
     </TransitionProvider>
   );
 };

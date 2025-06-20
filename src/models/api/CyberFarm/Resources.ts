@@ -7,3 +7,12 @@ export interface BuyProductResponse {
   total_price: number;
   cash_point_left: number;
 }
+
+export interface SellProductResponse {
+  status: string;
+  resource: CyberFarmProductType;
+  amount_exchanged: number;
+  ton_received: number;
+  ton_total: number;
+  resources_left: number;
+}

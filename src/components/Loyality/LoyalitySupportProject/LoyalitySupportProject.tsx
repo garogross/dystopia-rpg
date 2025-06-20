@@ -250,7 +250,6 @@ const LoyalitySupportProject = () => {
 
     // init wallgram
     const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
-    console.log({ wallgramPublicId });
 
     if (wallgramPublicId) {
       window.WallgramShowcase?.init(wallgramPublicId, {
@@ -302,7 +301,6 @@ const LoyalitySupportProject = () => {
   const onOpenBarzhaTasks = () => {
     if (window.bQuest) {
       const callback = (data: BquestCallbackDataType) => {
-        console.log("callback", { data });
         dispatch(claimBarzhaReward(data));
       };
 

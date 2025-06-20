@@ -285,6 +285,10 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Purchase completed successfully",
           [ELanguages.ru]: "Покупка выполнена успешно",
         },
+        exchangeSuccessText: {
+          [ELanguages.en]: "Exchange completed successfully",
+          [ELanguages.ru]: "Обмен выполнен успешно",
+        },
       },
       socialStoreModal: {
         titleLgText: {
