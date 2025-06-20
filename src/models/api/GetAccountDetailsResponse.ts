@@ -44,6 +44,16 @@ export interface GetAccountDetailsResponse {
         production_time_hours: number;
       };
     };
+    production_chains: {
+      [key in EFarmSlotTypes]: {
+        [key in CyberFarmProductType]: {
+          input: {
+            [key in CyberFarmProductType]: number;
+          };
+          output: number;
+        };
+      };
+    };
   };
   resource_deficit?: FarmResourceDeficitType;
   claim_daily_login: {

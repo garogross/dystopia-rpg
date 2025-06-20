@@ -144,7 +144,7 @@ export const getAccountDetails =
           getCyberFarmResources({
             resources: resData.ton_cyber_farm.resources,
             productCosts: resData.game_settings.base_costs,
-            resourceDeficit: resData.resource_deficit,
+            productionChains: resData.game_settings.production_chains,
             resourceTonValue: resData.ton_cyber_farm.resource_ton_value,
           })
         );
