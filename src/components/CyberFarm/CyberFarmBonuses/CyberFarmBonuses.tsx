@@ -16,6 +16,7 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
 import { useGlobalAdController } from "../../../hooks/useGlobalAdController";
 import { EAdTypes } from "../../../constants/EAdTypes";
+import { getPlatformType } from "../../../utils/getPlatformType";
 
 interface Props {
   show: boolean;
@@ -83,7 +84,13 @@ const FormBtn = ({ children }: { children: ReactNode }) => (
 );
 const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const language = useAppSelector((state) => state.ui.language);
-  const onShowAd = useGlobalAdController(EAdTypes.ADSGRAM_V, "11778");
+  const onShowAdsgramAd = useGlobalAdController(EAdTypes.ADSGRAM_V, "11778");
+  const onShowOnClickaAd = useGlobalAdController(
+    EAdTypes.ONCLICKA_V,
+    "6079126"
+  );
+
+  const isMobile = getPlatformType();
 
   return (
     <ModalWithAdd
@@ -95,7 +102,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
       <div className={styles.cyberFarmBonuses}>
         <button
           className={styles.cyberFarmBonuses__getByAddBtn}
-          onClick={onShowAd}
+          onClick={isMobile ? onShowAdsgramAd : onShowOnClickaAd}
         >
           <div className={styles.cyberFarmBonuses__getByAddBtnInner}>
             <ImageWebp

@@ -62,8 +62,7 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
   const isForSale = !!product.forSale;
   const cost = productCosts[item.product];
   const totalCost = productCosts[item.product] * counter;
-  const price =
-    productCosts[item.product] * (resourceTonValue[item.product] || 0);
+  const price = resourceTonValue[item.product] || 0;
 
   const onChangeCount = (value: number) => {
     setInputValue(value.toString());

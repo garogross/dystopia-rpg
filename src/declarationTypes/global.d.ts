@@ -56,5 +56,6 @@ declare global {
     Adsgram?: Adsgram;
     onclickaMini?: OnClickaMini;
     WallgramShowcase?: WallgramShowcase;
+    initCdTma?: (options: { id: string }) => Promise<any>;
   }
 }

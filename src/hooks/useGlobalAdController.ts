@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { EAdTypes } from "../constants/EAdTypes";
 import { useAppSelector } from "./redux";
 import { AdsgramController } from "../types/AdsgramController";
@@ -10,10 +10,12 @@ export const useGlobalAdController = (
   errClb?: () => void,
   dependencies?: unknown[]
 ) => {
+  const [onclickaAd, setOnclickaAd] = useState<any>(null);
+
   const tgId = useAppSelector((state) => state.profile.tgId);
 
   let AdController: AdsgramController | null = null;
-  if (type === "adsgram-v" && window.Adsgram) {
+  if (type === EAdTypes.ADSGRAM_V && window.Adsgram) {
     AdController = window.Adsgram?.init({ blockId: id });
   }
 
@@ -23,7 +25,15 @@ export const useGlobalAdController = (
 
   useEffect(
     () => {
-      // for init ads
+      if (!tgId) return;
+      if (type === EAdTypes.ONCLICKA_V) {
+        window
+          .initCdTma?.({ id })
+          .then((show) => {
+            setOnclickaAd(() => show);
+          })
+          .catch((e) => console.log(e));
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     dependencies ? [...dependencies, tgId] : [tgId]
@@ -31,12 +41,11 @@ export const useGlobalAdController = (
 
   const onShowAd = () => {
     const showCurAd = () => {
-
       switch (type) {
-        case "adsgram-v": {
+        case EAdTypes.ADSGRAM_V: {
           if (AdController) {
             AdController.show()
-              .then((result: {done: boolean}) => {
+              .then((result: { done: boolean }) => {
                 if (result.done) {
                   onSuccess();
                 }
@@ -45,6 +54,20 @@ export const useGlobalAdController = (
                 console.error("err", result);
               });
           }
+          break;
+        }
+        case "onclicka-v": {
+          if (!onclickaAd) {
+            errClb?.();
+            return;
+          }
+          onclickaAd?.()
+            .then(() => {
+              onSuccess();
+            })
+            .catch(() => {
+              errClb?.();
+            });
           break;
         }
         default: {

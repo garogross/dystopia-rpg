@@ -861,15 +861,15 @@ export const TRANSLATIONS = {
       },
       openText: {
         [ELanguages.en]: "Open",
-        [ELanguages.ru]: "Открыть",
+        [ELanguages.ru]: "Перейти",
       },
       taskNotCompletedText: {
         [ELanguages.en]: "Task not completed",
         [ELanguages.ru]: "Задание не выполнено",
       },
       supportProjectText: {
-        [ELanguages.en]: "Support the project",
-        [ELanguages.ru]: "Поддержать проект",
+        [ELanguages.en]: "Support the sponsor's project and get 5 CP",
+        [ELanguages.ru]: "Поддержите проект спонсора и получите 5 CP",
       },
     },
     collectReward: {

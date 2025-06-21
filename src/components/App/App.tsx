@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import AppRouter from "../../router/AppRouter";
 import { useTelegram } from "../../hooks/useTelegram";
+import { getPlatformType } from "../../utils/getPlatformType";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -37,9 +38,7 @@ const loadScripts = (tg: WebApp) => {
 export const App = () => {
   const tg = useTelegram();
 
-  const isMobile =
-    tg?.platform &&
-    !["macos", "tdesktop", "weba", "web", "webk"].includes(tg?.platform);
+  const isMobile = getPlatformType();
 
   useEffect(() => {
     if (!tg) return;
