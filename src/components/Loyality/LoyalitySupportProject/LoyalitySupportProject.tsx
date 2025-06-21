@@ -18,6 +18,7 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { ELanguages } from "../../../constants/ELanguages";
 import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
 import {
+  claimAdsgramReward,
   claimBarzhaReward,
   claimTraffyReward,
   claimWallgramReward,
@@ -189,18 +190,13 @@ const AdsgramTaskItem = ({
 }) => {
   const dispatch = useAppDispatch();
   const taskRef = useRef<HTMLElement>(null);
-  console.log({ taskRef });
 
   useEffect(() => {
     const handler = (event: any) => {
-      console.log("handler");
-
-      console.log({ event });
-      dispatch(event.detail.blockId);
+      dispatch(claimAdsgramReward({ taskId: event.detail }));
       // event.detail contains your block id
     };
     const task = taskRef.current;
-    console.log(task);
 
     if (task) {
       task.addEventListener("reward", handler);
