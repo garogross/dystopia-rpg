@@ -5,6 +5,7 @@ import { BquestCallbackDataType } from "../../types/BquestCallbackDataType";
 import { ClaimTraffyRewardResponse } from "../../models/api/tasks/traffy";
 import { ClaimTaddyRewardResponse } from "../../models/api/tasks/taddy";
 import { ClaimWallgramRewardResponse } from "../../models/api/tasks/wallgram";
+import { ClaimAdsgramRewardResponse } from "../../models/api/tasks/adsgram";
 
 export interface TasksState {}
 
@@ -91,6 +92,29 @@ export const claimWallgramReward = createAsyncThunk<
       {
         taskId: payload.taskId,
         value: payload.value,
+      }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
+const claimAdsgramRewardUrl = "/reward/adsgram/";
+export const claimAdsgramReward = createAsyncThunk<
+  ClaimAdsgramRewardResponse,
+  {
+    taskId: string;
+  }
+>("tasks/claimAdsgramReward", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<ClaimAdsgramRewardResponse>(
+      claimAdsgramRewardUrl,
+      "POST",
+      {
+        identifier: payload.taskId,
       }
     );
 

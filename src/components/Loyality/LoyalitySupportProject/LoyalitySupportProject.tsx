@@ -34,64 +34,11 @@ const {
   subscribedText,
   visitText,
   getText,
-  // task1NameText,
-  // task1DescriptionText,
-  // task2NameText,
-  // task2DescriptionText,
-  // task3NameText,
-  // task3DescriptionText,
-  // task4NameText,
-  // task4DescriptionText,
-  // task5NameText,
-  // task5DescriptionText,
   partnerTasksText,
   openText,
   taskNotCompletedText,
+  supportProjectText,
 } = TRANSLATIONS.loyality.supportProject;
-
-// const tasks = (language: ELanguages) => [
-//   {
-//     id: "1",
-//     name: task1NameText[language],
-//     description: task1DescriptionText[language],
-//     image: supportTask1Image,
-//     price: 5,
-//     subscription: true,
-//   },
-//   {
-//     id: "2",
-//     name: task2NameText[language],
-//     description: task2DescriptionText[language],
-//     image: supportTask2Image,
-//     price: 7,
-//     subscription: false,
-//   },
-//   {
-//     id: "3",
-//     name: task3NameText[language],
-//     description: task3DescriptionText[language],
-//     image: supportTask3Image,
-//     price: 10,
-//     subscription: false,
-//   },
-//   {
-//     id: "4",
-//     name: task4NameText[language],
-//     description: task4DescriptionText[language],
-//     image: supportTask4Image,
-//     price: 3,
-//     subscription: false,
-//     byLink: true,
-//   },
-//   {
-//     id: "5",
-//     name: task5NameText[language],
-//     description: task5DescriptionText[language],
-//     image: supportTask5Image,
-//     price: 3,
-//     subscription: false,
-//   },
-// ];
 
 const TADDY_TASK_PRICE = 1;
 
@@ -233,6 +180,85 @@ const AdditionalTaskItem = ({
     </div>
   </TransitionProvider>
 );
+const AdsgramTaskItem = ({
+  gameInited,
+  language,
+}: {
+  gameInited: boolean;
+  language: ELanguages;
+}) => {
+  const dispatch = useAppDispatch();
+  const taskRef = useRef<HTMLElement>(null);
+  console.log({ taskRef });
+
+  useEffect(() => {
+    const handler = (event: any) => {
+      console.log("handler");
+
+      console.log({ event });
+      dispatch(event.detail.blockId);
+      // event.detail contains your block id
+    };
+    const task = taskRef.current;
+    console.log(task);
+
+    if (task) {
+      task.addEventListener("reward", handler);
+    }
+
+    return () => {
+      if (task) {
+        task.removeEventListener("reward", handler);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <TransitionProvider
+      inProp={gameInited}
+      style={TransitionStyleTypes.bottom}
+      className={styles.loyalitySupportProject__listItem}
+    >
+      <div className={styles.loyalitySupportProject__adsgramWrapper}>
+        <adsgram-task
+          data-block-id="task-12038"
+          data-debug="false"
+          ref={taskRef}
+        >
+          <div
+            className={styles.loyalitySupportProject__listItemTexts}
+            slot="reward"
+          >
+            <p className={styles.loyalitySupportProject__listItemName}>
+              {supportProjectText[language]}
+            </p>
+          </div>
+          <div slot="button">
+            <button
+              className={styles.loyalitySupportProject__getBtn}
+              type="button"
+            >
+              <div className={styles.loyalitySupportProject__getBtnInner}>
+                {openText[language]}
+              </div>
+            </button>
+          </div>
+          <div slot="done">
+            <button
+              className={styles.loyalitySupportProject__getBtn}
+              type="button"
+            >
+              <div className={styles.loyalitySupportProject__getBtnInner}>
+                {openText[language]}
+              </div>
+            </button>
+          </div>
+        </adsgram-task>
+      </div>
+    </TransitionProvider>
+  );
+};
 
 const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
@@ -338,7 +364,7 @@ const LoyalitySupportProject = () => {
           onOpen={onShowWallgramTasks}
           index={2}
         /> */}
-
+        <AdsgramTaskItem gameInited={gameInited} language={language} />
         {taddyTasks.map((task, index) => (
           <TaskItem
             key={task.id}

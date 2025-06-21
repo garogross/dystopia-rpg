@@ -19,6 +19,7 @@ import {
 import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
 import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
 import {
+  claimAdsgramReward,
   claimBarzhaReward,
   claimTaddyReward,
   claimTraffyReward,
@@ -268,6 +269,11 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(claimTaddyReward.fulfilled, (state, { payload }) => {
+      if (+payload.reward) {
+        state.stats.cp += +payload.reward;
+      }
+    });
+    builder.addCase(claimAdsgramReward.fulfilled, (state, { payload }) => {
       if (+payload.reward) {
         state.stats.cp += +payload.reward;
       }
