@@ -29,6 +29,7 @@ import { WallgramFinishTaskItemType } from "../../../types/WallgramFinishTaskIte
 import { useTaddy } from "../../../context/TaddyContext";
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
+import { getPlatformType } from "../../../utils/getPlatformType";
 
 const {
   subscribeText,
@@ -190,8 +191,11 @@ const AdsgramTaskItem = ({
 }) => {
   const dispatch = useAppDispatch();
   const taskRef = useRef<HTMLElement>(null);
+  const isMobile = getPlatformType();
 
   useEffect(() => {
+    if (!isMobile) return;
+
     const handler = (event: any) => {
       dispatch(claimAdsgramReward({ taskId: event.detail }));
       // event.detail contains your block id
@@ -209,6 +213,8 @@ const AdsgramTaskItem = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!isMobile) return null;
 
   return (
     <TransitionProvider
