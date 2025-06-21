@@ -19,6 +19,7 @@ import {
 import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
 import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
 import {
+  claimAdsgramReward,
   claimBarzhaReward,
   claimTaddyReward,
   claimTraffyReward,
@@ -144,7 +145,7 @@ export const getAccountDetails =
           getCyberFarmResources({
             resources: resData.ton_cyber_farm.resources,
             productCosts: resData.game_settings.base_costs,
-            resourceDeficit: resData.resource_deficit,
+            productionChains: resData.game_settings.production_chains,
             resourceTonValue: resData.ton_cyber_farm.resource_ton_value,
           })
         );
@@ -268,6 +269,11 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(claimTaddyReward.fulfilled, (state, { payload }) => {
+      if (+payload.reward) {
+        state.stats.cp += +payload.reward;
+      }
+    });
+    builder.addCase(claimAdsgramReward.fulfilled, (state, { payload }) => {
       if (+payload.reward) {
         state.stats.cp += +payload.reward;
       }

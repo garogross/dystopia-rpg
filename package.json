@@ -13,6 +13,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@adsgram/react": "^1.0.2",
     "@reduxjs/toolkit": "^2.2.5",
     "@types/telegram-web-app": "^7.10.1",
     "eruda": "^3.4.1",

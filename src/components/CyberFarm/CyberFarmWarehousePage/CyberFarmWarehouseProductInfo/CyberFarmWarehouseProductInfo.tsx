@@ -207,7 +207,9 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
             }`}
           >
             {isForSale
-              ? `${youWillGetText[language]} ${price * counter} TON`
+              ? `${youWillGetText[language]} ${+(price * counter).toFixed(
+                  2
+                )} TON`
               : `${youWillSpendText[language]} ${+totalCost.toFixed(2)} CP`}
           </p>
           <button

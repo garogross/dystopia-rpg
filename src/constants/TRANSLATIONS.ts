@@ -867,6 +867,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Task not completed",
         [ELanguages.ru]: "Задание не выполнено",
       },
+      supportProjectText: {
+        [ELanguages.en]: "Support the project",
+        [ELanguages.ru]: "Поддержать проект",
+      },
     },
     collectReward: {
       collectRewardText: {
