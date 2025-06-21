@@ -10,6 +10,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "You don't have enough",
       [ELanguages.ru]: "У тебя не хватает",
     },
+    loadAdText: {
+      [ELanguages.en]: "Load Ad",
+      [ELanguages.ru]: "Загрузить рекламу",
+    },
   },
   common: {
     orText: {

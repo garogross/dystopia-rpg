@@ -17,6 +17,8 @@ import { useAppSelector } from "../../../hooks/redux";
 import { useGlobalAdController } from "../../../hooks/useGlobalAdController";
 import { EAdTypes } from "../../../constants/EAdTypes";
 import { getPlatformType } from "../../../utils/getPlatformType";
+import { useTooltip } from "../../../hooks/useTooltip";
+import Tooltip from "../../layout/Tooltip/Tooltip";
 
 interface Props {
   show: boolean;
@@ -40,6 +42,7 @@ const {
   watchAdText,
   withdrawText,
 } = TRANSLATIONS.cyberFarm.bonuses;
+const { loadAdText } = TRANSLATIONS.errors;
 
 const Formfield: React.FC<FormFieldProps> = ({
   headerText,
@@ -47,6 +50,7 @@ const Formfield: React.FC<FormFieldProps> = ({
   commission,
 }) => {
   const language = useAppSelector((state) => state.ui.language);
+
   return (
     <label className="{styles.cyberFarmBonuses__form}">
       <div className={styles.cyberFarmBonuses__formFieldHeader}>
@@ -84,10 +88,14 @@ const FormBtn = ({ children }: { children: ReactNode }) => (
 );
 const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const language = useAppSelector((state) => state.ui.language);
+  const { show: showTooltip, openTooltip } = useTooltip();
+
   const onShowAdsgramAd = useGlobalAdController(EAdTypes.ADSGRAM_V, "11778");
   const onShowOnClickaAd = useGlobalAdController(
     EAdTypes.ONCLICKA_V,
-    "6079126"
+    "6079126",
+    () => {},
+    openTooltip
   );
 
   const isMobile = getPlatformType();
@@ -137,6 +145,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
           </FormBtn>
         </form>
       </div>
+      <Tooltip show={showTooltip} text={loadAdText[language]} />
     </ModalWithAdd>
   );
 };
