@@ -4,6 +4,7 @@ import { products } from "../../../constants/cyberfarm/products";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import {
   BuyProductResponse,
+  GetStorageResponse,
   SellProductResponse,
 } from "../../../models/api/CyberFarm/Resources";
 import { FarmProductionChainsType } from "../../../types/FarmProductionChainsType";
@@ -73,6 +74,21 @@ export const sellProduct = createAsyncThunk<
   }
 });
 
+const getStorageUrl = "/ton_cyber_farm/storage/";
+export const getStorage = createAsyncThunk<GetStorageResponse, undefined>(
+  "resources/getStorage",
+  async (_payload, { rejectWithValue }) => {
+    try {
+      const resData = await fetchRequest<GetStorageResponse>(getStorageUrl);
+
+      return resData;
+    } catch (error: any) {
+      console.error("error", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const resourcesSlice = createSlice({
   name: "resourcesSlice",
   initialState,
@@ -107,6 +123,10 @@ export const resourcesSlice = createSlice({
         [payload.resource]:
           state.resources[payload.resource] - payload.amount_exchanged,
       };
+    });
+    builder.addCase(getStorage.fulfilled, (state, { payload }) => {
+      state.resourceTonValue = payload.resource_ton_value;
+      state.resources = { ...state.resources, ...payload.resources };
     });
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
       if (payload.cost && "cash_point" in payload.cost) {
