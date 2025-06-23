@@ -13,12 +13,13 @@ import {
 } from "../../layout/icons/CyberFarmBonuses";
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { useGlobalAdController } from "../../../hooks/useGlobalAdController";
 import { EAdTypes } from "../../../constants/EAdTypes";
 import { getPlatformType } from "../../../utils/getPlatformType";
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
+import { claimVideoReward } from "../../../store/slices/tasksSlice";
 
 interface Props {
   show: boolean;
@@ -87,14 +88,21 @@ const FormBtn = ({ children }: { children: ReactNode }) => (
   </div>
 );
 const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
+  const dispatch = useAppDispatch();
+  const tgId = useAppSelector((state) => state.profile.tgId);
   const language = useAppSelector((state) => state.ui.language);
   const { show: showTooltip, openTooltip } = useTooltip();
 
-  const onShowAdsgramAd = useGlobalAdController(EAdTypes.ADSGRAM_V, "11778");
+  const onReward = () => dispatch(claimVideoReward({ id: tgId.toString() }));
+  const onShowAdsgramAd = useGlobalAdController(
+    EAdTypes.ADSGRAM_V,
+    "11778",
+    onReward
+  );
   const onShowOnClickaAd = useGlobalAdController(
     EAdTypes.ONCLICKA_V,
     "6079126",
-    () => {},
+    onReward,
     openTooltip
   );
 

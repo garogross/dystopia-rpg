@@ -23,6 +23,7 @@ import {
   claimBarzhaReward,
   claimTaddyReward,
   claimTraffyReward,
+  claimVideoReward,
   claimWallgramReward,
 } from "./tasksSlice";
 // import {AppDispatch, RootState} from "../store";
@@ -274,6 +275,11 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(claimAdsgramReward.fulfilled, (state, { payload }) => {
+      if (+payload.reward) {
+        state.stats.cp += +payload.reward;
+      }
+    });
+    builder.addCase(claimVideoReward.fulfilled, (state, { payload }) => {
       if (+payload.reward) {
         state.stats.cp += +payload.reward;
       }
