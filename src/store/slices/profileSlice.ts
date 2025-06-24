@@ -23,8 +23,10 @@ import {
   claimBarzhaReward,
   claimTaddyReward,
   claimTraffyReward,
+  claimVideoReward,
   claimWallgramReward,
 } from "./tasksSlice";
+import { initAchievments } from "./cyberFarm/achievmentsSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -147,6 +149,7 @@ export const getAccountDetails =
             productCosts: resData.game_settings.base_costs,
             productionChains: resData.game_settings.production_chains,
             resourceTonValue: resData.ton_cyber_farm.resource_ton_value,
+            resourceDeficit: resData?.resource_deficit,
           })
         );
       }
@@ -162,6 +165,16 @@ export const getAccountDetails =
             })
           );
         }
+    }
+
+    if (resData.ton_cyber_farm) {
+      // cyberfarm achievments
+      dispatch(
+        initAchievments({
+          achievments: resData.ton_cyber_farm.achievements,
+          achievmentSettings: resData.game_settings?.achievements_settings,
+        })
+      );
     }
 
     return resData;
@@ -274,6 +287,11 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(claimAdsgramReward.fulfilled, (state, { payload }) => {
+      if (+payload.reward) {
+        state.stats.cp += +payload.reward;
+      }
+    });
+    builder.addCase(claimVideoReward.fulfilled, (state, { payload }) => {
       if (+payload.reward) {
         state.stats.cp += +payload.reward;
       }

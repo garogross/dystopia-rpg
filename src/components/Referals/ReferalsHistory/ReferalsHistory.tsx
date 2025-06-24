@@ -3,12 +3,7 @@ import styles from "./ReferalsHistory.module.scss";
 import TitleH3 from "../../layout/TitleH3/TitleH3";
 import { useAppSelector } from "../../../hooks/redux";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
-import {
-  kreditImageWebp,
-  darkMatterImage,
-  darkMatterImageWebp,
-} from "../../../assets/imageMaps";
-import { kreditImage } from "../../../assets/imageMaps";
+import { cpImage, cpImageWebp } from "../../../assets/imageMaps";
 import WrapperWithFrame from "../../layout/WrapperWithFrame/WrapperWithFrame";
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import TransitionProvider, {
@@ -17,6 +12,7 @@ import TransitionProvider, {
 import HeaderWithBackButton from "../../layout/HeaderWithBackButton/HeaderWithBackButton";
 import { ReferalsHistoryBottomBg } from "../../layout/icons/Referals";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { formatDate } from "../../../utils/formatDate";
 
 interface Props {
   show: boolean;
@@ -28,6 +24,7 @@ const { titleText, totalText } = TRANSLATIONS.referals.history;
 const ReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
   const refferences = useAppSelector((state) => state.refferences.refferences);
   const language = useAppSelector((state) => state.ui.language);
+  const totalReward = refferences.reduce((acc, cur) => (acc += cur.bonus), 0);
 
   return (
     <TransitionProvider
@@ -54,7 +51,7 @@ const ReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
             </h6>
             <DotsLine />
             <span className={styles.referalsHistory__mainHeaderValueText}>
-              1500
+              {totalReward}
             </span>
           </div>
           <div className={styles.referalsHistory__mainList}>
@@ -66,33 +63,21 @@ const ReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
                 <div className={styles.referalsHistory__income}>
                   <div className={styles.referalsHistory__incomeImgWrapper}>
                     <ImageWebp
-                      src={kreditImage}
-                      srcSet={kreditImageWebp}
-                      alt="kredit"
+                      src={cpImage}
+                      srcSet={cpImageWebp}
+                      alt="cp"
                       className={styles.referalsHistory__incomeImg}
                     />
                   </div>
                   <span className={styles.referalsHistory__mainText}>
-                    {refference.income.kredit}
+                    {refference.bonus}
                   </span>
                 </div>
-                <div className={styles.referalsHistory__income}>
-                  <div className={styles.referalsHistory__incomeImgWrapper}>
-                    <ImageWebp
-                      src={darkMatterImage}
-                      srcSet={darkMatterImageWebp}
-                      alt="darkMatter"
-                      className={styles.referalsHistory__incomeImg}
-                    />
-                  </div>
-                  <span className={styles.referalsHistory__mainText}>
-                    {refference.income.darkMatter}
-                  </span>
-                </div>
+
                 <p
                   className={`${styles.referalsHistory__mainText} ${styles.referalsHistory__mainTextDate}`}
                 >
-                  {refference.date}
+                  {formatDate(refference.first_login_ts)}
                 </p>
               </div>
             ))}

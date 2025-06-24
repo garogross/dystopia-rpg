@@ -48,7 +48,6 @@ html {
   overflow: hidden;
 }
 
-
 .fullheight {
   height: 100%;
 }
@@ -100,6 +99,10 @@ html {
 
 .primaryText {
   color: $color-primary;
+}
+
+.redText {
+  color: $color-red;
 }
 
 .typeAnimation {

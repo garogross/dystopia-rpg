@@ -1,11 +1,7 @@
-import { EStats } from "../constants/EStats";
-
 export interface IRefference {
-  id: number;
+  id_tgrm: number;
   name: string;
-  date: string;
-  income: {
-    [EStats.darkMatter]?: number;
-    [EStats.kredit]?: number;
-  };
+  bonus: number;
+  first_login_ts: number;
+  last_login_ts: number;
 }

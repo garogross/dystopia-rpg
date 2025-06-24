@@ -9,19 +9,20 @@ import styles from "./Achievments.module.scss";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../providers/TransitionProvider";
+import { EFarmAchievments } from "../../constants/cyberfarm/EFarmAchievments";
 
 const levelColors = ["#7F5CFF", "#48A7FF", "#00FF88", "#EEFF00", "#E20000"];
 const { progressText } = TRANSLATIONS.achievments;
-const dummyAchievments = [
-  { level: 1, progress: [0, 14] },
-  { level: 2, progress: [0, 30] },
-  { level: 3, progress: [0, 28] },
-  { level: 4, progress: [0, 22] },
-];
 
 const Achievments = () => {
   const language = useAppSelector((state) => state.ui.language);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const achievments = useAppSelector(
+    (state) => state.cyberfarm.achievments.achievments
+  );
+  const achievmentSettings = useAppSelector(
+    (state) => state.cyberfarm.achievments.achievmentSettings
+  );
   return (
     <div className={styles.achievments}>
       <TitleH3>Достижения</TitleH3>
@@ -39,33 +40,45 @@ const Achievments = () => {
             style={TransitionStyleTypes.bottom}
             className={styles.achievments__list}
           >
-            {dummyAchievments.map(({ level, progress }, index) => {
-              const curAchievmentDetails =
-                CYBER_FARM_ACHIEVMENTS[index][level - 1];
-              return (
-                <div
-                  key={index}
-                  className={styles.achievments__listItem}
-                  style={{ borderColor: levelColors[level - 1] }}
-                >
-                  {curAchievmentDetails.icon}
-                  <div className={styles.achievments__listItemMain}>
-                    <h6 className={styles.achievments__listItemtitle}>
-                      {curAchievmentDetails.title[language]}
-                    </h6>
-                    <p className={styles.achievments__listItemDescription}>
-                      {curAchievmentDetails.description[language]}
-                    </p>
-                    <p
-                      style={{ color: levelColors[level - 1] }}
-                      className={styles.achievments__processText}
+            {achievments &&
+              achievmentSettings &&
+              Object.entries(CYBER_FARM_ACHIEVMENTS).map(
+                ([k, levelsInfo], index) => {
+                  const key = k as EFarmAchievments;
+
+                  const achievmentCurState = achievments[key];
+                  const level = achievmentCurState?.level || 1;
+                  const count = achievmentCurState?.count || 0;
+                  const curSettings = achievmentSettings[key];
+
+                  const limit = curSettings.levels[level - 1];
+                  const curAchievmentDetails =
+                    CYBER_FARM_ACHIEVMENTS[key][level - 1];
+                  return (
+                    <div
+                      key={index}
+                      className={styles.achievments__listItem}
+                      style={{ borderColor: levelColors[level - 1] }}
                     >
-                      {progressText[language]}: {progress.join("/")}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+                      {curAchievmentDetails.icon}
+                      <div className={styles.achievments__listItemMain}>
+                        <h6 className={styles.achievments__listItemtitle}>
+                          {curAchievmentDetails.title[language]}
+                        </h6>
+                        <p className={styles.achievments__listItemDescription}>
+                          {curAchievmentDetails.description[language]}
+                        </p>
+                        <p
+                          style={{ color: levelColors[level - 1] }}
+                          className={styles.achievments__processText}
+                        >
+                          {progressText[language]}: {count}/{limit}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                }
+              )}
           </TransitionProvider>
         </div>
       </div>

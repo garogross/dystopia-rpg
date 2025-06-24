@@ -16,3 +16,11 @@ export interface SellProductResponse {
   ton_total: number;
   resources_left: number;
 }
+export interface GetStorageResponse {
+  resources: {
+    [key in CyberFarmProductType]?: number;
+  };
+  resource_ton_value: {
+    [key in CyberFarmProductType]?: number;
+  };
+}

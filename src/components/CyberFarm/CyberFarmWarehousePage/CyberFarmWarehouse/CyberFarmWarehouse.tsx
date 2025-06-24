@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CyberFarmWrapperWithList from "../../CyberFarmWrapperWithList/CyberFarmWrapperWithList";
 import { IWarehouseProduct } from "../../../../models/IWarehouseProduct";
 import { SocialStoreIcon } from "../../../layout/icons/CyberFarm/CyberFarmWarehousePage";
@@ -6,14 +6,16 @@ import styles from "./CyberFarmWarehouse.module.scss";
 import CyberFarmWarehouseProductInfo from "../CyberFarmWarehouseProductInfo/CyberFarmWarehouseProductInfo";
 import CyberFarmWarehouseSocialStoreModal from "../CyberFarmWarehouseSocialStoreModal/CyberFarmWarehouseSocialStoreModal";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
-import { useAppSelector } from "../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { products } from "../../../../constants/cyberfarm/products";
 import { CyberFarmProductType } from "../../../../types/CyberFarmProductType";
+import { getStorage } from "../../../../store/slices/cyberFarm/resourcesSlice";
 
 const { titleText, emptyText, socialStoreButtonText } =
   TRANSLATIONS.cyberFarm.warehouse;
 
 const CyberFarmWarehouse = () => {
+  const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
   const resources = useAppSelector(
     (state) => state.cyberfarm.resources.resources
@@ -30,8 +32,12 @@ const CyberFarmWarehouse = () => {
       count: resources[key as CyberFarmProductType],
     })
   );
-
   const selectedItem = data.find((item) => item.id === selectedItemId);
+
+  useEffect(() => {
+    dispatch(getStorage());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main

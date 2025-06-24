@@ -4,16 +4,19 @@ import { products } from "../../../constants/cyberfarm/products";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import {
   BuyProductResponse,
+  GetStorageResponse,
   SellProductResponse,
 } from "../../../models/api/CyberFarm/Resources";
 import { FarmProductionChainsType } from "../../../types/FarmProductionChainsType";
 import { buySlot, harvest, produceSlot } from "./slotsSlice";
 import { exchange } from "./socialShopSlice";
+import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
 
 export interface ResourcesState {
   resources: Record<CyberFarmProductType, number>;
   productCosts: Record<CyberFarmProductType, number>;
   productionChains: FarmProductionChainsType | null;
+  resourceDeficit: FarmResourceDeficitType | null;
   resourceTonValue: Partial<Record<CyberFarmProductType, number>>;
 }
 
@@ -26,6 +29,7 @@ const initialState: ResourcesState = {
   resources: initialResources,
   productCosts: initialResources,
   productionChains: null,
+  resourceDeficit: null,
   resourceTonValue: {},
 };
 
@@ -73,6 +77,21 @@ export const sellProduct = createAsyncThunk<
   }
 });
 
+const getStorageUrl = "/ton_cyber_farm/storage/";
+export const getStorage = createAsyncThunk<GetStorageResponse, undefined>(
+  "resources/getStorage",
+  async (_payload, { rejectWithValue }) => {
+    try {
+      const resData = await fetchRequest<GetStorageResponse>(getStorageUrl);
+
+      return resData;
+    } catch (error: any) {
+      console.error("error", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const resourcesSlice = createSlice({
   name: "resourcesSlice",
   initialState,
@@ -85,6 +104,7 @@ export const resourcesSlice = createSlice({
           productCosts,
           productionChains,
           resourceTonValue,
+          resourceDeficit,
         },
       }
     ) => {
@@ -92,6 +112,7 @@ export const resourcesSlice = createSlice({
       state.productCosts = { ...state.resources, ...productCosts };
       if (productionChains) state.productionChains = productionChains;
       if (resourceTonValue) state.resourceTonValue = resourceTonValue;
+      if (resourceDeficit) state.resourceDeficit = resourceDeficit;
     },
   },
   extraReducers: (builder) => {
@@ -107,6 +128,10 @@ export const resourcesSlice = createSlice({
         [payload.resource]:
           state.resources[payload.resource] - payload.amount_exchanged,
       };
+    });
+    builder.addCase(getStorage.fulfilled, (state, { payload }) => {
+      state.resourceTonValue = payload.resource_ton_value;
+      state.resources = { ...state.resources, ...payload.resources };
     });
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
       if (payload.cost && "cash_point" in payload.cost) {

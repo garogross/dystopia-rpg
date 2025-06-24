@@ -56,7 +56,23 @@ export const useGlobalAdController = (
           }
           break;
         }
-        case "onclicka-v": {
+        case EAdTypes.GIGA_V: {
+          if (!window.showGiga) {
+            errClb?.();
+            return;
+          }
+          window
+            .showGiga()
+            .then(() => {
+              onSuccess();
+            })
+            .catch((e) => {
+              errClb?.();
+            });
+
+          break;
+        }
+        case EAdTypes.ONCLICKA_V: {
           if (!onclickaAd) {
             errClb?.();
             return;

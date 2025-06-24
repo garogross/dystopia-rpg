@@ -11,7 +11,11 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 
 const { titleText } = TRANSLATIONS.referals.totalCount;
 
-const ReferalsTotalCount = () => {
+interface Props {
+  totalCount: number;
+}
+
+const ReferalsTotalCount: React.FC<Props> = ({ totalCount }) => {
   const language = useAppSelector((state) => state.ui.language);
 
   const [historyOpened, setHistoryOpened] = useState(false);
@@ -19,6 +23,7 @@ const ReferalsTotalCount = () => {
   return (
     <TransitionProvider inProp={gameInited} style={TransitionStyleTypes.zoomIn}>
       <button
+        disabled={!totalCount}
         onClick={() => setHistoryOpened(true)}
         className={styles.referalsTotalCount}
       >
@@ -30,7 +35,9 @@ const ReferalsTotalCount = () => {
             <div className={styles.referalsTotalCount__dotsLine}>
               <DotsLine />
             </div>
-            <span className={styles.referalsTotalCount__countText}>5</span>
+            <span className={styles.referalsTotalCount__countText}>
+              {totalCount}
+            </span>
           </div>
         </WrapperWithFrame>
         <div className={styles.referalsTotalCount__bottomBlock}>

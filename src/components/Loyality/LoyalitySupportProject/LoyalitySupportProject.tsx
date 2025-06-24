@@ -30,6 +30,7 @@ import { useTaddy } from "../../../context/TaddyContext";
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { getPlatformType } from "../../../utils/getPlatformType";
+import { useVideoAd } from "../../../hooks/useVideoAd";
 
 const {
   subscribeText,
@@ -41,7 +42,8 @@ const {
   taskNotCompletedText,
   supportProjectText,
 } = TRANSLATIONS.loyality.supportProject;
-
+const { watchAdAndGetCpText, watchAdText } = TRANSLATIONS.common;
+const { loadAdText } = TRANSLATIONS.errors;
 const TADDY_TASK_PRICE = 1;
 
 interface TaskItemProps {
@@ -182,6 +184,48 @@ const AdditionalTaskItem = ({
     </div>
   </TransitionProvider>
 );
+
+const VideoTaskItem = ({
+  gameInited,
+  language,
+}: {
+  language: ELanguages;
+  gameInited: boolean;
+}) => {
+  const { onShowAd, showTooltip } = useVideoAd();
+
+  return (
+    <>
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.bottom}
+        className={styles.loyalitySupportProject__listItem}
+      >
+        <div className={styles.loyalitySupportProject__listItemInner}>
+          <div className={styles.loyalitySupportProject__listItemMain}>
+            <div className={styles.loyalitySupportProject__listItemTexts}>
+              <p className={styles.loyalitySupportProject__listItemName}>
+                {watchAdAndGetCpText[language]}
+              </p>
+            </div>
+            <div className={styles.loyalitySupportProject__listItemActions}>
+              <button
+                onClick={onShowAd}
+                className={styles.loyalitySupportProject__getBtn}
+              >
+                <div className={styles.loyalitySupportProject__getBtnInner}>
+                  {watchAdText[language]}
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </TransitionProvider>
+      <Tooltip show={showTooltip} text={loadAdText[language]} />
+    </>
+  );
+};
+
 const AdsgramTaskItem = ({
   gameInited,
   language,
@@ -268,6 +312,7 @@ const LoyalitySupportProject = () => {
   const tgId = useAppSelector((state) => state.profile.tgId);
   const { show: showTooltip, openTooltip } = useTooltip();
   const { exchange, taddyTasks } = useTaddy();
+
   useEffect(() => {
     // init traffy
     initTraffyTasks(
@@ -367,6 +412,7 @@ const LoyalitySupportProject = () => {
           index={2}
         /> */}
         <AdsgramTaskItem gameInited={gameInited} language={language} />
+        <VideoTaskItem language={language} gameInited={gameInited} />
         {taddyTasks.map((task, index) => (
           <TaskItem
             key={task.id}

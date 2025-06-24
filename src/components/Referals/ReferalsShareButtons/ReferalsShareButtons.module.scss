@@ -6,10 +6,13 @@
   padding-inline: 12px;
   gap: 26px;
   margin-bottom: 35px;
+  max-width: 370px;
+  margin-inline: auto;
 
   &__button {
     @include button($color-primary);
     padding: 1px;
+    flex: 1;
   }
 
   &__buttonInner {
