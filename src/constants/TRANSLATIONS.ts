@@ -11,8 +11,8 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "У тебя не хватает",
     },
     loadAdText: {
-      [ELanguages.en]: "Load Ad",
-      [ELanguages.ru]: "Загрузить рекламу",
+      [ELanguages.en]: "Failed to load ad",
+      [ELanguages.ru]: "Не удалось загрузить рекламу",
     },
   },
   common: {
@@ -381,35 +381,6 @@ export const TRANSLATIONS = {
       plantSuccessText: {
         [ELanguages.en]: "Planting started successfully!",
         [ELanguages.ru]: "Посадка выполнена успешно!",
-      },
-
-      notEnoughResourcesText: {
-        [ELanguages.en]: "You don't have enough resources for production",
-        [ELanguages.ru]: "У вас недостаточно ресурсов для производства",
-      },
-      missingResourcesCostText: {
-        [ELanguages.en]: "Replenishing missing resources costs: ",
-        [ELanguages.ru]: "Пополнение недостающих ресурсов обходятся: ",
-      },
-      buyAllButtonText: {
-        [ELanguages.en]: "Buy all",
-        [ELanguages.ru]: "Докупать всё",
-      },
-      confirmButtonText: {
-        [ELanguages.en]: "Confirm",
-        [ELanguages.ru]: "Потвердить",
-      },
-      productionText: {
-        [ELanguages.en]: "Production",
-        [ELanguages.ru]: "Выработка",
-      },
-      requiredText: {
-        [ELanguages.en]: "Required",
-        [ELanguages.ru]: "Требуется",
-      },
-      youHaveText: {
-        [ELanguages.en]: "you have:",
-        [ELanguages.ru]: "у вас:",
       },
     },
     products: {
