@@ -1,6 +1,8 @@
 import { EFarmSlotTypes } from "../../constants/cyberfarm/EFarmSlotTypes";
 import { AppGameMode } from "../../types/AppGameMode";
 import { CyberFarmProductType } from "../../types/CyberFarmProductType";
+import { FarmAchievmentSettingsType } from "../../types/FarmAchievmentSettingsType";
+import { FarmAchievmentsType } from "../../types/FarmAchievmentsType";
 import { FarmResourceDeficitType } from "../../types/FarmResourceDeficitType";
 import { FarmSlotCostsType } from "../../types/FarmSlotCostsType";
 import { SocialShopType } from "../../types/SocialShopType";
@@ -32,6 +34,7 @@ export interface GetAccountDetailsResponse {
     };
     resources: Partial<Record<CyberFarmProductType, number>>;
     ton: number;
+    achievements: FarmAchievmentsType;
     resource_ton_value: Partial<Record<CyberFarmProductType, number>>;
   };
   game_settings?: {
@@ -54,8 +57,9 @@ export interface GetAccountDetailsResponse {
         };
       };
     };
+    achievements_settings: FarmAchievmentSettingsType;
   };
-  resource_deficit?: FarmResourceDeficitType;
+  resource_deficit: FarmResourceDeficitType;
   claim_daily_login: {
     next_reward: number;
     day_number: number;

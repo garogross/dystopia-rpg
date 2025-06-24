@@ -5,6 +5,6 @@ export type FarmResourceDeficitType = {
   [slotType in EFarmSlotTypes]?: {
     [productType in CyberFarmProductType]?: {
       [resourceType in CyberFarmProductType]?: number;
-    };
+    } & { total_price: number };
   };
 };

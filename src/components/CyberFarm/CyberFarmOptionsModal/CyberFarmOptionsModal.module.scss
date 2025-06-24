@@ -3,10 +3,15 @@
 
 .cyberFarmOptionsModal {
   margin-top: 20px;
+  width: 100%;
   @include flexCol();
   flex-direction: column;
-  gap: 6px;
-  width: 100%;
+
+  &__resourcesList {
+    @include flexCol();
+    flex-direction: column;
+    gap: 6px;
+  }
 
   &_col {
     max-width: 400px;
@@ -82,6 +87,15 @@
     );
   }
 
+  &__btn_active &__btnInner {
+    background: radial-gradient(
+      71.72% 71.72% at 50% 50%,
+      #3d2b7e 0%,
+      #5a41b5 100%
+    );
+    color: $color-black;
+  }
+
   &__picture {
     flex: 1;
     width: 100%;
@@ -93,5 +107,96 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+  }
+
+  &__info {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  &__infoHeader {
+    @include flexCol();
+    gap: 10px;
+  }
+  &__infoDotline {
+    flex: 1;
+
+    & svg {
+      width: 100%;
+    }
+  }
+  &__infoTitle {
+    @include setFont(14px, 400);
+  }
+  &__production {
+    width: 100%;
+    border: 1px dashed $color-primary;
+    padding: 5px;
+    @include flexCol(space-between);
+  }
+  &__infoText {
+    @include setFont(12px, 400);
+  }
+  &__infoTable {
+    border-collapse: collapse;
+    table-layout: fixed; /* Makes all columns equal width */
+    width: 100%;
+  }
+
+  &__infoTableRow {
+    border: 1px dotted $color-primary;
+    padding: 5px;
+
+    &:last-child {
+      text-align: right;
+    }
+  }
+  &__notEnoghResText {
+    padding-top: 3px;
+    text-align: center;
+    @include setFont(10px, 400, $font-fam-main, $color-red);
+  }
+  &__missingResCost {
+    @include flexCol();
+    gap: 2px;
+    padding-top: 5px;
+  }
+  &__missingResCostText {
+    @include setFont(12px, 400);
+  }
+  &__cpImage {
+    width: 10px;
+  }
+  &__acceptBtn {
+    padding: 1px;
+    @include button($color-primary);
+    margin-top: 10px;
+  }
+  &__acceptBtnInner {
+    padding: 4px 10px;
+    @include flexCol();
+    gap: 4px;
+    @include setFont(14px, 400);
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      rgb(61, 43, 126) 0%,
+      rgb(4, 0, 16) 100%
+    );
+  }
+
+  &__acceptBtn,
+  &__acceptBtnInner {
+    clip-path: polygon(
+      97% 0%,
+      100% 15%,
+      100% 85%,
+      97% 100%,
+      3% 100%,
+      0% 85%,
+      0% 15%,
+      3% 0%
+    );
   }
 }

@@ -50,7 +50,12 @@ export const buySlot = createAsyncThunk<
 const produceSlotUrl = "/ton_cyber_farm/produce/";
 export const produceSlot = createAsyncThunk<
   ProduceSlotResponse & { type: EFarmSlotTypes },
-  { id: string; product: CyberFarmProductType; type: EFarmSlotTypes }
+  {
+    id: string;
+    product: CyberFarmProductType;
+    type: EFarmSlotTypes;
+    payment_method: "cash_point" | "metal";
+  }
 >("slots/produceSlot", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<ProduceSlotResponse>(
@@ -59,6 +64,7 @@ export const produceSlot = createAsyncThunk<
       {
         slot_id: payload.id,
         product: payload.product,
+        payment_method: payload.payment_method,
       }
     );
 

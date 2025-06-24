@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from "./ReferalsTotalEarnings.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common/HeaderWings";
 import WrapperWithFrame from "../../layout/WrapperWithFrame/WrapperWithFrame";
@@ -10,11 +10,16 @@ import { EStats } from "../../../constants/EStats";
 import StatImg from "../../layout/StatImg/StatImg";
 import { ReferalsCollectIcon } from "../../layout/icons/Referals";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { formatNumber } from "../../../utils/formatNumber";
 
 const { availableToCollectText, collectButtonText } =
   TRANSLATIONS.referals.totalEarnings;
 
-const ReferalsTotalEarnings = () => {
+interface Props {
+  totalReward: number;
+}
+
+const ReferalsTotalEarnings: FC<Props> = ({ totalReward }) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const language = useAppSelector((state) => state.ui.language);
 
@@ -34,12 +39,15 @@ const ReferalsTotalEarnings = () => {
               <div className={styles.referalsTotalEarnings__value}>
                 <StatImg stat={EStats.cp} size={19} />
                 <span className={styles.referalsTotalEarnings__valueText}>
-                  90k
+                  {formatNumber(totalReward)}
                 </span>
               </div>
             </div>
           </div>
-          <button className={styles.referalsTotalEarnings__collectBtn}>
+          <button
+            disabled={!totalReward}
+            className={styles.referalsTotalEarnings__collectBtn}
+          >
             <div className={styles.referalsTotalEarnings__collectBtnInner}>
               <ReferalsCollectIcon />
               <span>{collectButtonText[language]}</span>

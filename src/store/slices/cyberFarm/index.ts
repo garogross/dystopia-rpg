@@ -4,6 +4,7 @@ import globalCyberfarmReducer from "./cyberfarmSlice";
 import resourcesSlice from "./resourcesSlice";
 import activitySlice from "./activitySlice";
 import socialShopSlice from "./socialShopSlice";
+import achievmentsSlice from "./achievmentsSlice";
 
 export const cyberfarmReducer = combineReducers({
   global: globalCyberfarmReducer,
@@ -11,6 +12,7 @@ export const cyberfarmReducer = combineReducers({
   resources: resourcesSlice,
   activity: activitySlice,
   socialShop: socialShopSlice,
+  achievments: achievmentsSlice,
 });
 
 export type CyberfarmState = ReturnType<typeof cyberfarmReducer>;

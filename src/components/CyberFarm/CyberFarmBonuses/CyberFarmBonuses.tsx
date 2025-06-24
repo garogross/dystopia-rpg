@@ -13,13 +13,9 @@ import {
 } from "../../layout/icons/CyberFarmBonuses";
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { useGlobalAdController } from "../../../hooks/useGlobalAdController";
-import { EAdTypes } from "../../../constants/EAdTypes";
-import { getPlatformType } from "../../../utils/getPlatformType";
-import { useTooltip } from "../../../hooks/useTooltip";
+import { useAppSelector } from "../../../hooks/redux";
 import Tooltip from "../../layout/Tooltip/Tooltip";
-import { claimVideoReward } from "../../../store/slices/tasksSlice";
+import { useVideoAd } from "../../../hooks/useVideoAd";
 
 interface Props {
   show: boolean;
@@ -88,25 +84,8 @@ const FormBtn = ({ children }: { children: ReactNode }) => (
   </div>
 );
 const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
-  const dispatch = useAppDispatch();
-  const tgId = useAppSelector((state) => state.profile.tgId);
   const language = useAppSelector((state) => state.ui.language);
-  const { show: showTooltip, openTooltip } = useTooltip();
-
-  const onReward = () => dispatch(claimVideoReward({ id: tgId.toString() }));
-  const onShowAdsgramAd = useGlobalAdController(
-    EAdTypes.ADSGRAM_V,
-    "11778",
-    onReward
-  );
-  const onShowOnClickaAd = useGlobalAdController(
-    EAdTypes.ONCLICKA_V,
-    "6079126",
-    onReward,
-    openTooltip
-  );
-
-  const isMobile = getPlatformType();
+  const { onShowAd, showTooltip } = useVideoAd();
 
   return (
     <ModalWithAdd
@@ -118,7 +97,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
       <div className={styles.cyberFarmBonuses}>
         <button
           className={styles.cyberFarmBonuses__getByAddBtn}
-          onClick={isMobile ? onShowAdsgramAd : onShowOnClickaAd}
+          onClick={onShowAd}
         >
           <div className={styles.cyberFarmBonuses__getByAddBtnInner}>
             <ImageWebp

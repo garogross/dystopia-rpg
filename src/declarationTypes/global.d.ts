@@ -57,5 +57,6 @@ declare global {
     onclickaMini?: OnClickaMini;
     WallgramShowcase?: WallgramShowcase;
     initCdTma?: (options: { id: string }) => Promise<any>;
+    showGiga?: () => Promise<Promise<void>>;
   }
 }

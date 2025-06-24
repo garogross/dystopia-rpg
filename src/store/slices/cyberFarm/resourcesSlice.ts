@@ -10,11 +10,13 @@ import {
 import { FarmProductionChainsType } from "../../../types/FarmProductionChainsType";
 import { buySlot, harvest, produceSlot } from "./slotsSlice";
 import { exchange } from "./socialShopSlice";
+import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
 
 export interface ResourcesState {
   resources: Record<CyberFarmProductType, number>;
   productCosts: Record<CyberFarmProductType, number>;
   productionChains: FarmProductionChainsType | null;
+  resourceDeficit: FarmResourceDeficitType | null;
   resourceTonValue: Partial<Record<CyberFarmProductType, number>>;
 }
 
@@ -27,6 +29,7 @@ const initialState: ResourcesState = {
   resources: initialResources,
   productCosts: initialResources,
   productionChains: null,
+  resourceDeficit: null,
   resourceTonValue: {},
 };
 
@@ -101,6 +104,7 @@ export const resourcesSlice = createSlice({
           productCosts,
           productionChains,
           resourceTonValue,
+          resourceDeficit,
         },
       }
     ) => {
@@ -108,6 +112,7 @@ export const resourcesSlice = createSlice({
       state.productCosts = { ...state.resources, ...productCosts };
       if (productionChains) state.productionChains = productionChains;
       if (resourceTonValue) state.resourceTonValue = resourceTonValue;
+      if (resourceDeficit) state.resourceDeficit = resourceDeficit;
     },
   },
   extraReducers: (builder) => {

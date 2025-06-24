@@ -24,6 +24,14 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "cp",
       [ELanguages.ru]: "cp",
     },
+    watchAdAndGetCpText: {
+      [ELanguages.en]: "Watch an ad and get 1 CP",
+      [ELanguages.ru]: "Посмотри рекламу и получи 1 CP",
+    },
+    watchAdText: {
+      [ELanguages.en]: "Watch",
+      [ELanguages.ru]: "Посмотреть",
+    },
   },
   home: {
     titleText: {
@@ -920,6 +928,10 @@ export const TRANSLATIONS = {
       copyLinkText: {
         [ELanguages.en]: "Copy link",
         [ELanguages.ru]: "Копировать ссылку",
+      },
+      copiedText: {
+        [ELanguages.en]: "Copied",
+        [ELanguages.ru]: "Скопировано",
       },
       inviteFriendText: {
         [ELanguages.en]: "Invite friend",

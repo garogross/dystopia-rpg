@@ -28,11 +28,12 @@ import {
 } from "../../components/layout/icons/Achievments/cyberfarm/Factory";
 
 import { TRANSLATIONS } from "../TRANSLATIONS";
+import { EFarmAchievments } from "./EFarmAchievments";
 
 const { store, field, farm, factory } = TRANSLATIONS.cyberFarm.achievments;
 
-export const CYBER_FARM_ACHIEVMENTS = [
-  [
+export const CYBER_FARM_ACHIEVMENTS = {
+  [EFarmAchievments.SOCIAL_SHOP]: [
     {
       icon: <AchievmentStore1Level />,
       title: store.level1,
@@ -59,7 +60,7 @@ export const CYBER_FARM_ACHIEVMENTS = [
       description: store.desc5,
     },
   ],
-  [
+  [EFarmAchievments.HARVEST_FIELD]: [
     {
       icon: <AchievmentField1Level />,
       title: field.level1,
@@ -86,7 +87,7 @@ export const CYBER_FARM_ACHIEVMENTS = [
       description: field.desc5,
     },
   ],
-  [
+  [EFarmAchievments.HARVEST_FARM]: [
     {
       icon: <AchievmentFarm1Level />,
       title: farm.level1,
@@ -113,7 +114,7 @@ export const CYBER_FARM_ACHIEVMENTS = [
       description: farm.desc5,
     },
   ],
-  [
+  [EFarmAchievments.HARVEST_FACTORY]: [
     {
       icon: <AchievmentFactory1Level />,
       title: factory.level1,
@@ -140,4 +141,4 @@ export const CYBER_FARM_ACHIEVMENTS = [
       description: factory.desc5,
     },
   ],
-];
+};

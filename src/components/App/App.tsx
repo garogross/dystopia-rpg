@@ -33,6 +33,15 @@ const loadScripts = (tg: WebApp) => {
     onclickaScript.async = true;
     document.body.appendChild(onclickaScript);
   }
+  // load onclicka script
+  const gigapubProjectId = process.env.REACT_APP_GIGAPUB_PROJECT_ID;
+
+  if (gigapubProjectId) {
+    const gigapubScript = document.createElement("script");
+    gigapubScript.src = `https://ad.gigapub.tech/script?id=${gigapubProjectId}`;
+    gigapubScript.async = true;
+    document.body.appendChild(gigapubScript);
+  }
 };
 
 export const App = () => {
