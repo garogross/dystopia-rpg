@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "./redux";
 import { useGlobalAdController } from "./useGlobalAdController";
 import { useTooltip } from "./useTooltip";
 
-export const useVideoAd = () => {
+export const useVideoAd = (scsClb?: () => void) => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
   const { show: showTooltip, openTooltip } = useTooltip();
@@ -25,7 +25,7 @@ export const useVideoAd = () => {
   const onShowOnClickaAd = useGlobalAdController(
     EAdTypes.GIGA_V,
     "",
-    onReward,
+    scsClb || onReward,
     openTooltip
   );
 
