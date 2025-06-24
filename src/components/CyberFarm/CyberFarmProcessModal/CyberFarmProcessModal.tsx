@@ -19,8 +19,7 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { useFarmFieldProgress } from "../../../hooks/useFarmFieldProgress";
-import { useGlobalAdController } from "../../../hooks/useGlobalAdController";
-import { EAdTypes } from "../../../constants/EAdTypes";
+import { useVideoAd } from "../../../hooks/useVideoAd";
 
 interface Props {
   show: boolean;
@@ -37,7 +36,7 @@ const {
   harvestCollectedText,
   speedUpCompleteText,
 } = TRANSLATIONS.cyberFarm.processModal;
-const { somethingWentWrong } = TRANSLATIONS.errors;
+const { somethingWentWrong, loadAdText } = TRANSLATIONS.errors;
 
 const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   const dispatch = useAppDispatch();
@@ -45,9 +44,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   const speedUpCosts = useAppSelector(
     (state) => state.cyberfarm.slots.speedUpCosts
   );
-  const onShowAd = useGlobalAdController(EAdTypes.ADSGRAM_V, "11778", () => {
-    onSpeedUp(true);
-  });
+  const { onShowAd, showTooltip: showAdTooltip } = useVideoAd();
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
@@ -192,6 +189,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
           </TransitionProvider>
         </div>
         <Tooltip show={showTooltip} text={tooltipText[language]} />
+        <Tooltip show={showAdTooltip} text={loadAdText[language]} />
       </div>
       <LoadingOverlay loading={loading} />
     </ModalWithAdd>
