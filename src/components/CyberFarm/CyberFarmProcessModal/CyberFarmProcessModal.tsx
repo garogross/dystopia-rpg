@@ -44,7 +44,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   const speedUpCosts = useAppSelector(
     (state) => state.cyberfarm.slots.speedUpCosts
   );
-  const { onShowAd, showTooltip: showAdTooltip } = useVideoAd();
+  const { onShowAd, showTooltip: showAdTooltip } = useVideoAd(() => onSpeedUp(true));
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
