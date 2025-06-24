@@ -37,6 +37,13 @@ const {
 
   successText,
   plantSuccessText,
+  notEnoughResourcesText,
+  missingResourcesCostText,
+  buyAllButtonText,
+  confirmButtonText,
+  productionText,
+  requiredText,
+  youHaveText,
 } = TRANSLATIONS.cyberFarm.optionsModal;
 
 const CyberFarmOptionsModal: React.FC<Props> = ({
@@ -200,7 +207,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           </div>
           <div className={styles.cyberFarmOptionsModal__production}>
             <span className={styles.cyberFarmOptionsModal__infoText}>
-              Выработка
+              {productionText[language]}
             </span>
             <span className={styles.cyberFarmOptionsModal__infoText}>
               {curChain?.output}
@@ -211,7 +218,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
               <DotsLine />
             </div>
             <h4 className={styles.cyberFarmOptionsModal__infoTitle}>
-              Требуется
+              {requiredText[language]}
             </h4>
             <div className={styles.cyberFarmOptionsModal__infoDotline}>
               <DotsLine />
@@ -230,7 +237,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
                     <span className={styles.cyberFarmOptionsModal__infoText}>
                       {resource.isInsufficient ? (
                         <span className="redText">
-                          (у вас:{resource.available})
+                          ({youHaveText[language]}:{resource.available})
                         </span>
                       ) : (
                         ""
@@ -249,7 +256,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           height={20}
           className={styles.cyberFarmOptionsModal__notEnoghResText}
         >
-          У вас недостаточно ресурсов для производства{" "}
+          {notEnoughResourcesText[language]}
         </TransitionProvider>
         <TransitionProvider
           inProp={isUnavailableForProduce}
@@ -258,7 +265,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           className={styles.cyberFarmOptionsModal__missingResCost}
         >
           <span className={styles.cyberFarmOptionsModal__missingResCostText}>
-            Пополнение недостающих ресурсов обходятся: {curChain?.output || ""}
+            {missingResourcesCostText[language]}: {curChain?.output || ""}
           </span>
           <ImageWebp
             src={cpImage}
@@ -278,7 +285,9 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           <div className={styles.cyberFarmOptionsModal__acceptBtnInner}>
             {isUnavailableForProduce ? <BuyIcon /> : <ConfirmIcon />}
             <span>
-              {isUnavailableForProduce ? "Докупать всё" : "Потвердить"}
+              {isUnavailableForProduce
+                ? buyAllButtonText[language]
+                : confirmButtonText[language]}
             </span>
           </div>
         </button>
