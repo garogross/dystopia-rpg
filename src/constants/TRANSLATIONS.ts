@@ -903,6 +903,18 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Open",
         [ELanguages.ru]: "Перейти",
       },
+      claimAdText: {
+        [ELanguages.en]: "Claim",
+        [ELanguages.ru]: "Забрать",
+      },
+      doneText: {
+        [ELanguages.en]: "Done",
+        [ELanguages.ru]: "Готово",
+      },
+      adNotAvailableText: {
+        [ELanguages.en]: "Ad not available",
+        [ELanguages.ru]: "Реклама недоступна",
+      },
       taskNotCompletedText: {
         [ELanguages.en]: "Task not completed",
         [ELanguages.ru]: "Задание не выполнено",

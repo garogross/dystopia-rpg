@@ -39,6 +39,8 @@ const {
   getText,
   partnerTasksText,
   openText,
+  claimAdText,
+  doneText,
   taskNotCompletedText,
   supportProjectText,
 } = TRANSLATIONS.loyality.supportProject;
@@ -245,6 +247,7 @@ const AdsgramTaskItem = ({
       // event.detail contains your block id
     };
     const task = taskRef.current;
+    console.log({ task });
 
     if (task) {
       task.addEventListener("reward", handler);
@@ -290,13 +293,23 @@ const AdsgramTaskItem = ({
               </div>
             </button>
           </div>
+          <div slot="claim">
+            <button
+              className={styles.loyalitySupportProject__getBtn}
+              type="button"
+            >
+              <div className={styles.loyalitySupportProject__getBtnInner}>
+                {claimAdText[language]}
+              </div>
+            </button>
+          </div>
           <div slot="done">
             <button
               className={styles.loyalitySupportProject__getBtn}
               type="button"
             >
               <div className={styles.loyalitySupportProject__getBtnInner}>
-                {openText[language]}
+                {doneText[language]}
               </div>
             </button>
           </div>

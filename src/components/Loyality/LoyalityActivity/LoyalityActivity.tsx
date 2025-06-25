@@ -35,8 +35,19 @@ const {
 const { somethingWentWrong } = TRANSLATIONS.errors;
 
 const getAvailableInSecs = () => {
-  const tomorrowDateInSec =
-    new Date(new Date().setHours(24, 0, 0, 0)).getTime() / 1000;
+  const now = new Date();
+  const tomorrowUTC = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + 1,
+      0,
+      0,
+      0,
+      0
+    )
+  );
+  const tomorrowDateInSec = tomorrowUTC.getTime() / 1000;
   const currentDateInSec = Date.now() / 1000;
   return tomorrowDateInSec - currentDateInSec;
 };
