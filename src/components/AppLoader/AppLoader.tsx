@@ -2,20 +2,33 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./AppLoader.module.scss";
 
 import {
+  DYSTOPIA_GAME_MEDIA_BASE_PATH,
   fecthRandomSplashImage,
   PUZZLE_MEDIA_BASE_PATH,
 } from "../../api/splash";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../providers/TransitionProvider";
+import { ESplashTypes } from "../../constants/ESplashTypes";
 
 interface Props {
   loading: boolean;
   timerFinished: boolean;
   setTimerFinished: (timerFinished: boolean) => void;
+  type?: ESplashTypes;
 }
 
-const AppLoader = ({ loading, timerFinished, setTimerFinished }: Props) => {
+const paths: Record<ESplashTypes, string> = {
+  [ESplashTypes.CYBERFARM]:
+    DYSTOPIA_GAME_MEDIA_BASE_PATH + "/splash-cyberfarm/",
+};
+
+const AppLoader = ({
+  loading,
+  timerFinished,
+  setTimerFinished,
+  type,
+}: Props) => {
   const [image, setImage] = useState(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -23,7 +36,8 @@ const AppLoader = ({ loading, timerFinished, setTimerFinished }: Props) => {
   const isImage = image && /\.(jpg|jpeg|png|gif|webp)$/i.test(image);
   const isVideo = image && /\.(mp4|webm|ogg)$/i.test(image);
 
-  const fullSplashUrl = `${PUZZLE_MEDIA_BASE_PATH}/splash/${image}`;
+  const defaultSplashUrl = `${PUZZLE_MEDIA_BASE_PATH}/splash/`;
+  const fullSplashUrl = `${type ? paths[type] : defaultSplashUrl}${image}`;
 
   useEffect(() => {
     if (imageLoaded) {
@@ -31,7 +45,7 @@ const AppLoader = ({ loading, timerFinished, setTimerFinished }: Props) => {
         setTimerFinished(true);
       }, 3000);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageLoaded]);
 
   useEffect(() => {
@@ -47,10 +61,11 @@ const AppLoader = ({ loading, timerFinished, setTimerFinished }: Props) => {
   useEffect(() => {
     (async () => {
       try {
-        const { image } = await fecthRandomSplashImage();
+        const { image } = await fecthRandomSplashImage(type);
         setImage(image);
       } catch (error) {}
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

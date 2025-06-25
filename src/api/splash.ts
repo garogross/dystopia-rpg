@@ -1,10 +1,17 @@
+import { ESplashTypes } from "../constants/ESplashTypes";
+
 export const PUZZLE_MEDIA_BASE_PATH = "https://idledystopia.com/puzzle-media";
-const randomSplashPath = "/random-splash";
+export const DYSTOPIA_GAME_MEDIA_BASE_PATH = "https://dystopia.game/media";
+// https://dystopia.game/media/random-splash?type=cyberfarm
+export const randomSplashPath = "/random-splash";
 
+export const fecthRandomSplashImage = async (type?: ESplashTypes) => {
+  const path =
+    type === ESplashTypes.CYBERFARM
+      ? DYSTOPIA_GAME_MEDIA_BASE_PATH + randomSplashPath + `?type=${type}`
+      : PUZZLE_MEDIA_BASE_PATH;
+  const res = await fetch(path);
+  const data = await res.json();
 
-export const fecthRandomSplashImage = async () => {
-    const res = await fetch(`${PUZZLE_MEDIA_BASE_PATH}${randomSplashPath}`);
-    const data = await res.json();
-  
-    return data;
-  };
+  return data;
+};
