@@ -101,6 +101,10 @@ export const getAccountDetails =
       `${getAccountDetailsUrl}${mode ? `?mode=${mode}` : ""}`
     );
 
+    dispatch(
+      setUser({ id: resData.user?.id_tgrm, tgId: resData.user?.id_tgrm })
+    );
+
     dispatch(receiveAccountDetails());
     dispatch(
       updateStats({
@@ -235,6 +239,8 @@ export const profileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(authUser.fulfilled, (state, { payload }) => {
+      console.log({ payload });
+
       state.token = payload.token;
       state.username = payload.user.username;
       state.tgId = payload.user.id_tgrm;
