@@ -101,6 +101,10 @@ export const getAccountDetails =
       `${getAccountDetailsUrl}${mode ? `?mode=${mode}` : ""}`
     );
 
+    dispatch(
+      setUser({ id: resData.user?.id_tgrm, tgId: resData.user?.id_tgrm })
+    );
+
     dispatch(receiveAccountDetails());
     dispatch(
       updateStats({

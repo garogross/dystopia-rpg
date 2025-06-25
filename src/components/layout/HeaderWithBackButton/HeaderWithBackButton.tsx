@@ -4,8 +4,9 @@ import { BackIcon } from "../icons/Common";
 interface Props {
   onClose: () => void;
   className?: string;
+  title?: string;
 }
-const HeaderWithBackButton: React.FC<Props> = ({ onClose, className }) => {
+const HeaderWithBackButton: React.FC<Props> = ({ onClose, className,title }) => {
   return (
     <div className={`${styles.headerWithBackButton} ${className}`}>
       <button
@@ -16,6 +17,7 @@ const HeaderWithBackButton: React.FC<Props> = ({ onClose, className }) => {
           <BackIcon />
         </div>
       </button>
+      {title && <h3 className="titleH3 typeAnimation">{title}</h3>}
       <div className={styles.headerWithBackButton__wind}></div>
     </div>
   );

@@ -25,6 +25,7 @@
 
   &__talkText {
     @include setFont(12px, 400);
+    white-space: pre-line;
   }
   &__tail {
     position: absolute;
