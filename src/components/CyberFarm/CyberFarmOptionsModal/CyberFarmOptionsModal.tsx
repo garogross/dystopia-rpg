@@ -23,6 +23,7 @@ import {
   ConfirmIcon,
   BuyIcon,
 } from "../../layout/icons/CyberFarm/CyberFarmOptionsModal";
+import { buyResourceDeflict } from "../../../store/slices/cyberFarm/resourcesSlice";
 
 interface Props {
   show: boolean;
@@ -62,6 +63,9 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   const productionChains = useAppSelector(
     (state) => state.cyberfarm.resources.productionChains
   );
+  const resourceDeficit = useAppSelector(
+    (state) => state.cyberfarm.resources.resourceDeficit
+  );
   const resources = useAppSelector(
     (state) => state.cyberfarm.resources.resources
   );
@@ -74,7 +78,10 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
       ? productionChains[type][selectedResource]
       : null;
   const curProduct = selectedResource ? products[selectedResource] : null;
-
+  const totalPricyByCp =
+    selectedResource && resourceDeficit
+      ? resourceDeficit[type]?.[selectedResource]?.total_price || 0
+      : 0;
   useEffect(() => {
     if (!show) {
       setErrorText("");
@@ -87,6 +94,14 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
     try {
       setLoading(true);
       setErrored(false);
+      if (isUnavailableForProduce) {
+        await dispatch(
+          buyResourceDeflict({
+            product: selectedResource,
+            slot_type: type,
+          })
+        ).unwrap();
+      }
       await dispatch(
         produceSlot({
           id: slotId,
@@ -265,7 +280,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           className={styles.cyberFarmOptionsModal__missingResCost}
         >
           <span className={styles.cyberFarmOptionsModal__missingResCostText}>
-            {missingResourcesCostText[language]}: {curChain?.output || ""}
+            {missingResourcesCostText[language]}: {totalPricyByCp || ""}
           </span>
           <ImageWebp
             src={cpImage}
@@ -278,7 +293,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           onClick={onProduce}
           disabled={
             !selectedResource ||
-            (isUnavailableForProduce && (curChain?.output || 0) > cp)
+            (isUnavailableForProduce && totalPricyByCp > cp)
           }
           className={styles.cyberFarmOptionsModal__acceptBtn}
         >

@@ -13,6 +13,7 @@ import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
 import { buySlot, getCyberFarmSlots, speedUp } from "./cyberFarm/slotsSlice";
 import {
   buyProduct,
+  buyResourceDeflict,
   getCyberFarmResources,
   sellProduct,
 } from "./cyberFarm/resourcesSlice";
@@ -250,6 +251,9 @@ export const profileSlice = createSlice({
     });
     builder.addCase(sellProduct.fulfilled, (state, { payload }) => {
       state.stats.ton = payload.ton_total;
+    });
+    builder.addCase(buyResourceDeflict.fulfilled, (state, { payload }) => {
+      state.stats.cp = payload.cash_point_left;
     });
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
       if (payload.cost?.cash_point) {

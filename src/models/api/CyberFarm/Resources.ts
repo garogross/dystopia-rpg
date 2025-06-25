@@ -16,11 +16,27 @@ export interface SellProductResponse {
   ton_total: number;
   resources_left: number;
 }
+
+export interface BuyResourceDeflictResponse {
+  status: string;
+  bought: {
+    [key in CyberFarmProductType]: number;
+  };
+  total_price: number;
+  cash_point_left: number;
+}
+
 export interface GetStorageResponse {
   resources: {
     [key in CyberFarmProductType]?: number;
   };
   resource_ton_value: {
     [key in CyberFarmProductType]?: number;
+  };
+  estimated_cost: {
+    resources_cost: number;
+    slots_cost: number;
+    production_cost: number;
+    total: number;
   };
 }
