@@ -709,7 +709,7 @@ export const TRANSLATIONS = {
           [ELanguages.en]:
             "Get bonuses for daily login. Progressive system: the more consecutive days — the higher the reward.",
           [ELanguages.ru]:
-            "Получаете бонусы за ежедневный вход. Система прогрессивная: чем больше дней подряд — тем выше награда.",
+            "Ежедневные бонусы: чем больше дней подряд — тем лучше награда.",
         },
         statText: {
           [ELanguages.en]: "Consecutive logins: NUMBER day",
@@ -747,9 +747,9 @@ export const TRANSLATIONS = {
         },
         text: {
           [ELanguages.en]:
-            "Participate in the development of the Dystopia universe. Subscribe, follow projects, collect rewards",
+            "Support the Dystopia universe! Complete sponsor tasks and get rewards.",
           [ELanguages.ru]:
-            "Участвуй в развитии вселенной Dystopia. Подписывайся, следи за проектами, забирай награды",
+            "Поддержи вселенную Dystopia! Выполняй задания спонсоров и получай награды.",
         },
         statText: {
           [ELanguages.en]: "Completed: 1 of 7",
