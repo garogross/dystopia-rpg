@@ -7,7 +7,7 @@
   z-index: 3;
 
   &__wing {
-    width: 55px;
+    width: 40px;
     height: 100%;
 
     & svg {
@@ -20,7 +20,7 @@
     height: 100%;
     padding: 3px;
     background-color: $color-primary;
-    margin-inline: -25px;
+    margin-inline: -22px;
   }
   &__inner {
     width: 100%;
@@ -36,17 +36,16 @@
       #040010 100%
     );
   }
-
   &__main,
   &__inner {
     clip-path: polygon(
+      8.154% 100%,
       0% 22.25%,
-      8.67% 0%,
-      91.33% 0%,
+      8.154% 0%,
+      91.846% 0%,
       100% 22.25%,
-      91.33% 100%,
-      8.67% 100%,
-      0% 22.25%
+      91.846% 100%,
+      8.154% 100%
     );
   }
 

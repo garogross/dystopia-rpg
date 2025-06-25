@@ -6,11 +6,13 @@ import {
   BuyProductResponse,
   GetStorageResponse,
   SellProductResponse,
+  BuyResourceDeflictResponse,
 } from "../../../models/api/CyberFarm/Resources";
 import { FarmProductionChainsType } from "../../../types/FarmProductionChainsType";
 import { buySlot, harvest, produceSlot } from "./slotsSlice";
 import { exchange } from "./socialShopSlice";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
+import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 
 export interface ResourcesState {
   resources: Record<CyberFarmProductType, number>;
@@ -18,6 +20,7 @@ export interface ResourcesState {
   productionChains: FarmProductionChainsType | null;
   resourceDeficit: FarmResourceDeficitType | null;
   resourceTonValue: Partial<Record<CyberFarmProductType, number>>;
+  totalEstimatedCost: number;
 }
 
 const initialResources = Object.keys(products).reduce((acc, cur) => {
@@ -31,6 +34,7 @@ const initialState: ResourcesState = {
   productionChains: null,
   resourceDeficit: null,
   resourceTonValue: {},
+  totalEstimatedCost: 0,
 };
 
 const buyProductUrl = "/ton_cyber_farm/buy_product/";
@@ -67,6 +71,27 @@ export const sellProduct = createAsyncThunk<
       {
         resource: payload.product,
         amount: payload.amount,
+      }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+const buyResourceDeflictUrl = "/ton_cyber_farm/buy_resource_deficit/";
+export const buyResourceDeflict = createAsyncThunk<
+  BuyResourceDeflictResponse,
+  { slot_type: EFarmSlotTypes; product: CyberFarmProductType }
+>("resources/buyResourceDeflict", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<BuyResourceDeflictResponse>(
+      buyResourceDeflictUrl,
+      "POST",
+      {
+        product: payload.product,
+        slot_type: payload.slot_type,
       }
     );
 
@@ -129,9 +154,24 @@ export const resourcesSlice = createSlice({
           state.resources[payload.resource] - payload.amount_exchanged,
       };
     });
+    builder.addCase(buyResourceDeflict.fulfilled, (state, { payload }) => {
+      const updatedResources: Partial<Record<CyberFarmProductType, number>> =
+        {};
+
+      for (const k in payload.bought) {
+        const key = k as CyberFarmProductType;
+        updatedResources[key] = state.resources[key] + payload.bought[key];
+      }
+
+      state.resources = {
+        ...state.resources,
+        ...updatedResources,
+      };
+    });
     builder.addCase(getStorage.fulfilled, (state, { payload }) => {
       state.resourceTonValue = payload.resource_ton_value;
       state.resources = { ...state.resources, ...payload.resources };
+      state.totalEstimatedCost = payload.estimated_cost.total;
     });
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
       if (payload.cost && "cash_point" in payload.cost) {
