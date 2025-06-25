@@ -4,11 +4,11 @@
 .onBoardingHeader {
   @include flexCol();
   flex-direction: column;
-  gap: 12px;
+  gap: 4px;
   position: relative;
   z-index: 3;
   background: linear-gradient(178.36deg, #0c0620 61.64%, #362670 143.6%);
-  padding: 7px;
+  padding: 4px;
 
   &__title {
     @include setFont(16px, 400, $font-fam-h1, $color-text);
