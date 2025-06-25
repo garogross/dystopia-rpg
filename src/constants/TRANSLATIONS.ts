@@ -79,6 +79,15 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Мини-игры",
       },
 
+      comingSoonText: {
+        [ELanguages.en]: "(Coming soon)",
+        [ELanguages.ru]: "(Совсем скоро)",
+      },
+      pay2EarnText: {
+        [ELanguages.en]: "(Pay2Earn)",
+        [ELanguages.ru]: "(Pay2Earn)",
+      },
+
       titleRPG: {
         [ELanguages.en]: "RPG (In Dev.)",
         [ELanguages.ru]: "RPG (В разработке)",

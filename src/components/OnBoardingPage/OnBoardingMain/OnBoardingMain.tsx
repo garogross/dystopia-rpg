@@ -18,10 +18,28 @@ import { useAppSelector } from "../../../hooks/redux";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { AppGameMode } from "../../../types/AppGameMode";
 import { setStartChoice } from "../../../api/onBoarding/startChioce";
+import { TranslationItemType } from "../../../types/TranslationItemType";
 
 interface Props {
   rememberSelect: boolean;
 }
+
+const {
+  talkText,
+  titleTonCyberFarm,
+  titleMiniGames,
+  titleRPG,
+  titleStrategy,
+  comingSoonText,
+  pay2EarnText,
+} = TRANSLATIONS.onBoarding.main;
+
+const titleKeysMap: Record<string, { [key: string]: string }> = {
+  titleTonCyberFarm,
+  titleMiniGames,
+  titleRPG,
+  titleStrategy,
+};
 
 const onBoardingVideos = [
   {
@@ -39,7 +57,7 @@ type Option = {
   icon: JSX.Element;
   titleKey: string;
   link: string;
-  smallText?: string;
+  smallText?: TranslationItemType;
   gameModeKey?: AppGameMode;
 };
 
@@ -48,12 +66,13 @@ const options: Option[] = [
     icon: <CyberFarmIcon />,
     titleKey: "titleTonCyberFarm",
     link: cyberFarmPagePath,
-    smallText: "(Pay2Earn)",
+    smallText: pay2EarnText,
     gameModeKey: "ton_cyber_farm",
   },
   {
     icon: <MiniGamesIcon />,
     titleKey: "titleMiniGames",
+    smallText: comingSoonText,
     link: "",
   },
   {
@@ -67,16 +86,6 @@ const options: Option[] = [
   //   link: "",
   // },
 ];
-
-const { talkText, titleTonCyberFarm, titleMiniGames, titleRPG, titleStrategy } =
-  TRANSLATIONS.onBoarding.main;
-
-const titleKeysMap: Record<string, { [key: string]: string }> = {
-  titleTonCyberFarm,
-  titleMiniGames,
-  titleRPG,
-  titleStrategy,
-};
 
 const OnBoardingMain: React.FC<Props> = ({ rememberSelect }) => {
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -136,7 +145,7 @@ const OnBoardingMain: React.FC<Props> = ({ rememberSelect }) => {
                     <span
                       className={styles.onBoardingMain__optionLinkSmallText}
                     >
-                      {option.smallText}
+                      {option.smallText[language]}
                     </span>
                   )}
                 </span>
