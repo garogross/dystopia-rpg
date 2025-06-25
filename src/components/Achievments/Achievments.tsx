@@ -66,7 +66,10 @@ const Achievments = () => {
                           {curAchievmentDetails.title[language]}
                         </h6>
                         <p className={styles.achievments__listItemDescription}>
-                          {curAchievmentDetails.description[language]}
+                          {curAchievmentDetails.description[language].replace(
+                            "NUMBER",
+                            limit.toString()
+                          )}
                         </p>
                         <p
                           style={{ color: levelColors[level - 1] }}

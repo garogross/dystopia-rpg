@@ -64,9 +64,9 @@ export const TRANSLATIONS = {
     main: {
       talkText: {
         [ELanguages.en]:
-          "Hey there, darling, want to play with me? I have different options for you: a Play2Earn game (Ton Cyber Farm), mini games, and RPG, but it's still in development. Choose any one, and I'll make sure everything goes smoothly 💋",
+          "💾 ...Receiving. Glad to see you online, stranger. Looking for a thrill? My channels are open:\n• Play2Earn (TON Cyber Farm);\n• Mini-Games Archive: tons of ways to kill time.\n• RPG: coming soon, but I promise it's worth the wait.\nGive me a signal. I'll make sure your session is... unforgettable. 🌀",
         [ELanguages.ru]:
-          "Привет, дорогуша, хочешь поиграть со мной? У меня для тебя есть различные варианты: Play2Earn игра (Тон Кибер Ферма), мини игры и RPG, но она пока еще в разработке. Выбирай любую, а я прослежу, чтобы всё пошло гладко 💋",
+          "💾 ...Прием. Рада видеть тебя в сети, незнакомец. Ищешь острых ощущений? Мои каналы открыты:\n• Play2Earn (ТОН Кибер Ферма);\n• Архив Мини-Игр: куча способов убить время.\n• RPG: скоро, но обещаю, оно того стоит.\nДай сигнал. Я позабочусь, чтобы твой сеанс был... незабываемым. 🌀",
       },
 
       titleTonCyberFarm: {
@@ -540,24 +540,24 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Магазинный магнат",
         },
         desc1: {
-          [ELanguages.en]: "Visit the store 1 time",
-          [ELanguages.ru]: "Посетить магазин 1 раз",
+          [ELanguages.en]: "Visit the store NUMBER time",
+          [ELanguages.ru]: "Посетить магазин NUMBER раз",
         },
         desc2: {
-          [ELanguages.en]: "Visit the store 3 days in a row",
-          [ELanguages.ru]: "Посетить магазин 3 д. подряд",
+          [ELanguages.en]: "Visit the store NUMBER days in a row",
+          [ELanguages.ru]: "Посетить магазин NUMBER д. подряд",
         },
         desc3: {
-          [ELanguages.en]: "Visit the store 7 days in a row",
-          [ELanguages.ru]: "Посетить магазин 7 д. подряд",
+          [ELanguages.en]: "Visit the store NUMBER days in a row",
+          [ELanguages.ru]: "Посетить магазин NUMBER д. подряд",
         },
         desc4: {
-          [ELanguages.en]: "Visit the store 14 days in a row",
-          [ELanguages.ru]: "Посетить магазин 14 д. подряд",
+          [ELanguages.en]: "Visit the store NUMBER days in a row",
+          [ELanguages.ru]: "Посетить магазин NUMBER д. подряд",
         },
         desc5: {
-          [ELanguages.en]: "Visit the store 30 days in a row",
-          [ELanguages.ru]: "Посетить магазин 30 д. подряд",
+          [ELanguages.en]: "Visit the store NUMBER days in a row",
+          [ELanguages.ru]: "Посетить магазин NUMBER д. подряд",
         },
       },
       field: {
@@ -582,24 +582,24 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Мастер поля",
         },
         desc1: {
-          [ELanguages.en]: "Collect 10 harvests from fields",
-          [ELanguages.ru]: "Собрать 10 урожая на полях",
+          [ELanguages.en]: "Collect NUMBER harvests from fields",
+          [ELanguages.ru]: "Собрать NUMBER урожая на полях",
         },
         desc2: {
-          [ELanguages.en]: "Collect 50 harvests from fields",
-          [ELanguages.ru]: "Собрать 50 урожая на полях",
+          [ELanguages.en]: "Collect NUMBER harvests from fields",
+          [ELanguages.ru]: "Собрать NUMBER урожая на полях",
         },
         desc3: {
-          [ELanguages.en]: "Collect 150 harvests from fields",
-          [ELanguages.ru]: "Собрать 150 урожая на полях",
+          [ELanguages.en]: "Collect NUMBER harvests from fields",
+          [ELanguages.ru]: "Собрать NUMBER урожая на полях",
         },
         desc4: {
-          [ELanguages.en]: "Collect 300 harvests from fields",
-          [ELanguages.ru]: "Собрать 300 урожая на полях",
+          [ELanguages.en]: "Collect NUMBER harvests from fields",
+          [ELanguages.ru]: "Собрать NUMBER урожая на полях",
         },
         desc5: {
-          [ELanguages.en]: "Collect 500 harvests from fields",
-          [ELanguages.ru]: "Собрать 500 урожая на полях",
+          [ELanguages.en]: "Collect NUMBER harvests from fields",
+          [ELanguages.ru]: "Собрать NUMBER урожая на полях",
         },
       },
       farm: {
@@ -624,24 +624,24 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Генетический барон",
         },
         desc1: {
-          [ELanguages.en]: "Collect 10 harvests from farms",
-          [ELanguages.ru]: "Собрать 10 урожая на фермах",
+          [ELanguages.en]: "Collect NUMBER harvests from farms",
+          [ELanguages.ru]: "Собрать NUMBER урожая на фермах",
         },
         desc2: {
-          [ELanguages.en]: "Collect 30 harvests from farms",
-          [ELanguages.ru]: "Собрать 30 урожая на фермах",
+          [ELanguages.en]: "Collect NUMBER harvests from farms",
+          [ELanguages.ru]: "Собрать NUMBER урожая на фермах",
         },
         desc3: {
-          [ELanguages.en]: "Collect 100 harvests from farms",
-          [ELanguages.ru]: "Собрать 100 урожая на фермах",
+          [ELanguages.en]: "Collect NUMBER harvests from farms",
+          [ELanguages.ru]: "Собрать NUMBER урожая на фермах",
         },
         desc4: {
-          [ELanguages.en]: "Collect 200 harvests from farms",
-          [ELanguages.ru]: "Собрать 200 урожая на фермах",
+          [ELanguages.en]: "Collect NUMBER harvests from farms",
+          [ELanguages.ru]: "Собрать NUMBER урожая на фермах",
         },
         desc5: {
-          [ELanguages.en]: "Collect 400 harvests from farms",
-          [ELanguages.ru]: "Собрать 400 урожая на фермах",
+          [ELanguages.en]: "Collect NUMBER harvests from farms",
+          [ELanguages.ru]: "Собрать NUMBER урожая на фермах",
         },
       },
       factory: {
@@ -666,24 +666,24 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Кибермагнат",
         },
         desc1: {
-          [ELanguages.en]: "Get 5 products from factories",
-          [ELanguages.ru]: "Получить 5 продукции с заводов",
+          [ELanguages.en]: "Get NUMBER products from factories",
+          [ELanguages.ru]: "Получить NUMBER продукции с заводов",
         },
         desc2: {
-          [ELanguages.en]: "Get 20 products from factories",
-          [ELanguages.ru]: "Получить 20 продукции с заводов",
+          [ELanguages.en]: "Get NUMBER products from factories",
+          [ELanguages.ru]: "Получить NUMBER продукции с заводов",
         },
         desc3: {
-          [ELanguages.en]: "Get 50 products from factories",
-          [ELanguages.ru]: "Получить 50 продукции с заводов",
+          [ELanguages.en]: "Get NUMBER products from factories",
+          [ELanguages.ru]: "Получить NUMBER продукции с заводов",
         },
         desc4: {
-          [ELanguages.en]: "Get 100 products from factories",
-          [ELanguages.ru]: "Получить 100 продукции с заводов",
+          [ELanguages.en]: "Get NUMBER products from factories",
+          [ELanguages.ru]: "Получить NUMBER продукции с заводов",
         },
         desc5: {
-          [ELanguages.en]: "Get 200 products from factories",
-          [ELanguages.ru]: "Получить 200 продукции с заводов",
+          [ELanguages.en]: "Get NUMBER products from factories",
+          [ELanguages.ru]: "Получить NUMBER продукции с заводов",
         },
       },
     },
