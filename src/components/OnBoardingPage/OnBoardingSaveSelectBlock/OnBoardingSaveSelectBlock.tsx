@@ -28,6 +28,11 @@ const OnBoardingSaveSelectBlock: React.FC<Props> = ({
       </div>
       <div className={styles.onBoardingSaveSelectBlock__main}>
         <div className={styles.onBoardingSaveSelectBlock__inner}>
+          <p className={styles.onBoardingSaveSelectBlock__description}>
+            {descriptionText[language].map((text, index) => (
+              <span key={index}>{text}</span>
+            ))}
+          </p>
           <button
             className={styles.onBoardingSaveSelectBlock__checkbox}
             onClick={() => setRememberSelect((prev) => !prev)}
@@ -37,9 +42,6 @@ const OnBoardingSaveSelectBlock: React.FC<Props> = ({
               {rememberChoiceLabel[language]}
             </h6>
           </button>
-          <p className={styles.onBoardingSaveSelectBlock__description}>
-            {descriptionText[language].map((text,index) => (<span key={index}>{text}</span>))}
-          </p>
         </div>
       </div>
       <div className={styles.onBoardingSaveSelectBlock__wing}>
