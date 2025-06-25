@@ -56,10 +56,6 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Dystopia Game",
         [ELanguages.ru]: "Dystopia Game",
       },
-      subtitleText: {
-        [ELanguages.en]: "Here, we play by our own rules!",
-        [ELanguages.ru]: "Здесь играют по своим правилам!",
-      },
     },
     main: {
       talkText: {
