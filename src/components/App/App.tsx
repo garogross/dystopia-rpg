@@ -38,8 +38,28 @@ const loadScripts = (tg: WebApp) => {
 
   if (gigapubProjectId) {
     const gigapubScript = document.createElement("script");
-    gigapubScript.src = `https://ad.gigapub.tech/script?id=${gigapubProjectId}`;
-    gigapubScript.async = true;
+    gigapubScript.setAttribute("data-project-id", gigapubProjectId);
+    gigapubScript.innerHTML = `
+      !function(){
+        var s=document.currentScript,p=s.getAttribute('data-project-id')||'default';
+        var d=['https://ad.gigapub.tech','https://ru-ad.gigapub.tech'],i=0,t,sc;
+        function l(){
+          sc=document.createElement('script');
+          sc.async=true;
+          sc.src=d[i]+'/script?id='+p;
+          clearTimeout(t);
+          t=setTimeout(function(){
+            sc.onload=sc.onerror=null;
+            sc.src='';
+            if(++i<d.length)l();
+          },15000);
+          sc.onload=function(){clearTimeout(t)};
+          sc.onerror=function(){clearTimeout(t);if(++i<d.length)l()};
+          document.head.appendChild(sc);
+        }
+        l();
+      }();
+    `;
     document.body.appendChild(gigapubScript);
   }
 };
