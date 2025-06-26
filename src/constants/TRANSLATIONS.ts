@@ -163,6 +163,14 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Withdraw",
         [ELanguages.ru]: "Вывести",
       },
+      withdrawCompletedText: {
+        [ELanguages.en]: "Withdraw completed",
+        [ELanguages.ru]: "Вывод завершён",
+      },
+      withdrawFailedText: {
+        [ELanguages.en]: "Failed to complete withdraw",
+        [ELanguages.ru]: "Не удалось выполнить вывод",
+      },
     },
     fields: {
       titleText: {
@@ -393,7 +401,7 @@ export const TRANSLATIONS = {
       },
       missingResourcesCostText: {
         [ELanguages.en]: "Replenishing missing resources costs: ",
-        [ELanguages.ru]: "Пополнение недостающих ресурсов обходятся: ",
+        [ELanguages.ru]: "Пополнение недостающих ресурсов обойдется в ",
       },
       buyAllButtonText: {
         [ELanguages.en]: "Buy all",
