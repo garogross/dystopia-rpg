@@ -51,14 +51,14 @@ const Achievments = () => {
                   const count = achievmentCurState?.count || 0;
                   const curSettings = achievmentSettings[key];
 
-                  const limit = curSettings.levels[level - 1];
+                  const limit = curSettings.levels[level];
                   const curAchievmentDetails =
-                    CYBER_FARM_ACHIEVMENTS[key][level - 1];
+                    CYBER_FARM_ACHIEVMENTS[key][level];
                   return (
                     <div
                       key={index}
                       className={styles.achievments__listItem}
-                      style={{ borderColor: levelColors[level - 1] }}
+                      style={{ borderColor: levelColors[level] }}
                     >
                       {curAchievmentDetails.icon}
                       <div className={styles.achievments__listItemMain}>
@@ -72,7 +72,7 @@ const Achievments = () => {
                           )}
                         </p>
                         <p
-                          style={{ color: levelColors[level - 1] }}
+                          style={{ color: levelColors[level] }}
                           className={styles.achievments__processText}
                         >
                           {progressText[language]}: {count}/{limit}
