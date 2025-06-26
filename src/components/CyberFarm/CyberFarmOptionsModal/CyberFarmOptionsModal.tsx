@@ -280,7 +280,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           className={styles.cyberFarmOptionsModal__missingResCost}
         >
           <span className={styles.cyberFarmOptionsModal__missingResCostText}>
-            {missingResourcesCostText[language]}: {totalPricyByCp || ""}
+            {missingResourcesCostText[language]}: {totalPricyByCp || 0}
           </span>
           <ImageWebp
             src={cpImage}
