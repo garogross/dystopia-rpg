@@ -47,7 +47,7 @@ const Achievments = () => {
                   const key = k as EFarmAchievments;
 
                   const achievmentCurState = achievments[key];
-                  const level = achievmentCurState?.level || 1;
+                  const level = achievmentCurState?.level || 0;
                   const count = achievmentCurState?.count || 0;
                   const curSettings = achievmentSettings[key];
 
