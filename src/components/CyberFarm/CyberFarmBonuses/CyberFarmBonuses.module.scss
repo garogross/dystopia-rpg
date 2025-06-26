@@ -10,6 +10,7 @@
     padding: 1px;
     @include button($color-primary);
     margin-bottom: 16px;
+    position: relative;
   }
   &__getByAddBtnInner {
     padding: 10px 15px 6px;
@@ -58,6 +59,11 @@
     min-width: 114px;
     @include button($color-primary);
     padding: 1px;
+    transition: $transition;
+
+    &:disabled {
+      opacity: 0.6;
+    }
   }
   &__btnInner {
     background: radial-gradient(

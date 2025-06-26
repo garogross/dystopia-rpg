@@ -28,6 +28,7 @@ import {
   claimWallgramReward,
 } from "./tasksSlice";
 import { initAchievments } from "./cyberFarm/achievmentsSlice";
+import { WithdrawTonResponse } from "../../models/api/WithdrawTonResponse";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -41,6 +42,7 @@ export interface ProfileState {
     [key in EStats]: number;
   };
   accountDetailsReceived: boolean;
+  tonWithdrawCommission: number;
 }
 
 const initUserData =
@@ -68,6 +70,7 @@ const initialState: ProfileState = {
     [EStats.ton]: 0,
   },
   accountDetailsReceived: false,
+  tonWithdrawCommission: 0,
 };
 const authUserUrl = "/auth";
 
@@ -106,7 +109,12 @@ export const getAccountDetails =
       setUser({ id: resData.user?.id_tgrm, tgId: resData.user?.id_tgrm })
     );
 
-    dispatch(receiveAccountDetails());
+    dispatch(
+      receiveAccountDetails({
+        tonWithdrawCommission:
+          resData.game_settings?.ton_withdraw_commission || 0,
+      })
+    );
     dispatch(
       updateStats({
         [EStats.cp]: resData.user?.profile.cash_point || 0,
@@ -223,6 +231,28 @@ export const authorizeUser =
     }
   };
 
+const withdrawTonUrl = "/withdraw_ton/";
+export const withdrawTon = createAsyncThunk<
+  WithdrawTonResponse,
+  { amount: number; address: string }
+>("profile/withdrawTon", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<WithdrawTonResponse>(
+      withdrawTonUrl,
+      "POST",
+      {
+        amount: payload.amount,
+        address: payload.address,
+      }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
 export const profileSlice = createSlice({
   name: "profileSlice",
   initialState,
@@ -234,8 +264,9 @@ export const profileSlice = createSlice({
     updateStats(state, { payload }) {
       state.stats = { ...state.stats, ...payload };
     },
-    receiveAccountDetails(state) {
+    receiveAccountDetails(state, { payload }) {
       state.accountDetailsReceived = true;
+      state.tonWithdrawCommission = payload.tonWithdrawCommission;
     },
   },
   extraReducers: (builder) => {
@@ -243,6 +274,9 @@ export const profileSlice = createSlice({
       state.token = payload.token;
       state.username = payload.user.username;
       state.tgId = payload.user.id_tgrm;
+    });
+    builder.addCase(withdrawTon.fulfilled, (state, { payload }) => {
+      state.stats.ton = state.stats.ton - payload.amount;
     });
 
     // cyberfarm

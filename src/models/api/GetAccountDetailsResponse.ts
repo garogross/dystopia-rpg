@@ -58,6 +58,7 @@ export interface GetAccountDetailsResponse {
       };
     };
     achievements_settings: FarmAchievmentSettingsType;
+    ton_withdraw_commission: number;
   };
   resource_deficit: FarmResourceDeficitType;
   claim_daily_login: {
