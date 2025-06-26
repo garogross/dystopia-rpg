@@ -20,7 +20,7 @@ export const initTraffyTasks = (
       changeDescription: (str: string) => void,
       changeButtonCheckText: (str: string) => void
     ) {
-      changeReward("200K");
+      changeReward("20");
       changeCardTitle("Subscribe on: ");
       changeButtonCheckText("Check");
     }
