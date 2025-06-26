@@ -10,9 +10,23 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { products } from "../../../../constants/cyberfarm/products";
 import { CyberFarmProductType } from "../../../../types/CyberFarmProductType";
 import { getStorage } from "../../../../store/slices/cyberFarm/resourcesSlice";
+import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
+import {
+  cpImage,
+  cpImageWebp,
+  tonImage,
+  tonImageWebp,
+} from "../../../../assets/imageMaps";
+import { DotsLine } from "../../../layout/icons/RPGGame/Common";
 
-const { titleText, emptyText, socialStoreButtonText } =
-  TRANSLATIONS.cyberFarm.warehouse;
+const {
+  titleText,
+  emptyText,
+  socialStoreButtonText,
+  farmEstimatedValueText,
+  sellForText,
+  buyForText,
+} = TRANSLATIONS.cyberFarm.warehouse;
 
 const CyberFarmWarehouse = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +37,12 @@ const CyberFarmWarehouse = () => {
   const [socialStoreShow, setSocialStoreShow] = useState(false);
   const [infoShow, setInfoShow] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-
+  const totalEstimatedCostInTon = useAppSelector(
+    (state) => state.cyberfarm.resources.totalEstimatedCostInTon
+  );
+  const totalEstimatedCostInCp = useAppSelector(
+    (state) => state.cyberfarm.resources.totalEstimatedCostInCp
+  );
   const data: IWarehouseProduct[] = Object.entries(products).map(
     ([key, res]) => ({
       id: key,
@@ -53,6 +72,74 @@ const CyberFarmWarehouse = () => {
             setSelectedItemId(item.id);
             setInfoShow(true);
           }}
+          subTitleBlock={
+            <div className={styles.cyberFarmWarehouse__subtitleBlock}>
+              <span>
+                {farmEstimatedValueText[language]}{" "}
+                {+totalEstimatedCostInCp.toFixed()}
+              </span>
+              <ImageWebp
+                className={styles.cyberFarmWarehouse__subtitleBlockImg}
+                srcSet={cpImage}
+                src={cpImageWebp}
+                alt={"cp"}
+              />
+              <span>{`(~${+totalEstimatedCostInTon.toFixed(2)}`}</span>
+              <ImageWebp
+                className={styles.cyberFarmWarehouse__subtitleBlockImg}
+                srcSet={tonImage}
+                src={tonImageWebp}
+                alt={"ton"}
+              />
+              <span>{")"}</span>
+            </div>
+          }
+          sorts={[
+            {
+              header: (
+                <div className={styles.cyberFarmWarehouse__sortHeader}>
+                  <div className={styles.cyberFarmWarehouse__sortHeaderDotline}>
+                    <DotsLine />
+                  </div>
+                  <h5 className={styles.cyberFarmWarehouse__sortHeaderTitle}>
+                    <span>{sellForText[language]}</span>
+                    <ImageWebp
+                      srcSet={tonImageWebp}
+                      src={tonImage}
+                      alt={"ton"}
+                      className={styles.cyberFarmWarehouse__sortHeaderImg}
+                    />
+                  </h5>
+                  <div className={styles.cyberFarmWarehouse__sortHeaderDotline}>
+                    <DotsLine />
+                  </div>
+                </div>
+              ),
+              filterBy: (item) => !!products[item.product].forSale,
+            },
+            {
+              header: (
+                <div className={styles.cyberFarmWarehouse__sortHeader}>
+                  <div className={styles.cyberFarmWarehouse__sortHeaderDotline}>
+                    <DotsLine />
+                  </div>
+                  <h5 className={styles.cyberFarmWarehouse__sortHeaderTitle}>
+                    <span>{buyForText[language]}</span>
+                    <ImageWebp
+                      srcSet={cpImageWebp}
+                      src={cpImage}
+                      alt={"cp"}
+                      className={styles.cyberFarmWarehouse__sortHeaderImg}
+                    />
+                  </h5>
+                  <div className={styles.cyberFarmWarehouse__sortHeaderDotline}>
+                    <DotsLine />
+                  </div>
+                </div>
+              ),
+              filterBy: (item) => !products[item.product].forSale,
+            },
+          ]}
         />
         {selectedItem && (
           <CyberFarmWarehouseProductInfo

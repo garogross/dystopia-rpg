@@ -38,5 +38,6 @@ export interface GetStorageResponse {
     slots_cost: number;
     production_cost: number;
     total: number;
+    total_in_ton: number;
   };
 }
