@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 
 import styles from "./CyberFarmWrapperWithList.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
@@ -15,9 +15,7 @@ import {
 import { plantImages } from "../../../constants/cyberfarm/plantImages";
 import { IWarehouseProduct } from "../../../models/IWarehouseProduct";
 import { products } from "../../../constants/cyberfarm/products";
-import {
-  Blockedicon,
-} from "../../layout/icons/CyberFarm/CyberFarmWrapperWithList";
+import { Blockedicon } from "../../layout/icons/CyberFarm/CyberFarmWrapperWithList";
 import { useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
@@ -39,8 +37,9 @@ interface Props<T extends IFarmField | IWarehouseProduct> {
   optionsModalOpenedArg?: boolean;
   producingSlotIdArg?: string | null;
   productsType?: EFarmSlotTypes;
+  subTitleBlock?: ReactNode;
+  sorts?: { header: ReactNode; filterBy: (item: T) => boolean }[];
 }
-
 const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   title,
   emptyText,
@@ -53,6 +52,8 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   producingSlotIdArg,
   onCloseOptionsModal,
   productsType,
+  subTitleBlock,
+  sorts,
 }: Props<T>) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const [progressModalOpened, setProgressModalOpened] = useState(false);
@@ -97,6 +98,79 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
     }
   };
 
+  const renderData = (data: T[]) => (
+    <div
+      className={`${styles.cyberFarmWrapperWithList__main} ${
+        isWarehouse ? styles.cyberFarmWrapperWithList__main_warehouse : ""
+      }`}
+    >
+      {data.map((field) => {
+        let curImage = {
+          src: cyberFarmEmptyFieldImage,
+          srcSet: cyberFarmEmptyFieldImageWebp,
+        };
+
+        if ("count" in field) {
+          // check if IWarehouseProduct
+          curImage = products[field.product];
+        } else if (field.type === "factory") {
+          curImage = {
+            src: cyberFarmFactoryImage,
+            srcSet: cyberFarmFactoryImageWebp,
+          };
+        } else if (field.plant) {
+          curImage =
+            plantImages[field.plant][
+              field.type === "farm" ? "inFarm" : "onField"
+            ];
+        } else if (field.type === "farm" && !field.plant) {
+          curImage = {
+            src: cyberFarmFarmImage,
+            srcSet: cyberFarmFarmImageWebp,
+          };
+        }
+
+        return (
+          <div
+            key={field.id}
+            className={styles.cyberFarmWrapperWithList__item}
+            onClick={() => onClickItem(field)}
+          >
+            <ImageWebp
+              src={curImage.src}
+              alt={field.type}
+              className={styles.cyberFarmWrapperWithList__itemImg}
+              pictureClass={styles.cyberFarmWrapperWithList__itemPicture}
+              srcSet={curImage.srcSet}
+            />
+            {"count" in field ? (
+              <span className={styles.cyberFarmWrapperWithList__itemCount}>
+                {field.count}
+              </span>
+            ) : (
+              <>
+                {field.process && (
+                  <CyberFarmWrapperWithListItemProgress
+                    process={field.process}
+                  />
+                )}
+                {field.blocked && (
+                  <div
+                    className={
+                      styles.cyberFarmWrapperWithList__itemBlockOverlay
+                    }
+                  >
+                    <Blockedicon />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
     <section className={styles.cyberFarmWrapperWithList}>
       <div className={styles.cyberFarmWrapperWithList__header}>
@@ -115,78 +189,21 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
           {title}
         </h2>
       </div>
+      {subTitleBlock}
       {data.length ? (
         <TransitionProvider
           inProp={gameInited}
           style={TransitionStyleTypes.bottom}
-          className={`${styles.cyberFarmWrapperWithList__main} ${
-            isWarehouse ? styles.cyberFarmWrapperWithList__main_warehouse : ""
-          }`}
+          className={styles.cyberFarmWrapperWithList__wrapper}
         >
-          {data.map((field) => {
-            let curImage = {
-              src: cyberFarmEmptyFieldImage,
-              srcSet: cyberFarmEmptyFieldImageWebp,
-            };
-
-            if ("count" in field) {
-              // check if IWarehouseProduct
-              curImage = products[field.product];
-            } else if (field.type === "factory") {
-              curImage = {
-                src: cyberFarmFactoryImage,
-                srcSet: cyberFarmFactoryImageWebp,
-              };
-            } else if (field.plant) {
-              curImage =
-                plantImages[field.plant][
-                  field.type === "farm" ? "inFarm" : "onField"
-                ];
-            } else if (field.type === "farm" && !field.plant) {
-              curImage = {
-                src: cyberFarmFarmImage,
-                srcSet: cyberFarmFarmImageWebp,
-              };
-            }
-
-            return (
-              <div
-                key={field.id}
-                className={styles.cyberFarmWrapperWithList__item}
-                onClick={() => onClickItem(field)}
-              >
-                <ImageWebp
-                  src={curImage.src}
-                  alt={field.type}
-                  className={styles.cyberFarmWrapperWithList__itemImg}
-                  pictureClass={styles.cyberFarmWrapperWithList__itemPicture}
-                  srcSet={curImage.srcSet}
-                />
-                {"count" in field ? (
-                  <span className={styles.cyberFarmWrapperWithList__itemCount}>
-                    {field.count}
-                  </span>
-                ) : (
-                  <>
-                    {field.process && (
-                      <CyberFarmWrapperWithListItemProgress
-                        process={field.process}
-                      />
-                    )}
-                    {field.blocked && (
-                      <div
-                        className={
-                          styles.cyberFarmWrapperWithList__itemBlockOverlay
-                        }
-                      >
-                        <Blockedicon />
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            );
-          })}
+          {sorts
+            ? sorts.map((sort) => (
+                <div className={styles.cyberFarmWrapperWithList__sortWrapper}>
+                  {sort.header}
+                  {renderData(data.filter((item) => sort.filterBy(item)))}
+                </div>
+              ))
+            : renderData(data)}
         </TransitionProvider>
       ) : (
         <p className={styles.cyberFarmWrapperWithList__emptyText}>

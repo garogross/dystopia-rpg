@@ -35,19 +35,31 @@
     margin-top: 16px;
   }
   &__main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px 8px;
+    align-content: baseline;
+    width: 100%;
+
+    &_warehouse {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__wrapper {
     width: 100%;
     flex: 1;
     overflow: auto;
     border: 1px solid $color-primary;
     padding: 8px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px 8px;
-    align-content: baseline;
-
-    &_warehouse {
-      grid-template-columns: repeat(3, 1fr);
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  &__sortWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
   }
 
   &__item {
@@ -84,7 +96,6 @@
     @include setFont(16px, 400, $font-fam-h3);
     font-style: italic;
   }
-
 
   &__itemBlockOverlay {
     position: absolute;

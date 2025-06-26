@@ -20,7 +20,8 @@ export interface ResourcesState {
   productionChains: FarmProductionChainsType | null;
   resourceDeficit: FarmResourceDeficitType | null;
   resourceTonValue: Partial<Record<CyberFarmProductType, number>>;
-  totalEstimatedCost: number;
+  totalEstimatedCostInTon: number;
+  totalEstimatedCostInCp: number;
 }
 
 const initialResources = Object.keys(products).reduce((acc, cur) => {
@@ -34,7 +35,8 @@ const initialState: ResourcesState = {
   productionChains: null,
   resourceDeficit: null,
   resourceTonValue: {},
-  totalEstimatedCost: 0,
+  totalEstimatedCostInTon: 0,
+  totalEstimatedCostInCp: 0,
 };
 
 const buyProductUrl = "/ton_cyber_farm/buy_product/";
@@ -171,7 +173,8 @@ export const resourcesSlice = createSlice({
     builder.addCase(getStorage.fulfilled, (state, { payload }) => {
       state.resourceTonValue = payload.resource_ton_value;
       state.resources = { ...state.resources, ...payload.resources };
-      state.totalEstimatedCost = payload.estimated_cost.total;
+      state.totalEstimatedCostInTon = payload.estimated_cost.total_in_ton;
+      state.totalEstimatedCostInCp = payload.estimated_cost.total;
     });
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
       if (payload.cost && "cash_point" in payload.cost) {

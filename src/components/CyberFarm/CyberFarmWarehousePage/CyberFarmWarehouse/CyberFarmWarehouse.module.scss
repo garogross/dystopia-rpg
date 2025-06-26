@@ -64,4 +64,36 @@
       6% 1%
     );
   }
+
+  &__subtitleBlock {
+    @include flexCol();
+    gap: 3px;
+
+    @include setFont(12px, 400);
+  }
+  &__subtitleBlockImg {
+    width: 10px;
+  }
+
+  &__sortHeader {
+    @include flexCol(space-between);
+    gap: 10px;
+    width: 100%;
+  }
+  &__sortHeaderDotline {
+    flex: 1;
+    max-width: 90px;
+
+    & svg {
+      width: 100%;
+    }
+  }
+  &__sortHeaderTitle {
+    @include flexCol();
+    gap: 3px;
+    @include setFont(12px, 400);
+  }
+  &__sortHeaderImg {
+    width: 12px;
+  }
 }

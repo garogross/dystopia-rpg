@@ -277,6 +277,18 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Social Store",
         [ELanguages.ru]: "Социальный магазин",
       },
+      farmEstimatedValueText: {
+        [ELanguages.en]: "Farm estimated value",
+        [ELanguages.ru]: "Оценочная стоимость фермы",
+      },
+      sellForText: {
+        [ELanguages.en]: "Sell for",
+        [ELanguages.ru]: "Продажа за",
+      },
+      buyForText: {
+        [ELanguages.en]: "Buy for",
+        [ELanguages.ru]: "Покупка за",
+      },
       productInfo: {
         youHaveText: {
           [ELanguages.en]: "You have:",
