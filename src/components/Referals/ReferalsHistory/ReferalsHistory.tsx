@@ -85,9 +85,9 @@ const ReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
         </div>
       </WrapperWithFrame>
 
-      <div className={styles.referalsHistory__bottomBg}>
+      <button onClick={onClose} className={styles.referalsHistory__bottomBg}>
         <ReferalsHistoryBottomBg />
-      </div>
+      </button>
     </TransitionProvider>
   );
 };

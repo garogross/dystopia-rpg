@@ -171,6 +171,22 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Failed to complete withdraw",
         [ELanguages.ru]: "Не удалось выполнить вывод",
       },
+      setAllText: {
+        [ELanguages.en]: "Set all",
+        [ELanguages.ru]: "Ставить все",
+      },
+      amountAfterCommissionMustBeGreaterThanZeroText: {
+        [ELanguages.en]: "Amount after commission must be greater than 0",
+        [ELanguages.ru]: "Сумма после вычета комиссии должна быть больше 0",
+      },
+      amountExceedsTonBalanceText: {
+        [ELanguages.en]: "Amount exceeds your TON balance",
+        [ELanguages.ru]: "Сумма превышает ваш баланс TON",
+      },
+      walletAddressRequiredText: {
+        [ELanguages.en]: "Wallet address is required",
+        [ELanguages.ru]: "Требуется адрес кошелька",
+      },
     },
     fields: {
       titleText: {
@@ -971,6 +987,18 @@ export const TRANSLATIONS = {
       collectButtonText: {
         [ELanguages.en]: "Collect",
         [ELanguages.ru]: "Собрать",
+      },
+      collectingButtonText: {
+        [ELanguages.en]: "Collecting...",
+        [ELanguages.ru]: "Собирается...",
+      },
+      rewardCollectedSuccessfullyText: {
+        [ELanguages.en]: "CP collected successfully",
+        [ELanguages.ru]: "CP успешно получена",
+      },
+      failedToCollectRewardText: {
+        [ELanguages.en]: "Failed to collect CP",
+        [ELanguages.ru]: "Не удалось получить CP",
       },
     },
     totalCount: {

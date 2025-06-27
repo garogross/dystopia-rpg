@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styles from "./ReferalsTotalEarnings.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common/HeaderWings";
 import WrapperWithFrame from "../../layout/WrapperWithFrame/WrapperWithFrame";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
@@ -11,17 +11,44 @@ import StatImg from "../../layout/StatImg/StatImg";
 import { ReferalsCollectIcon } from "../../layout/icons/Referals";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { formatNumber } from "../../../utils/formatNumber";
+import { useTooltip } from "../../../hooks/useTooltip";
+import { convertReferals } from "../../../store/slices/refferencesSlice";
+import Tooltip from "../../layout/Tooltip/Tooltip";
 
-const { availableToCollectText, collectButtonText } =
-  TRANSLATIONS.referals.totalEarnings;
+const {
+  availableToCollectText,
+  collectButtonText,
+  collectingButtonText,
+  rewardCollectedSuccessfullyText,
+  failedToCollectRewardText,
+} = TRANSLATIONS.referals.totalEarnings;
 
-interface Props {
-  totalReward: number;
-}
-
-const ReferalsTotalEarnings: FC<Props> = ({ totalReward }) => {
+const ReferalsTotalEarnings: FC = () => {
+  const dispatch = useAppDispatch();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const language = useAppSelector((state) => state.ui.language);
+  const refCashPoint = useAppSelector(
+    (state) => state.refferences.refCashPoint
+  );
+  const [loading, setLoading] = useState(false);
+  const { show, openTooltip } = useTooltip();
+  const [tooltipText, setTooltipText] = useState(
+    rewardCollectedSuccessfullyText
+  );
+
+  const onCollect = async () => {
+    try {
+      setLoading(true);
+
+      await dispatch(convertReferals()).unwrap();
+      setTooltipText(rewardCollectedSuccessfullyText);
+    } catch (error) {
+      setTooltipText(failedToCollectRewardText);
+    } finally {
+      setLoading(false);
+      openTooltip();
+    }
+  };
 
   return (
     <TransitionProvider
@@ -39,18 +66,21 @@ const ReferalsTotalEarnings: FC<Props> = ({ totalReward }) => {
               <div className={styles.referalsTotalEarnings__value}>
                 <StatImg stat={EStats.cp} size={19} />
                 <span className={styles.referalsTotalEarnings__valueText}>
-                  {formatNumber(totalReward)}
+                  {formatNumber(refCashPoint)}
                 </span>
               </div>
             </div>
           </div>
           <button
-            disabled={!totalReward}
+            disabled={!refCashPoint || loading}
+            onClick={onCollect}
             className={styles.referalsTotalEarnings__collectBtn}
           >
             <div className={styles.referalsTotalEarnings__collectBtnInner}>
               <ReferalsCollectIcon />
-              <span>{collectButtonText[language]}</span>
+              <span>
+                {(loading ? collectingButtonText : collectButtonText)[language]}
+              </span>
             </div>
           </button>
         </div>
@@ -58,6 +88,7 @@ const ReferalsTotalEarnings: FC<Props> = ({ totalReward }) => {
       <div className={styles.referalsTotalEarnings__wings}>
         <HeaderWings reversed />
       </div>
+      <Tooltip show={show} text={tooltipText[language]} />
     </TransitionProvider>
   );
 };

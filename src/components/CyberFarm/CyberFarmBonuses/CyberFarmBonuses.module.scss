@@ -118,6 +118,11 @@
     background-color: #1d1340;
     @include setFont(12px, 400);
     outline: none;
+    transition: $transition;
+
+    &_invalid {
+      border-color: $color-red;
+    }
 
     &::placeholder {
       color: $color-primary;
@@ -126,5 +131,11 @@
   &__formFieldDescriptionText {
     @include setFont(12px, 400);
     padding-top: 5px;
+  }
+
+  &__setAllBtn {
+    @include button();
+    @include setFont(14px, 600, $font-fam-main, $color-primary);
+    width: fit-content;
   }
 }

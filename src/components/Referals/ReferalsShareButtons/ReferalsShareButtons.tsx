@@ -16,7 +16,7 @@ const { copyLinkText, copiedText, inviteFriendText } =
 
 const REF_LINK = "https://t.me/dystopiagamebot?start=";
 const SHARE_TEXT =
-  "Develop your city, team up with other players to fight for territories, level up your character and become the best! Enjoy the game and get tokens.";
+  "⚡️ Grow your Cyber Farm: Cultivate crops, build factories, craft goods — sell for $TON! Enjoy the grind!";
 
 const ReferalsShareButtons = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);

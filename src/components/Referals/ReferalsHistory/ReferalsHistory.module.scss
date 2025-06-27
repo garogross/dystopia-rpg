@@ -98,6 +98,7 @@
 
   &__bottomBg {
     width: 100%;
+    @include button();
   }
 }
 
