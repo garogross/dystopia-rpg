@@ -29,6 +29,7 @@ import {
 } from "./tasksSlice";
 import { initAchievments } from "./cyberFarm/achievmentsSlice";
 import { WithdrawTonResponse } from "../../models/api/WithdrawTonResponse";
+import { convertReferals } from "./refferencesSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -277,6 +278,11 @@ export const profileSlice = createSlice({
     });
     builder.addCase(withdrawTon.fulfilled, (state, { payload }) => {
       state.stats.ton = state.stats.ton - payload.amount;
+    });
+
+    // referals
+    builder.addCase(convertReferals.fulfilled, (state, action) => {
+      state.stats.cp = action.payload.cash_point;
     });
 
     // cyberfarm

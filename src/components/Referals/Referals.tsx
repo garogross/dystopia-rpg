@@ -16,8 +16,6 @@ const Referals = () => {
   const language = useAppSelector((state) => state.ui.language);
   const referals = useAppSelector((state) => state.refferences.refferences);
 
-  const totalReward = referals.reduce((acc, cur) => (acc += cur.bonus), 0);
-
   useEffect(() => {
     dispatch(getReferals());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -26,7 +24,7 @@ const Referals = () => {
   return (
     <div className={`${styles.referals} container`}>
       <TitleH3>{titleText[language]}</TitleH3>
-      <ReferalsTotalEarnings totalReward={totalReward} />
+      <ReferalsTotalEarnings />
       <ReferalsTotalCount totalCount={referals.length} />
       <ReferalsShareButtons />
       <ReferalsInfo />

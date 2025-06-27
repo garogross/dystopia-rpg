@@ -988,6 +988,18 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Collect",
         [ELanguages.ru]: "Собрать",
       },
+      collectingButtonText: {
+        [ELanguages.en]: "Collecting...",
+        [ELanguages.ru]: "Собирается...",
+      },
+      rewardCollectedSuccessfullyText: {
+        [ELanguages.en]: "CP collected successfully",
+        [ELanguages.ru]: "CP успешно получена",
+      },
+      failedToCollectRewardText: {
+        [ELanguages.en]: "Failed to collect CP",
+        [ELanguages.ru]: "Не удалось получить CP",
+      },
     },
     totalCount: {
       titleText: {

@@ -52,6 +52,11 @@
     max-width: 100px;
     width: 100%;
     padding: 1px;
+    transition: $transition;
+
+    &:disabled {
+      opacity: 0.6;
+    }
   }
 
   &__collectBtnInner {
