@@ -29,6 +29,7 @@ interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   headerText: string;
   placeholder: string;
   commission?: string;
+  isInvalid?: boolean;
 }
 
 const {
@@ -44,6 +45,10 @@ const {
   withdrawText,
   withdrawCompletedText,
   withdrawFailedText,
+  setAllText,
+  amountAfterCommissionMustBeGreaterThanZeroText,
+  amountExceedsTonBalanceText,
+  walletAddressRequiredText,
 } = TRANSLATIONS.cyberFarm.bonuses;
 const { loadAdText } = TRANSLATIONS.errors;
 
@@ -51,6 +56,7 @@ const Formfield: React.FC<FormFieldProps> = ({
   headerText,
   placeholder,
   commission,
+  isInvalid,
   ...args
 }) => {
   const language = useAppSelector((state) => state.ui.language);
@@ -67,7 +73,9 @@ const Formfield: React.FC<FormFieldProps> = ({
         type="text"
         {...args}
         placeholder={placeholder}
-        className={styles.cyberFarmBonuses__input}
+        className={`${styles.cyberFarmBonuses__input} ${
+          isInvalid ? styles.cyberFarmBonuses__input_invalid : ""
+        }`}
       />
       {commission && (
         <p className={styles.cyberFarmBonuses__formFieldDescriptionText}>
@@ -106,7 +114,14 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const ton = useAppSelector((state) => state.profile.stats.ton);
   const { onShowAd, showTooltip: showAdTooltip } = useVideoAd();
   const { show: showTooltip, openTooltip } = useTooltip();
-  const { onChange, formData, onResetForm } = useFormValue({
+  const {
+    onChange,
+    onChangeSelect,
+    setError,
+    getCurError,
+    formData,
+    onResetForm,
+  } = useFormValue({
     address: "",
     amount: "",
   });
@@ -124,6 +139,27 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Validation
+    if (!formData.address) {
+      setTooltipText(walletAddressRequiredText);
+      openTooltip();
+      setError((prev) => ({ ...prev, address: "invalid" }));
+      return;
+    }
+    if (withdrawWithCommision <= 0) {
+      setTooltipText(amountAfterCommissionMustBeGreaterThanZeroText);
+      setError((prev) => ({ ...prev, amount: "invalid" }));
+      openTooltip();
+      return;
+    }
+    if (+formData.amount > ton) {
+      setTooltipText(amountExceedsTonBalanceText);
+      openTooltip();
+      setError((prev) => ({ ...prev, amount: "invalid" }));
+      return;
+    }
+
     try {
       setLoading(true);
       await dispatch(
@@ -171,29 +207,33 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             name="address"
             onChange={onChange}
             value={formData.address}
+            isInvalid={!!getCurError("address")}
           />
-          <Formfield
-            headerText={withdrawAmountText[language]}
-            placeholder={withdrawAmountPlaceholder[language]}
-            commission={`${tonWithdrawCommission} TON`}
-            name="amount"
-            onChange={onChange}
-            value={formData.amount}
-          />
+          <div>
+            <Formfield
+              headerText={withdrawAmountText[language]}
+              placeholder={withdrawAmountPlaceholder[language]}
+              commission={`${tonWithdrawCommission} TON`}
+              name="amount"
+              onChange={onChange}
+              value={formData.amount}
+              isInvalid={!!getCurError("amount")}
+            />
+            <button
+              type="button"
+              onClick={() => onChangeSelect("amount", ton)}
+              className={styles.cyberFarmBonuses__setAllBtn}
+            >
+              {setAllText[language]} ({+ton.toFixed(2)})
+            </button>
+          </div>
           <Formfield
             headerText={totalToReceiveText[language]}
             placeholder={totalToReceivePlaceholder[language]}
             disabled
             value={withdrawWithCommision}
           />
-          <FormBtn
-            disabled={
-              withdrawWithCommision <= 0 ||
-              +formData.amount > ton ||
-              loading ||
-              !formData.address
-            }
-          >
+          <FormBtn disabled={loading}>
             <WithdrawIcon />
             <span>{withdrawText[language]}</span>
           </FormBtn>
