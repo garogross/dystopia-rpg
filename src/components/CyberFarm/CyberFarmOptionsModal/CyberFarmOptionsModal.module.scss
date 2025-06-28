@@ -54,21 +54,7 @@
   &_factory &__btnInner {
     font-size: 11px;
   }
-  &__btn:first-child,
-  &__btn:first-child &__btnInner,
-  &__btn:nth-child(5),
-  &__btn:nth-child(5) &__btnInner {
-    clip-path: polygon(
-      100% 0%,
-      100% 0%,
-      100% 100%,
-      6% 100%,
-      0% 90%,
-      0% 10%,
-      6% 0%,
-      100% 0%
-    );
-  }
+
   &__btn:last-child,
   &__btn:last-child &__btnInner,
   &__btn:nth-child(4),
@@ -84,6 +70,22 @@
       97.6% 5.4%,
       95.1% 0%,
       5.5% 0%
+    );
+  }
+
+  &__btn:first-child,
+  &__btn:first-child &__btnInner,
+  &__btn:nth-child(5),
+  &__btn:nth-child(5) &__btnInner {
+    clip-path: polygon(
+      100% 0%,
+      100% 0%,
+      100% 100%,
+      6% 100%,
+      0% 90%,
+      0% 10%,
+      6% 0%,
+      100% 0%
     );
   }
 

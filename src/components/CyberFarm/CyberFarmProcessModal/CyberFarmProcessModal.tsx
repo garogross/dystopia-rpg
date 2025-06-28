@@ -20,6 +20,8 @@ import TransitionProvider, {
 } from "../../../providers/TransitionProvider";
 import { useFarmFieldProgress } from "../../../hooks/useFarmFieldProgress";
 import { useVideoAd } from "../../../hooks/useVideoAd";
+import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
+import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
 
 interface Props {
   show: boolean;
@@ -44,7 +46,9 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   const speedUpCosts = useAppSelector(
     (state) => state.cyberfarm.slots.speedUpCosts
   );
-  const { onShowAd, showTooltip: showAdTooltip } = useVideoAd(() => onSpeedUp(true));
+  const { onShowAd, showTooltip: showAdTooltip } = useVideoAd(() =>
+    onSpeedUp(true)
+  );
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
@@ -75,12 +79,14 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
       setLoading(false);
     }
   };
-  const onSpeedUp = async (byAd?: boolean) => {
+  const onSpeedUp = async (byAd?: boolean, tutorial?: boolean) => {
     try {
       setLoading(true);
       setErrored(false);
       setTooltipText(speedUpCompleteText);
-      await dispatch(speedUp({ id: item.id, clb: openTooltip, byAd })).unwrap();
+      await dispatch(
+        speedUp({ id: item.id, clb: openTooltip, byAd, tutorial })
+      ).unwrap();
       onHarvest();
     } catch (error) {
       setErrored(true);
@@ -146,6 +152,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
               <>
                 <button
                   onClick={() => onSpeedUp()}
+                  id={ECyberfarmTutorialActions.speedUpProduce}
                   className={styles.cyberFarmProcessModal__btn}
                 >
                   <div className={styles.cyberFarmProcessModal__btnInner}>
@@ -192,6 +199,10 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
         <Tooltip show={showAdTooltip} text={loadAdText[language]} />
       </div>
       <LoadingOverlay loading={loading} />
+      <CloneFixedElementProvider
+        id={ECyberfarmTutorialActions.speedUpProduce}
+        onClick={async () => await onSpeedUp(undefined, true)}
+      />
     </ModalWithAdd>
   );
 };

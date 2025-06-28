@@ -24,6 +24,9 @@ import {
   BuyIcon,
 } from "../../layout/icons/CyberFarm/CyberFarmOptionsModal";
 import { buyResourceDeflict } from "../../../store/slices/cyberFarm/resourcesSlice";
+import { EPlants } from "../../../constants/cyberfarm/EPlants";
+import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
+import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
 
 interface Props {
   show: boolean;
@@ -55,6 +58,9 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const tutorialInProgress = useAppSelector(
+    (state) => state.cyberfarm.tutorial.tutorialInProgress
+  );
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
@@ -99,6 +105,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           buyResourceDeflict({
             product: selectedResource,
             slot_type: type,
+            tutorial: tutorialInProgress,
           })
         ).unwrap();
       }
@@ -153,7 +160,6 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   const isUnavailableForProduce = inputResources.some(
     (item) => item.isInsufficient
   );
-  console.log({ isUnavailableForProduce });
 
   return (
     <ModalWithAdd
@@ -174,6 +180,11 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
                 .filter(([_, product]) => product.type === productType)
                 .map(([key, product]) => (
                   <button
+                    id={
+                      key === EPlants.MetalCactus
+                        ? ECyberfarmTutorialActions.selectProduceRes
+                        : undefined
+                    }
                     className={`${styles.cyberFarmOptionsModal__btn} ${
                       type !== EFarmSlotTypes.FACTORY
                         ? styles.cyberFarmOptionsModal__btn_plant
@@ -291,9 +302,11 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
         </TransitionProvider>
         <button
           onClick={onProduce}
+          id={ECyberfarmTutorialActions.produceRes}
           disabled={
-            !selectedResource ||
-            (isUnavailableForProduce && totalPricyByCp > cp)
+            !tutorialInProgress &&
+            (!selectedResource ||
+              (isUnavailableForProduce && totalPricyByCp > cp))
           }
           className={styles.cyberFarmOptionsModal__acceptBtn}
         >
@@ -315,6 +328,16 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           ]
         }
       />
+      <CloneFixedElementProvider
+        id={ECyberfarmTutorialActions.selectProduceRes}
+        onClick={() => setSelectedResource(EPlants.MetalCactus)}
+      />
+      {selectedResource && (
+        <CloneFixedElementProvider
+          id={ECyberfarmTutorialActions.produceRes}
+          onClick={onProduce}
+        />
+      )}
     </ModalWithAdd>
   );
 };

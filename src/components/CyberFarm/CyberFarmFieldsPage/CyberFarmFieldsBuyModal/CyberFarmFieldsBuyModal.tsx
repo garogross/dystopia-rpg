@@ -17,6 +17,8 @@ import {
   metalImage,
   metalImageWebp,
 } from "../../../../assets/imageMaps";
+import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
+import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
 
 interface Props {
   show: boolean;
@@ -38,6 +40,9 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
 }) => {
   const dispath = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const tutorialInProgress = useAppSelector(
+    (state) => state.cyberfarm.tutorial.tutorialInProgress
+  );
   const { show: showTooltip, openTooltip } = useTooltip();
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
@@ -58,8 +63,7 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
       EFarmSlotTypes.FIELDS,
       byCp
     );
-
-    if (errored) {
+    if (errored && !tutorialInProgress) {
       setErrorText(notEnoughResourcesText);
       return;
     }
@@ -72,6 +76,7 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
           type: EFarmSlotTypes.FIELDS,
           byCp: byCp,
           cost,
+          tutorial: tutorialInProgress,
         })
       ).unwrap();
       await openTooltip();
@@ -97,7 +102,7 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
           <button
             onClick={() => onBuy(true)}
             disabled={loading}
-            className={styles.cyberFarmFieldsBuyModal__btn}
+            className={`${styles.cyberFarmFieldsBuyModal__btn} ${styles.cyberFarmFieldsBuyModal__btn_byCp}`}
           >
             <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
               <ImageWebp
@@ -112,7 +117,8 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
           <button
             disabled={loading}
             onClick={() => onBuy()}
-            className={styles.cyberFarmFieldsBuyModal__btn}
+            id={ECyberfarmTutorialActions.buySlot}
+            className={`${styles.cyberFarmFieldsBuyModal__btn} ${styles.cyberFarmFieldsBuyModal__btn_byMetal}`}
           >
             <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
               <ImageWebp
@@ -136,6 +142,12 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
         </button>
       </div>
       <Tooltip show={showTooltip} text={successText[language]} />
+      {show && (
+        <CloneFixedElementProvider
+          id={ECyberfarmTutorialActions.buySlot}
+          onClick={onBuy}
+        />
+      )}
     </ModalWithAdd>
   );
 };

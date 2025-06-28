@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import AppRouter from "../../router/AppRouter";
 import { useTelegram } from "../../hooks/useTelegram";
 import { getPlatformType } from "../../utils/getPlatformType";
+import TutorialPopup from "../TutorialPopup/TutorialPopup";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -99,6 +100,7 @@ export const App = () => {
   return (
     <>
       <AppRouter />
+      <TutorialPopup />
     </>
   );
 };

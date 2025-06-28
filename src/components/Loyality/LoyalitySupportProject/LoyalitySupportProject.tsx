@@ -247,7 +247,6 @@ const AdsgramTaskItem = ({
       // event.detail contains your block id
     };
     const task = taskRef.current;
-    console.log({ task });
 
     if (task) {
       task.addEventListener("reward", handler);
@@ -369,8 +368,6 @@ const LoyalitySupportProject = () => {
           autoImpressions: true,
         })
         .then((items) => {
-          console.log("taddy items", items);
-          // render(items)
           exchange.impressions(items);
         })
         .catch((err) => console.log({ err }));
@@ -379,8 +376,6 @@ const LoyalitySupportProject = () => {
   }, [exchange, tgId]);
 
   // const onShowWallgramTasks = () => {
-  //   console.log("onShowWallgramTasks", window.WallgramShowcase);
-
   //   window.WallgramShowcase?.show();
   // };
 

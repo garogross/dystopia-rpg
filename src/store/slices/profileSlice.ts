@@ -30,6 +30,7 @@ import {
 import { initAchievments } from "./cyberFarm/achievmentsSlice";
 import { WithdrawTonResponse } from "../../models/api/WithdrawTonResponse";
 import { convertReferals } from "./refferencesSlice";
+import { finsihTutorial } from "./cyberFarm/tutorialSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -310,6 +311,12 @@ export const profileSlice = createSlice({
     builder.addCase(exchange.fulfilled, (state, { payload }) => {
       if (payload.reward.cash_point) {
         state.stats.cp += payload.reward.cash_point;
+      }
+    });
+
+    builder.addCase(finsihTutorial.fulfilled, (state, { payload }) => {
+      if (payload.cash_point) {
+        state.stats.cp = payload.cash_point;
       }
     });
 

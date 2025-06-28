@@ -20,6 +20,8 @@ import TransitionProvider, {
 } from "../../../../providers/TransitionProvider";
 import { formatTime } from "../../../../utils/formatTime";
 import { ELanguages } from "../../../../constants/ELanguages";
+import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
+import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
 
 interface Props {
   show: boolean;
@@ -92,6 +94,9 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const tutorialInProgress = useAppSelector(
+    (state) => state.cyberfarm.tutorial.tutorialInProgress
+  );
   const socialShop = useAppSelector(
     (state) => state.cyberfarm.socialShop.socialShop
   );
@@ -153,6 +158,11 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
 
               return (
                 <button
+                  id={
+                    !index
+                      ? ECyberfarmTutorialActions.selectSocialStoreOption
+                      : undefined
+                  }
                   onClick={() => setSelectedOptionKey(key)}
                   disabled={
                     spendingResKey === "cash_point"
@@ -211,7 +221,10 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
             })}
         </div>
         <button
-          disabled={!selectedOptionKey || !!availableIn}
+          id={ECyberfarmTutorialActions.submitSocialStoreOption}
+          disabled={
+            !tutorialInProgress && (!selectedOptionKey || !!availableIn)
+          }
           onClick={onSubmit}
           className={styles.cyberFarmWarehouseSocialStoreModal__confirmBtn}
         >
@@ -229,6 +242,18 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
         )}
       </div>
       <Tooltip show={showTooltip} text={exchangeCompleteText[language]} />
+      {socialShop && (
+        <CloneFixedElementProvider
+          id={ECyberfarmTutorialActions.selectSocialStoreOption}
+          onClick={() => setSelectedOptionKey(Object.keys(socialShop)[0])}
+        />
+      )}
+      {socialShop && (
+        <CloneFixedElementProvider
+          id={ECyberfarmTutorialActions.submitSocialStoreOption}
+          onClick={onSubmit}
+        />
+      )}
     </ModalWithAdd>
   );
 };

@@ -1,5 +1,4 @@
-
-
 export enum ELSProps {
-    token = "token",
+  token = "token",
+  tutorialCompleted = "tutorialCompleted",
 }

@@ -85,7 +85,11 @@ export const sellProduct = createAsyncThunk<
 const buyResourceDeflictUrl = "/ton_cyber_farm/buy_resource_deficit/";
 export const buyResourceDeflict = createAsyncThunk<
   BuyResourceDeflictResponse,
-  { slot_type: EFarmSlotTypes; product: CyberFarmProductType }
+  {
+    slot_type: EFarmSlotTypes;
+    product: CyberFarmProductType;
+    tutorial?: boolean;
+  }
 >("resources/buyResourceDeflict", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<BuyResourceDeflictResponse>(
@@ -94,6 +98,7 @@ export const buyResourceDeflict = createAsyncThunk<
       {
         product: payload.product,
         slot_type: payload.slot_type,
+        tutorial: payload.tutorial,
       }
     );
 

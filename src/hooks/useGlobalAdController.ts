@@ -32,7 +32,7 @@ export const useGlobalAdController = (
           .then((show) => {
             setOnclickaAd(() => show);
           })
-          .catch((e) => console.log(e));
+          .catch((e) => console.error(e));
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

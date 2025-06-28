@@ -1,0 +1,114 @@
+@import "../../styles/mixins";
+@import "../../styles/vars";
+
+.tutorialPopup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: auto;
+  margin-bottom: 20px;
+  padding-inline: 12px;
+  position: relative;
+  z-index: 99999;
+  padding-bottom: 40px;
+  height: 90vh;
+
+  &__img {
+    width: 60%;
+    height: 60vh;
+    object-fit: contain;
+    animation: imageDisplay 0.7s ease-in 1;
+    transition: all 0.3s;
+    object-position: bottom;
+  }
+
+  &__main {
+    border: 1px solid $color-primary;
+    background-color: $color-bg;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  &__mainTextsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    justify-content: space-between;
+  }
+
+  &__mainText {
+    @include setFont(14px, 400);
+    transition: $transition;
+    transition-delay: 0.2s;
+    opacity: 1;
+  }
+
+  &__btnsWrapper {
+    @include flexCol();
+    z-index: 3;
+    max-width: 206px;
+    width: 100%;
+    margin-inline: auto;
+    gap: 18px;
+  }
+
+  &__btn {
+    @include button($color-primary);
+    padding: 1px;
+    width: 100%;
+  }
+  &__btnInner {
+    width: 100%;
+    padding: 5px;
+    @include flexCol();
+    gap: 5px;
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      rgb(82, 59, 166) 0%,
+      rgb(23, 14, 53) 100%
+    );
+    @include setFont(12px, 400);
+  }
+
+  &__btn_prev,
+  &__btn_prev &__btnInner {
+    clip-path: polygon(
+      95% 0%,
+      100% 0%,
+      100% 100%,
+      5% 100%,
+      0% 95%,
+      0% 5%,
+      5% 0%,
+      95% 0%
+    );
+  }
+  &__btn_next,
+  &__btn_next &__btnInner {
+    clip-path: polygon(
+      95% 0%,
+      100% 5%,
+      100% 95%,
+      95% 100%,
+      0% 100%,
+      0% 0%,
+      95% 0%
+    );
+  }
+}
+
+@keyframes imageDisplay {
+  from {
+    transform: translate(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0%);
+    opacity: 1;
+  }
+}

@@ -9,6 +9,9 @@ import { useAppSelector } from "../../../../hooks/redux";
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 import { v4 } from "uuid";
 import { getFarmFieldsFromSlots } from "../../../../utils/getFarmFieldsFromSlots";
+import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
+import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
+import { getFarmFieldProgress } from "../../../../utils/getFarmFieldProgress";
 
 const { titleText, emptyText } = TRANSLATIONS.cyberFarm.fields;
 
@@ -29,18 +32,55 @@ const CyberFarmFields = () => {
   const maxSlotCount =
     slotCosts && slotCosts.fields[slotCosts.fields.length - 1].range[1];
 
+  const filteredFields = fields.filter(
+    (item) => item.type === EFarmSlotTypes.FIELDS
+  );
+  const firstEmptyFieldIndex = filteredFields.findIndex(
+    (item) => !item.blocked && !item.process
+  );
+  const firstEmptyField = filteredFields.find(
+    (item) => !item.blocked && !item.process
+  );
+  const firstInProgressFieldIndex = filteredFields.findIndex(
+    (item) =>
+      !item.blocked &&
+      item.process &&
+      getFarmFieldProgress(item.process.startDate, item.process.endDate)
+        .progress < 100
+  );
+
+  if (firstEmptyFieldIndex !== -1) {
+    filteredFields[firstEmptyFieldIndex] = {
+      ...filteredFields[firstEmptyFieldIndex],
+      idArg: ECyberfarmTutorialActions.openProduceModal,
+    };
+  }
+
+  if (firstInProgressFieldIndex !== -1) {
+    filteredFields[firstInProgressFieldIndex] = {
+      ...filteredFields[firstInProgressFieldIndex],
+      idArg: ECyberfarmTutorialActions.openProgressModal,
+    };
+  }
   const data: IFarmField[] = [
-    ...fields.filter((item) => item.type === EFarmSlotTypes.FIELDS),
+    ...filteredFields,
+
     ...(maxSlotCount && slots && maxSlotCount > Object.keys(slots).length
       ? [
           {
             id: v4(),
             type: EFarmSlotTypes.FIELDS,
             blocked: true,
+            idArg: ECyberfarmTutorialActions.openBuySlot,
           },
         ]
       : []),
   ];
+
+  const onBuy = (field: IFarmField) => {
+    setBuyingSlotId(field.id);
+    setBuyModalOpened(true);
+  };
 
   return (
     <main className="cyberFarmContainer fullheight">
@@ -48,10 +88,7 @@ const CyberFarmFields = () => {
         title={titleText[language]}
         emptyText={emptyText[language]}
         data={data}
-        onBuyItem={(field) => {
-          setBuyingSlotId(field.id);
-          setBuyModalOpened(true);
-        }}
+        onBuyItem={onBuy}
         onBuildItem={(item) => {
           setBuildSlotId(item.id);
           setBuildModalOpened(true);
@@ -83,6 +120,23 @@ const CyberFarmFields = () => {
           show={buildOptionsModalOpened}
           slotId={buildSlotId}
           onClose={() => setBuildOptionsModalOpened(false)}
+        />
+      )}
+      <CloneFixedElementProvider
+        id={ECyberfarmTutorialActions.openBuySlot}
+        onClick={() => {
+          const field = data[data.length - 1]; // blocked
+          onBuy(field);
+        }}
+      />
+      {firstEmptyFieldIndex !== -1 && !!firstEmptyField && (
+        <CloneFixedElementProvider
+          id={ECyberfarmTutorialActions.openProduceModal}
+          onClick={() => {
+            setProducingSlotId(firstEmptyField.id);
+
+            setPlantOptionsModalOpened(true);
+          }}
         />
       )}
     </main>
