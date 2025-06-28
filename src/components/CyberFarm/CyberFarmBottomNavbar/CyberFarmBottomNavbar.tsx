@@ -12,7 +12,7 @@ import {
   SupportIcon,
   WarehouseIcon,
 } from "../../layout/icons/CyberFarm/CyberFarmBottomNavbar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 
 import styles from "./CyberFarmBottomNavbar.module.scss";
@@ -21,6 +21,8 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { adBannerRenderers } from "../../../utils/adBannerRenderers";
+import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
+import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
 
 const ONCLICKA_SPOT_ID = "6077990";
 
@@ -40,6 +42,7 @@ const links = [
   {
     link: cyberFarmWarehousePagePath,
     icon: <WarehouseIcon />,
+    id: ECyberfarmTutorialActions.openStorage,
   },
 
   {
@@ -49,6 +52,7 @@ const links = [
 ];
 
 const CyberFarmBottomNavbar = () => {
+  const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const linkActiveClass = ({ isActive }: { isActive: boolean }) =>
     isActive
@@ -78,6 +82,7 @@ const CyberFarmBottomNavbar = () => {
             key={link.link}
             className={linkActiveClass}
             end={true}
+            id={link?.id}
           >
             <span className={styles.cyberFarmBottomNavbar__linkInner}>
               {link.icon}
@@ -88,6 +93,10 @@ const CyberFarmBottomNavbar = () => {
       <div className={styles.cyberFarmBottomNavbar__banner}>
         {onClicka.render(ONCLICKA_SPOT_ID)}
       </div>
+      <CloneFixedElementProvider
+        id={ECyberfarmTutorialActions.openStorage}
+        onClick={() => navigate(cyberFarmWarehousePagePath)}
+      />
     </TransitionProvider>
   );
 };

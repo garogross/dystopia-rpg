@@ -18,36 +18,31 @@ const RPGGameWrapper: React.FC<Props> = (props) => {
   const [loaderTimerFinished, setLoaderTimerFinished] = useState(false);
 
   useEffect(() => {
-    setLoading(false)
-  },[])
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     // if (token) {
     //   const wsUrl = `${process.env.REACT_APP_SOCKET_URL}?token=${token}`;
-
     //   const socket = new WebSocket(wsUrl);
-
     //   socket.onopen = function () {
-    //     console.log("WebSocket соединение установлено");
+    //     console.dir("WebSocket соединение установлено");
     //   };
-
     //   socket.onmessage = function (event) {
     //     const data = JSON.parse(event.data);
     //     if (data.timer !== undefined) {
-    //       console.log(`Таймер: ${data.timer}, пауза: ${data.pause} сек.`);
+    //       console.dir(`Таймер: ${data.timer}, пауза: ${data.pause} сек.`);
     //     } else if (data.message) {
-    //       console.log(data.message);
+    //       console.dir(data.message);
     //     } else if (data.error) {
     //       console.error("Ошибка:", data.error);
     //     }
     //   };
-
     //   socket.onerror = function (error) {
     //     console.error("WebSocket ошибка:", error);
     //   };
-
     //   socket.onclose = function (event) {
-    //     console.log("Соединение прервано");
+    //     console.dir("Соединение прервано");
     //   };
     // }
   }, [token]);

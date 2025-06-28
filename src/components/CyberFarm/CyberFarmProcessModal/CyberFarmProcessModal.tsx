@@ -20,6 +20,8 @@ import TransitionProvider, {
 } from "../../../providers/TransitionProvider";
 import { useFarmFieldProgress } from "../../../hooks/useFarmFieldProgress";
 import { useVideoAd } from "../../../hooks/useVideoAd";
+import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
+import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
 
 interface Props {
   show: boolean;
@@ -44,7 +46,9 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   const speedUpCosts = useAppSelector(
     (state) => state.cyberfarm.slots.speedUpCosts
   );
-  const { onShowAd, showTooltip: showAdTooltip } = useVideoAd(() => onSpeedUp(true));
+  const { onShowAd, showTooltip: showAdTooltip } = useVideoAd(() =>
+    onSpeedUp(true)
+  );
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
@@ -146,6 +150,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
               <>
                 <button
                   onClick={() => onSpeedUp()}
+                  id={ECyberfarmTutorialActions.speedUpProduce}
                   className={styles.cyberFarmProcessModal__btn}
                 >
                   <div className={styles.cyberFarmProcessModal__btnInner}>
@@ -192,6 +197,10 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
         <Tooltip show={showAdTooltip} text={loadAdText[language]} />
       </div>
       <LoadingOverlay loading={loading} />
+      <CloneFixedElementProvider
+        id={ECyberfarmTutorialActions.speedUpProduce}
+        onClick={onSpeedUp}
+      />
     </ModalWithAdd>
   );
 };

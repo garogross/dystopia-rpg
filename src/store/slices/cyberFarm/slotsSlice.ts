@@ -31,6 +31,7 @@ export const buySlot = createAsyncThunk<
     id: string;
     type: EFarmSlotTypes;
     byCp?: boolean;
+    tutorial?: boolean;
     cost: ReturnType<typeof getSlotCost>;
   }
 >("slots/buySlot", async (payload, { rejectWithValue }) => {
@@ -38,6 +39,7 @@ export const buySlot = createAsyncThunk<
     const resData = await fetchRequest<BuySlotResponse>(buySlotUrl, "POST", {
       slot_id: payload.id,
       action: payload.type,
+      tutorial: payload.tutorial,
       payment_method: payload.byCp ? "cash_point" : "metal",
     });
 

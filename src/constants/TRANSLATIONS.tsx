@@ -33,6 +33,160 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Посмотреть",
     },
   },
+  tutorialPopup: {
+    closeText: {
+      [ELanguages.en]: "Close",
+      [ELanguages.ru]: "Закрыть",
+    },
+    nextText: {
+      [ELanguages.en]: "Next",
+      [ELanguages.ru]: "Далее",
+    },
+    cyberFarmSlides: {
+      welcomeText: {
+        [ELanguages.en]: (
+          <>
+            <b>Welcome to the Cyber Farm!</b> <br />
+            Here you can grow products, process resources, and sell goods for
+            TON. I'll help you get started.
+            <br />
+            Now we're in the "Fields" section. On fields, you can grow products,
+            or build a <b>farm</b> or <b>factory</b> (after building, you'll
+            find them in other sections). As you can see, you have no fields
+            yet—let's buy your first one, I'll make it free for you.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            <b>Добро пожаловать на киберферму!</b>
+            <br />
+            Здесь ты можешь выращивать продукцию, перерабатывать ресурсы и
+            продавать продукты за TON, я помогу тебе разобраться.
+            <br />
+            Сейчас мы в разделе «Поля». На полях можно выращивать продукцию, а
+            также построить <b>ферму</b> или <b>завод</b> (после постройки
+            найдешь их в других разделах). Как видишь, у тебя нет полей, давай
+            купим первое, для тебя я сделаю его бесплатным.
+          </>
+        ),
+      },
+      plantCactusText: {
+        [ELanguages.en]: <>Now let's plant a metal cactus there.</>,
+        [ELanguages.ru]: <>Теперь давай посадим туда металлокактус.</>,
+      },
+      needResourcesText: {
+        [ELanguages.en]: (
+          <>
+            You need certain resources to grow crops. You can buy them
+            separately in the warehouse, or all at once from this menu.
+            Especially for you, the first resources are free.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Видишь, для выращивания необходимы определенные ресурсы, их можно
+            купить на складе по отдельности, а также из этого меню сразу все.
+            Специально для тебя первые ресурсы дам тебе бесплатно.
+          </>
+        ),
+      },
+      speedUpText: {
+        [ELanguages.en]: (
+          <>
+            Everything grows for 1 hour on fields (8 hours on farms, 12 hours in
+            factories). Let's speed it up so you don't have to wait.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            На полях все растет 1 час (на фермах 8 часов, на заводе
+            перерабатывается 12 часов), давай ускорим, чтобы не ждать.
+          </>
+        ),
+      },
+      speedUpCostText: {
+        [ELanguages.en]: (
+          <>
+            Speed-up costs: 0.1 Cash Point (CP) on fields, 0.5 CP on farms, 1 CP
+            in factories. You can also speed up by watching an ad—one view pays
+            for 1 CP, so after speeding up on fields or farms, you'll get some
+            change back. Also, if some time has passed, the speed-up cost
+            decreases.
+            <br />
+            After harvesting, all products go to the warehouse. Let's go there.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Ускорение на полях стоит 0,1 Cash Point (CP), на ферме 0,5 CP, на
+            заводе 1 СР. Можно ускорить за просмотр рекламы, один просмотр
+            оплачивает 1 СР, поэтому после ускорений на полях или ферме ты
+            получишь сдачу. Также, если прошло некоторые время, стоимость
+            ускорения снижается.
+            <br />
+            Посла сбора все продукты попадают на склад, давай перейдем туда.
+          </>
+        ),
+      },
+      warehouseText: {
+        [ELanguages.en]: (
+          <>
+            Here you can sell products for TON and buy missing items for
+            production with CP. If you complete a few tasks for CP in the
+            Support Center (don't forget to check in daily for your bonus!) and
+            put in a little effort, by tomorrow you can produce and sell bio gel
+            for TON. It's even more profitable to produce edible bricks and
+            meat, but that takes more time and resources.
+            <br />
+            Now let's go to the social store.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Мы на складе, здесь ты можешь продать за TON продукцию и докупить
+            недостающие вещи для производства за СР. Если выполнишь несколько
+            заданий за СР в Центре Поддержке (не забывай заглядывать туда каждый
+            день и собирать ежедневный бонус) и приложишь немного усилий, то уже
+            завтра ты сможешь произвести и продать за TON биогель. Гораздо
+            выгоднее производить съедобные брикеты и мясо, но это потребует
+            больше времени и ресурсов.
+            <br />
+            Теперь перейдем в социальный магазин.
+          </>
+        ),
+      },
+      socialStoreText: {
+        [ELanguages.en]: (
+          <>
+            This is a special place to help new players. From time to time, you
+            can exchange regular cacti for CP or more complex products like
+            repair kits or energy.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Это специальное место для помощи начинающим игрокам. Раз в
+            определенное время ты можешь обменять обычные кактусы на СР или
+            более сложные продукты, такие как ремкомплекты или энергия.
+          </>
+        ),
+      },
+      finishText: {
+        [ELanguages.en]: (
+          <>
+            That's it—develop your farm and have fun! If you have any questions,
+            you can ask them in the chat.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            На этом все, развивай ферму, получай удовольствие! Если возникнут
+            вопросы, можешь задавать их в чате.
+          </>
+        ),
+      },
+    },
+  },
   home: {
     titleText: {
       [ELanguages.en]:

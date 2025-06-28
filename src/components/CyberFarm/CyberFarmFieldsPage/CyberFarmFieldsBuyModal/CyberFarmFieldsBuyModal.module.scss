@@ -49,8 +49,8 @@
     }
   }
 
-  &__btn:nth-child(1),
-  &__btn:nth-child(1) &__btnInner {
+  &__btn_byCp,
+  &__btn_byCp &__btnInner {
     clip-path: polygon(
       100% 0%,
       100% 0%,
@@ -62,8 +62,8 @@
       100% 0%
     );
   }
-  &__btn:nth-child(2):not(&__btn_cancel),
-  &__btn:nth-child(2):not(&__btn_cancel) &__btnInner {
+  &__btn_byMetal,
+  &__btn_byMetal &__btnInner {
     clip-path: polygon(
       5.5% 0%,
       0% 0.6%,

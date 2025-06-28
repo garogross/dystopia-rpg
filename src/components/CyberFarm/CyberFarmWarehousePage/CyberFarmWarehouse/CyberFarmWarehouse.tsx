@@ -18,6 +18,8 @@ import {
   tonImageWebp,
 } from "../../../../assets/imageMaps";
 import { DotsLine } from "../../../layout/icons/RPGGame/Common";
+import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
+import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
 
 const {
   titleText,
@@ -150,6 +152,7 @@ const CyberFarmWarehouse = () => {
         )}
       </div>
       <button
+        id={ECyberfarmTutorialActions.openSocialStore}
         onClick={() => setSocialStoreShow(true)}
         className={styles.cyberFarmWarehouse__socialStoreBtn}
       >
@@ -161,6 +164,10 @@ const CyberFarmWarehouse = () => {
       <CyberFarmWarehouseSocialStoreModal
         show={socialStoreShow}
         onClose={() => setSocialStoreShow(false)}
+      />
+      <CloneFixedElementProvider
+        id={ECyberfarmTutorialActions.openSocialStore}
+        onClick={() => setSocialStoreShow(true)}
       />
     </main>
   );

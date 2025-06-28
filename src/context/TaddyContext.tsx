@@ -34,7 +34,6 @@ export const TaddyProvider: React.FC<{ children: React.ReactNode }> = ({
         autoImpressions: true,
       })
       .then((fetchedTaddyTasks) => {
-        console.log("taddy taddyTasks", fetchedTaddyTasks);
         setTaddyTasks(fetchedTaddyTasks);
       })
       .catch((err) => console.error({ err }));

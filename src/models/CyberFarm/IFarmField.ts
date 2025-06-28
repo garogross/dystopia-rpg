@@ -12,4 +12,5 @@ export interface IFarmField {
     startDate: number;
     endDate: number;
   };
+  idArg?: string;
 }
