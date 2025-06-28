@@ -8,13 +8,19 @@ import {
 } from "../constants/cyberfarm/tutorial";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { updateTutorialProgress } from "../store/slices/cyberFarm/tutorialSlice";
+import { TargetArrowIcon } from "../components/layout/icons/TutorialPopup";
 
 interface Props {
   id: ECyberfarmTutorialActions;
   onClick: () => void | Promise<void>;
+  targetFromTop?: boolean;
 }
 
-const CloneFixedElementProvider: React.FC<Props> = ({ id, onClick }) => {
+const CloneFixedElementProvider: React.FC<Props> = ({
+  id,
+  onClick,
+  targetFromTop,
+}) => {
   const dispatch = useAppDispatch();
   const [clone, setClone] = useState<HTMLElement | null>(null);
   const [linkProps, setLinkProps] = useState<{
@@ -87,7 +93,6 @@ const CloneFixedElementProvider: React.FC<Props> = ({ id, onClick }) => {
   useEffect(() => {
     if (!show) return;
     if (clone && wrapperRef.current) {
-      wrapperRef.current.innerHTML = "";
       wrapperRef.current.appendChild(clone);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,6 +126,17 @@ const CloneFixedElementProvider: React.FC<Props> = ({ id, onClick }) => {
             height: `${rect.height}px`,
           }}
         >
+          <div
+            style={{
+              position: "absolute",
+              zIndex: 999999,
+              bottom: -2,
+              transform: `translateY(100%)`,
+              right: 0,
+            }}
+          >
+            <TargetArrowIcon />
+          </div>
           {linkProps && (
             <Link
               className={linkProps.className}
