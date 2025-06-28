@@ -79,12 +79,14 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
       setLoading(false);
     }
   };
-  const onSpeedUp = async (byAd?: boolean) => {
+  const onSpeedUp = async (byAd?: boolean, tutorial?: boolean) => {
     try {
       setLoading(true);
       setErrored(false);
       setTooltipText(speedUpCompleteText);
-      await dispatch(speedUp({ id: item.id, clb: openTooltip, byAd })).unwrap();
+      await dispatch(
+        speedUp({ id: item.id, clb: openTooltip, byAd, tutorial })
+      ).unwrap();
       onHarvest();
     } catch (error) {
       setErrored(true);
@@ -199,7 +201,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
       <LoadingOverlay loading={loading} />
       <CloneFixedElementProvider
         id={ECyberfarmTutorialActions.speedUpProduce}
-        onClick={onSpeedUp}
+        onClick={async () => await onSpeedUp(undefined, true)}
       />
     </ModalWithAdd>
   );

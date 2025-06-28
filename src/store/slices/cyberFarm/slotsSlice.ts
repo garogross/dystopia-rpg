@@ -95,11 +95,12 @@ export const harvest = createAsyncThunk<
 const speedUpUrl = "/ton_cyber_farm/speed_up/";
 export const speedUp = createAsyncThunk<
   SpeedUpResponse,
-  { id: string; clb?: () => Promise<void>; byAd?: boolean }
+  { id: string; clb?: () => Promise<void>; byAd?: boolean; tutorial?: boolean }
 >("slots/speedUp", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<SpeedUpResponse>(speedUpUrl, "POST", {
       slot_id: payload.id,
+      tutorial: payload.tutorial,
       payment_method: payload.byAd ? "ad" : "cash_point",
     });
     await payload.clb?.();
