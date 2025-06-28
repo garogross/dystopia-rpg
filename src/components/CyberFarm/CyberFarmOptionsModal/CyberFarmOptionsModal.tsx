@@ -305,7 +305,8 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           id={ECyberfarmTutorialActions.produceRes}
           disabled={
             !tutorialInProgress &&
-            !selectedResource(isUnavailableForProduce && totalPricyByCp > cp)
+            (!selectedResource ||
+              (isUnavailableForProduce && totalPricyByCp > cp))
           }
           className={styles.cyberFarmOptionsModal__acceptBtn}
         >
