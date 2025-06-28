@@ -54,6 +54,7 @@ const TutorialPopup = () => {
       if (!tutorialCompleted) {
         navigate(cyberFarmPagePath);
         dispatch(setTutorialInProgress(true));
+        setLSItem(ELSProps.tutorialCompleted, true);
       }
     })();
 
