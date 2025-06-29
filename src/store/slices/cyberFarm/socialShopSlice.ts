@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { SocialShopType } from "../../../types/SocialShopType";
-import { ExchangeResponse } from "../../../models/api/CyberFarm/SocialShop";
+import {
+  ExchangeResponse,
+  UpdateTimersResponse,
+} from "../../../models/api/CyberFarm/SocialShop";
 import { fetchRequest } from "../../tools/fetchTools";
 
 export interface SocialShopState {
@@ -32,6 +35,20 @@ export const exchange = createAsyncThunk<ExchangeResponse, string>(
     }
   }
 );
+const updateTimersUrl = "/ton_cyber_farm/timers/";
+export const updateTimers = createAsyncThunk<UpdateTimersResponse, undefined>(
+  "socialShop/updateTimers",
+  async (_payload, { rejectWithValue }) => {
+    try {
+      const resData = await fetchRequest<UpdateTimersResponse>(updateTimersUrl);
+
+      return resData;
+    } catch (error: any) {
+      console.error("error", error);
+      return rejectWithValue(error);
+    }
+  }
+);
 
 export const socialShopSlice = createSlice({
   name: "socialShopSlice",
@@ -46,8 +63,8 @@ export const socialShopSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(exchange.fulfilled, (state) => {
-      state.availableIn = Date.now() + 6 * 60 * 60 * 1000;
+    builder.addCase(updateTimers.fulfilled, (state, { payload }) => {
+      state.availableIn = payload.timers.social_shop.cooldown_until_ts;
     });
   },
 });

@@ -7,6 +7,7 @@ import {
   GetStorageResponse,
   SellProductResponse,
   BuyResourceDeflictResponse,
+  GetResourcesDeflictResponse,
 } from "../../../models/api/CyberFarm/Resources";
 import { FarmProductionChainsType } from "../../../types/FarmProductionChainsType";
 import { buySlot, harvest, produceSlot } from "./slotsSlice";
@@ -124,6 +125,23 @@ export const getStorage = createAsyncThunk<GetStorageResponse, undefined>(
   }
 );
 
+const getResourcesDeflictUrl = "/ton_cyber_farm/resource_deficit/";
+export const getResourcesDeflict = createAsyncThunk<
+  GetResourcesDeflictResponse,
+  undefined
+>("resources/getResourcesDeflict", async (_payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<GetResourcesDeflictResponse>(
+      getResourcesDeflictUrl
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
 export const resourcesSlice = createSlice({
   name: "resourcesSlice",
   initialState,
@@ -180,6 +198,9 @@ export const resourcesSlice = createSlice({
       state.resources = { ...state.resources, ...payload.resources };
       state.totalEstimatedCostInTon = payload.estimated_cost.total_in_ton;
       state.totalEstimatedCostInCp = payload.estimated_cost.total;
+    });
+    builder.addCase(getResourcesDeflict.fulfilled, (state, { payload }) => {
+      state.resourceDeficit = payload.resource_deficit;
     });
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
       if (payload.cost && "cash_point" in payload.cost) {

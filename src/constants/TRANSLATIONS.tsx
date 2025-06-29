@@ -94,13 +94,15 @@ export const TRANSLATIONS = {
         [ELanguages.en]: (
           <>
             Everything grows for 1 hour on fields (8 hours on farms, 12 hours in
-            factories). Let's speed it up so you don't have to wait.
+            factories). Let's speed it up so you don't have to wait. I'll make
+            this speed-up free for you.
           </>
         ),
         [ELanguages.ru]: (
           <>
             На полях все растет 1 час (на фермах 8 часов, на заводе
-            перерабатывается 12 часов), давай ускорим, чтобы не ждать.
+            перерабатывается 12 часов), давай ускорим, чтобы не ждать. Это
+            ускорение я сделаю для тебя бесплатным.
           </>
         ),
       },
@@ -175,16 +177,32 @@ export const TRANSLATIONS = {
         [ELanguages.en]: (
           <>
             That's it—develop your farm and have fun! If you have any questions,
-            you can ask them in the chat.
+            you can ask them in the chat. For successfully completing the
+            tutorial, I'll give you 10 CP. Spend them wisely.
           </>
         ),
         [ELanguages.ru]: (
           <>
             На этом все, развивай ферму, получай удовольствие! Если возникнут
-            вопросы, можешь задавать их в чате.
+            вопросы, можешь задавать их в чате. За успешное прохождение задания
+            я дам тебе 10 СР, трать их с умом.
           </>
         ),
       },
+    },
+  },
+  settings: {
+    titleText: {
+      [ELanguages.en]: "Settings",
+      [ELanguages.ru]: "Настройки",
+    },
+    languageText: {
+      [ELanguages.en]: "Language",
+      [ELanguages.ru]: "Язык",
+    },
+    goToChatText: {
+      [ELanguages.en]: "Go to Chat",
+      [ELanguages.ru]: "Перейти в Чат",
     },
   },
   home: {

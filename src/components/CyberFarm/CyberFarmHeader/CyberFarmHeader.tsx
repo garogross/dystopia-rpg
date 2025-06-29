@@ -24,6 +24,7 @@ import {
 import CyberFarmBonuses from "../CyberFarmBonuses/CyberFarmBonuses";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { formatNumber } from "../../../utils/formatNumber";
+import SettingsModal from "../../SettingsModal/SettingsModal";
 const { balancesText } = TRANSLATIONS.cyberFarm.header;
 const CyberFarmHeader = () => {
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ const CyberFarmHeader = () => {
   const stats = useAppSelector((state) => state.profile.stats);
   const language = useAppSelector((state) => state.ui.language);
   const [bonusesOpened, setBonusesOpened] = useState(false);
+  const [settingsOpened, setSettingsOpened] = useState(false);
+
   const linkActiveClass =
     (className?: string) =>
     ({ isActive }: { isActive: boolean }) =>
@@ -94,7 +97,10 @@ const CyberFarmHeader = () => {
         <div className={styles.cyberFarmHeader__dotsLine}>
           <DotsLine />
         </div>
-        <button className={styles.cyberFarmHeader__mainBtn}>
+        <button
+          onClick={() => setSettingsOpened(true)}
+          className={styles.cyberFarmHeader__mainBtn}
+        >
           <HeaderSettingsIcon />
         </button>
         <div className={styles.cyberFarmHeader__navBtns}>
@@ -122,6 +128,10 @@ const CyberFarmHeader = () => {
       <CyberFarmBonuses
         show={bonusesOpened}
         onClose={() => setBonusesOpened(false)}
+      />
+      <SettingsModal
+        show={settingsOpened}
+        onClose={() => setSettingsOpened(false)}
       />
     </header>
   );

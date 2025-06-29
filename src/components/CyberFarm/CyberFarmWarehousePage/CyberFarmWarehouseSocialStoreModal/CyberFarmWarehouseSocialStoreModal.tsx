@@ -12,6 +12,7 @@ import { getResProductDetails } from "../../../../utils/cyberFarm/getResProductD
 import {
   exchange,
   setAvailableIn,
+  updateTimers,
 } from "../../../../store/slices/cyberFarm/socialShopSlice";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
@@ -114,6 +115,14 @@ const CyberFarmWarehouseSocialStoreModal: React.FC<Props> = ({
   const [errored, setErrored] = useState(false);
 
   const { show: showTooltip, openTooltip } = useTooltip();
+
+  useEffect(() => {
+    if (show) {
+      dispatch(updateTimers());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [show]);
+
   const onSubmit = async () => {
     if (!selectedOptionKey) return;
     try {

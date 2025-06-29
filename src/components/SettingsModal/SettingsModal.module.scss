@@ -1,0 +1,66 @@
+@import "../../styles/mixins";
+@import "../../styles/vars";
+
+.settingsModal {
+  @include flexCol();
+  flex-direction: column;
+  margin-top: 5px;
+  gap: 12px;
+  width: 100%;
+
+  &__languageSwitcherBlock {
+    @include flexCol(space-between);
+    width: 100%;
+  }
+  &__languageSwitcherText {
+    @include setFont(16px, 400);
+  }
+  &__languageSwitcherOptions {
+    @include flexCol();
+    gap: 5px;
+  }
+  &__languageSwitcherBtn {
+    width: 45px;
+    height: 28px;
+    padding-block: 2px;
+    @include flexCol();
+    @include button(
+      linear-gradient(
+        90deg,
+        rgba(61, 43, 126, 0) 5.03%,
+        #563cb1 50%,
+        rgba(110, 78, 228, 0) 95.44%
+      )
+    );
+  }
+  &__languageSwitcherBtnInner {
+    width: 100%;
+    height: 100%;
+    @include flexCol();
+    @include setFont(16px, 400);
+    background: $color-bg;
+    transition: $transition;
+  }
+  &__languageSwitcherBtn:hover &__languageSwitcherBtnInner,
+  &__languageSwitcherBtn:active &__languageSwitcherBtnInner,
+  &__languageSwitcherBtn_active &__languageSwitcherBtnInner {
+    background: transparent;
+  }
+
+  &__linkItem {
+    @include flexCol(space-between);
+    gap: 23px;
+    width: 100%;
+  }
+  &__linkDotline {
+    max-width: 100%;
+
+    & svg {
+      width: 100%;
+    }
+  }
+  &__link {
+    @include setFont(16px, 400, $font-fam-main, $color-primary);
+    white-space: nowrap;
+  }
+}

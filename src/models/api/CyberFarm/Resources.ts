@@ -1,4 +1,5 @@
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
+import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
 
 export interface BuyProductResponse {
   status: "ok";
@@ -40,4 +41,8 @@ export interface GetStorageResponse {
     total: number;
     total_in_ton: number;
   };
+}
+
+export interface GetResourcesDeflictResponse {
+  resource_deficit: FarmResourceDeficitType;
 }
