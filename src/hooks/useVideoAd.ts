@@ -8,19 +8,24 @@ import { useAppDispatch, useAppSelector } from "./redux";
 import { useGlobalAdController } from "./useGlobalAdController";
 import { useTooltip } from "./useTooltip";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
+import { TranslationItemType } from "../types/TranslationItemType";
 
-const THIRTY_MINUTES = 30 * 60 * 1000;
+const THIRTY_SECONDS = 30 * 1000;
 
 function setVideoAdLastViewDate() {
   setLSItem(
     ELSProps.videoAdLastViewDate,
-    (Date.now() + THIRTY_MINUTES).toString()
+    (Date.now() + THIRTY_SECONDS).toString()
   );
 }
 
-const { loadAdText, willBeAvailableFromMinuteText } = TRANSLATIONS.errors;
+const { loadAdText, willBeAvailableFromSecondText } = TRANSLATIONS.errors;
+const { rewardReceivedText } = TRANSLATIONS.loyality.tabs.supportProject;
 
-export const useVideoAd = (scsClb?: () => void) => {
+export const useVideoAd = (
+  scsClb?: () => void,
+  speedUpCompleteText?: TranslationItemType
+) => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
   const language = useAppSelector((state) => state.ui.language);
@@ -31,6 +36,8 @@ export const useVideoAd = (scsClb?: () => void) => {
     setVideoAdLastViewDate();
     if (scsClb) scsClb();
     else dispatch(claimVideoReward({ id: tgId.toString() }));
+    setTooltipText((speedUpCompleteText || rewardReceivedText)[language]);
+    openTooltip();
   };
 
   const onShowOnClickaAd = useGlobalAdController(
@@ -47,9 +54,9 @@ export const useVideoAd = (scsClb?: () => void) => {
     if (!lastView) return true;
     const dif = Number(lastView) - Date.now();
     setTooltipText(
-      willBeAvailableFromMinuteText[language].replace(
+      willBeAvailableFromSecondText[language].replace(
         "NUMBER",
-        Math.ceil(dif / 60000).toString()
+        Math.ceil(dif / 1000).toString()
       )
     );
     return Date.now() > Number(lastView);

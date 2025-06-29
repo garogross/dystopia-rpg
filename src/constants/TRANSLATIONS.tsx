@@ -14,9 +14,9 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Failed to load ad",
       [ELanguages.ru]: "Не удалось загрузить рекламу",
     },
-    willBeAvailableFromMinuteText: {
-      [ELanguages.en]: "Will be available from NUMBER minute",
-      [ELanguages.ru]: "Будет доступно через NUMBER минуту",
+    willBeAvailableFromSecondText: {
+      [ELanguages.en]: "Will be available from NUMBER second",
+      [ELanguages.ru]: "Будет доступно через NUMBER секунду",
     },
   },
   common: {
@@ -971,6 +971,10 @@ export const TRANSLATIONS = {
         statText: {
           [ELanguages.en]: "Completed: 1 of 7",
           [ELanguages.ru]: "Выполнено: 1 из 7",
+        },
+        rewardReceivedText: {
+          [ELanguages.en]: "Reward received",
+          [ELanguages.ru]: "Награда получена",
         },
       },
       store: {
