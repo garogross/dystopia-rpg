@@ -15,10 +15,10 @@ export interface GetAccountDetailsResponse {
     name: string;
     profile: {
       cash_point: number;
-    };
-    dataset: {
-      start_choice: AppGameMode;
-      tutorial_finished_rewarded: boolean;
+      dataset: {
+        start_choice: AppGameMode;
+        tutorial_finished_rewarded: boolean;
+      };
     };
   };
   ton_cyber_farm?: {
