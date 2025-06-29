@@ -48,10 +48,12 @@
     @include setFont(14px, 400, $font-fam-h1);
     text-align: center;
     margin-bottom: 10px;
+    padding-inline: 20px;
   }
   &__titleText {
     @include setFont(14px, 400);
     text-align: center;
+    padding-inline: 20px;
   }
   &__content {
     width: 100%;
