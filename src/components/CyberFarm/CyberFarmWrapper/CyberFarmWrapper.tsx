@@ -11,6 +11,7 @@ import { useTelegram } from "../../../hooks/useTelegram";
 import * as cyberfarmImages from "../../../assets/imageMaps/cyberfarmImages";
 import { useImageLoader } from "../../../hooks/useImageLoader";
 import { ESplashTypes } from "../../../constants/ESplashTypes";
+import TutorialPopup from "../../TutorialPopup/TutorialPopup";
 
 const CyberFarmWrapper = () => {
   const tg = useTelegram();
@@ -64,6 +65,7 @@ const CyberFarmWrapper = () => {
         </div>
         <CyberFarmBottomNavbar />
       </div>
+      <TutorialPopup />
     </div>
   );
 };

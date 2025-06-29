@@ -23,7 +23,10 @@ import {
   ConfirmIcon,
   BuyIcon,
 } from "../../layout/icons/CyberFarm/CyberFarmOptionsModal";
-import { buyResourceDeflict } from "../../../store/slices/cyberFarm/resourcesSlice";
+import {
+  buyResourceDeflict,
+  getResourcesDeflict,
+} from "../../../store/slices/cyberFarm/resourcesSlice";
 import { EPlants } from "../../../constants/cyberfarm/EPlants";
 import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
 import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
@@ -92,7 +95,11 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
     if (!show) {
       setErrorText("");
       setErrored(false);
+    } else {
+      dispatch(getResourcesDeflict());
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [show]);
 
   const onProduce = async () => {
@@ -291,7 +298,8 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           className={styles.cyberFarmOptionsModal__missingResCost}
         >
           <span className={styles.cyberFarmOptionsModal__missingResCostText}>
-            {missingResourcesCostText[language]}: {totalPricyByCp || 0}
+            {missingResourcesCostText[language]}:{" "}
+            {totalPricyByCp ? +totalPricyByCp.toFixed(2) : 0}
           </span>
           <ImageWebp
             src={cpImage}

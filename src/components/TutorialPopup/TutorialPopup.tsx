@@ -21,16 +21,12 @@ import {
   setTutorialInProgress,
   updateTutorialProgress,
 } from "../../store/slices/cyberFarm/tutorialSlice";
-import { useLocation, useNavigate } from "react-router-dom";
-import { cyberFarmPagePath } from "../../router/constants";
-import { getLSItem, setLSItem } from "../../helpers/localStorage";
-import { ELSProps } from "../../constants/ELSProps";
+import { useNavigate } from "react-router-dom";
 
 const { closeText, nextText } = TRANSLATIONS.tutorialPopup;
 
 const TutorialPopup = () => {
   const dispatch = useAppDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
   const siteLanguage = useAppSelector((state) => state.ui.language);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
@@ -46,23 +42,14 @@ const TutorialPopup = () => {
   const show = tutorialInProgress && !!curTutorial?.text && gameInited;
 
   useEffect(() => {
-    if (!location.pathname.startsWith(cyberFarmPagePath) || tutorialInProgress)
-      return;
-    (async () => {
-      const tutorialCompleted = await getLSItem(ELSProps.tutorialCompleted);
-
-      if (!tutorialCompleted) {
-        navigate(cyberFarmPagePath);
-        dispatch(setTutorialInProgress(true));
-        setLSItem(ELSProps.tutorialCompleted, true);
-      }
-    })();
+    if (tutorialInProgress && curTutorial.page) {
+      navigate(curTutorial.page);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname, tutorialInProgress]);
+  }, [tutorialInProgress]);
 
   const onClose = (isFinished?: boolean) => {
-    setLSItem(ELSProps.tutorialCompleted, true);
     dispatch(setTutorialInProgress(false));
     if (isFinished) dispatch(finsihTutorial());
   };

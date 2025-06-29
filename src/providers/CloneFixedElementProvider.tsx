@@ -7,7 +7,7 @@ import {
   ECyberfarmTutorialActions,
 } from "../constants/cyberfarm/tutorial";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { updateTutorialProgress } from "../store/slices/cyberFarm/tutorialSlice";
+import { updateAndSaveTutorialProgress } from "../store/slices/cyberFarm/tutorialSlice";
 import { TargetArrowIcon } from "../components/layout/icons/TutorialPopup";
 
 interface Props {
@@ -100,7 +100,7 @@ const CloneFixedElementProvider: React.FC<Props> = ({
 
   const onClickItem = async () => {
     await onClick();
-    dispatch(updateTutorialProgress());
+    dispatch(updateAndSaveTutorialProgress(id));
   };
 
   // The wrapper div gets the fixed positioning

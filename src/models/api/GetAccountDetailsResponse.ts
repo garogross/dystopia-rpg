@@ -1,4 +1,5 @@
 import { EFarmSlotTypes } from "../../constants/cyberfarm/EFarmSlotTypes";
+import { ECyberfarmTutorialActions } from "../../constants/cyberfarm/tutorial";
 import { AppGameMode } from "../../types/AppGameMode";
 import { CyberFarmProductType } from "../../types/CyberFarmProductType";
 import { FarmAchievmentSettingsType } from "../../types/FarmAchievmentSettingsType";
@@ -17,6 +18,7 @@ export interface GetAccountDetailsResponse {
     };
     dataset: {
       start_choice: AppGameMode;
+      tutorial_finished_rewarded: boolean;
     };
   };
   ton_cyber_farm?: {
@@ -68,4 +70,9 @@ export interface GetAccountDetailsResponse {
     rewards_by_day: Record<string, number>; // {"1": 1}
   };
   social_shop: SocialShopType;
+  metrics: {
+    ton_cyber_farm_metrics: {
+      tutorial?: ECyberfarmTutorialActions[];
+    };
+  };
 }

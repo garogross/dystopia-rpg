@@ -30,7 +30,7 @@ import {
 import { initAchievments } from "./cyberFarm/achievmentsSlice";
 import { WithdrawTonResponse } from "../../models/api/WithdrawTonResponse";
 import { convertReferals } from "./refferencesSlice";
-import { finsihTutorial } from "./cyberFarm/tutorialSlice";
+import { finsihTutorial, initTutorial } from "./cyberFarm/tutorialSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -188,6 +188,20 @@ export const getAccountDetails =
         initAchievments({
           achievments: resData.ton_cyber_farm.achievements,
           achievmentSettings: resData.game_settings?.achievements_settings,
+        })
+      );
+    }
+
+    if (resData.ton_cyber_farm) {
+      // cyberfarm tutorial
+      const tutorialActoion = resData.metrics.ton_cyber_farm_metrics.tutorial;
+
+      dispatch(
+        initTutorial({
+          tutorialInProgress: !resData.user?.dataset.tutorial_finished_rewarded,
+          tutorialProgressAction: tutorialActoion?.length
+            ? tutorialActoion[tutorialActoion.length - 1]
+            : null,
         })
       );
     }

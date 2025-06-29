@@ -1,17 +1,21 @@
+import {
+  cyberFarmPagePath,
+  cyberFarmWarehousePagePath,
+} from "../../router/constants";
 import { TRANSLATIONS } from "../TRANSLATIONS";
 
 export enum ECyberfarmTutorialActions {
-  openBuySlot = "cyberfarm_tutorial_openBuySlot_target",
-  buySlot = "cyberfarm_tutorial_buySlot_target",
-  openProduceModal = "cyberfarm_tutorial_openProduceModal_target",
-  selectProduceRes = "cyberfarm_tutorial_selectProduceRes_target",
-  produceRes = "cyberfarm_tutorial_produceRes_target",
-  openProgressModal = "cyberfarm_tutorial_openProgressModal_target",
-  speedUpProduce = "cyberfarm_tutorial_speedUpProduce_target",
-  openStorage = "cyberfarm_tutorial_openStorage_target",
-  openSocialStore = "cyberfarm_tutorial_openSocialStore_target",
-  selectSocialStoreOption = "cyberfarm_tutorial_selectSocialStoreOption_target",
-  submitSocialStoreOption = "cyberfarm_tutorial_submitSocialStoreOption_target",
+  openBuySlot = "openBuySlot",
+  buySlot = "buySlot",
+  openProduceModal = "openProduceModal",
+  selectProduceRes = "selectProduceRes",
+  produceRes = "produceRes",
+  openProgressModal = "openProgressModal",
+  speedUpProduce = "speedUpProduce",
+  openStorage = "openStorage",
+  openSocialStore = "openSocialStore",
+  selectSocialStoreOption = "selectSocialStoreOption",
+  submitSocialStoreOption = "submitSocialStoreOption",
 }
 
 const {
@@ -28,60 +32,87 @@ const {
 export const CYBERFARM_TUTORIAL_PROGRESS = [
   {
     text: welcomeText,
+    page: cyberFarmPagePath,
   },
   {
     action: ECyberfarmTutorialActions.openBuySlot,
+    page: cyberFarmPagePath,
   },
   {
     action: ECyberfarmTutorialActions.buySlot,
+    required: ECyberfarmTutorialActions.openBuySlot,
+    page: cyberFarmPagePath,
   },
   {
     text: plantCactusText,
+    page: cyberFarmPagePath,
   },
   {
     action: ECyberfarmTutorialActions.openProduceModal,
+    page: cyberFarmPagePath,
   },
   {
     action: ECyberfarmTutorialActions.selectProduceRes,
+    page: cyberFarmPagePath,
+    required: ECyberfarmTutorialActions.openProduceModal,
   },
   {
     text: needResourcesText,
+    page: cyberFarmPagePath,
+    required: ECyberfarmTutorialActions.openProduceModal,
   },
   {
     action: ECyberfarmTutorialActions.produceRes,
+    page: cyberFarmPagePath,
+    required: ECyberfarmTutorialActions.openProduceModal,
   },
   {
     text: speedUpText,
+    page: cyberFarmPagePath,
   },
   {
     action: ECyberfarmTutorialActions.openProgressModal,
+    page: cyberFarmPagePath,
   },
   {
     action: ECyberfarmTutorialActions.speedUpProduce,
+    page: cyberFarmPagePath,
+    required: ECyberfarmTutorialActions.openProgressModal,
   },
   {
     text: speedUpCostText,
+    page: cyberFarmPagePath,
   },
   {
     action: ECyberfarmTutorialActions.openStorage,
+    page: cyberFarmPagePath,
   },
   {
     text: warehouseText,
+    page: cyberFarmWarehousePagePath,
   },
   {
     action: ECyberfarmTutorialActions.openSocialStore,
+    page: cyberFarmWarehousePagePath,
   },
   {
     text: socialStoreText,
+    page: cyberFarmWarehousePagePath,
+    required: ECyberfarmTutorialActions.openSocialStore,
   },
 
   {
     action: ECyberfarmTutorialActions.selectSocialStoreOption,
+    page: cyberFarmWarehousePagePath,
+    required: ECyberfarmTutorialActions.openSocialStore,
   },
   {
     action: ECyberfarmTutorialActions.submitSocialStoreOption,
+    page: cyberFarmWarehousePagePath,
+    required: ECyberfarmTutorialActions.openSocialStore,
   },
   {
     text: finishText,
+    page: cyberFarmWarehousePagePath,
   },
 ];
