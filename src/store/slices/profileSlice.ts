@@ -195,10 +195,13 @@ export const getAccountDetails =
     if (resData.ton_cyber_farm) {
       // cyberfarm tutorial
       const tutorialActoion = resData.metrics.ton_cyber_farm_metrics.tutorial;
-
+      const dataset = resData.user?.profile.dataset;
       dispatch(
         initTutorial({
-          tutorialInProgress: !resData.user?.dataset.tutorial_finished_rewarded,
+          tutorialInProgress:
+            dataset && "tutorial_finished_rewarded" in dataset
+              ? !dataset.tutorial_finished_rewarded
+              : true,
           tutorialProgressAction: tutorialActoion?.length
             ? tutorialActoion[tutorialActoion.length - 1]
             : null,
