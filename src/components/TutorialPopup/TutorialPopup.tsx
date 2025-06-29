@@ -49,14 +49,14 @@ const TutorialPopup = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tutorialInProgress]);
 
-  const onClose = (isFinished?: boolean) => {
+  const onClose = () => {
     dispatch(setTutorialInProgress(false));
-    if (isFinished) dispatch(finsihTutorial());
+    dispatch(finsihTutorial());
   };
 
   const onNext = () => {
     if (tutorialProgressIndex === CYBERFARM_TUTORIAL_PROGRESS.length - 1) {
-      onClose(true);
+      onClose();
     } else {
       dispatch(updateTutorialProgress());
     }
@@ -90,7 +90,7 @@ const TutorialPopup = () => {
               <div className={styles.tutorialPopup__btnsWrapper}>
                 <button
                   className={`${styles.tutorialPopup__btn} ${styles.tutorialPopup__btn_prev}`}
-                  onClick={() => onClose(true)}
+                  onClick={() => onClose()}
                 >
                   <div className={styles.tutorialPopup__btnInner}>
                     <CloseIcon />
