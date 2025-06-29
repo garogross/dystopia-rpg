@@ -31,6 +31,8 @@ import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { getPlatformType } from "../../../utils/getPlatformType";
 import { useVideoAd } from "../../../hooks/useVideoAd";
+import { getLSItem, setLSItem } from "../../../helpers/localStorage";
+import { ELSProps } from "../../../constants/ELSProps";
 
 const {
   subscribeText,
@@ -45,7 +47,6 @@ const {
   supportProjectText,
 } = TRANSLATIONS.loyality.supportProject;
 const { watchAdAndGetCpText, watchAdText } = TRANSLATIONS.common;
-const { loadAdText } = TRANSLATIONS.errors;
 const TADDY_TASK_PRICE = 1;
 
 interface TaskItemProps {
@@ -194,7 +195,7 @@ const VideoTaskItem = ({
   language: ELanguages;
   gameInited: boolean;
 }) => {
-  const { onShowAd, showTooltip } = useVideoAd();
+  const { onShowAd, showTooltip, tooltipText } = useVideoAd();
 
   return (
     <>
@@ -223,10 +224,12 @@ const VideoTaskItem = ({
           </div>
         </div>
       </TransitionProvider>
-      <Tooltip show={showTooltip} text={loadAdText[language]} />
+      <Tooltip show={showTooltip} text={tooltipText} />
     </>
   );
 };
+
+const HIDE_DURATION_MS = 60 * 60 * 1000; // 1 hour
 
 const AdsgramTaskItem = ({
   gameInited,
@@ -238,13 +241,27 @@ const AdsgramTaskItem = ({
   const dispatch = useAppDispatch();
   const taskRef = useRef<HTMLElement>(null);
   const isMobile = getPlatformType();
+  const [hidden, setHidden] = React.useState(false);
+
+  // Check if the task should be hidden on mount
+  useEffect(() => {
+    (async () => {
+      const hideUntil = await getLSItem(ELSProps.adsgramLastClickDate);
+      if (hideUntil && Date.now() < Number(hideUntil)) {
+        setHidden(true);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (!isMobile) return;
 
     const handler = (event: any) => {
       dispatch(claimAdsgramReward({ taskId: event.detail }));
-      // event.detail contains your block id
+      // Hide the task for 1 hour
+      const hideUntil = Date.now() + HIDE_DURATION_MS;
+      setLSItem(ELSProps.adsgramLastClickDate, hideUntil.toString());
+      setHidden(true);
     };
     const task = taskRef.current;
 
@@ -260,7 +277,7 @@ const AdsgramTaskItem = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!isMobile) return null;
+  if (!isMobile || hidden) return null;
 
   return (
     <TransitionProvider

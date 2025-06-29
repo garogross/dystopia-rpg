@@ -50,7 +50,6 @@ const {
   amountExceedsTonBalanceText,
   walletAddressRequiredText,
 } = TRANSLATIONS.cyberFarm.bonuses;
-const { loadAdText } = TRANSLATIONS.errors;
 
 const Formfield: React.FC<FormFieldProps> = ({
   headerText,
@@ -112,7 +111,11 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
     (state) => state.profile.tonWithdrawCommission
   );
   const ton = useAppSelector((state) => state.profile.stats.ton);
-  const { onShowAd, showTooltip: showAdTooltip } = useVideoAd();
+  const {
+    onShowAd,
+    showTooltip: showAdTooltip,
+    tooltipText: addTooltipText,
+  } = useVideoAd();
   const { show: showTooltip, openTooltip } = useTooltip();
   const {
     onChange,
@@ -239,7 +242,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
           </FormBtn>
         </form>
       </div>
-      <Tooltip show={showAdTooltip} text={loadAdText[language]} />
+      <Tooltip show={showAdTooltip} text={addTooltipText} />
       <Tooltip show={showTooltip} text={tooltipText[language]} />
       <LoadingOverlay loading={loading} />
     </ModalWithAdd>

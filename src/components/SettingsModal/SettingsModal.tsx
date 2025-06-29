@@ -7,17 +7,21 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { DotsLine } from "../layout/icons/RPGGame/Common";
 import { setLanguage } from "../../store/slices/uiSlice";
 import { ELanguages } from "../../constants/ELanguages";
+import { useTelegram } from "../../hooks/useTelegram";
 
 interface Props {
   show: boolean;
   onClose: () => void;
 }
 
+const CHAT_URL = "https://t.me/dystopia_game_chat";
+
 const { titleText, languageText, goToChatText } = TRANSLATIONS.settings;
 
 const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const tg = useTelegram();
 
   return (
     <ModalWithAdd show={show} onClose={onClose} titleLg={titleText[language]}>
@@ -57,9 +61,20 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
           <div className={styles.settingsModal__linkDotline}>
             <DotsLine />
           </div>
-          <a href="/" className={styles.settingsModal__link}>
+          <button
+            onClick={() => {
+              // @ts-ignore
+              if (tg) {
+                // @ts-ignore
+                tg.openTelegramLink(CHAT_URL);
+              } else {
+                window.open(CHAT_URL, "_blank");
+              }
+            }}
+            className={styles.settingsModal__link}
+          >
             {goToChatText[language]}
-          </a>
+          </button>
           <div className={styles.settingsModal__linkDotline}>
             <DotsLine />
           </div>
