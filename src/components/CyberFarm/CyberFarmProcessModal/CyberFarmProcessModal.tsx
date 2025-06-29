@@ -38,7 +38,7 @@ const {
   harvestCollectedText,
   speedUpCompleteText,
 } = TRANSLATIONS.cyberFarm.processModal;
-const { somethingWentWrong, loadAdText } = TRANSLATIONS.errors;
+const { somethingWentWrong } = TRANSLATIONS.errors;
 
 const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   const dispatch = useAppDispatch();
@@ -46,9 +46,11 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   const speedUpCosts = useAppSelector(
     (state) => state.cyberfarm.slots.speedUpCosts
   );
-  const { onShowAd, showTooltip: showAdTooltip } = useVideoAd(() =>
-    onSpeedUp(true)
-  );
+  const {
+    onShowAd,
+    showTooltip: showAdTooltip,
+    tooltipText: addTooltipText,
+  } = useVideoAd(() => onSpeedUp(true));
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
@@ -196,7 +198,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
           </TransitionProvider>
         </div>
         <Tooltip show={showTooltip} text={tooltipText[language]} />
-        <Tooltip show={showAdTooltip} text={loadAdText[language]} />
+        <Tooltip show={showAdTooltip} text={addTooltipText} />
       </div>
       <LoadingOverlay loading={loading} />
       <CloneFixedElementProvider

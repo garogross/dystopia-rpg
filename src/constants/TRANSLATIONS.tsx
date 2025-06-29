@@ -14,6 +14,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Failed to load ad",
       [ELanguages.ru]: "Не удалось загрузить рекламу",
     },
+    willBeAvailableFromMinuteText: {
+      [ELanguages.en]: "Will be available from NUMBER minute",
+      [ELanguages.ru]: "Будет доступно через NUMBER минуту",
+    },
   },
   common: {
     orText: {
