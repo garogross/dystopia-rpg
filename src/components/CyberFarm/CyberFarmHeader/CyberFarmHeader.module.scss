@@ -121,9 +121,18 @@
     @include setFont(12px, 500, $font-fam-montserrat, $color-white);
   }
 
-  &__walletBtn {
+  &__walletBtnWrapper {
     margin-top: 7px;
     margin-inline: -40px;
+    width: 100%;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+  }
+
+  &__walletBtn {
     clip-path: polygon(98% 1%, 100% 50%, 98% 99%, 2% 99%, 0% 50%, 2% 1%);
     height: 11px;
     width: 100%;

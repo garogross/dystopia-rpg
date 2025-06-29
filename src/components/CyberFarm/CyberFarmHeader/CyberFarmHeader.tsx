@@ -79,15 +79,17 @@ const CyberFarmHeader = () => {
           </span>
         </div>
       </div>
-      <button
+      <div
         onClick={() => {
           setBonusesOpened(true);
         }}
-        className={styles.cyberFarmHeader__walletBtn}
+        className={styles.cyberFarmHeader__walletBtnWrapper}
       >
-        <WalletIcon />
-        <span>{balancesText[language]}</span>
-      </button>
+        <button className={styles.cyberFarmHeader__walletBtn}>
+          <WalletIcon />
+          <span>{balancesText[language]}</span>
+        </button>
+      </div>
       <div
         className={`${styles.cyberFarmHeader__cornerBlock} ${styles.cyberFarmHeader__cornerBlock_right}`}
       >
