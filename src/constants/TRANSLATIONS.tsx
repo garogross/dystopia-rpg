@@ -191,6 +191,20 @@ export const TRANSLATIONS = {
       },
     },
   },
+  settings: {
+    titleText: {
+      [ELanguages.en]: "Settings",
+      [ELanguages.ru]: "Настройки",
+    },
+    languageText: {
+      [ELanguages.en]: "Language",
+      [ELanguages.ru]: "Язык",
+    },
+    goToChatText: {
+      [ELanguages.en]: "Go to Chat",
+      [ELanguages.ru]: "Перейти в Чат",
+    },
+  },
   home: {
     titleText: {
       [ELanguages.en]:
