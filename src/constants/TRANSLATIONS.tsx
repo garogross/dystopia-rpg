@@ -1209,16 +1209,8 @@ export const TRANSLATIONS = {
     },
     info: {
       infoTexts: {
-        [ELanguages.en]: [
-          "Referral rewards are credited once a day.",
-          "Daily token accrual depends on the activity of your referrals.",
-          "10% of your referrals' credit spending",
-        ],
-        [ELanguages.ru]: [
-          "Реферальные награды начисляются раз в сутке.",
-          "Ежедневное начисление жетонов зависит от активности ваших рефералов.",
-          "10% от трат кредитов вашими рефералами",
-        ],
+        [ELanguages.en]: ["You receive 10% of your referrals' CP spending"],
+        [ELanguages.ru]: ["Вам начисляется 10% от трат СР ваших рефералов"],
       },
     },
   },
