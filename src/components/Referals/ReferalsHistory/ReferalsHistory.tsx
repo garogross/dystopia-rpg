@@ -51,7 +51,7 @@ const ReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
             </h6>
             <DotsLine />
             <span className={styles.referalsHistory__mainHeaderValueText}>
-              {totalReward}
+              {+totalReward.toFixed(2)}
             </span>
           </div>
           <div className={styles.referalsHistory__mainList}>
@@ -70,7 +70,7 @@ const ReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
                     />
                   </div>
                   <span className={styles.referalsHistory__mainText}>
-                    {refference.bonus}
+                    {+refference.bonus.toFixed(2)}
                   </span>
                 </div>
 
