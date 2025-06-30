@@ -23,6 +23,14 @@ const { activity, tasks, store, supportProject } = TRANSLATIONS.loyality.tabs;
 
 const tabs = [
   {
+    name: supportProject.name,
+    key: "support-project",
+    icon: <LoyalitySupportProjectIcon />,
+    component: <LoyalitySupportProject />,
+    title: supportProject.title,
+    text: supportProject.text,
+  },
+  {
     name: activity.name,
     key: "activity",
     icon: <LoyalityActivityIcon />,
@@ -43,14 +51,7 @@ const tabs = [
     disabledForFarm: true,
     total: 50,
   },
-  {
-    name: supportProject.name,
-    key: "support-project",
-    icon: <LoyalitySupportProjectIcon />,
-    component: <LoyalitySupportProject />,
-    title: supportProject.title,
-    text: supportProject.text,
-  },
+
   {
     name: store.name,
     key: "store",
