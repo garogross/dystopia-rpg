@@ -142,7 +142,7 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
                 {youHaveText[language]} {item.count} {piecesText[language]}
               </p>
               <p className={styles.cyberFarmWarehouseProductInfo__text}>
-                {priceText[language]} {+(isForSale ? price : cost).toFixed(2)}{" "}
+                {priceText[language]} {+(isForSale ? price : cost).toFixed(4)}{" "}
                 {isForSale ? "TON" : "CP"}
               </p>
             </div>
@@ -207,9 +207,9 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
           >
             {isForSale
               ? `${youWillGetText[language]} ${+(price * counter).toFixed(
-                  2
+                  4
                 )} TON`
-              : `${youWillSpendText[language]} ${+totalCost.toFixed(2)} CP`}
+              : `${youWillSpendText[language]} ${+totalCost.toFixed(4)} CP`}
           </p>
           <button
             onClick={isForSale ? onSell : onBuy}
