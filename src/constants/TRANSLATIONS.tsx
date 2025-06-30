@@ -15,8 +15,8 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Не удалось загрузить рекламу",
     },
     willBeAvailableFromSecondText: {
-      [ELanguages.en]: "Will be available from NUMBER second",
-      [ELanguages.ru]: "Будет доступно через NUMBER секунду",
+      [ELanguages.en]: "Will be available from NUMBER minute",
+      [ELanguages.ru]: "Будет доступно через NUMBER минуту",
     },
   },
   common: {

@@ -10,7 +10,7 @@ import { useTooltip } from "./useTooltip";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
 import { TranslationItemType } from "../types/TranslationItemType";
 
-const THIRTY_SECONDS = 30 * 1000;
+const THIRTY_SECONDS = 5 * 60 * 1000;
 
 function setVideoAdLastViewDate() {
   setLSItem(
@@ -56,7 +56,7 @@ export const useVideoAd = (
     setTooltipText(
       willBeAvailableFromSecondText[language].replace(
         "NUMBER",
-        Math.ceil(dif / 1000).toString()
+        Math.ceil(dif / 60000).toString()
       )
     );
     return Date.now() > Number(lastView);
