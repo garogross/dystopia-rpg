@@ -425,7 +425,7 @@ const LoyalitySupportProject = () => {
       ></div>
       <div className={styles.loyalitySupportProject__list}>
         <TadsWidget
-          id="#626"
+          id="626"
           debug={true}
           onClickReward={() => {}}
           onAdsNotFound={() => {}}
