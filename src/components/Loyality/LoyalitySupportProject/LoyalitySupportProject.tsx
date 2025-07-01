@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 
 import styles from "./LoyalitySupportProject.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
@@ -10,10 +10,9 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
 import {
   claimBarzhaReward,
-  claimTraffyReward,
+  claimTadsReward,
   claimWallgramReward,
 } from "../../../store/slices/tasksSlice";
-import { initTraffyTasks } from "../../../utils/initTraffyTasks";
 import { FeedItem } from "taddy-sdk-web";
 import { WallgramFinishTaskItemType } from "../../../types/WallgramFinishTaskItemType";
 import { useTaddy } from "../../../context/TaddyContext";
@@ -24,14 +23,14 @@ import LoyalitySupportProjectAdditionalTaskItem from "./LoyalitySupportProjectTa
 import LoyalitySupportProjectAdsgramTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdsgramTaskItem";
 import LoyalitySupportProjectVideoTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectVideoTaskItem";
 import LoyalitySupportProjectTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectTaskItem";
+import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraffyContainer/LoyalitySupportProjectTraffyContainer";
 
 const { taskNotCompletedText } = TRANSLATIONS.loyality.supportProject;
 
-const TADS_WIDGET_ID = "#626";
+const TADS_WIDGET_ID = "543";
 
 const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
-  const traffyTasks = useRef<HTMLDivElement | null>(null);
   const tgId = useAppSelector((state) => state.profile.tgId);
   const { show: showTooltip, openTooltip } = useTooltip();
   const { exchange, taddyTasks } = useTaddy();
@@ -40,13 +39,6 @@ const LoyalitySupportProject = () => {
   const language = useAppSelector((state) => state.ui.language);
 
   useEffect(() => {
-    // init traffy
-    initTraffyTasks(
-      traffyTasks.current,
-      (signedToken, id) => dispatch(claimTraffyReward({ signedToken, id })),
-      openTooltip
-    );
-
     // init wallgram
     const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
 
@@ -113,17 +105,18 @@ const LoyalitySupportProject = () => {
 
   return (
     <div className={styles.loyalitySupportProject}>
-      <div
-        className={styles.loyalitySupportProject__traffyContainer}
-        ref={traffyTasks}
-      ></div>
+      <LoyalitySupportProjectTraffyContainer />
       <div className={styles.loyalitySupportProject__list}>
         <TadsWidget
           id={TADS_WIDGET_ID}
           type="static"
-          debug={true}
-          onClickReward={() => {}}
-          onAdsNotFound={() => {}}
+          debug={process.env.NODE_ENV === "development"}
+          onClickReward={(id) => {
+            dispatch(claimTadsReward({ id }));
+          }}
+          onAdsNotFound={() => {
+            openTooltip();
+          }}
         />
 
         {/* button for barzha modal */}
@@ -158,16 +151,6 @@ const LoyalitySupportProject = () => {
             onSubscribe={onSubscribe}
           />
         ))}
-        {/* {tasks(language).map((task, index) => (
-          <TaskItem
-            key={task.id}
-            task={task}
-            index={index}
-            gameInited={gameInited}
-            language={language}
-          />
-        ))} */}
-
         <div id="wallgram_showcase"></div>
       </div>
       <TransitionProvider

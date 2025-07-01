@@ -23,6 +23,7 @@ import {
   claimAdsgramReward,
   claimBarzhaReward,
   claimTaddyReward,
+  claimTadsReward,
   claimTraffyReward,
   claimVideoReward,
   claimWallgramReward,
@@ -359,6 +360,11 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(claimAdsgramReward.fulfilled, (state, { payload }) => {
+      if (+payload.reward) {
+        state.stats.cp += +payload.reward;
+      }
+    });
+    builder.addCase(claimTadsReward.fulfilled, (state, { payload }) => {
       if (+payload.reward) {
         state.stats.cp += +payload.reward;
       }

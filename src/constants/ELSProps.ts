@@ -1,5 +1,6 @@
 export enum ELSProps {
   token = "token",
-  videoAdLastViewDate = "videoAdLastViewDate",
+  videoAdViewTimestamps = "videoAdViewTimestamps",
   adsgramLastClickDate = "adsgramLastClickDate",
+  hideTraffyContainerUntil = "hideTraffyContainerUntil",
 }

@@ -22,60 +22,22 @@
     margin-bottom: 7px;
   }
 
-  &__traffyContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-block: 8px;
+  // Tads
 
-    :global(.traffy-custom) {
-      --traffy-buttonRewardImage-background-image: url("../../../assets/images/stats/cp.png");
-      --traffy-buttonRewardImage-background-size: 16px;
-      --traffy-taskElementImageCont-width: 16px;
-      --traffy-taskElementImageCont-height: 16px;
-      --traffy-taskElementCont-height: 70px;
-      --traffy-taskElementInfoCont-height: auto;
-      --traffy-taskElementChannelText-color: $color-text;
-      --traffy-taskElementCont-border-radius: 0;
-      --traffy-taskElementCont-padding: 7px;
-      --traffy-taskElementButtonCheckText-font-size: 16px;
-      --traffy-taskElementButtonCheckText-font-weight: 400;
-
-      --traffy-buttonCheckRewardImage-background-image: none;
-      --traffy-buttonCheckRewardImage-background-size: 0;
-
-      --traffy-taskElementButtonText-padding-left: 4px;
-
-      --traffy-taskElementImageCont-display: block;
-      --traffy-taskElementInfoCont-gap: 10px;
-
-      --traffy-taskElementInstructionCont-width: 150px;
-    }
-
-    :global(.traffy-taskElementCont) {
-      width: 100%;
-      background-color: #090419;
-      border: 1px solid $color-primary;
-    }
-
-    :global(.traffy-taskElementInstructionText) {
-      @include setFont(16px, 400);
-    }
-
-    :global(.traffy-taskElementButtonContOuter) {
-      background-color: rgb(127, 92, 255);
-    }
-
-    :global(.traffy-taskElementButtonContOuter) {
-      background: linear-gradient(180deg, #3d2b7e -35.56%, #040010 132.26%);
-      background-size: contain;
-      border-radius: 0;
-      border: 1px solid $color-primary;
-      max-width: 100%;
-      width: 93px;
-      justify-content: center;
-      align-items: center;
-      display: flex;
-    }
+  :global(.tads) {
+    background: $color-bg;
+    border: 1px solid $color-primary;
+    padding: 7px;
+  }
+  :global(.tads-image) {
+    width: 30px;
+    height: 30px;
+  }
+  :global(.tads-title) {
+    @include flexCol(12px, 400);
+  }
+  :global(.tads-text) {
+    @include setFont(12px, 400, $font-fam-montserrat);
+    font-style: italic;
   }
 }
