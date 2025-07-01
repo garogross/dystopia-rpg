@@ -10,17 +10,34 @@ import { useTooltip } from "./useTooltip";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
 import { TranslationItemType } from "../types/TranslationItemType";
 
-const THIRTY_SECONDS = 5 * 60 * 1000;
+const MAX_PER_HOUR = 10;
+const MAX_PER_DAY = 100;
+const MIN_PAUSE_MS = 60 * 1000; // 60 секунд
 
-function setVideoAdLastViewDate() {
-  setLSItem(
-    ELSProps.videoAdLastViewDate,
-    (Date.now() + THIRTY_SECONDS).toString()
-  );
+const {
+  loadAdText,
+
+  dailyLimitReachedText,
+  hourlyLimitReachedText,
+  adAvailableInSecondsText,
+} = TRANSLATIONS.errors;
+const { rewardReceivedText } = TRANSLATIONS.loyality.tabs.supportProject;
+
+async function getVideoAdViewTimestamps(): Promise<number[]> {
+  const raw = await getLSItem(ELSProps.videoAdViewTimestamps);
+  if (!raw) return [];
+  try {
+    if (typeof raw === "string") return JSON.parse(raw);
+    if (Array.isArray(raw)) return raw;
+    return [];
+  } catch {
+    return [];
+  }
 }
 
-const { loadAdText, willBeAvailableFromSecondText } = TRANSLATIONS.errors;
-const { rewardReceivedText } = TRANSLATIONS.loyality.tabs.supportProject;
+function saveVideoAdViewTimestamps(timestamps: number[]) {
+  setLSItem(ELSProps.videoAdViewTimestamps, timestamps);
+}
 
 export const useVideoAd = (
   scsClb?: () => void,
@@ -32,8 +49,13 @@ export const useVideoAd = (
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(loadAdText[language]);
 
-  const onReward = () => {
-    setVideoAdLastViewDate();
+  const onReward = async () => {
+    // Сохраняем новый просмотр
+    const now = Date.now();
+    let timestamps = await getVideoAdViewTimestamps();
+    timestamps = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
+    timestamps.push(now);
+    saveVideoAdViewTimestamps(timestamps);
     if (scsClb) scsClb();
     else dispatch(claimVideoReward({ id: tgId.toString() }));
     setTooltipText((speedUpCompleteText || rewardReceivedText)[language]);
@@ -48,18 +70,26 @@ export const useVideoAd = (
   );
 
   async function canShowVideoAd() {
-    const lastView = await getLSItem(ELSProps.videoAdLastViewDate);
-    console.log({ lastView });
+    const now = Date.now();
+    const timestamps = await getVideoAdViewTimestamps();
+    const last24h = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000);
+    const lastHour = timestamps.filter((ts) => now - ts < 60 * 60 * 1000);
+    const last = timestamps.length > 0 ? timestamps[timestamps.length - 1] : 0;
 
-    if (!lastView) return true;
-    const dif = Number(lastView) - Date.now();
-    setTooltipText(
-      willBeAvailableFromSecondText[language].replace(
-        "NUMBER",
-        Math.ceil(dif / 60000).toString()
-      )
-    );
-    return Date.now() > Number(lastView);
+    if (last24h.length >= MAX_PER_DAY) {
+      setTooltipText(dailyLimitReachedText[language]);
+      return false;
+    }
+    if (lastHour.length >= MAX_PER_HOUR) {
+      setTooltipText(hourlyLimitReachedText[language]);
+      return false;
+    }
+    if (now - last < MIN_PAUSE_MS) {
+      const seconds = Math.ceil((MIN_PAUSE_MS - (now - last)) / 1000);
+      setTooltipText(adAvailableInSecondsText[language](seconds));
+      return false;
+    }
+    return true;
   }
 
   const onShowAd = async () => {

@@ -49,7 +49,6 @@ const OnBoarding = () => {
     tg.ready();
 
     if (!tg.initDataUnsafe?.user?.id) return;
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

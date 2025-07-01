@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import AppRouter from "../../router/AppRouter";
 import { useTelegram } from "../../hooks/useTelegram";
 import { getPlatformType } from "../../utils/getPlatformType";
+import { useOfferwallSdk } from "../../hooks/useOfferwallSdk";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -62,10 +63,17 @@ const loadScripts = (tg: WebApp) => {
     `;
     document.body.appendChild(gigapubScript);
   }
+
+  // load giga tasks script
+  const script = document.createElement("script");
+  script.src = "https://cdn.giga.pub/script/offer/loader/loader.js";
+  script.async = true;
+  document.head.appendChild(script);
 };
 
 export const App = () => {
   const tg = useTelegram();
+  const initOfferwall = useOfferwallSdk();
 
   const isMobile = getPlatformType();
 
@@ -94,25 +102,26 @@ export const App = () => {
 
   useEffect(() => {
     loadScripts(tg);
+    initOfferwall();
+    // const clearCache = () => {
+    //   if ("caches" in window) {
+    //     caches.keys().then((names) => {
+    //       for (let name of names) {
+    //         caches.delete(name);
+    //       }
+    //     });
+    //   }
+    //   if ("serviceWorker" in navigator) {
+    //     navigator.serviceWorker.getRegistrations().then((registrations) => {
+    //       for (let registration of registrations) {
+    //         registration.unregister();
+    //       }
+    //     });
+    //   }
+    // };
 
-    const clearCache = () => {
-      if ("caches" in window) {
-        caches.keys().then((names) => {
-          for (let name of names) {
-            caches.delete(name);
-          }
-        });
-      }
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.getRegistrations().then((registrations) => {
-          for (let registration of registrations) {
-            registration.unregister();
-          }
-        });
-      }
-    };
-
-    clearCache();
+    // clearCache();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tg]);
 
   return (

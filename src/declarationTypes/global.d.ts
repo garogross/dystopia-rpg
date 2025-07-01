@@ -48,6 +48,14 @@ interface WallgramShowcase {
   show: () => void;
 }
 
+interface OfferWallSDK {
+  open: () => void;
+  close: () => void;
+  confirmReward: (rewardId: string | number, hash: string) => Promise<boolean>;
+  on: (event: string, handler: (data: any) => void) => void;
+  off: (event: string, handler: (data: any) => void) => void;
+}
+
 declare global {
   interface Window {
     bQuest?: any;
@@ -58,5 +66,10 @@ declare global {
     WallgramShowcase?: WallgramShowcase;
     initCdTma?: (options: { id: string }) => Promise<any>;
     showGiga?: () => Promise<Promise<void>>;
+    loadGigaSDKCallbacks?: Array<() => void>;
+    loadOfferWallSDK?: (options: {
+      projectId: string | number;
+    }) => Promise<OfferWallSDK>;
+    gigaOfferWallSDK?: OfferWallSDK;
   }
 }

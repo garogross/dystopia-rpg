@@ -28,8 +28,8 @@ export const OnBoardingSaveSelectBlockWing = ({
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(26.2385 55.5) rotate(90) scale(94.9666 44.8971)"
         >
-          <stop stop-color="#3D2B7E" />
-          <stop offset="0.980769" stop-color="#040010" />
+          <stop stopColor="#3D2B7E" />
+          <stop offset="0.980769" stopColor="#040010" />
         </radialGradient>
       </defs>
     </svg>

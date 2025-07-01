@@ -7,6 +7,7 @@ import { ClaimTaddyRewardResponse } from "../../models/api/tasks/taddy";
 import { ClaimWallgramRewardResponse } from "../../models/api/tasks/wallgram";
 import { ClaimAdsgramRewardResponse } from "../../models/api/tasks/adsgram";
 import { ClaimVideoRewardResponse } from "../../models/api/tasks/video";
+import { ClaimTadsRewardResponse } from "../../models/api/tasks/tads";
 
 export interface TasksState {}
 
@@ -139,6 +140,29 @@ export const claimVideoReward = createAsyncThunk<
       "POST",
       {
         identifier: payload.id,
+      }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
+const claimTadsRewardUrl = "/reward/tads/";
+export const claimTadsReward = createAsyncThunk<
+  ClaimTadsRewardResponse,
+  {
+    id: string;
+  }
+>("tasks/claimTadsReward", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<ClaimTadsRewardResponse>(
+      claimTadsRewardUrl,
+      "POST",
+      {
+        task_id: payload.id.toString(),
       }
     );
 
