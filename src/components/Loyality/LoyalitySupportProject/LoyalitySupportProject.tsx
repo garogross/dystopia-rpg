@@ -10,6 +10,7 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
 import {
   claimBarzhaReward,
+  claimTaddyReward,
   claimTadsReward,
   claimWallgramReward,
 } from "../../../store/slices/tasksSlice";
@@ -33,7 +34,7 @@ const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
   const { show: showTooltip, openTooltip } = useTooltip();
-  const { exchange, taddyTasks } = useTaddy();
+  const { exchange, taddyTasks, fetchTaddyTasks } = useTaddy();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
 
   const language = useAppSelector((state) => state.ui.language);
@@ -67,16 +68,7 @@ const LoyalitySupportProject = () => {
 
   useEffect(() => {
     if (tgId && exchange) {
-      exchange
-        .feed({
-          limit: 8,
-          imageFormat: "png",
-          autoImpressions: true,
-        })
-        .then((items) => {
-          exchange.impressions(items);
-        })
-        .catch((err) => console.log({ err }));
+      fetchTaddyTasks();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exchange, tgId]);
@@ -108,7 +100,9 @@ const LoyalitySupportProject = () => {
   // };
 
   const onSubscribe = (item: FeedItem) => {
-    exchange?.open(item).then(() => {});
+    exchange?.open(item).then(() => {
+      dispatch(claimTaddyReward({ id: item.id.toString() }));
+    });
   };
 
   return (
