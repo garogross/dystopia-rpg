@@ -99,6 +99,14 @@ const LoyalitySupportProject = () => {
     }
   };
 
+  // const openOfferWall = () => {
+  //   console.log(window.gigaOfferWallSDK);
+
+  //   if (window.gigaOfferWallSDK) {
+  //     window.gigaOfferWallSDK.open();
+  //   }
+  // };
+
   const onSubscribe = (item: FeedItem) => {
     exchange?.open(item).then(() => {});
   };
@@ -126,6 +134,12 @@ const LoyalitySupportProject = () => {
           onOpen={onOpenBarzhaTasks}
           index={1}
         />
+        {/* <LoyalitySupportProjectAdditionalTaskItem
+          gameInited={gameInited}
+          language={language}
+          onOpen={openOfferWall}
+          index={2}
+        /> */}
         {/* <AdditionalTaskItem
           gameInited={gameInited}
           language={language}
