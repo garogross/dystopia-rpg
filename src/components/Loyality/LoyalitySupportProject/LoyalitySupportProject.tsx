@@ -33,6 +33,7 @@ import { getPlatformType } from "../../../utils/getPlatformType";
 import { useVideoAd } from "../../../hooks/useVideoAd";
 import { getLSItem, setLSItem } from "../../../helpers/localStorage";
 import { ELSProps } from "../../../constants/ELSProps";
+import { TadsWidget } from "react-tads-widget";
 
 const {
   subscribeText,
@@ -423,6 +424,13 @@ const LoyalitySupportProject = () => {
         ref={traffyTasks}
       ></div>
       <div className={styles.loyalitySupportProject__list}>
+        <TadsWidget
+          id="#626"
+          debug={true}
+          onClickReward={() => {}}
+          onAdsNotFound={() => {}}
+        />
+
         {/* button for barzha modal */}
         <AdditionalTaskItem
           gameInited={gameInited}
