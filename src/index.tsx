@@ -8,15 +8,18 @@ import { App } from "./components/App/App";
 
 import "./styles/_style.scss";
 import { TaddyProvider } from "./context/TaddyContext";
+import { TadsWidgetProvider } from "react-tads-widget";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(
   <Provider store={store()}>
     <TaddyProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <TadsWidgetProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </TadsWidgetProvider>
     </TaddyProvider>
   </Provider>
 );

@@ -1,13 +1,5 @@
 import React, { useEffect, useRef } from "react";
 
-import {
-  cpImage,
-  // supportTask1Image,
-  // supportTask2Image,
-  // supportTask3Image,
-  // supportTask4Image,
-  // supportTask5Image,
-} from "../../../assets/imageMaps";
 import styles from "./LoyalitySupportProject.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
@@ -15,10 +7,8 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
-import { ELanguages } from "../../../constants/ELanguages";
 import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
 import {
-  claimAdsgramReward,
   claimBarzhaReward,
   claimTraffyReward,
   claimWallgramReward,
@@ -29,312 +19,15 @@ import { WallgramFinishTaskItemType } from "../../../types/WallgramFinishTaskIte
 import { useTaddy } from "../../../context/TaddyContext";
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
-import { getPlatformType } from "../../../utils/getPlatformType";
-import { useVideoAd } from "../../../hooks/useVideoAd";
-import { getLSItem, setLSItem } from "../../../helpers/localStorage";
-import { ELSProps } from "../../../constants/ELSProps";
 import { TadsWidget } from "react-tads-widget";
+import LoyalitySupportProjectAdditionalTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdditionalTaskItem";
+import LoyalitySupportProjectAdsgramTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdsgramTaskItem";
+import LoyalitySupportProjectVideoTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectVideoTaskItem";
+import LoyalitySupportProjectTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectTaskItem";
 
-const {
-  subscribeText,
-  subscribedText,
-  visitText,
-  getText,
-  partnerTasksText,
-  openText,
-  claimAdText,
-  doneText,
-  taskNotCompletedText,
-  supportProjectText,
-} = TRANSLATIONS.loyality.supportProject;
-const { watchAdAndGetCpText, watchAdText } = TRANSLATIONS.common;
-const TADDY_TASK_PRICE = 1;
+const { taskNotCompletedText } = TRANSLATIONS.loyality.supportProject;
 
-interface TaskItemProps {
-  task: {
-    id: string | number;
-    title?: string;
-    name?: string;
-    description: string;
-    image: string;
-    price?: number;
-    subscription?: boolean;
-    byLink?: boolean;
-    taddyTasktype?: FeedItem["type"];
-    link?: string;
-  };
-  index: number;
-  gameInited: boolean;
-  language: ELanguages;
-  isTaddyTask?: boolean;
-  onSubscribe: (item: FeedItem) => void;
-}
-
-const TaskItem: React.FC<TaskItemProps> = ({
-  task,
-  index,
-  gameInited,
-  language,
-  isTaddyTask,
-  onSubscribe,
-}) => {
-  const title = task.title || task.name;
-  const price = isTaddyTask ? TADDY_TASK_PRICE : task.price;
-
-  return (
-    <TransitionProvider
-      inProp={gameInited}
-      style={TransitionStyleTypes.bottom}
-      delay={index * 100}
-      className={`${styles.loyalitySupportProject__listItem} ${
-        task.subscription
-          ? styles.loyalitySupportProject__listItem_completed
-          : ""
-      }`}
-      key={task.id}
-    >
-      <div className={styles.loyalitySupportProject__listItemInner}>
-        <div className={styles.loyalitySupportProject__listItemMain}>
-          <img
-            src={task.image}
-            alt={title}
-            className={styles.loyalitySupportProject__listItemImg}
-          />
-          <div className={styles.loyalitySupportProject__listItemTexts}>
-            <p className={styles.loyalitySupportProject__listItemName}>
-              {title}
-            </p>
-            <p className={styles.loyalitySupportProject__listItemDescription}>
-              {task.description}
-            </p>
-          </div>
-          <div className={styles.loyalitySupportProject__listItemActions}>
-            <button
-              onClick={() =>
-                onSubscribe({
-                  id: task.id,
-                  title: task.title || "",
-                  description: task.description,
-                  image: task.image,
-                  type: task.taddyTasktype || "app",
-                  link: task.link || "",
-                })
-              }
-              disabled={task.subscription}
-              className={styles.loyalitySupportProject__subscribeBtn}
-            >
-              {task.subscription
-                ? subscribedText[language]
-                : task.byLink
-                ? visitText[language]
-                : subscribeText[language]}
-            </button>
-            <button
-              disabled={!task.subscription}
-              className={styles.loyalitySupportProject__getBtn}
-            >
-              <div className={styles.loyalitySupportProject__getBtnInner}>
-                <span>
-                  {getText[language]} {price}CP
-                </span>
-                <img
-                  src={cpImage}
-                  alt="CP"
-                  className={styles.loyalitySupportProject__getBtnImg}
-                />
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
-    </TransitionProvider>
-  );
-};
-
-const AdditionalTaskItem = ({
-  gameInited,
-  language,
-  onOpen,
-  index,
-}: {
-  gameInited: boolean;
-  language: ELanguages;
-  onOpen: () => void;
-  index: number;
-}) => (
-  <TransitionProvider
-    inProp={gameInited}
-    style={TransitionStyleTypes.bottom}
-    className={styles.loyalitySupportProject__listItem}
-  >
-    <div className={styles.loyalitySupportProject__listItemInner}>
-      <div className={styles.loyalitySupportProject__listItemMain}>
-        <div className={styles.loyalitySupportProject__listItemTexts}>
-          <p className={styles.loyalitySupportProject__listItemName}>
-            {partnerTasksText[language]} №{index}
-          </p>
-        </div>
-        <div className={styles.loyalitySupportProject__listItemActions}>
-          <button
-            onClick={onOpen}
-            className={styles.loyalitySupportProject__getBtn}
-          >
-            <div className={styles.loyalitySupportProject__getBtnInner}>
-              {openText[language]}
-            </div>
-          </button>
-        </div>
-      </div>
-    </div>
-  </TransitionProvider>
-);
-
-const VideoTaskItem = ({
-  gameInited,
-  language,
-}: {
-  language: ELanguages;
-  gameInited: boolean;
-}) => {
-  const { onShowAd, showTooltip, tooltipText } = useVideoAd();
-
-  return (
-    <>
-      <TransitionProvider
-        inProp={gameInited}
-        style={TransitionStyleTypes.bottom}
-        className={styles.loyalitySupportProject__listItem}
-      >
-        <div className={styles.loyalitySupportProject__listItemInner}>
-          <div className={styles.loyalitySupportProject__listItemMain}>
-            <div className={styles.loyalitySupportProject__listItemTexts}>
-              <p className={styles.loyalitySupportProject__listItemName}>
-                {watchAdAndGetCpText[language]}
-              </p>
-            </div>
-            <div className={styles.loyalitySupportProject__listItemActions}>
-              <button
-                onClick={onShowAd}
-                className={styles.loyalitySupportProject__getBtn}
-              >
-                <div className={styles.loyalitySupportProject__getBtnInner}>
-                  {watchAdText[language]}
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </TransitionProvider>
-      <Tooltip show={showTooltip} text={tooltipText} />
-    </>
-  );
-};
-
-const HIDE_DURATION_MS = 60 * 60 * 1000; // 1 hour
-
-const AdsgramTaskItem = ({
-  gameInited,
-  language,
-}: {
-  gameInited: boolean;
-  language: ELanguages;
-}) => {
-  const dispatch = useAppDispatch();
-  const taskRef = useRef<HTMLElement>(null);
-  const isMobile = getPlatformType();
-  const [hidden, setHidden] = React.useState(false);
-
-  // Check if the task should be hidden on mount
-  useEffect(() => {
-    (async () => {
-      const hideUntil = await getLSItem(ELSProps.adsgramLastClickDate);
-      if (hideUntil && Date.now() < Number(hideUntil)) {
-        setHidden(true);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (!isMobile) return;
-
-    const handler = (event: any) => {
-      dispatch(claimAdsgramReward({ taskId: event.detail }));
-      // Hide the task for 1 hour
-      const hideUntil = Date.now() + HIDE_DURATION_MS;
-      setLSItem(ELSProps.adsgramLastClickDate, hideUntil.toString());
-      setHidden(true);
-    };
-    const task = taskRef.current;
-
-    if (task) {
-      task.addEventListener("reward", handler);
-    }
-
-    return () => {
-      if (task) {
-        task.removeEventListener("reward", handler);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!isMobile || hidden) return null;
-
-  return (
-    <TransitionProvider
-      inProp={gameInited}
-      style={TransitionStyleTypes.bottom}
-      className={styles.loyalitySupportProject__listItem}
-    >
-      <div className={styles.loyalitySupportProject__adsgramWrapper}>
-        <adsgram-task
-          data-block-id="task-12038"
-          data-debug="false"
-          ref={taskRef}
-        >
-          <div
-            className={styles.loyalitySupportProject__listItemTexts}
-            slot="reward"
-          >
-            <p className={styles.loyalitySupportProject__listItemName}>
-              {supportProjectText[language]}
-            </p>
-          </div>
-          <div slot="button">
-            <button
-              className={styles.loyalitySupportProject__getBtn}
-              type="button"
-            >
-              <div className={styles.loyalitySupportProject__getBtnInner}>
-                {openText[language]}
-              </div>
-            </button>
-          </div>
-          <div slot="claim">
-            <button
-              className={styles.loyalitySupportProject__getBtn}
-              type="button"
-            >
-              <div className={styles.loyalitySupportProject__getBtnInner}>
-                {claimAdText[language]}
-              </div>
-            </button>
-          </div>
-          <div slot="done">
-            <button
-              className={styles.loyalitySupportProject__getBtn}
-              type="button"
-            >
-              <div className={styles.loyalitySupportProject__getBtnInner}>
-                {doneText[language]}
-              </div>
-            </button>
-          </div>
-        </adsgram-task>
-      </div>
-    </TransitionProvider>
-  );
-};
+const TADS_WIDGET_ID = "#626";
 
 const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
@@ -342,6 +35,9 @@ const LoyalitySupportProject = () => {
   const tgId = useAppSelector((state) => state.profile.tgId);
   const { show: showTooltip, openTooltip } = useTooltip();
   const { exchange, taddyTasks } = useTaddy();
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+
+  const language = useAppSelector((state) => state.ui.language);
 
   useEffect(() => {
     // init traffy
@@ -415,8 +111,6 @@ const LoyalitySupportProject = () => {
     exchange?.open(item).then(() => {});
   };
 
-  const language = useAppSelector((state) => state.ui.language);
-  const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <div className={styles.loyalitySupportProject}>
       <div
@@ -425,14 +119,15 @@ const LoyalitySupportProject = () => {
       ></div>
       <div className={styles.loyalitySupportProject__list}>
         <TadsWidget
-          id="#543"
+          id={TADS_WIDGET_ID}
+          type="static"
           debug={true}
           onClickReward={() => {}}
           onAdsNotFound={() => {}}
         />
 
         {/* button for barzha modal */}
-        <AdditionalTaskItem
+        <LoyalitySupportProjectAdditionalTaskItem
           gameInited={gameInited}
           language={language}
           onOpen={onOpenBarzhaTasks}
@@ -444,10 +139,16 @@ const LoyalitySupportProject = () => {
           onOpen={onShowWallgramTasks}
           index={2}
         /> */}
-        <AdsgramTaskItem gameInited={gameInited} language={language} />
-        <VideoTaskItem language={language} gameInited={gameInited} />
+        <LoyalitySupportProjectAdsgramTaskItem
+          gameInited={gameInited}
+          language={language}
+        />
+        <LoyalitySupportProjectVideoTaskItem
+          language={language}
+          gameInited={gameInited}
+        />
         {taddyTasks.map((task, index) => (
-          <TaskItem
+          <LoyalitySupportProjectTaskItem
             key={task.id}
             task={{ ...task, taddyTasktype: task.type, link: task.link }}
             index={index}
