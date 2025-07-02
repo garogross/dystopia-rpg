@@ -1,7 +1,9 @@
 import React from "react";
-import { SvgProps } from "../../../../../models/Props/SvgProps";
+import { SvgProps } from "../../../../models/Props/SvgProps";
 
-export const RPGBottomNavbarItemFrame: React.FC<SvgProps> = ({ className }) => (
+export const FramedBottomNavbarItemFrame: React.FC<SvgProps> = ({
+  className,
+}) => (
   <svg
     viewBox="0 0 63 63"
     fill="none"
