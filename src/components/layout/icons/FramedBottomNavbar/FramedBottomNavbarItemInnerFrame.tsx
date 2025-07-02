@@ -1,7 +1,7 @@
 import React from "react";
-import { SvgProps } from "../../../../../models/Props/SvgProps";
+import { SvgProps } from "../../../../models/Props/SvgProps";
 
-export const RPGBottomNavbarItemInnerFrame: React.FC<SvgProps> = ({
+export const FramedBottomNavbarItemInnerFrame: React.FC<SvgProps> = ({
   className,
 }) => (
   <svg

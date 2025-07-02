@@ -1,9 +1,7 @@
 import React from "react";
-import { SvgProps } from "../../../../../models/Props/SvgProps";
+import { SvgProps } from "../../../../models/Props/SvgProps";
 
-
-
-export const RPGBottomNavbarTopBg: React.FC<SvgProps> = ({
+export const FramedBottomNavbarTopBg: React.FC<SvgProps> = ({
   width = 329,
   height = 11,
   className,

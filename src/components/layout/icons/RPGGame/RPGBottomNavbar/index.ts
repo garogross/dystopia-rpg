@@ -1,9 +1,5 @@
-export { RPGBottomNavbarTopBg } from "./RPGBottomNavbarTopBg";
 export { RPGBottomNavbarLoyalityIcon } from "./RPGBottomNavbarLoyalityIcon";
-export { RPGBottomNavbarItemInnerFrame } from "./RPGBottomNavbarItemInnerFrame";
-export { RPGBottomNavbarItemFrame } from "./RPGBottomNavbarItemFrame";
 export { RPGBottomNavbarDuelsIcon } from "./RPGBottomNavbarDuelsIcon";
 export { RPGBottomNavbarClanIcon } from "./RPGBottomNavbarClanIcon";
 export { RPGBottomNavbarCharacterIcon } from "./RPGBottomNavbarCharacterIcon";
 export { RPGBottomNavbarChalanagesIcon } from "./RPGBottomNavbarChalanagesIcon";
-export { RPGBottomNavbarBottomBg } from "./RPGBottomNavbarBottomBg";
