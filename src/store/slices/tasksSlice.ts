@@ -8,6 +8,7 @@ import { ClaimWallgramRewardResponse } from "../../models/api/tasks/wallgram";
 import { ClaimAdsgramRewardResponse } from "../../models/api/tasks/adsgram";
 import { ClaimVideoRewardResponse } from "../../models/api/tasks/video";
 import { ClaimTadsRewardResponse } from "../../models/api/tasks/tads";
+import { VerifyGigaHashResponse } from "../../models/api/tasks/giga";
 
 export interface TasksState {}
 
@@ -167,6 +168,39 @@ export const claimTadsReward = createAsyncThunk<
     );
 
     return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
+const verifyGigaHashUrl = "/reward/giga/";
+export const verifyGigaHash = createAsyncThunk<
+  VerifyGigaHashResponse & { amount: number },
+  {
+    rewardId: string | number;
+    userId: string;
+    projectId: string | number;
+    hash: string;
+    amount: number;
+    description?: string;
+  }
+>("tasks/verifyGigaHash", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<VerifyGigaHashResponse>(
+      verifyGigaHashUrl,
+      "POST",
+      {
+        rewardId: payload.rewardId,
+        userId: payload.userId,
+        projectId: payload.projectId,
+        amount: payload.amount,
+        hash: payload.hash,
+        description: payload.description,
+      }
+    );
+
+    return { ...resData, amount: payload.amount };
   } catch (error: any) {
     console.error("error", error);
     return rejectWithValue(error);

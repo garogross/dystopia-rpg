@@ -1,3 +1,6 @@
+import { verifyGigaHash } from "../store/slices/tasksSlice";
+import { useAppDispatch } from "./redux";
+
 interface RewardClaim {
   rewardId: string | number;
   userId: string;
@@ -8,6 +11,8 @@ interface RewardClaim {
 }
 
 export const useOfferwallSdk = () => {
+  const dispatch = useAppDispatch();
+
   return () => {
     const gigapubProjectId = process.env.REACT_APP_GIGAPUB_PROJECT_ID;
 
@@ -30,11 +35,16 @@ export const useOfferwallSdk = () => {
               console.log("Reward claim received:", data);
 
               // Process reward with your backend
-              const confirmationHash = "HASH"; // await verifyWithYourBackend(data);
+              const confirmationData = await dispatch(
+                verifyGigaHash(data)
+              ).unwrap();
 
               // Confirm the reward
-              if (confirmationHash) {
-                sdk.confirmReward(data.rewardId, confirmationHash);
+              if (confirmationData && confirmationData.confirmationHash) {
+                sdk.confirmReward(
+                  data.rewardId,
+                  confirmationData.confirmationHash
+                );
               }
             });
           })

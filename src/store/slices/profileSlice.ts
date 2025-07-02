@@ -27,6 +27,7 @@ import {
   claimTraffyReward,
   claimVideoReward,
   claimWallgramReward,
+  verifyGigaHash,
 } from "./tasksSlice";
 import { initAchievments } from "./cyberFarm/achievmentsSlice";
 import { WithdrawTonResponse } from "../../models/api/WithdrawTonResponse";
@@ -372,6 +373,11 @@ export const profileSlice = createSlice({
     builder.addCase(claimVideoReward.fulfilled, (state, { payload }) => {
       if (+payload.reward) {
         state.stats.cp += +payload.reward;
+      }
+    });
+    builder.addCase(verifyGigaHash.fulfilled, (state, { payload }) => {
+      if (payload.success && payload.confirmationHash) {
+        state.stats.cp += +payload.amount;
       }
     });
   },
