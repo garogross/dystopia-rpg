@@ -6,7 +6,11 @@ import {
   RPGIcon,
   MiniGamesIcon,
 } from "../../layout/icons/OnBoarding";
-import { cyberFarmPagePath, rpgGamePagePath } from "../../../router/constants";
+import {
+  cyberFarmPagePath,
+  miniGamesPagePath,
+  rpgGamePagePath,
+} from "../../../router/constants";
 import { Link } from "react-router-dom";
 import { onBoardingGirl2Video } from "../../../assets/videos";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
@@ -73,7 +77,7 @@ const options: Option[] = [
     icon: <MiniGamesIcon />,
     titleKey: "titleMiniGames",
     smallText: comingSoonText,
-    link: "",
+    link: miniGamesPagePath,
   },
   {
     icon: <RPGIcon />,

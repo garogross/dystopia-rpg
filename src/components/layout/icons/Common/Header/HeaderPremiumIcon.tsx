@@ -1,6 +1,6 @@
 import React from "react";
 
-export const RPGHeaderPremiumIcon = () => {
+export const HeaderPremiumIcon = () => {
   return (
     <svg
       width="8"
@@ -16,4 +16,3 @@ export const RPGHeaderPremiumIcon = () => {
     </svg>
   );
 };
-

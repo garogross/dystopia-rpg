@@ -5,13 +5,13 @@ import styles from "./RPGGameHeader.module.scss";
 import {
   RPGHeaderMailIcon,
   RPGHeaderHideIcon,
-  RPGHeaderPremiumIcon,
   RPGHeaderMiniGamesICon,
 } from "../../layout/icons/RPGGame/RPGHeader";
 
 import {
   HeaderBottomBg,
   HeaderBtnsBg,
+  HeaderPremiumIcon,
   HeaderRatingIcon,
   HeaderReferenceIcon,
   HeaderSettingsIcon,
@@ -82,7 +82,7 @@ const RPGGameHeader: React.FC = () => {
         </div>
       </div>
       <button className={styles.rpgGameHeader__premiumBtn}>
-        <RPGHeaderPremiumIcon />
+        <HeaderPremiumIcon />
         <span>Получить премиум</span>
       </button>
       <div
