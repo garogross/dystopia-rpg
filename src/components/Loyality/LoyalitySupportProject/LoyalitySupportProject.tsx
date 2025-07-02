@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
-import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
 import {
   claimBarzhaReward,
@@ -17,8 +16,6 @@ import {
 import { FeedItem } from "taddy-sdk-web";
 import { WallgramFinishTaskItemType } from "../../../types/WallgramFinishTaskItemType";
 import { useTaddy } from "../../../context/TaddyContext";
-import { useTooltip } from "../../../hooks/useTooltip";
-import Tooltip from "../../layout/Tooltip/Tooltip";
 import { TadsWidget } from "react-tads-widget";
 import LoyalitySupportProjectAdditionalTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdditionalTaskItem";
 import LoyalitySupportProjectAdsgramTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdsgramTaskItem";
@@ -26,14 +23,11 @@ import LoyalitySupportProjectVideoTaskItem from "./LoyalitySupportProjectTaskIte
 import LoyalitySupportProjectTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectTaskItem";
 import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraffyContainer/LoyalitySupportProjectTraffyContainer";
 
-const { taskNotCompletedText } = TRANSLATIONS.loyality.supportProject;
-
 const TADS_WIDGET_ID = "543";
 
 const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
-  const { show: showTooltip, openTooltip } = useTooltip();
   const { exchange, taddyTasks, fetchTaddyTasks } = useTaddy();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
 
@@ -116,9 +110,6 @@ const LoyalitySupportProject = () => {
           onClickReward={(id) => {
             dispatch(claimTadsReward({ id }));
           }}
-          onAdsNotFound={() => {
-            openTooltip();
-          }}
         />
 
         {/* button for barzha modal */}
@@ -168,7 +159,6 @@ const LoyalitySupportProject = () => {
       >
         <HeaderWings reversed />
       </TransitionProvider>
-      <Tooltip show={showTooltip} text={taskNotCompletedText[language]} />
     </div>
   );
 };
