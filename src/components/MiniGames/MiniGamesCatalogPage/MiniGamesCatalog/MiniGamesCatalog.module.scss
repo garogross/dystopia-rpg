@@ -1,0 +1,99 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.miniGamesCatalog {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  overflow-y: auto;
+
+  &__list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+  }
+
+  &__listItem {
+    width: 100%;
+    padding: 1px;
+
+    background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
+  }
+
+  &__listItemInner {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    background: #090419;
+  }
+
+  &__listItemImg {
+    width: 100px;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__listItemMain {
+    flex: 1;
+    padding-top: 8px;
+    padding-top: 10px;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__listItemHeader {
+    @include flexCol(space-between);
+  }
+
+  &__listItemNameText {
+    @include setFont(16px, 400, $font-fam-h3);
+    font-style: italic;
+  }
+
+  &__pinBtn {
+    @include button();
+  }
+
+  &__descriptionText {
+    @include setFont(12px, 400);
+    padding-top: 5px;
+    padding-bottom: 10px;
+  }
+
+  &__playBtn {
+    width: 100%;
+    max-width: 105px;
+    @include button($color-primary);
+    padding: 1px;
+    margin-inline: auto;
+  }
+
+  &__playBtnInner {
+    background: radial-gradient(
+      76.5% 93.94% at 50% 50.74%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
+    @include flexCol();
+    gap: 6px;
+    @include setFont(12px, 400);
+  }
+
+  &__playBtn,
+  &__playBtnInner {
+    clip-path: polygon(
+      0% 20.8%,
+      /* (0,5) */ 4.7% 0%,
+      /* (4.92,0) */ 94.4% 0%,
+      /* (99.14,0) */ 100% 20.8%,
+      /* (105,5) */ 94.4% 100%,
+      /* (99.14,24) */ 4.7% 100%,
+      /* (4.92,24) */ 0% 81.25%,
+      /* (0,19.5) */ 0% 20.8% /* (0,5) */
+    );
+  }
+}
