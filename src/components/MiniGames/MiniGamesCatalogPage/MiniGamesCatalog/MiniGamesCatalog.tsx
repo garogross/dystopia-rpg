@@ -25,7 +25,7 @@ const MiniGamesCatalog: FC<Props> = ({ filterPinned }) => {
     ? MINI_GAMES.filter((item) => item.pinned)
     : MINI_GAMES;
   return (
-    <div className={styles.miniGamesCatalog}>
+    <div className={`${styles.miniGamesCatalog} container`}>
       <TitleH3 wingsReverse={false}>
         {filterPinned ? pinnedTitleText[language] : titleText[language]}
       </TitleH3>
