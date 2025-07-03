@@ -78,7 +78,7 @@ const options: Option[] = [
     titleKey: "titleMiniGames",
     smallText: comingSoonText,
     link: miniGamesPagePath,
-    gameModeKey: "mini_games",
+    // gameModeKey: "mini_games",
   },
   {
     icon: <RPGIcon />,
