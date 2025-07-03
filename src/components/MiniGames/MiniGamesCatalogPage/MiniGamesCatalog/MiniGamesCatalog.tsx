@@ -20,7 +20,9 @@ const MiniGamesCatalog: FC<Props> = ({ filterPinned }) => {
     : MINI_GAMES;
   return (
     <div className={styles.miniGamesCatalog}>
-      <TitleH3>{filterPinned ? "Избранные" : "Мини игры"}</TitleH3>
+      <TitleH3 wingsReverse={false}>
+        {filterPinned ? "Избранные" : "Мини игры"}
+      </TitleH3>
       <div className={styles.miniGamesCatalog__list}>
         {data.map(({ name, description, pinned, image }, index) => (
           <div key={index} className={styles.miniGamesCatalog__listItem}>
