@@ -4,6 +4,7 @@ import {
   minGamesPuzzleImage,
   minGamesPuzzleImageWebp,
 } from "../../assets/imageMaps";
+import { hackTerminalPagePath } from "../../router/constants";
 import { TRANSLATIONS } from "../TRANSLATIONS";
 import { EMiniGames } from "./EMiniGames";
 
@@ -28,5 +29,6 @@ export const MINI_GAMES = [
     name: hackTerminal.name,
     description: hackTerminal.description,
     key: EMiniGames.HACK_TERMINAL,
+    link: hackTerminalPagePath,
   },
 ];

@@ -11,6 +11,7 @@ import {
 import styles from "./MiniGamesCatalog.module.scss";
 import { useAppSelector } from "../../../../hooks/redux";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useNavigate } from "react-router-dom";
 
 const { titleText, pinnedTitleText, playText } = TRANSLATIONS.miniGames.catalog;
 
@@ -20,6 +21,7 @@ interface Props {
 
 const MiniGamesCatalog: FC<Props> = ({ filterPinned }) => {
   const language = useAppSelector((state) => state.ui.language);
+  const navigate = useNavigate();
 
   const data = filterPinned
     ? MINI_GAMES.filter((item) => item.pinned)
@@ -30,7 +32,7 @@ const MiniGamesCatalog: FC<Props> = ({ filterPinned }) => {
         {filterPinned ? pinnedTitleText[language] : titleText[language]}
       </TitleH3>
       <div className={styles.miniGamesCatalog__list}>
-        {data.map(({ name, description, pinned, image }, index) => (
+        {data.map(({ name, description, pinned, link, image }, index) => (
           <div key={index} className={styles.miniGamesCatalog__listItem}>
             <div className={styles.miniGamesCatalog__listItemInner}>
               <ImageWebp
@@ -51,7 +53,12 @@ const MiniGamesCatalog: FC<Props> = ({ filterPinned }) => {
                 <p className={styles.miniGamesCatalog__descriptionText}>
                   {description[language]}
                 </p>
-                <button className={styles.miniGamesCatalog__playBtn}>
+                <button
+                  onClick={() => {
+                    if (link) navigate(link);
+                  }}
+                  className={styles.miniGamesCatalog__playBtn}
+                >
                   <div className={styles.miniGamesCatalog__playBtnInner}>
                     <span>{playText[language]}</span>
                     <PlayIcon />

@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from "react";
 
-import styles from "./MiniGamesWrapper.module.scss";
-import AppLoader from "../../AppLoader/AppLoader";
+import styles from "./HackTerminalWrapper.module.scss";
 import { useTelegram } from "../../../hooks/useTelegram";
-import { setGameInited } from "../../../store/slices/uiSlice";
-import { authorizeUser } from "../../../store/slices/profileSlice";
-import { ESplashTypes } from "../../../constants/ESplashTypes";
-import MiniGamesHeader from "../MiniGamesHeader/MiniGamesHeader";
-import { Outlet } from "react-router-dom";
-import MiniGamesBottomNavbar from "../MiniGamesBottomNavbar/MiniGamesBottomNavbar";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { useImageLoader } from "../../../hooks/useImageLoader";
+import * as hackTerminalImages from "../../../assets/imageMaps/hackTerminalImages";
+import { setGameInited } from "../../../store/slices/uiSlice";
+import { authorizeUser } from "../../../store/slices/profileSlice";
+import AppLoader from "../../AppLoader/AppLoader";
+import { ESplashTypes } from "../../../constants/ESplashTypes";
+import MiniGamesHeader from "../../MiniGames/MiniGamesHeader/MiniGamesHeader";
+import { Outlet } from "react-router-dom";
+import HackTerminalBottomNavbar from "../HackTerminalBottomNavbar/HackTerminalBottomNavbar";
 
-import * as miniGamesImages from "../../../assets/imageMaps/miniGamesImages";
-
-const MiniGamesWrapper = () => {
+const HackTerminalWrapper = () => {
   const tg = useTelegram();
   const dispatch = useAppDispatch();
   const cyberFarmInited = useAppSelector(
     (state) => state.cyberfarm.global.dataReceived
   );
   const imagesLoading = useImageLoader(
-    Object.values(miniGamesImages).filter((img) => img.endsWith("webp"))
+    Object.values(hackTerminalImages).filter((img) => img.endsWith("webp"))
   );
   const [loading, setLoading] = useState(false); //true
   const [loaderTimerFinished, setLoaderTimerFinished] = useState(false);
@@ -52,8 +51,8 @@ const MiniGamesWrapper = () => {
   }, []);
 
   return (
-    <div className={`${styles.miniGamesWrapper}`}>
-      <div className={`${styles.miniGamesWrapper__container} gameContainer`}>
+    <div className={`${styles.hackTerminalWrapper}`}>
+      <div className={`${styles.hackTerminalWrapper__container} gameContainer`}>
         <AppLoader
           loading={appLoading}
           timerFinished={loaderTimerFinished}
@@ -61,13 +60,13 @@ const MiniGamesWrapper = () => {
           type={ESplashTypes.CYBERFARM}
         />
         <MiniGamesHeader />
-        <div className={styles.miniGamesWrapper__main}>
+        <div className={styles.hackTerminalWrapper__main}>
           <Outlet />
         </div>
-        <MiniGamesBottomNavbar />
+        <HackTerminalBottomNavbar />
       </div>
     </div>
   );
 };
 
-export default MiniGamesWrapper;
+export default HackTerminalWrapper;

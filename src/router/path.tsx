@@ -34,6 +34,12 @@ import {
   miniGamesLoyalityPagePath,
   miniGamesPinnedPagePath,
   miniGamesReferalsPagePath,
+  hackTerminalRulesPagePath,
+  hackTerminalRatingsPagePath,
+  hackTerminalPrizesPagePath,
+  hackTerminalAchievmentsPagePath,
+  hackTerminalLevelSelectPagePath,
+  hackTerminalPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -58,6 +64,13 @@ import MiniGamesCatalogPage from "../pages/MiniGames/MiniGamesCatalogPage";
 import MiniGamesLoyalityPage from "../pages/MiniGames/MiniGamesLoyalityPage";
 import MiniGamesPinnedPage from "../pages/MiniGames/MiniGamesPinnedPage";
 import MiniGamesReferalsPage from "../pages/MiniGames/MiniGamesReferalsPage";
+import HackTerminalPage from "../pages/HackTerminal/HackTerminalPage";
+import HackTerminalMainPage from "../pages/HackTerminal/HackTerminalMainPage";
+import HackTerminalLevelSelectPage from "../pages/HackTerminal/HackTerminalLevelSelectPage";
+import HackTerminalAchievments from "../pages/HackTerminal/HackTerminalAchievments";
+import HackTerminalPrizesPage from "../pages/HackTerminal/HackTerminalPrizesPage";
+import HackTerminalRatingsPage from "../pages/HackTerminal/HackTerminalRatingsPage";
+import HackTerminalRulesPage from "../pages/HackTerminal/HackTerminalRulesPage";
 
 export const homePagePath = "/";
 
@@ -185,6 +198,35 @@ export const routes: IRoute[] = [
       {
         path: miniGamesReferalsPagePath,
         component: <MiniGamesReferalsPage />,
+      },
+    ],
+  },
+
+  // hackterminal
+  {
+    path: hackTerminalPagePath,
+    component: <HackTerminalPage />,
+    indexComponent: <HackTerminalMainPage />,
+    children: [
+      {
+        path: hackTerminalLevelSelectPagePath,
+        component: <HackTerminalLevelSelectPage />,
+      },
+      {
+        path: hackTerminalAchievmentsPagePath,
+        component: <HackTerminalAchievments />,
+      },
+      {
+        path: hackTerminalPrizesPagePath,
+        component: <HackTerminalPrizesPage />,
+      },
+      {
+        path: hackTerminalRatingsPagePath,
+        component: <HackTerminalRatingsPage />,
+      },
+      {
+        path: hackTerminalRulesPagePath,
+        component: <HackTerminalRulesPage />,
       },
     ],
   },
