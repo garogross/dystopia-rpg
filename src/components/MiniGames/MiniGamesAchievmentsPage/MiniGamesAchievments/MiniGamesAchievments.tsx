@@ -41,7 +41,7 @@ const MiniGamesAchievments = () => {
   };
 
   return (
-    <div className={`container ${styles.miniGamesAchievments}`}>
+    <div className={`container  ${styles.miniGamesAchievments}`}>
       <TitleH3 wingsReverse={false}>{titleText[language]}</TitleH3>
       <div className={styles.miniGamesAchievments__list}>
         {MINI_GAMES.map(({ name, description, image, key }, index) => {
