@@ -78,11 +78,13 @@ const options: Option[] = [
     titleKey: "titleMiniGames",
     smallText: comingSoonText,
     link: miniGamesPagePath,
+    gameModeKey: "mini_games",
   },
   {
     icon: <RPGIcon />,
     titleKey: "titleRPG",
     link: process.env.NODE_ENV === "development" ? rpgGamePagePath : "",
+    gameModeKey: "rpg",
   },
   // {
   //   icon: <StrategyIcon />,
