@@ -14,6 +14,9 @@ import TransitionProvider, {
 } from "../../../../providers/TransitionProvider";
 import { EMiniGames } from "../../../../constants/miniGames/EMiniGames";
 import { PUZZLE_ACHIEVMENTS } from "../../../../constants/puzzle/puzzleAchievments";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+
+const { titleText, detailsText } = TRANSLATIONS.miniGames.achievments;
 
 const TOTALS_LEVELS = 5;
 const MiniGamesAchievments = () => {
@@ -39,7 +42,7 @@ const MiniGamesAchievments = () => {
 
   return (
     <div className={styles.miniGamesAchievments}>
-      <TitleH3 wingsReverse={false}>Достижения</TitleH3>
+      <TitleH3 wingsReverse={false}>{titleText[language]}</TitleH3>
       <div className={styles.miniGamesAchievments__list}>
         {MINI_GAMES.map(({ name, description, image, key }, index) => {
           const { achievments, details } = achievmentsList[key];
@@ -69,7 +72,7 @@ const MiniGamesAchievments = () => {
                   <ImageWebp
                     src={image.src}
                     srcSet={image.srcSet}
-                    alt={name}
+                    alt={name[language]}
                     className={styles.miniGamesAchievments__listItemImg}
                   />
                   <div className={styles.miniGamesAchievments__listItemMain}>
@@ -81,11 +84,11 @@ const MiniGamesAchievments = () => {
                           styles.miniGamesAchievments__listItemNameText
                         }
                       >
-                        {name}
+                        {name[language]}
                       </h4>
                     </div>
                     <p className={styles.miniGamesAchievments__descriptionText}>
-                      {description}
+                      {description[language]}
                     </p>
                     <div className={styles.miniGamesAchievments__progressBar}>
                       <div
@@ -128,7 +131,7 @@ const MiniGamesAchievments = () => {
                       <span
                         className={styles.miniGamesAchievments__detailsText}
                       >
-                        Подробности
+                        {detailsText[language]}
                       </span>
                       <div className={styles.miniGamesAchievments__dotLines}>
                         <DotsLine preserveAspectRatio />

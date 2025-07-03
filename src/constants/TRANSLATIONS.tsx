@@ -1238,6 +1238,56 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Прогресс",
     },
   },
+  miniGames: {
+    catalog: {
+      titleText: {
+        [ELanguages.en]: "Mini games",
+        [ELanguages.ru]: "Мини игры",
+      },
+      pinnedTitleText: {
+        [ELanguages.en]: "Pinned",
+        [ELanguages.ru]: "Избранные",
+      },
+      playText: {
+        [ELanguages.en]: "Play",
+        [ELanguages.ru]: "Играть",
+      },
+    },
+    puzzle: {
+      name: {
+        [ELanguages.en]: "Mini Puzzle",
+        [ELanguages.ru]: "Мини-головоломка",
+      },
+      description: {
+        [ELanguages.en]:
+          "Idle economy without the rush: build, upgrade, collect profit.",
+        [ELanguages.ru]:
+          "Idle-экономика без суеты: строй, улучшай, собирай прибыль.",
+      },
+    },
+    hackTerminal: {
+      name: {
+        [ELanguages.en]: "Hack Terminal",
+        [ELanguages.ru]: "Взлом терминала",
+      },
+      description: {
+        [ELanguages.en]:
+          "Test yourself in a fast-paced mini-game for reaction and attention.",
+        [ELanguages.ru]:
+          "Испытай себя в быстрой мини-игре на реакцию и внимание.",
+      },
+    },
+    achievments: {
+      titleText: {
+        [ELanguages.en]: "Achievements",
+        [ELanguages.ru]: "Достижения",
+      },
+      detailsText: {
+        [ELanguages.en]: "Details",
+        [ELanguages.ru]: "Подробности",
+      },
+    },
+  },
   hackTerminal: {
     achievments: {
       win: {

@@ -4,7 +4,10 @@ import {
   minGamesPuzzleImage,
   minGamesPuzzleImageWebp,
 } from "../../assets/imageMaps";
+import { TRANSLATIONS } from "../TRANSLATIONS";
 import { EMiniGames } from "./EMiniGames";
+
+const { puzzle, hackTerminal } = TRANSLATIONS.miniGames;
 
 export const MINI_GAMES = [
   {
@@ -12,8 +15,8 @@ export const MINI_GAMES = [
       src: minGamesPuzzleImage,
       srcSet: minGamesPuzzleImageWebp,
     },
-    name: "Mini Puzzle",
-    description: "Idle-экономика без суеты: строй, улучшай, собирай прибыль.",
+    name: puzzle.name,
+    description: puzzle.description,
     pinned: true,
     key: EMiniGames.PUZZLE,
   },
@@ -22,8 +25,8 @@ export const MINI_GAMES = [
       src: hackTerminalImage,
       srcSet: hackTerminalImageWebp,
     },
-    name: "Взлом терминала",
-    description: "Испытай себя в быстрой мини-игре на реакцию и внимание.",
+    name: hackTerminal.name,
+    description: hackTerminal.description,
     key: EMiniGames.HACK_TERMINAL,
   },
 ];

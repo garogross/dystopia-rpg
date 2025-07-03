@@ -1,7 +1,8 @@
 import React from "react";
+import Referals from "../../components/Referals/Referals";
 
 const MiniGamesReferalsPage = () => {
-  return <div></div>;
+  return <Referals />;
 };
 
 export default MiniGamesReferalsPage;

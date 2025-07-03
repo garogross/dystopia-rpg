@@ -9,19 +9,25 @@ import {
 } from "../../../layout/icons/MiniGames/Catalog";
 
 import styles from "./MiniGamesCatalog.module.scss";
+import { useAppSelector } from "../../../../hooks/redux";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+
+const { titleText, pinnedTitleText, playText } = TRANSLATIONS.miniGames.catalog;
 
 interface Props {
   filterPinned?: boolean;
 }
 
 const MiniGamesCatalog: FC<Props> = ({ filterPinned }) => {
+  const language = useAppSelector((state) => state.ui.language);
+
   const data = filterPinned
     ? MINI_GAMES.filter((item) => item.pinned)
     : MINI_GAMES;
   return (
     <div className={styles.miniGamesCatalog}>
       <TitleH3 wingsReverse={false}>
-        {filterPinned ? "Избранные" : "Мини игры"}
+        {filterPinned ? pinnedTitleText[language] : titleText[language]}
       </TitleH3>
       <div className={styles.miniGamesCatalog__list}>
         {data.map(({ name, description, pinned, image }, index) => (
@@ -30,24 +36,24 @@ const MiniGamesCatalog: FC<Props> = ({ filterPinned }) => {
               <ImageWebp
                 src={image.src}
                 srcSet={image.srcSet}
-                alt={name}
+                alt={name[language]}
                 className={styles.miniGamesCatalog__listItemImg}
               />
               <div className={styles.miniGamesCatalog__listItemMain}>
                 <div className={styles.miniGamesCatalog__listItemHeader}>
                   <h4 className={styles.miniGamesCatalog__listItemNameText}>
-                    {name}
+                    {name[language]}
                   </h4>
                   <button className={styles.miniGamesCatalog__pinBtn}>
                     {!pinned ? <PinIcon /> : <UnpinIcon />}
                   </button>
                 </div>
                 <p className={styles.miniGamesCatalog__descriptionText}>
-                  {description}
+                  {description[language]}
                 </p>
                 <button className={styles.miniGamesCatalog__playBtn}>
                   <div className={styles.miniGamesCatalog__playBtnInner}>
-                    <span>Играть</span>
+                    <span>{playText[language]}</span>
                     <PlayIcon />
                   </div>
                 </button>
