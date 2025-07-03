@@ -12,6 +12,7 @@ import {
   claimTaddyReward,
   claimTadsReward,
   claimWallgramReward,
+  getPromoTasks,
 } from "../../../store/slices/tasksSlice";
 import { FeedItem } from "taddy-sdk-web";
 import { WallgramFinishTaskItemType } from "../../../types/WallgramFinishTaskItemType";
@@ -30,10 +31,12 @@ const LoyalitySupportProject = () => {
   const tgId = useAppSelector((state) => state.profile.tgId);
   const { exchange, taddyTasks, fetchTaddyTasks } = useTaddy();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
-
   const language = useAppSelector((state) => state.ui.language);
+  // const promoTasks = useAppSelector((state) => state.tasks.promoTasks);
 
   useEffect(() => {
+    dispatch(getPromoTasks());
+
     // init wallgram
     const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
 

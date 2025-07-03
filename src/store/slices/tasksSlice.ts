@@ -9,10 +9,32 @@ import { ClaimAdsgramRewardResponse } from "../../models/api/tasks/adsgram";
 import { ClaimVideoRewardResponse } from "../../models/api/tasks/video";
 import { ClaimTadsRewardResponse } from "../../models/api/tasks/tads";
 import { VerifyGigaHashResponse } from "../../models/api/tasks/giga";
+import { IPromoTask } from "../../models/IPromoTask";
 
-export interface TasksState {}
+export interface TasksState {
+  promoTasks: IPromoTask[];
+}
 
-const initialState: TasksState = {};
+const initialState: TasksState = {
+  promoTasks: [],
+};
+
+const getPromoTasksUrl = "/promo_tasks/";
+export const getPromoTasks = createAsyncThunk<
+  { tasks: IPromoTask[] },
+  undefined
+>("tasks/getPromoTasks", async (_payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<{ tasks: IPromoTask[] }>(
+      getPromoTasksUrl
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
 
 const claimBarzhaRewardUrl = "/reward/barzha/";
 export const claimBarzhaReward = createAsyncThunk<
@@ -211,7 +233,11 @@ export const tasksSlice = createSlice({
   name: "tasksSlice",
   initialState,
   reducers: {},
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addCase(getPromoTasks.fulfilled, (state, action) => {
+      state.promoTasks = action.payload.tasks;
+    });
+  },
 });
 
 // export const {  } = tasksSlice.actions;
