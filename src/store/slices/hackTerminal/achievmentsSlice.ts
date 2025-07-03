@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { FarmAchievmentsType } from "../../../types/Achievments/FarmAchievmentsType";
-import { FarmAchievmentSettingsType } from "../../../types/Achievments/FarmAchievmentSettingsType";
+import { HackTerminalAchievmentsType } from "../../../types/Achievments/HackTerminalAchievmentsType";
+import { HackTerminalAchievmentSettingsType } from "../../../types/Achievments/HackTerminalAchievmentSettingsType";
 
 export interface AchievmentsState {
-  achievments: FarmAchievmentsType | null;
-  achievmentSettings: FarmAchievmentSettingsType | null;
+  achievments: HackTerminalAchievmentsType | null;
+  achievmentSettings: HackTerminalAchievmentSettingsType | null;
 }
 
 const initialState: AchievmentsState = {

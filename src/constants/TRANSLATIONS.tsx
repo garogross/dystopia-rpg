@@ -1238,4 +1238,264 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Прогресс",
     },
   },
+  hackTerminal: {
+    achievments: {
+      win: {
+        level1: {
+          [ELanguages.en]: "Intern",
+          [ELanguages.ru]: "Стажёр",
+        },
+        desc1: {
+          [ELanguages.en]: "Play 10 times",
+          [ELanguages.ru]: "Играть 10 раз",
+        },
+        level2: {
+          [ELanguages.en]: "Enthusiast",
+          [ELanguages.ru]: "Любитель",
+        },
+        desc2: {
+          [ELanguages.en]: "Play 50 times",
+          [ELanguages.ru]: "Играть 50 раз",
+        },
+        level3: {
+          [ELanguages.en]: "Pro",
+          [ELanguages.ru]: "Профи",
+        },
+        desc3: {
+          [ELanguages.en]: "Play 100 times",
+          [ELanguages.ru]: "Играть 100 раз",
+        },
+        level4: {
+          [ELanguages.en]: "Expert",
+          [ELanguages.ru]: "Эксперт",
+        },
+        desc4: {
+          [ELanguages.en]: "Play 150 times",
+          [ELanguages.ru]: "Играть 150 раз",
+        },
+        level5: {
+          [ELanguages.en]: "Master",
+          [ELanguages.ru]: "Мастер",
+        },
+        desc5: {
+          [ELanguages.en]: "Play 200 times",
+          [ELanguages.ru]: "Играть 200 раз",
+        },
+      },
+      saveWin: {
+        level1: {
+          [ELanguages.en]: "First Hack",
+          [ELanguages.ru]: "Первый взлом",
+        },
+        desc1: {
+          [ELanguages.en]: "Win 5 times",
+          [ELanguages.ru]: "Одержать 5 побед",
+        },
+        level2: {
+          [ELanguages.en]: "Cyber Thief",
+          [ELanguages.ru]: "Кибервор",
+        },
+        desc2: {
+          [ELanguages.en]: "Win 25 times",
+          [ELanguages.ru]: "Одержать 25 побед",
+        },
+        level3: {
+          [ELanguages.en]: "Elite Hacker",
+          [ELanguages.ru]: "Взломщик элиты",
+        },
+        desc3: {
+          [ELanguages.en]: "Win 50 times",
+          [ELanguages.ru]: "Одержать 50 побед",
+        },
+        level4: {
+          [ELanguages.en]: "Code Phenomenon",
+          [ELanguages.ru]: "Кодовый феномен",
+        },
+        desc4: {
+          [ELanguages.en]: "Win 100 times",
+          [ELanguages.ru]: "Одержать 100 побед",
+        },
+        level5: {
+          [ELanguages.en]: "Code Master",
+          [ELanguages.ru]: "Мастер кодов",
+        },
+        desc5: {
+          [ELanguages.en]: "Win 150 times",
+          [ELanguages.ru]: "Одержать 150 побед",
+        },
+      },
+      winInRow: {
+        level1: {
+          [ELanguages.en]: "On the Wave",
+          [ELanguages.ru]: "На волне",
+        },
+        desc1: {
+          [ELanguages.en]: "Win 3 times in a row",
+          [ELanguages.ru]: "Победить 3 раза подряд",
+        },
+        level2: {
+          [ELanguages.en]: "Unstoppable",
+          [ELanguages.ru]: "Неудержимый",
+        },
+        desc2: {
+          [ELanguages.en]: "Win 10 times in a row",
+          [ELanguages.ru]: "Победить 10 раз подряд",
+        },
+        level3: {
+          [ELanguages.en]: "Steady Hacker",
+          [ELanguages.ru]: "Стабильный хакер",
+        },
+        desc3: {
+          [ELanguages.en]: "Win 20 times in a row",
+          [ELanguages.ru]: "Победить 20 раз подряд",
+        },
+        level4: {
+          [ELanguages.en]: "Unmatched",
+          [ELanguages.ru]: "Непревзойдённый",
+        },
+        desc4: {
+          [ELanguages.en]: "Win 50 times in a row",
+          [ELanguages.ru]: "Победить 50 раз подряд",
+        },
+        level5: {
+          [ELanguages.en]: "Hacking Legend",
+          [ELanguages.ru]: "Легенда взлома",
+        },
+        desc5: {
+          [ELanguages.en]: "Win 100 times in a row",
+          [ELanguages.ru]: "Победить 100 раз подряд",
+        },
+      },
+    },
+  },
+  puzzle: {
+    achievments: {
+      win: {
+        level1: {
+          [ELanguages.en]: "Intern",
+          [ELanguages.ru]: "Стажёр",
+        },
+        desc1: {
+          [ELanguages.en]: "Play 10 times",
+          [ELanguages.ru]: "Играть 10 раз",
+        },
+        level2: {
+          [ELanguages.en]: "Enthusiast",
+          [ELanguages.ru]: "Любитель",
+        },
+        desc2: {
+          [ELanguages.en]: "Play 50 times",
+          [ELanguages.ru]: "Играть 50 раз",
+        },
+        level3: {
+          [ELanguages.en]: "Pro",
+          [ELanguages.ru]: "Профи",
+        },
+        desc3: {
+          [ELanguages.en]: "Play 100 times",
+          [ELanguages.ru]: "Играть 100 раз",
+        },
+        level4: {
+          [ELanguages.en]: "Expert",
+          [ELanguages.ru]: "Эксперт",
+        },
+        desc4: {
+          [ELanguages.en]: "Play 150 times",
+          [ELanguages.ru]: "Играть 150 раз",
+        },
+        level5: {
+          [ELanguages.en]: "Master",
+          [ELanguages.ru]: "Мастер",
+        },
+        desc5: {
+          [ELanguages.en]: "Play 200 times",
+          [ELanguages.ru]: "Играть 200 раз",
+        },
+      },
+      saveWin: {
+        level1: {
+          [ELanguages.en]: "First Hack",
+          [ELanguages.ru]: "Первый взлом",
+        },
+        desc1: {
+          [ELanguages.en]: "Win 5 times",
+          [ELanguages.ru]: "Одержать 5 побед",
+        },
+        level2: {
+          [ELanguages.en]: "Cyber Thief",
+          [ELanguages.ru]: "Кибервор",
+        },
+        desc2: {
+          [ELanguages.en]: "Win 25 times",
+          [ELanguages.ru]: "Одержать 25 побед",
+        },
+        level3: {
+          [ELanguages.en]: "Elite Hacker",
+          [ELanguages.ru]: "Взломщик элиты",
+        },
+        desc3: {
+          [ELanguages.en]: "Win 50 times",
+          [ELanguages.ru]: "Одержать 50 побед",
+        },
+        level4: {
+          [ELanguages.en]: "Code Phenomenon",
+          [ELanguages.ru]: "Кодовый феномен",
+        },
+        desc4: {
+          [ELanguages.en]: "Win 100 times",
+          [ELanguages.ru]: "Одержать 100 побед",
+        },
+        level5: {
+          [ELanguages.en]: "Code Master",
+          [ELanguages.ru]: "Мастер кодов",
+        },
+        desc5: {
+          [ELanguages.en]: "Win 150 times",
+          [ELanguages.ru]: "Одержать 150 побед",
+        },
+      },
+      winInRow: {
+        level1: {
+          [ELanguages.en]: "On the Wave",
+          [ELanguages.ru]: "На волне",
+        },
+        desc1: {
+          [ELanguages.en]: "Win 3 times in a row",
+          [ELanguages.ru]: "Победить 3 раза подряд",
+        },
+        level2: {
+          [ELanguages.en]: "Unstoppable",
+          [ELanguages.ru]: "Неудержимый",
+        },
+        desc2: {
+          [ELanguages.en]: "Win 10 times in a row",
+          [ELanguages.ru]: "Победить 10 раз подряд",
+        },
+        level3: {
+          [ELanguages.en]: "Steady Hacker",
+          [ELanguages.ru]: "Стабильный хакер",
+        },
+        desc3: {
+          [ELanguages.en]: "Win 20 times in a row",
+          [ELanguages.ru]: "Победить 20 раз подряд",
+        },
+        level4: {
+          [ELanguages.en]: "Unmatched",
+          [ELanguages.ru]: "Непревзойдённый",
+        },
+        desc4: {
+          [ELanguages.en]: "Win 50 times in a row",
+          [ELanguages.ru]: "Победить 50 раз подряд",
+        },
+        level5: {
+          [ELanguages.en]: "Hacking Legend",
+          [ELanguages.ru]: "Легенда взлома",
+        },
+        desc5: {
+          [ELanguages.en]: "Win 100 times in a row",
+          [ELanguages.ru]: "Победить 100 раз подряд",
+        },
+      },
+    },
+  },
 };

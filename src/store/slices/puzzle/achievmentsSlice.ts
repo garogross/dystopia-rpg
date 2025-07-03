@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { FarmAchievmentsType } from "../../../types/Achievments/FarmAchievmentsType";
-import { FarmAchievmentSettingsType } from "../../../types/Achievments/FarmAchievmentSettingsType";
+import { PuzzleAchievmentsType } from "../../../types/Achievments/PuzzleAchievmentsType";
+import { PuzzleAchievmentSettingsType } from "../../../types/Achievments/PuzzleAchievmentSettingsType";
 
 export interface AchievmentsState {
-  achievments: FarmAchievmentsType | null;
-  achievmentSettings: FarmAchievmentSettingsType | null;
+  achievments: PuzzleAchievmentsType | null;
+  achievmentSettings: PuzzleAchievmentSettingsType | null;
 }
 
 const initialState: AchievmentsState = {

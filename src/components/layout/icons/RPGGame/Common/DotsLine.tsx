@@ -4,12 +4,14 @@ interface DotsLineProps {
   width?: number;
   height?: number;
   className?: string;
+  preserveAspectRatio?: boolean;
 }
 
- export const DotsLine: React.FC<DotsLineProps> = ({
+export const DotsLine: React.FC<DotsLineProps> = ({
   width = 89,
   height = 10,
   className,
+  preserveAspectRatio,
 }) => (
   <svg
     width={width}
@@ -18,6 +20,7 @@ interface DotsLineProps {
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
+    preserveAspectRatio={preserveAspectRatio ? "none" : undefined}
   >
     <g style={{ mixBlendMode: "screen" }}>
       <path
@@ -46,4 +49,3 @@ interface DotsLineProps {
     </defs>
   </svg>
 );
-

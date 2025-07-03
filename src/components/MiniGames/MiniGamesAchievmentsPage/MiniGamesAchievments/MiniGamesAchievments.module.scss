@@ -1,0 +1,162 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.miniGamesAchievments {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  overflow-y: auto;
+  padding-top: 20px;
+
+  &__list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+  }
+
+  &__listItem {
+    width: 100%;
+    padding: 1px;
+
+    background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
+  }
+  &__listItemWrapper {
+    background: #090419;
+  }
+
+  &__listItemInner {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+
+  &__listItemImg {
+    width: 100px;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__listItemMain {
+    flex: 1;
+    padding-top: 8px;
+    padding-top: 10px;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__listItemHeader {
+    @include flexCol(space-between);
+  }
+
+  &__listItemNameText {
+    @include setFont(16px, 400, $font-fam-h3);
+    font-style: italic;
+  }
+
+  &__pinBtn {
+    @include button();
+  }
+
+  &__descriptionText {
+    @include setFont(12px, 400);
+    padding-top: 5px;
+    padding-bottom: 10px;
+  }
+
+  &__progressBar {
+    width: 100%;
+    height: 17px;
+    padding: 1px;
+    background: $color-primary;
+    margin-bottom: 10px;
+  }
+  &__progressBarInner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  &__progressBar,
+  &__progressBarInner {
+    clip-path: polygon(
+      0% 17.6%,
+      1.34% 0%,
+      98.66% 0%,
+      100% 17.6%,
+      100% 81.8%,
+      98.66% 100%,
+      1.34% 100%,
+      0% 82.4%,
+      0% 17.6%
+    );
+  }
+
+  &__progressBarText {
+    position: absolute;
+    top: 50%;
+    transform: translate(calc(-100% - 6px), -50%);
+    @include setFont(12px, 400, $font-fam-main, $color-black);
+  }
+  &__detailsBtn {
+    @include button();
+    @include flexCol(flex-end);
+    gap: 5px;
+  }
+  &__detailsText {
+    @include setFont(10px, 400, $font-fam-main, $color-primary);
+    text-decoration: underline;
+  }
+  &__dotLines {
+    flex: 1;
+    overflow: hidden;
+    max-width: 0px;
+    transition: $transition;
+    @include flexCol();
+
+    & svg {
+      width: 100%;
+      max-width: 180px;
+    }
+  }
+
+  &__detailsBtn_active &__dotLines {
+    max-width: 400px;
+  }
+  &__rewardList {
+    width: 100%;
+  }
+  &__rewardListWrapper {
+    padding-top: 13px;
+    padding-bottom: 8px;
+    padding-inline: 12px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+  &__rewardListItem {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+  }
+  &__rewardListNameText {
+    @include setFont(12px, 400);
+  }
+  &__rewardListLevelIndicators {
+    @include flexCol();
+    gap: 4px;
+  }
+  &__rewardListLevelIndicatorItem {
+    flex: 1;
+    height: 6px;
+    border: 1px solid $color-primary;
+    transition: $transition;
+    &_completed {
+      background-color: $color-primary;
+    }
+  }
+}
