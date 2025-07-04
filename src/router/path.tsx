@@ -67,10 +67,10 @@ import MiniGamesReferalsPage from "../pages/MiniGames/MiniGamesReferalsPage";
 import HackTerminalPage from "../pages/HackTerminal/HackTerminalPage";
 import HackTerminalMainPage from "../pages/HackTerminal/HackTerminalMainPage";
 import HackTerminalLevelSelectPage from "../pages/HackTerminal/HackTerminalLevelSelectPage";
-import HackTerminalAchievments from "../pages/HackTerminal/HackTerminalAchievments";
 import HackTerminalPrizesPage from "../pages/HackTerminal/HackTerminalPrizesPage";
 import HackTerminalRatingsPage from "../pages/HackTerminal/HackTerminalRatingsPage";
 import HackTerminalRulesPage from "../pages/HackTerminal/HackTerminalRulesPage";
+import HackTerminalAchievmentsPage from "../pages/HackTerminal/HackTerminalAchievmentsPage";
 
 export const homePagePath = "/";
 
@@ -214,7 +214,7 @@ export const routes: IRoute[] = [
       },
       {
         path: hackTerminalAchievmentsPagePath,
-        component: <HackTerminalAchievments />,
+        component: <HackTerminalAchievmentsPage />,
       },
       {
         path: hackTerminalPrizesPagePath,

@@ -7,7 +7,6 @@ import {
   RatingsIcon,
   RullesIcon,
 } from "../../layout/icons/HackTerminal/HackTerminalBottomNavbar";
-import { HeaderWings } from "../../layout/icons/RPGGame/Common";
 import { NavLink } from "react-router-dom";
 import {
   hackTerminalAchievmentsPagePath,

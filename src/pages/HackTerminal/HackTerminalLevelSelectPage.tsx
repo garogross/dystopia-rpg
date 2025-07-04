@@ -1,7 +1,8 @@
 import React from "react";
+import HackTerminalLevelSelect from "../../components/HackTerminal/HackTerminalLevelSelect/HackTerminalLevelSelect";
 
 const HackTerminalLevelSelectPage = () => {
-  return <div></div>;
+  return <HackTerminalLevelSelect />;
 };
 
 export default HackTerminalLevelSelectPage;
