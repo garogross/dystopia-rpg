@@ -10,13 +10,17 @@ import { useAppSelector } from "../../../../hooks/redux";
 import HackTerminalStatusModal from "./HackTerminalStatusModal/HackTerminalStatusModal";
 import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
 import { HACK_TERMINAL_STATUS_COLORS } from "../../../../constants/hackTerminal/hackTerminalStatusColors";
-const PASS_NUM_COUNT = 6;
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 
+const PASS_NUM_COUNT = 6;
 const COLORS = HACK_TERMINAL_STATUS_COLORS;
+
+const { titleText, attemptsLeftText, historyTitleText, checkButtonText } =
+  TRANSLATIONS.hackTerminal.main;
 
 const HackTerminalMain = () => {
   const tgId = useAppSelector((state) => state.profile.tgId);
-  // const language = useAppSelector((state) => state.ui.language);
+  const language = useAppSelector((state) => state.ui.language);
   const [modalOpened, setModalOpened] = useState(false);
   const [status, setStatus] = useState<0 | 1 | -1>(0); // 0 , 1 (win), -1 (lose)
   const initialWritedCode = Array.from({ length: PASS_NUM_COUNT })
@@ -124,9 +128,9 @@ const HackTerminalMain = () => {
 
   return (
     <HackTerminalWrapperWithScreenBg className={styles.hackTerminalMain}>
-      <h4 className={styles.hackTerminalMain__title}>Введите пароль</h4>
+      <h4 className={styles.hackTerminalMain__title}>{titleText[language]}</h4>
       <h5 className={styles.hackTerminalMain__attemptsTexts}>
-        Осталось попыток: {attempts}
+        {attemptsLeftText[language]} {attempts}
       </h5>
       <div className={styles.hackTerminalMain__password}>
         {writedCode.split("").map((item, index) => (
@@ -143,7 +147,9 @@ const HackTerminalMain = () => {
           </button>
         ))}
       </div>
-      <h6 className={styles.hackTerminalMain__historyText}>История попыток</h6>
+      <h6 className={styles.hackTerminalMain__historyText}>
+        {historyTitleText[language]}
+      </h6>
       <div
         className={`${styles.hackTerminalMain__historyList} ${
           historyOpened ? styles.hackTerminalMain__historyList_opened : ""
@@ -174,7 +180,7 @@ const HackTerminalMain = () => {
         className={styles.hackTerminalMain__checkBtn}
       >
         <span className={styles.hackTerminalMain__checkBtnInner}>
-          ПРОВЕРИТЬ
+          {checkButtonText[language]}
         </span>
       </button>
       <div

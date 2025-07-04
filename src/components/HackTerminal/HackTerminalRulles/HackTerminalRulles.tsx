@@ -15,13 +15,14 @@ const {
   useHintsText,
   ifYouGuessText,
   attemptsEndedText,
+  titleText,
 } = TRANSLATIONS.hackTerminal.rules;
 
 const HackTerminalRulles = () => {
   const siteLanguage = useAppSelector((state) => state.ui.language);
   return (
     <HackTerminalWrapperWithScreenBg>
-      <HackTerminalDoc title={"Правила игры"}>
+      <HackTerminalDoc title={titleText[siteLanguage]}>
         <ol>
           <li>{yourTaskText[siteLanguage]}</li>
           <li>{enter6DigitsText[siteLanguage]}</li>

@@ -8,13 +8,19 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { HACK_TERMINAL_LEVELS } from "../../../constants/hackTerminal/hackTerminalLevels";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { ELanguages } from "../../../constants/ELanguages";
+
+const { titleText, selectedText, attemptsText, digitsText } =
+  TRANSLATIONS.hackTerminal.levelSelect;
 
 const HackTerminalLevelSelect = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
 
   return (
     <div className={styles.hackTerminalLevelSelect}>
-      <TitleH3>выберите уровень сложноси</TitleH3>
+      <TitleH3>{titleText[language]}</TitleH3>
       <div className={styles.hackTerminalLevelSelect__wrapper}>
         <div className={styles.hackTerminalLevelSelect__main}>
           <TransitionProvider
@@ -40,21 +46,25 @@ const HackTerminalLevelSelect = () => {
                     <h6
                       className={styles.hackTerminalLevelSelect__listItemtitle}
                     >
-                      {level.name}
+                      {level.name[language]}
                     </h6>
                     <p
                       className={
                         styles.hackTerminalLevelSelect__listItemDescription
                       }
                     >
-                      {level.description} ({level.codeLength} цифр
-                      {level.codeLength < 5 ? "а" : ""})
+                      {level.description[language]} ({level.codeLength}{" "}
+                      {digitsText[language]}
+                      {level.codeLength < 5 && language === ELanguages.ru
+                        ? "а"
+                        : ""}
+                      )
                     </p>
                     <div className={styles.hackTerminalLevelSelect__footer}>
                       <p
                         className={styles.hackTerminalLevelSelect__attemptsText}
                       >
-                        Попыток: {level.attempts}
+                        {attemptsText[language]}: {level.attempts}
                       </p>
                       {level.selected && (
                         <div
@@ -65,7 +75,7 @@ const HackTerminalLevelSelect = () => {
                               styles.hackTerminalLevelSelect__selectedInner
                             }
                           >
-                            Выбран
+                            {selectedText[language]}
                           </div>
                         </div>
                       )}

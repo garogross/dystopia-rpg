@@ -5,7 +5,6 @@ import AppLoader from "../../AppLoader/AppLoader";
 import { useTelegram } from "../../../hooks/useTelegram";
 import { setGameInited } from "../../../store/slices/uiSlice";
 import { authorizeUser } from "../../../store/slices/profileSlice";
-import { ESplashTypes } from "../../../constants/ESplashTypes";
 import MiniGamesHeader from "../MiniGamesHeader/MiniGamesHeader";
 import { Outlet } from "react-router-dom";
 import MiniGamesBottomNavbar from "../MiniGamesBottomNavbar/MiniGamesBottomNavbar";
@@ -58,7 +57,6 @@ const MiniGamesWrapper = () => {
           loading={appLoading}
           timerFinished={loaderTimerFinished}
           setTimerFinished={setLoaderTimerFinished}
-          type={ESplashTypes.CYBERFARM}
         />
         <MiniGamesHeader />
         <div className={styles.miniGamesWrapper__main}>

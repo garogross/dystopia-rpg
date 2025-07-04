@@ -8,7 +8,6 @@ import * as hackTerminalImages from "../../../assets/imageMaps/hackTerminalImage
 import { setGameInited } from "../../../store/slices/uiSlice";
 import { authorizeUser } from "../../../store/slices/profileSlice";
 import AppLoader from "../../AppLoader/AppLoader";
-import { ESplashTypes } from "../../../constants/ESplashTypes";
 import MiniGamesHeader from "../../MiniGames/MiniGamesHeader/MiniGamesHeader";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import HackTerminalBottomNavbar from "../HackTerminalBottomNavbar/HackTerminalBottomNavbar";
@@ -17,6 +16,9 @@ import {
   hackTerminalPagePath,
   onBoardingPagePath,
 } from "../../../router/constants";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+
+const { title } = TRANSLATIONS.hackTerminal;
 
 const HackTerminalWrapper = () => {
   const tg = useTelegram();
@@ -26,6 +28,7 @@ const HackTerminalWrapper = () => {
   const cyberFarmInited = useAppSelector(
     (state) => state.cyberfarm.global.dataReceived
   );
+  const language = useAppSelector((state) => state.ui.language);
   const imagesLoading = useImageLoader(
     Object.values(hackTerminalImages).filter((img) => img.endsWith("webp"))
   );
@@ -64,7 +67,6 @@ const HackTerminalWrapper = () => {
           loading={appLoading}
           timerFinished={loaderTimerFinished}
           setTimerFinished={setLoaderTimerFinished}
-          type={ESplashTypes.CYBERFARM}
         />
         <MiniGamesHeader />
 
@@ -77,7 +79,7 @@ const HackTerminalWrapper = () => {
                 : hackTerminalPagePath
             );
           }}
-          title="ВЗЛОМ ТЕРМИНАЛА"
+          title={title[language]}
         />
         <div className={styles.hackTerminalWrapper__main}>
           <Outlet />

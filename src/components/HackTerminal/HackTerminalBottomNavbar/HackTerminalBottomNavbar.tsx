@@ -20,21 +20,31 @@ import { useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+
+const {
+  ratingsText,
+  levelSelectText,
+  achievmentsText,
+  prizesListText,
+  rulesText,
+} = TRANSLATIONS.hackTerminal.bottomNavbar;
+
 const mainLinks = [
   {
     icon: <RatingsIcon />,
     link: hackTerminalRatingsPagePath,
-    name: "Рейтинги",
+    name: ratingsText,
   },
   {
     icon: <LevelSelectIcon />,
     link: hackTerminalLevelSelectPagePath,
-    name: "Выбор сложности",
+    name: levelSelectText,
   },
   {
     icon: <AchievmentsIcon />,
     link: hackTerminalAchievmentsPagePath,
-    name: "Достижения",
+    name: achievmentsText,
   },
 ];
 
@@ -45,6 +55,7 @@ const linkActiveClass =
 
 const HackTerminalBottomNavbar = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
 
   const topBlockLinksActiveClass = linkActiveClass(
     styles.hackTerminalBottomNavbar__topBlockLink,
@@ -69,14 +80,14 @@ const HackTerminalBottomNavbar = () => {
             className={topBlockLinksActiveClass}
           >
             <PrizesListIcon />
-            <span>Список призов</span>
+            <span>{prizesListText[language]}</span>
           </NavLink>
           <NavLink
             to={hackTerminalRulesPagePath}
             className={topBlockLinksActiveClass}
           >
             <RullesIcon />
-            <span>Правила игры</span>
+            <span>{rulesText[language]}</span>
           </NavLink>
         </div>
       </TransitionProvider>
@@ -96,7 +107,7 @@ const HackTerminalBottomNavbar = () => {
                 className={styles.hackTerminalBottomNavbar__mainNavLinkInner}
               >
                 {item.icon}
-                <span>{item.name}</span>
+                <span>{item.name[language]}</span>
               </div>
             </NavLink>
           ))}

@@ -13,6 +13,18 @@ import {
   GetRewardIcon,
   ResetIcon,
 } from "../../../../layout/icons/HackTerminal/Main";
+import { TRANSLATIONS } from "../../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../../hooks/redux";
+
+const {
+  winTitleText,
+  loseTitleText,
+  rewardText,
+  resetByCpText,
+  resetByAdText,
+  getRewardButtonText,
+  playAgainButtonText,
+} = TRANSLATIONS.hackTerminal.main;
 
 interface Props {
   show: boolean;
@@ -27,6 +39,7 @@ const HackTerminalStatusModal: React.FC<Props> = ({
   onReset,
   bonusValue,
 }) => {
+  const language = useAppSelector((state) => state.ui.language);
   return (
     <NewPortalProvider>
       <TransitionProvider
@@ -40,11 +53,13 @@ const HackTerminalStatusModal: React.FC<Props> = ({
               isLose ? styles.hackTerminalStatusModal__title_lose : ""
             }`}
           >
-            {!isLose ? "вы победили!" : "вы Проиграли"}
+            {(!isLose ? winTitleText : loseTitleText)[language]}
           </h3>
           {!isLose && (
             <div className={styles.hackTerminalStatusModal__reward}>
-              <span>Вы получатете {bonusValue}</span>
+              <span>
+                {rewardText[language]} {bonusValue}
+              </span>
               <StatImg size={15} stat={EStats.cp} />
             </div>
           )}
@@ -55,7 +70,7 @@ const HackTerminalStatusModal: React.FC<Props> = ({
                 <div
                   className={styles.hackTerminalStatusModal__resetByCpBtnInner}
                 >
-                  <span>+1 попытка за 1</span>
+                  <span>{resetByCpText[language]}</span>
                   <StatImg size={15} stat={EStats.cp} />
                 </div>
               </button>
@@ -65,7 +80,7 @@ const HackTerminalStatusModal: React.FC<Props> = ({
                     styles.hackTerminalStatusModal__resetByAdInnerbutton
                   }
                 >
-                  <span>+1 попытка за</span>
+                  <span>{resetByAdText[language]}</span>
                   <ImageWebp
                     srcSet={adImageWebp}
                     src={adImage}
@@ -80,12 +95,12 @@ const HackTerminalStatusModal: React.FC<Props> = ({
             {!isLose ? (
               <>
                 <GetRewardIcon />
-                <span>Получать награду</span>
+                <span>{getRewardButtonText[language]}</span>
               </>
             ) : (
               <>
                 <ResetIcon />
-                <span>Играть снова</span>
+                <span>{playAgainButtonText[language]}</span>
               </>
             )}
           </button>

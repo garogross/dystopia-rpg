@@ -12,6 +12,8 @@ import { AchievmentsType } from "../../types/Achievments/AchievmentsType";
 import { AchievmentDetailsType } from "../../types/Achievments/AchievmentDetailsType";
 import { AchievmentSettingsType } from "../../types/Achievments/AchievmentSettingsType";
 
+const { titleText } = TRANSLATIONS.achievments;
+
 const levelColors = ["#7F5CFF", "#48A7FF", "#00FF88", "#EEFF00", "#E20000"];
 const { progressText } = TRANSLATIONS.achievments;
 
@@ -31,7 +33,7 @@ const Achievments = <T extends string>({
 
   return (
     <div className={styles.achievments}>
-      <TitleH3>Достижения</TitleH3>
+      <TitleH3>{titleText[language]}</TitleH3>
       <div className={styles.achievments__wrapper}>
         <div className={styles.achievments__main}>
           <TransitionProvider

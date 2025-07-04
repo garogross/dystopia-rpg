@@ -10,22 +10,35 @@ import {
   NewbiesLevelIcon,
 } from "../../layout/icons/HackTerminal/HackTerminalRatings";
 import styles from "./HackTerminalRatings.module.scss";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+
+const {
+  titleText,
+  levels: levelsTexts,
+  filters,
+  placeText,
+  gamesText,
+  lastPlayText,
+  daysAgoText,
+  todayText,
+} = TRANSLATIONS.hackTerminal.ratings;
+
 const levels = [
   {
-    name: "Хакеры",
+    name: levelsTexts.hacker,
     icon: <HackerLevelIcon />,
   },
   {
-    name: "Взломщики",
+    name: levelsTexts.cracker,
     icon: <CrackersLevelicon />,
   },
   {
-    name: "Новички",
+    name: levelsTexts.newbie,
     icon: <NewbiesLevelIcon />,
   },
 ];
 
-const dayFilters = ["7 дней", "30 дней", "Общий"];
+const dayFilters = filters;
 const dayFilterKeys = ["winsInMonth", "winsInWeek", "allWins"] as const;
 
 const data = [
@@ -64,15 +77,16 @@ const data = [
 
 const HackTerminalRatings = () => {
   const username = useAppSelector((state) => state.profile.username);
+  const language = useAppSelector((state) => state.ui.language);
   const [activeDayFilter, setActiveDayFilter] = useState(0);
   const [activeLevelFilter, setActiveLevelFilter] = useState(0);
   return (
     <div className={`container ${styles.hackTerminalRatings}`}>
-      <TitleH3 wingsReverse={false}>рейтинги</TitleH3>
+      <TitleH3 wingsReverse={false}>{titleText[language]}</TitleH3>
       <div className={styles.hackTerminalRatings__tabs}>
         {levels.map((item, index) => (
           <button
-            key={item.name}
+            key={item.name[language]}
             onClick={() => setActiveLevelFilter(index)}
             className={`${styles.hackTerminalRatings__tabBtn} ${
               index === activeLevelFilter
@@ -81,7 +95,7 @@ const HackTerminalRatings = () => {
             }`}
           >
             {item.icon}
-            <span>{item.name}</span>
+            <span>{item.name[language]}</span>
           </button>
         ))}
       </div>
@@ -90,7 +104,7 @@ const HackTerminalRatings = () => {
           <MainFrame />
         </div>
         <div className={styles.hackTerminalRatings__dayFilter}>
-          {dayFilters.map((item, index) => (
+          {Object.values(dayFilters).map((item, index) => (
             <button
               onClick={() => setActiveDayFilter(index)}
               key={index}
@@ -102,17 +116,21 @@ const HackTerminalRatings = () => {
             >
               <div className={styles.hackTerminalRatings__dayFilterBtnInner}>
                 <CalendarIcon />
-                <span>{item}</span>
+                <span>{item[language]}</span>
               </div>
             </button>
           ))}
         </div>
         <div className={styles.hackTerminalRatings__listHeader}>
           <span className={styles.hackTerminalRatings__headerText}>#</span>
-          <span className={styles.hackTerminalRatings__headerText}>Игрок</span>
-          <span className={styles.hackTerminalRatings__headerText}>Игр</span>
           <span className={styles.hackTerminalRatings__headerText}>
-            Последняя
+            {placeText[language]}
+          </span>
+          <span className={styles.hackTerminalRatings__headerText}>
+            {gamesText[language]}
+          </span>
+          <span className={styles.hackTerminalRatings__headerText}>
+            {lastPlayText[language]}
           </span>
         </div>
         <span className={styles.hackTerminalRatings__list}>
@@ -128,7 +146,11 @@ const HackTerminalRatings = () => {
                 {item[dayFilterKeys[activeDayFilter]]}
               </span>
               <span className={styles.hackTerminalRatings__headerListItemText}>
-                {item.lastPlay} д наз.
+                {daysAgoText[language].replace(
+                  "DAYS",
+                  item.lastPlay.toString()
+                )}
+                .
               </span>
             </div>
           ))}
@@ -148,7 +170,7 @@ const HackTerminalRatings = () => {
               7
             </span>
             <span className={styles.hackTerminalRatings__curUserStatusText}>
-              сегодня
+              {todayText[language]}
             </span>
           </div>
         </div>

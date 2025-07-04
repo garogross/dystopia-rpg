@@ -1,44 +1,45 @@
 import React from "react";
 import HackTerminalWrapperWithScreenBg from "../HackTerminalWrapperWithScreenBg/HackTerminalWrapperWithScreenBg";
 import HackTerminalDoc from "../HackTerminalDoc/HackTerminalDoc";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../hooks/redux";
+
+const {
+  title,
+  description,
+  levels: { newbie, cracker, hacker },
+} = TRANSLATIONS.hackTerminal.prizes;
 
 const HackTerminalPrizes = () => {
+  const language = useAppSelector((state) => state.ui.language);
+
   return (
     <HackTerminalWrapperWithScreenBg>
-      <HackTerminalDoc title={"Список призов"}>
-        В мини-игре «Взлом терминала» награды зависят от выбранной сложности:
+      <HackTerminalDoc title={title[language]}>
+        {description[language]}
         <ul>
           <li>
-            <b>Уровень «Новичок»</b>
+            <b>{newbie.name[language]}</b>
             <ul>
-              <li>Тренировочный режим на 4 цифры.</li>
-              <li>Предназначен для практики и оттачивания навыков.</li>
-              <li>Награды за победу не предусмотрены.</li>
+              {newbie.items.map((item, idx) => (
+                <li key={idx}>{item[language]}</li>
+              ))}
             </ul>
           </li>
           <li>
-            <b>Уровень «Взломщик»</b>
+            <b>{cracker.name[language]}</b>
             <ul>
-              <li>Базовая сложность на 6 цифр.</li>
-              <li>
-                При успешном взломе вы получаете случайную награду из списка.
-              </li>
-              <li>
-                Награда: <b>0,01 CP</b> (Cash Points) за победу.
-              </li>
+              {cracker.items.map((item, idx) => (
+                <li key={idx}>{item[language]}</li>
+              ))}
             </ul>
           </li>
           <li>
-            <b>Уровень «Хакер»</b>
+            <b>{hacker.name[language]}</b>
             <ul>
-              <li>Повышенная сложность на 8 цифр.</li>
-              <li>
-                При успешном взломе вы также получаете одну случайную награду из
-                списка.
-              </li>
-              <li>
-                Награда: <b>0,05 CP</b> (Cash Points) за победу.
-              </li>
+              {hacker.items.map((item, idx) => (
+                <li key={idx}>{item[language]}</li>
+              ))}
             </ul>
           </li>
         </ul>
