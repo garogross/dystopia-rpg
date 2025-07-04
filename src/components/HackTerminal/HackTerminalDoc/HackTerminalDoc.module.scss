@@ -1,0 +1,21 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.hackTerminalDoc {
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+  @include setFont(14px, 300, $font-fam-main, $color-primary);
+
+  & ol,
+  ul {
+    list-style-position: inside;
+    list-style-type: disc;
+  }
+
+  &__title {
+    @include setFont(12px, 400, $font-fam-bowler, $color-primary);
+    margin-bottom: 3px;
+    text-align: center;
+  }
+}

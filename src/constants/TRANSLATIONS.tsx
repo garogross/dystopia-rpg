@@ -1417,6 +1417,55 @@ export const TRANSLATIONS = {
         },
       },
     },
+    rules: {
+      yourTaskText: {
+        [ELanguages.en]: "Your task is to guess the 6-digit code",
+        [ELanguages.ru]: "Ваша задача - угодать 6-значный код",
+      },
+      enter6DigitsText: {
+        [ELanguages.en]: "Enter 6 digits and click 'Check'",
+        [ELanguages.ru]: "Введите 6 цифр и нажмите 'Проверить'",
+      },
+      afterCheckingText: {
+        [ELanguages.en]:
+          "After checking, each digit will receive a color indication",
+        [ELanguages.ru]:
+          "После проверки каждая цифра получит цветовую индикацию",
+      },
+      greenDigitText: {
+        [ELanguages.en]: ["Green", " - the digit is in the correct place"],
+        [ELanguages.ru]: ["Зеленый", " - цифра на правильном месте"],
+      },
+      yellowDigitText: {
+        [ELanguages.en]: [
+          "Yellow",
+          " - the digit is in the code, but not in its place",
+        ],
+        [ELanguages.ru]: [
+          "Жёлтый",
+          " - цифра есть в коде, но не на своём месте",
+        ],
+      },
+      redDigitText: {
+        [ELanguages.en]: ["Red", " - the digit is not in the code"],
+        [ELanguages.ru]: ["Красный", " - цифры нет в коде"],
+      },
+      useHintsText: {
+        [ELanguages.en]: "Use the hints to find the code in 10 attempts",
+        [ELanguages.ru]:
+          "Используйте подсказки, чтобы подобрать код за 10 попыток",
+      },
+      ifYouGuessText: {
+        [ELanguages.en]: "If you guess, you will receive a random reward",
+        [ELanguages.ru]: "Если угадали - получите случайную награду",
+      },
+      attemptsEndedText: {
+        [ELanguages.en]:
+          "If the attempts are over, the hack failed, try again!",
+        [ELanguages.ru]:
+          "Если попытки закончились - взлом не удался, попробуйте снова!",
+      },
+    },
   },
   puzzle: {
     achievments: {

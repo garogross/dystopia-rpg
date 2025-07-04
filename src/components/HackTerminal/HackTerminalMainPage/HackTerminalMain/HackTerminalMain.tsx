@@ -9,13 +9,10 @@ import styles from "./HackTerminalMain.module.scss";
 import { useAppSelector } from "../../../../hooks/redux";
 import HackTerminalStatusModal from "./HackTerminalStatusModal/HackTerminalStatusModal";
 import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
+import { HACK_TERMINAL_STATUS_COLORS } from "../../../../constants/hackTerminal/hackTerminalStatusColors";
 const PASS_NUM_COUNT = 6;
 
-const COLORS = {
-  yellow: "#eeff00",
-  red: "#e20000",
-  blue: "#00ff88",
-};
+const COLORS = HACK_TERMINAL_STATUS_COLORS;
 
 const HackTerminalMain = () => {
   const tgId = useAppSelector((state) => state.profile.tgId);

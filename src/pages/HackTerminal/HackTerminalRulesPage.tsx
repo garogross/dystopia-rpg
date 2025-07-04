@@ -1,7 +1,8 @@
 import React from "react";
+import HackTerminalRulles from "../../components/HackTerminal/HackTerminalRulles/HackTerminalRulles";
 
 const HackTerminalRulesPage = () => {
-  return <div></div>;
+  return <HackTerminalRulles />;
 };
 
 export default HackTerminalRulesPage;
