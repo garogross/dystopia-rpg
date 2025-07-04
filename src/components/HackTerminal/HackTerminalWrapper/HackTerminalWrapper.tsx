@@ -67,8 +67,9 @@ const HackTerminalWrapper = () => {
           type={ESplashTypes.CYBERFARM}
         />
         <MiniGamesHeader />
+
         <HeaderWithBackButton
-          className={styles.hackTerminalWrapper__title}
+          className={`container ${styles.hackTerminalWrapper__title}`}
           onClose={() => {
             navigate(
               location.pathname === hackTerminalPagePath

@@ -1,7 +1,8 @@
 import React from "react";
+import HackTerminalRatings from "../../components/HackTerminal/HackTerminalRatings/HackTerminalRatings";
 
 const HackTerminalRatingsPage = () => {
-  return <div></div>;
+  return <HackTerminalRatings />;
 };
 
 export default HackTerminalRatingsPage;
