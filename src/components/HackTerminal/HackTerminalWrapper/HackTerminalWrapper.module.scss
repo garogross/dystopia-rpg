@@ -21,4 +21,9 @@
     height: calc(100dvh - 180px);
     overflow: hidden;
   }
+
+  &__title {
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
 }

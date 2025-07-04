@@ -10,12 +10,19 @@ import { authorizeUser } from "../../../store/slices/profileSlice";
 import AppLoader from "../../AppLoader/AppLoader";
 import { ESplashTypes } from "../../../constants/ESplashTypes";
 import MiniGamesHeader from "../../MiniGames/MiniGamesHeader/MiniGamesHeader";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import HackTerminalBottomNavbar from "../HackTerminalBottomNavbar/HackTerminalBottomNavbar";
+import HeaderWithBackButton from "../../layout/HeaderWithBackButton/HeaderWithBackButton";
+import {
+  hackTerminalPagePath,
+  onBoardingPagePath,
+} from "../../../router/constants";
 
 const HackTerminalWrapper = () => {
   const tg = useTelegram();
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const cyberFarmInited = useAppSelector(
     (state) => state.cyberfarm.global.dataReceived
   );
@@ -60,6 +67,17 @@ const HackTerminalWrapper = () => {
           type={ESplashTypes.CYBERFARM}
         />
         <MiniGamesHeader />
+        <HeaderWithBackButton
+          className={styles.hackTerminalWrapper__title}
+          onClose={() => {
+            navigate(
+              location.pathname === hackTerminalPagePath
+                ? onBoardingPagePath
+                : hackTerminalPagePath
+            );
+          }}
+          title="ВЗЛОМ ТЕРМИНАЛА"
+        />
         <div className={styles.hackTerminalWrapper__main}>
           <Outlet />
         </div>

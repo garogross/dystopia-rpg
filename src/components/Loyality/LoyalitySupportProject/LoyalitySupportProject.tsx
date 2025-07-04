@@ -86,8 +86,6 @@ const LoyalitySupportProject = () => {
   };
 
   const openOfferWall = () => {
-    console.log(window.gigaOfferWallSDK);
-
     if (window.gigaOfferWallSDK) {
       window.gigaOfferWallSDK.open();
     }

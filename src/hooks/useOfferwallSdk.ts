@@ -24,8 +24,6 @@ export const useOfferwallSdk = () => {
           projectId: gigapubProjectId,
         })
           .then((sdk: typeof window.gigaOfferWallSDK) => {
-            console.log({ sdk });
-
             if (!sdk) return;
             // Save SDK reference
             window.gigaOfferWallSDK = sdk;

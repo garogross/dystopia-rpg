@@ -80,9 +80,6 @@ const HackTerminalBottomNavbar = () => {
             <span>Правила игры</span>
           </NavLink>
         </div>
-        <div className={styles.hackTerminalBottomNavbar__topWings}>
-          <HeaderWings reversed />
-        </div>
       </TransitionProvider>
       <TransitionProvider
         inProp={gameInited}

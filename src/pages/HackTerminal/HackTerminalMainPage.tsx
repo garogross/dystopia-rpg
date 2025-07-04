@@ -1,7 +1,8 @@
 import React from "react";
+import HackTerminalMain from "../../components/HackTerminal/HackTerminalMainPage/HackTerminalMain/HackTerminalMain";
 
 const HackTerminalMainPage = () => {
-  return <div></div>;
+  return <HackTerminalMain />;
 };
 
 export default HackTerminalMainPage;

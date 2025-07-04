@@ -1,0 +1,111 @@
+@import "../../../../../styles/mixins";
+@import "../../../../../styles/vars";
+
+.hackTerminalStatusModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 271px;
+  width: 100%;
+  @include flexCol();
+  border: 1px solid $color-primary;
+  background-color: #09041a;
+  padding: 12px;
+
+  &__wrapper {
+    @include flexCol();
+    flex-direction: column;
+    max-width: 140px;
+    width: 100%;
+  }
+  &__title {
+    @include setFont(12px, 400, $font-fam-bowler, #00ff88);
+    margin-bottom: 12px;
+    &_lose {
+      color: #e20000;
+    }
+  }
+  &__reward {
+    @include flexCol();
+    gap: 2px;
+    @include setFont(12px, 200, $font-fam-main, $color-primary);
+    margin-bottom: 15px;
+  }
+  &__resetByCpBtn {
+    width: 100%;
+    padding: 1px;
+    @include button($color-primary);
+    margin-bottom: 5px;
+  }
+  &__resetByCpBtnInner {
+    @include flexCol();
+    gap: 2px;
+    padding: 5px;
+    background-color: #09041a;
+    @include setFont(12px, 400, $font-fam-main, $color-primary);
+  }
+
+  &__resetByCpBtn,
+  &__resetByCpBtnInner {
+    clip-path: polygon(
+      96% 100%,
+      5.8% 100%,
+      0.5% 80%,
+      6% 2%,
+      96% 2%,
+      100% 80%,
+      96% 100%
+    );
+  }
+
+  &__resetByAd {
+    width: 100%;
+    padding: 1px;
+    @include button($color-primary);
+    margin-bottom: 5px;
+  }
+  &__resetByAdInnerbutton {
+    @include flexCol();
+    gap: 2px;
+    padding: 5px;
+    background-color: #09041a;
+    @include setFont(12px, 400, $font-fam-main, $color-primary);
+  }
+
+  &__resetByAd,
+  &__resetByAdInnerbutton {
+    clip-path: polygon(
+      0.5% 22.3%,
+      4.8% 0%,
+      94.6% 0%,
+      99.6% 22.4%,
+      99.6% 77.6%,
+      94.6% 100%,
+      4.8% 100%,
+      0.5% 77.7%,
+      0.5% 22.3%
+    );
+  }
+
+  &__resetByAdImg {
+    width: 15px;
+  }
+  &__mainBtn {
+    width: 100%;
+    @include button($color-primary);
+    padding: 5px;
+    @include flexCol();
+    gap: 5px;
+    @include setFont(12px, 400, $font-fam-main, $color-black);
+    clip-path: polygon(
+      0% 20.8%,
+      4.7% 0%,
+      94.5% 0%,
+      100% 20.8%,
+      94.5% 100%,
+      4.7% 100%,
+      0% 20.8%
+    );
+  }
+}
