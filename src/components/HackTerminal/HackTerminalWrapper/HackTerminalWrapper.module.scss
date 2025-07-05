@@ -1,7 +1,7 @@
 @import "../../../styles/mixins";
 @import "../../../styles/vars";
 
-.miniGamesWrapper {
+.hackTerminalWrapper {
   height: 100%;
   background: $color-black;
   width: 100%;
@@ -20,5 +20,10 @@
     flex: 1;
     height: calc(100dvh - 180px);
     overflow: hidden;
+  }
+
+  &__title {
+    margin-top: 10px;
+    margin-bottom: 15px;
   }
 }

@@ -1,4 +1,3 @@
-
 // mesia
 $xs-screen: 375px;
 $sm-screen: 576px;
@@ -6,15 +5,14 @@ $md-screen: 768px;
 $lg-screen: 1024px;
 $xl-screen: 1200px;
 
-
 // colors
 $color-black: #0f0e10;
 $color-white: #ffffff;
 $color-bg: #0c0620;
 $color-primary: #7f5cff;
-$color-statsBg: #42307D;
-$color-disabledText: #6A4CD7;
-$color-red: #FF2A2A;
+$color-statsBg: #42307d;
+$color-disabledText: #6a4cd7;
+$color-red: #ff2a2a;
 $color-primary-light-gradient: linear-gradient(
   180deg,
   #4c3799 0%,
@@ -28,6 +26,8 @@ $font-fam-main: "Play", sans-serif;
 $font-fam-h1: "Trafaret Kit";
 $font-fam-h3: "DS_Army";
 $font-fam-dystopia: "DystopiaFont";
+$font-fam-bowler: "BOWLER";
+$font-fam-lcdnova: "Lcdnova";
 $font-fam-montserrat: "Montserrat", sans-serif;
 
 $transition: all 0.5s;

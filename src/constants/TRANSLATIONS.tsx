@@ -1197,12 +1197,22 @@ export const TRANSLATIONS = {
     },
   },
   achievments: {
+    titleText: {
+      [ELanguages.en]: "Achievements",
+      [ELanguages.ru]: "Достижения",
+    },
     progressText: {
       [ELanguages.en]: "Progress",
       [ELanguages.ru]: "Прогресс",
     },
   },
   miniGames: {
+    header: {
+      getPremiumText: {
+        [ELanguages.en]: "Get Premium",
+        [ELanguages.ru]: "Получить премиум",
+      },
+    },
     catalog: {
       titleText: {
         [ELanguages.en]: "Mini games",
@@ -1253,6 +1263,260 @@ export const TRANSLATIONS = {
     },
   },
   hackTerminal: {
+    title: {
+      [ELanguages.en]: "Hack Terminal",
+      [ELanguages.ru]: "Взлом терминала",
+    },
+    bottomNavbar: {
+      ratingsText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
+      },
+      levelSelectText: {
+        [ELanguages.en]: "Level Select",
+        [ELanguages.ru]: "Выбор сложности",
+      },
+      achievmentsText: {
+        [ELanguages.en]: "Achievements",
+        [ELanguages.ru]: "Достижения",
+      },
+      prizesListText: {
+        [ELanguages.en]: "Prizes List",
+        [ELanguages.ru]: "Список призов",
+      },
+      rulesText: {
+        [ELanguages.en]: "Game Rules",
+        [ELanguages.ru]: "Правила игры",
+      },
+    },
+    main: {
+      titleText: {
+        [ELanguages.en]: "Enter password",
+        [ELanguages.ru]: "Введите пароль",
+      },
+      attemptsLeftText: {
+        [ELanguages.en]: "Attempts left:",
+        [ELanguages.ru]: "Осталось попыток:",
+      },
+      historyTitleText: {
+        [ELanguages.en]: "Attempt history",
+        [ELanguages.ru]: "История попыток",
+      },
+      checkButtonText: {
+        [ELanguages.en]: "CHECK",
+        [ELanguages.ru]: "ПРОВЕРИТЬ",
+      },
+      winTitleText: {
+        [ELanguages.en]: "You won!",
+        [ELanguages.ru]: "Вы победили!",
+      },
+      loseTitleText: {
+        [ELanguages.en]: "You lost",
+        [ELanguages.ru]: "Вы проиграли",
+      },
+      rewardText: {
+        [ELanguages.en]: "You receive",
+        [ELanguages.ru]: "Вы получаете",
+      },
+      resetByCpText: {
+        [ELanguages.en]: "+1 attempt for 1",
+        [ELanguages.ru]: "+1 попытка за 1",
+      },
+      resetByAdText: {
+        [ELanguages.en]: "+1 attempt for",
+        [ELanguages.ru]: "+1 попытка за",
+      },
+      getRewardButtonText: {
+        [ELanguages.en]: "Claim reward",
+        [ELanguages.ru]: "Получить награду",
+      },
+      playAgainButtonText: {
+        [ELanguages.en]: "Play again",
+        [ELanguages.ru]: "Играть снова",
+      },
+    },
+    levelSelect: {
+      titleText: {
+        [ELanguages.en]: "Select difficulty level",
+        [ELanguages.ru]: "выберите уровень сложноси",
+      },
+      selectedText: {
+        [ELanguages.en]: "Selected",
+        [ELanguages.ru]: "Выбран",
+      },
+      attemptsText: {
+        [ELanguages.en]: "Attempts:",
+        [ELanguages.ru]: "Попыток:",
+      },
+      digitsText: {
+        [ELanguages.en]: "digits",
+        [ELanguages.ru]: "цифр",
+      },
+      newbie: {
+        name: {
+          [ELanguages.en]: "Newbie",
+          [ELanguages.ru]: "Новичок",
+        },
+        description: {
+          [ELanguages.en]: "Simple code",
+          [ELanguages.ru]: "Простой код",
+        },
+      },
+      cracker: {
+        name: {
+          [ELanguages.en]: "Cracker",
+          [ELanguages.ru]: "Взломщик",
+        },
+        description: {
+          [ELanguages.en]: "Medium challenge",
+          [ELanguages.ru]: "Средний вызов",
+        },
+      },
+      hacker: {
+        name: {
+          [ELanguages.en]: "Hacker",
+          [ELanguages.ru]: "Хакер",
+        },
+        description: {
+          [ELanguages.en]: "Hard cipher",
+          [ELanguages.ru]: "Сложный шифр",
+        },
+      },
+    },
+    prizes: {
+      title: {
+        [ELanguages.en]: "Prize List",
+        [ELanguages.ru]: "Список призов",
+      },
+      description: {
+        [ELanguages.en]:
+          "In the 'Hack Terminal' mini-game, rewards depend on the selected difficulty:",
+        [ELanguages.ru]:
+          "В мини-игре «Взлом терминала» награды зависят от выбранной сложности:",
+      },
+      levels: {
+        newbie: {
+          name: {
+            [ELanguages.en]: "Newbie level",
+            [ELanguages.ru]: "Уровень «Новичок»",
+          },
+          items: [
+            {
+              [ELanguages.en]: "Training mode with 4 digits.",
+              [ELanguages.ru]: "Тренировочный режим на 4 цифры.",
+            },
+            {
+              [ELanguages.en]: "Designed for practice and skill improvement.",
+              [ELanguages.ru]:
+                "Предназначен для практики и оттачивания навыков.",
+            },
+            {
+              [ELanguages.en]: "No rewards for winning.",
+              [ELanguages.ru]: "Награды за победу не предусмотрены.",
+            },
+          ],
+        },
+        cracker: {
+          name: {
+            [ELanguages.en]: "Cracker level",
+            [ELanguages.ru]: "Уровень «Взломщик»",
+          },
+          items: [
+            {
+              [ELanguages.en]: "Basic difficulty with 6 digits.",
+              [ELanguages.ru]: "Базовая сложность на 6 цифр.",
+            },
+            {
+              [ELanguages.en]:
+                "On successful hack, you receive a random reward from the list.",
+              [ELanguages.ru]:
+                "При успешном взломе вы получаете случайную награду из списка.",
+            },
+            {
+              [ELanguages.en]: "Reward: 0.01 CP (Cash Points) for a win.",
+              [ELanguages.ru]: "Награда: 0,01 CP (Cash Points) за победу.",
+            },
+          ],
+        },
+        hacker: {
+          name: {
+            [ELanguages.en]: "Hacker level",
+            [ELanguages.ru]: "Уровень «Хакер»",
+          },
+          items: [
+            {
+              [ELanguages.en]: "Increased difficulty with 8 digits.",
+              [ELanguages.ru]: "Повышенная сложность на 8 цифр.",
+            },
+            {
+              [ELanguages.en]:
+                "On successful hack, you also receive a random reward from the list.",
+              [ELanguages.ru]:
+                "При успешном взломе вы также получаете одну случайную награду из списка.",
+            },
+            {
+              [ELanguages.en]: "Reward: 0.05 CP (Cash Points) for a win.",
+              [ELanguages.ru]: "Награда: 0,05 CP (Cash Points) за победу.",
+            },
+          ],
+        },
+      },
+    },
+    ratings: {
+      titleText: {
+        [ELanguages.en]: "Leaderboard",
+        [ELanguages.ru]: "Рейтинги",
+      },
+      levels: {
+        hacker: {
+          [ELanguages.en]: "Hackers",
+          [ELanguages.ru]: "Хакеры",
+        },
+        cracker: {
+          [ELanguages.en]: "Crackers",
+          [ELanguages.ru]: "Взломщики",
+        },
+        newbie: {
+          [ELanguages.en]: "Newbies",
+          [ELanguages.ru]: "Новички",
+        },
+      },
+      filters: {
+        week: {
+          [ELanguages.en]: "7 days",
+          [ELanguages.ru]: "7 дней",
+        },
+        month: {
+          [ELanguages.en]: "30 days",
+          [ELanguages.ru]: "30 дней",
+        },
+        all: {
+          [ELanguages.en]: "All time",
+          [ELanguages.ru]: "Общий",
+        },
+      },
+      placeText: {
+        [ELanguages.en]: "Place",
+        [ELanguages.ru]: "Место",
+      },
+
+      gamesText: {
+        [ELanguages.en]: "Games",
+        [ELanguages.ru]: "Игр",
+      },
+      lastPlayText: {
+        [ELanguages.en]: "Last played",
+        [ELanguages.ru]: "Последняя игра",
+      },
+      daysAgoText: {
+        [ELanguages.en]: "DAYS days ago",
+        [ELanguages.ru]: "DAYS дн. назад",
+      },
+      todayText: {
+        [ELanguages.en]: "Today",
+        [ELanguages.ru]: "Сегодня",
+      },
+    },
     achievments: {
       win: {
         level1: {
@@ -1379,6 +1643,59 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Win 100 times in a row",
           [ELanguages.ru]: "Победить 100 раз подряд",
         },
+      },
+    },
+    rules: {
+      titleText: {
+        [ELanguages.en]: "Game Rules",
+        [ELanguages.ru]: "Правила игры",
+      },
+      yourTaskText: {
+        [ELanguages.en]: "Your task is to guess the 6-digit code",
+        [ELanguages.ru]: "Ваша задача - угодать 6-значный код",
+      },
+      enter6DigitsText: {
+        [ELanguages.en]: "Enter 6 digits and click 'Check'",
+        [ELanguages.ru]: "Введите 6 цифр и нажмите 'Проверить'",
+      },
+      afterCheckingText: {
+        [ELanguages.en]:
+          "After checking, each digit will receive a color indication",
+        [ELanguages.ru]:
+          "После проверки каждая цифра получит цветовую индикацию",
+      },
+      greenDigitText: {
+        [ELanguages.en]: ["Green", " - the digit is in the correct place"],
+        [ELanguages.ru]: ["Зеленый", " - цифра на правильном месте"],
+      },
+      yellowDigitText: {
+        [ELanguages.en]: [
+          "Yellow",
+          " - the digit is in the code, but not in its place",
+        ],
+        [ELanguages.ru]: [
+          "Жёлтый",
+          " - цифра есть в коде, но не на своём месте",
+        ],
+      },
+      redDigitText: {
+        [ELanguages.en]: ["Red", " - the digit is not in the code"],
+        [ELanguages.ru]: ["Красный", " - цифры нет в коде"],
+      },
+      useHintsText: {
+        [ELanguages.en]: "Use the hints to find the code in 10 attempts",
+        [ELanguages.ru]:
+          "Используйте подсказки, чтобы подобрать код за 10 попыток",
+      },
+      ifYouGuessText: {
+        [ELanguages.en]: "If you guess, you will receive a random reward",
+        [ELanguages.ru]: "Если угадали - получите случайную награду",
+      },
+      attemptsEndedText: {
+        [ELanguages.en]:
+          "If the attempts are over, the hack failed, try again!",
+        [ELanguages.ru]:
+          "Если попытки закончились - взлом не удался, попробуйте снова!",
       },
     },
   },

@@ -16,9 +16,14 @@ import { EStats } from "../../../constants/EStats";
 
 import { formatNumber } from "../../../utils/formatNumber";
 import SettingsModal from "../../SettingsModal/SettingsModal";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+
+const { getPremiumText } = TRANSLATIONS.miniGames.header;
+
 const MiniGamesHeader = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
   const stats = useAppSelector((state) => state.profile.stats);
   const [settingsOpened, setSettingsOpened] = useState(false);
 
@@ -56,7 +61,7 @@ const MiniGamesHeader = () => {
       >
         <button className={styles.miniGamesHeader__premiumBtn}>
           <HeaderPremiumIcon />
-          <span>Получить премиум</span>
+          <span>{getPremiumText[language]}</span>
         </button>
       </div>
       <div

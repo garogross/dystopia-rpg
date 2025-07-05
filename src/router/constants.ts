@@ -27,3 +27,16 @@ export const miniGamesAchievmentsPagePath = "achievments";
 export const miniGamesLoyalityPagePath = "loyality";
 export const miniGamesPinnedPagePath = "pinned";
 export const miniGamesReferalsPagePath = "referals";
+
+export const hackTerminalPagePath = onBoardingPagePath + "/hackterminal";
+export const hackTerminalLevelSelectPagePath = "level-select";
+export const hackTerminalAchievmentsPagePath = "achievments";
+export const hackTerminalPrizesPagePath = "prizes";
+export const hackTerminalRatingsPagePath = "ratings";
+export const hackTerminalRulesPagePath = "rules";
+
+export const puzzlePagePath = onBoardingPagePath + "/puzzle";
+export const puzzleSelectModePagePath = "select-mode";
+export const puzzleGalleryPagePath = "gallery";
+export const puzzleAchievmentsPagePath = "achievments";
+export const puzzleRatingsPagePath = "ratings";
