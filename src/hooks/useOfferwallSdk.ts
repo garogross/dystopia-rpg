@@ -30,8 +30,6 @@ export const useOfferwallSdk = () => {
 
             // Listen for reward claims
             sdk.on("rewardClaim", async (data: RewardClaim) => {
-              console.log("Reward claim received:", data);
-
               // Process reward with your backend
               const confirmationData = await dispatch(
                 verifyGigaHash(data)
