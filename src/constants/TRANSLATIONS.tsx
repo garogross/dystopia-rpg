@@ -1090,46 +1090,6 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Получить:",
       },
 
-      task1NameText: {
-        [ELanguages.en]: "Subscribe to CryptoZver channel",
-        [ELanguages.ru]: "Подпишитесь на канал CryptoZver",
-      },
-      task1DescriptionText: {
-        [ELanguages.en]: "Channel about crypto",
-        [ELanguages.ru]: "Канал про крипту",
-      },
-      task2NameText: {
-        [ELanguages.en]: "Subscribe to KARIMOV channel",
-        [ELanguages.ru]: "Подпишитесь на канал KARIMOV",
-      },
-      task2DescriptionText: {
-        [ELanguages.en]: "Path from $100 to $500k",
-        [ELanguages.ru]: "Путь со 100$ до 500k$",
-      },
-      task3NameText: {
-        [ELanguages.en]: "Share the game in Telegram",
-        [ELanguages.ru]: "Поделитесь игрой в Telegram",
-      },
-      task3DescriptionText: {
-        [ELanguages.en]: "Tell your friends and get a bonus",
-        [ELanguages.ru]: "Расскажи друзьям и получи бонус",
-      },
-      task4NameText: {
-        [ELanguages.en]: "Visit partner website",
-        [ELanguages.ru]: "Посетите сайт партнёров",
-      },
-      task4DescriptionText: {
-        [ELanguages.en]: "One click - and you helped the project",
-        [ELanguages.ru]: "Один клик — и ты помог проекту",
-      },
-      task5NameText: {
-        [ELanguages.en]: "Subscribe to All COMBO TAP X",
-        [ELanguages.ru]: "Подпишитесь на All COMBO TAP X",
-      },
-      task5DescriptionText: {
-        [ELanguages.en]: "One click - and you helped the project",
-        [ELanguages.ru]: "Один клик — и ты помог проекту",
-      },
       partnerTasksText: {
         [ELanguages.en]: "Additional partner tasks",
         [ELanguages.ru]: "Дополнительные задания от партнеров",
@@ -1153,6 +1113,10 @@ export const TRANSLATIONS = {
       taskNotCompletedText: {
         [ELanguages.en]: "Task not completed",
         [ELanguages.ru]: "Задание не выполнено",
+      },
+      taskCompletedText: {
+        [ELanguages.en]: "Task completed successfully",
+        [ELanguages.ru]: "Задание выполнено успешно",
       },
       supportProjectText: {
         [ELanguages.en]: "Support the sponsor's project and get 5 CP",

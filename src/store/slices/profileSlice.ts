@@ -27,6 +27,7 @@ import {
   claimTraffyReward,
   claimVideoReward,
   claimWallgramReward,
+  getPromoTaskReward,
   verifyGigaHash,
 } from "./tasksSlice";
 import { initAchievments } from "./cyberFarm/achievmentsSlice";
@@ -340,6 +341,11 @@ export const profileSlice = createSlice({
     });
 
     // tasks
+    builder.addCase(getPromoTaskReward.fulfilled, (state, { payload }) => {
+      if (+payload.reward && payload.status === "ok") {
+        state.stats.cp += +payload.reward;
+      }
+    });
     builder.addCase(claimBarzhaReward.fulfilled, (state, { payload }) => {
       if (+payload.reward) {
         state.stats.cp += +payload.reward;

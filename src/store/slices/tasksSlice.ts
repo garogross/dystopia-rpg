@@ -10,6 +10,7 @@ import { ClaimVideoRewardResponse } from "../../models/api/tasks/video";
 import { ClaimTadsRewardResponse } from "../../models/api/tasks/tads";
 import { VerifyGigaHashResponse } from "../../models/api/tasks/giga";
 import { IPromoTask } from "../../models/IPromoTask";
+import { GetPromoTaskRewardResponse } from "../../models/api/tasks/promoTasks";
 
 export interface TasksState {
   promoTasks: IPromoTask[];
@@ -33,6 +34,27 @@ export const getPromoTasks = createAsyncThunk<
   } catch (error: any) {
     console.error("error", error);
     return rejectWithValue(error);
+  }
+});
+const getPromoTaskRewardUrl = "/promo_tasks/reward/";
+export const getPromoTaskReward = createAsyncThunk<
+  GetPromoTaskRewardResponse,
+  { id: number | string },
+  { rejectValue: { id: number | string } }
+>("tasks/getPromoTaskReward", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<GetPromoTaskRewardResponse>(
+      getPromoTaskRewardUrl,
+      "POST",
+      {
+        task_id: payload.id,
+      }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue({ id: payload.id });
   }
 });
 
@@ -232,14 +254,34 @@ export const verifyGigaHash = createAsyncThunk<
 export const tasksSlice = createSlice({
   name: "tasksSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setPromoTaskSubscribed: (state, action) => {
+      const task = state.promoTasks.find((task) => task.id === action.payload);
+
+      if (task) {
+        task.subscription = true;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getPromoTasks.fulfilled, (state, action) => {
       state.promoTasks = action.payload.tasks;
     });
+    builder.addCase(getPromoTaskReward.fulfilled, (state, { payload }) => {
+      state.promoTasks = state.promoTasks.filter(
+        (item) => item.id !== payload.task_id
+      );
+    });
+    builder.addCase(getPromoTaskReward.rejected, (state, { payload }) => {
+      const task = state.promoTasks.find((task) => task.id === payload?.id);
+
+      if (task) {
+        task.subscription = false;
+      }
+    });
   },
 });
 
-// export const {  } = tasksSlice.actions;
+export const { setPromoTaskSubscribed } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

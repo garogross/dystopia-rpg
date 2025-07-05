@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./LoyalitySupportProject.module.scss";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
@@ -12,7 +12,9 @@ import {
   claimTaddyReward,
   claimTadsReward,
   claimWallgramReward,
+  getPromoTaskReward,
   getPromoTasks,
+  setPromoTaskSubscribed,
 } from "../../../store/slices/tasksSlice";
 import { FeedItem } from "taddy-sdk-web";
 import { WallgramFinishTaskItemType } from "../../../types/WallgramFinishTaskItemType";
@@ -23,6 +25,12 @@ import LoyalitySupportProjectAdsgramTaskItem from "./LoyalitySupportProjectTaskI
 import LoyalitySupportProjectVideoTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectVideoTaskItem";
 import LoyalitySupportProjectTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectTaskItem";
 import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraffyContainer/LoyalitySupportProjectTraffyContainer";
+import { useTooltip } from "../../../hooks/useTooltip";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import Tooltip from "../../layout/Tooltip/Tooltip";
+
+const { taskNotCompletedText, taskCompletedText } =
+  TRANSLATIONS.loyality.supportProject;
 
 const TADS_WIDGET_ID = "543";
 
@@ -32,7 +40,9 @@ const LoyalitySupportProject = () => {
   const { exchange, taddyTasks, fetchTaddyTasks } = useTaddy();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const language = useAppSelector((state) => state.ui.language);
-  // const promoTasks = useAppSelector((state) => state.tasks.promoTasks);
+  const promoTasks = useAppSelector((state) => state.tasks.promoTasks);
+  const [tooltipText, setTooltipText] = useState(taskCompletedText);
+  const { show, openTooltip } = useTooltip();
 
   useEffect(() => {
     dispatch(getPromoTasks());
@@ -89,8 +99,6 @@ const LoyalitySupportProject = () => {
   };
 
   const openOfferWall = () => {
-    console.log(window.gigaOfferWallSDK);
-
     if (window.gigaOfferWallSDK) {
       window.gigaOfferWallSDK.open();
     }
@@ -153,6 +161,45 @@ const LoyalitySupportProject = () => {
             onSubscribe={onSubscribe}
           />
         ))}
+        {promoTasks.map(
+          (
+            { name, id, description, reward, target_url, subscription },
+            index
+          ) => (
+            <LoyalitySupportProjectTaskItem
+              key={id}
+              task={{
+                id: id,
+                title: name,
+                description: description,
+                price: reward,
+                subscription: !!subscription,
+                byLink: !target_url.includes("t.me"),
+                link: target_url,
+              }}
+              index={index}
+              gameInited={gameInited}
+              language={language}
+              onSubscribe={(item) => dispatch(setPromoTaskSubscribed(item.id))}
+              onGetReward={async (id) => {
+                try {
+                  const res = await dispatch(
+                    getPromoTaskReward({ id })
+                  ).unwrap();
+                  if (res.status === "ok") {
+                    setTooltipText(taskCompletedText);
+                    openTooltip();
+                  } else {
+                    throw new Error("failed");
+                  }
+                } catch (error) {
+                  setTooltipText(taskNotCompletedText);
+                  openTooltip();
+                }
+              }}
+            />
+          )
+        )}
         <div id="wallgram_showcase"></div>
       </div>
       <TransitionProvider
@@ -162,6 +209,7 @@ const LoyalitySupportProject = () => {
       >
         <HeaderWings reversed />
       </TransitionProvider>
+      <Tooltip show={show} text={tooltipText[language]} />
     </div>
   );
 };

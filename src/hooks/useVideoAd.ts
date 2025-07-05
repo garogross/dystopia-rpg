@@ -94,7 +94,6 @@ export const useVideoAd = (
 
   const onShowAd = async () => {
     const showValidation = await canShowVideoAd();
-    console.log({ showValidation });
 
     if (!showValidation) {
       openTooltip();

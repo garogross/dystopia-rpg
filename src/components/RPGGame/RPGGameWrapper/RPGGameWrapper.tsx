@@ -50,15 +50,11 @@ const RPGGameWrapper: React.FC<Props> = (props) => {
   const appLoading = imagesLoading || loading;
 
   useEffect(() => {
-    console.log({ loaderTimerFinished, appLoading });
-
     if (loaderTimerFinished && !appLoading) {
       dispatch(setGameInited(true));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appLoading, loaderTimerFinished]);
-  console.log({ appLoading });
-
   return (
     <div className={`${styles.rpgGameWrapper}`}>
       <div className={`${styles.rpgGameWrapper__container} gameContainer`}>

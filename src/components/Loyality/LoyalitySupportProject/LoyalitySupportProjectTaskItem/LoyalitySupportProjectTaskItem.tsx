@@ -6,6 +6,7 @@ import { ELanguages } from "../../../../constants/ELanguages";
 import styles from "./LoyalitySupportProjectTaskItem.module.scss";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { cpImage } from "../../../../assets/imageMaps";
+import { useTelegram } from "../../../../hooks/useTelegram";
 
 interface TaskItemProps {
   task: {
@@ -13,7 +14,7 @@ interface TaskItemProps {
     title?: string;
     name?: string;
     description: string;
-    image: string;
+    image?: string;
     price?: number;
     subscription?: boolean;
     byLink?: boolean;
@@ -25,6 +26,7 @@ interface TaskItemProps {
   language: ELanguages;
   isTaddyTask?: boolean;
   onSubscribe: (item: FeedItem) => void;
+  onGetReward?: (id: number | string) => void | Promise<void>;
 }
 
 const TADDY_TASK_PRICE = 1;
@@ -39,7 +41,9 @@ const LoyalitySupportProjectTaskItem: React.FC<TaskItemProps> = ({
   language,
   isTaddyTask,
   onSubscribe,
+  onGetReward,
 }) => {
+  const tg = useTelegram();
   const title = task.title || task.name;
   const price = isTaddyTask ? TADDY_TASK_PRICE : task.price;
 
@@ -55,11 +59,13 @@ const LoyalitySupportProjectTaskItem: React.FC<TaskItemProps> = ({
     >
       <div className={styles.loyalitySupportProjectTaskItem__inner}>
         <div className={styles.loyalitySupportProjectTaskItem__main}>
-          <img
-            src={task.image}
-            alt={title}
-            className={styles.loyalitySupportProjectTaskItem__img}
-          />
+          {task.image && (
+            <img
+              src={task.image}
+              alt={title}
+              className={styles.loyalitySupportProjectTaskItem__img}
+            />
+          )}
           <div className={styles.loyalitySupportProjectTaskItem__texts}>
             <p className={styles.loyalitySupportProjectTaskItem__name}>
               {title}
@@ -70,16 +76,23 @@ const LoyalitySupportProjectTaskItem: React.FC<TaskItemProps> = ({
           </div>
           <div className={styles.loyalitySupportProjectTaskItem__actions}>
             <button
-              onClick={() =>
+              onClick={() => {
+                if (!task.taddyTasktype && task.link && tg.initData) {
+                  if (!task.link.includes("t.me")) {
+                    tg.openLink(task.link);
+                  } else {
+                    tg.openTelegramLink(task.link);
+                  }
+                }
                 onSubscribe({
                   id: task.id,
                   title: task.title || "",
                   description: task.description,
-                  image: task.image,
+                  image: task.image || "",
                   type: task.taddyTasktype || "app",
                   link: task.link || "",
-                })
-              }
+                });
+              }}
               disabled={task.subscription}
               className={styles.loyalitySupportProjectTaskItem__subscribeBtn}
             >
@@ -91,6 +104,7 @@ const LoyalitySupportProjectTaskItem: React.FC<TaskItemProps> = ({
             </button>
             <button
               disabled={!task.subscription}
+              onClick={() => onGetReward?.(task.id)}
               className={styles.loyalitySupportProjectTaskItem__getBtn}
             >
               <div
