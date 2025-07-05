@@ -24,16 +24,12 @@ export const useOfferwallSdk = () => {
           projectId: gigapubProjectId,
         })
           .then((sdk: typeof window.gigaOfferWallSDK) => {
-            console.log({ sdk });
-
             if (!sdk) return;
             // Save SDK reference
             window.gigaOfferWallSDK = sdk;
 
             // Listen for reward claims
             sdk.on("rewardClaim", async (data: RewardClaim) => {
-              console.log("Reward claim received:", data);
-
               // Process reward with your backend
               const confirmationData = await dispatch(
                 verifyGigaHash(data)
