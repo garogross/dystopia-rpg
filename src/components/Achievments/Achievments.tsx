@@ -52,7 +52,6 @@ const Achievments = <T extends string>({
               settings &&
               Object.entries(details).map(([k, levelsInfo], index) => {
                 const key = k as keyof AchievmentsType<T>;
-                console.log({ key });
 
                 const achievmentCurState = achievments[key];
                 const level = achievmentCurState?.level || 0;

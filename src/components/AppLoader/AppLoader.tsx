@@ -4,7 +4,6 @@ import styles from "./AppLoader.module.scss";
 import {
   DYSTOPIA_GAME_MEDIA_BASE_PATH,
   fecthRandomSplashImage,
-  PUZZLE_MEDIA_BASE_PATH,
 } from "../../api/splash";
 import TransitionProvider, {
   TransitionStyleTypes,
@@ -36,8 +35,9 @@ const AppLoader = ({
   const isImage = image && /\.(jpg|jpeg|png|gif|webp)$/i.test(image);
   const isVideo = image && /\.(mp4|webm|ogg)$/i.test(image);
 
-  const defaultSplashUrl = `${PUZZLE_MEDIA_BASE_PATH}/splash/`;
-  const fullSplashUrl = `${type ? paths[type] : defaultSplashUrl}${image}`;
+  const fullSplashUrl = `${
+    type ? paths[type] : paths[ESplashTypes.CYBERFARM]
+  }${image}`;
 
   useEffect(() => {
     if (imageLoaded) {
@@ -61,7 +61,9 @@ const AppLoader = ({
   useEffect(() => {
     (async () => {
       try {
-        const { image } = await fecthRandomSplashImage(type);
+        const { image } = await fecthRandomSplashImage(
+          type || ESplashTypes.CYBERFARM
+        );
         setImage(image);
       } catch (error) {}
     })();

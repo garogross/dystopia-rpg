@@ -40,6 +40,11 @@ import {
   hackTerminalAchievmentsPagePath,
   hackTerminalLevelSelectPagePath,
   hackTerminalPagePath,
+  puzzlePagePath,
+  puzzleSelectModePagePath,
+  puzzleGalleryPagePath,
+  puzzleAchievmentsPagePath,
+  puzzleRatingsPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -71,6 +76,12 @@ import HackTerminalPrizesPage from "../pages/HackTerminal/HackTerminalPrizesPage
 import HackTerminalRatingsPage from "../pages/HackTerminal/HackTerminalRatingsPage";
 import HackTerminalRulesPage from "../pages/HackTerminal/HackTerminalRulesPage";
 import HackTerminalAchievmentsPage from "../pages/HackTerminal/HackTerminalAchievmentsPage";
+import PuzzlePage from "../pages/Puzzle/PuzzlePage";
+import PuzzleMainPage from "../pages/Puzzle/PuzzleMainPage";
+import PuzzleSelectModePage from "../pages/Puzzle/PuzzleSelectModePage";
+import PuzzleGalleryPage from "../pages/Puzzle/PuzzleGalleryPage";
+import PuzzleAchievmentsPage from "../pages/Puzzle/PuzzleAchievmentsPage";
+import PuzzleRatingsPage from "../pages/Puzzle/PuzzleRatingsPage";
 
 export const homePagePath = "/";
 
@@ -201,7 +212,6 @@ export const routes: IRoute[] = [
       },
     ],
   },
-
   // hackterminal
   {
     path: hackTerminalPagePath,
@@ -227,6 +237,29 @@ export const routes: IRoute[] = [
       {
         path: hackTerminalRulesPagePath,
         component: <HackTerminalRulesPage />,
+      },
+    ],
+  },
+  {
+    path: puzzlePagePath,
+    component: <PuzzlePage />,
+    indexComponent: <PuzzleMainPage />,
+    children: [
+      {
+        path: puzzleSelectModePagePath,
+        component: <PuzzleSelectModePage />,
+      },
+      {
+        path: puzzleGalleryPagePath,
+        component: <PuzzleGalleryPage />,
+      },
+      {
+        path: puzzleAchievmentsPagePath,
+        component: <PuzzleAchievmentsPage />,
+      },
+      {
+        path: puzzleRatingsPagePath,
+        component: <PuzzleRatingsPage />,
       },
     ],
   },

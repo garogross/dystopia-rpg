@@ -1,7 +1,7 @@
-@import "../../../styles/mixins";
-@import "../../../styles/vars";
+@import "../../styles/mixins";
+@import "../../styles/vars";
 
-.rpgGameWrapper {
+.gameWrapper {
   height: 100%;
   background: $color-black;
   width: 100%;
@@ -18,7 +18,7 @@
 
   &__main {
     flex: 1;
-    height: calc(100dvh - 195px);
+    height: calc(100dvh - 180px);
     overflow: hidden;
   }
 }
