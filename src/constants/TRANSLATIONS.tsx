@@ -775,20 +775,20 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Посетить магазин NUMBER раз",
         },
         desc2: {
-          [ELanguages.en]: "Visit the store NUMBER days in a row",
-          [ELanguages.ru]: "Посетить магазин NUMBER д. подряд",
+          [ELanguages.en]: "Visit the store NUMBER times",
+          [ELanguages.ru]: "Посетить магазин NUMBER раз",
         },
         desc3: {
-          [ELanguages.en]: "Visit the store NUMBER days in a row",
-          [ELanguages.ru]: "Посетить магазин NUMBER д. подряд",
+          [ELanguages.en]: "Visit the store NUMBER times",
+          [ELanguages.ru]: "Посетить магазин NUMBER раз",
         },
         desc4: {
-          [ELanguages.en]: "Visit the store NUMBER days in a row",
-          [ELanguages.ru]: "Посетить магазин NUMBER д. подряд",
+          [ELanguages.en]: "Visit the store NUMBER times",
+          [ELanguages.ru]: "Посетить магазин NUMBER раз",
         },
         desc5: {
-          [ELanguages.en]: "Visit the store NUMBER days in a row",
-          [ELanguages.ru]: "Посетить магазин NUMBER д. подряд",
+          [ELanguages.en]: "Visit the store NUMBER times",
+          [ELanguages.ru]: "Посетить магазин NUMBER раз",
         },
       },
       field: {
