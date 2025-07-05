@@ -7,6 +7,8 @@ import refferencesReducer from "./slices/refferencesSlice";
 import clanReducer from "./slices/clanSlice";
 import tasksSlice from "./slices/tasksSlice";
 import { cyberfarmReducer } from "./slices/cyberFarm";
+import { hackterminalReducer } from "./slices/hackTerminal";
+import { puzzleReducer } from "./slices/puzzle";
 
 const rootReducer = combineReducers({
   profile: ProfileReducer,
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
   clan: clanReducer,
   tasks: tasksSlice,
   cyberfarm: cyberfarmReducer,
+  hackterminal: hackterminalReducer,
+  puzzle: puzzleReducer,
 });
 
 export const store = () => {

@@ -29,6 +29,11 @@ import {
   cyberFarmSupportPagePath,
   cyberFarmReferalsPagePath,
   cyberFarmAchievmentsPagePath,
+  miniGamesPagePath,
+  miniGamesAchievmentsPagePath,
+  miniGamesLoyalityPagePath,
+  miniGamesPinnedPagePath,
+  miniGamesReferalsPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -47,6 +52,12 @@ import CyberFarmWarehousePage from "../pages/CyberFarm/CyberFarmWarehousePage";
 import CyberFarmSupportPage from "../pages/CyberFarm/CyberFarmSupportPage";
 import CyberFarmReferalsPage from "../pages/CyberFarm/CyberFarmReferalsPage";
 import CyberFarmAchievmentsPage from "../pages/CyberFarm/CyberFarmAchievmentsPage";
+import MiniGamesPage from "../pages/MiniGames/MiniGamesPage";
+import MiniGamesAchievmentsPage from "../pages/MiniGames/MiniGamesAchievmentsPage";
+import MiniGamesCatalogPage from "../pages/MiniGames/MiniGamesCatalogPage";
+import MiniGamesLoyalityPage from "../pages/MiniGames/MiniGamesLoyalityPage";
+import MiniGamesPinnedPage from "../pages/MiniGames/MiniGamesPinnedPage";
+import MiniGamesReferalsPage from "../pages/MiniGames/MiniGamesReferalsPage";
 
 export const homePagePath = "/";
 
@@ -150,6 +161,30 @@ export const routes: IRoute[] = [
       {
         path: cyberFarmAchievmentsPagePath,
         component: <CyberFarmAchievmentsPage />,
+      },
+    ],
+  },
+  // minigames
+  {
+    path: miniGamesPagePath,
+    component: <MiniGamesPage />,
+    indexComponent: <MiniGamesCatalogPage />,
+    children: [
+      {
+        path: miniGamesAchievmentsPagePath,
+        component: <MiniGamesAchievmentsPage />,
+      },
+      {
+        path: miniGamesLoyalityPagePath,
+        component: <MiniGamesLoyalityPage />,
+      },
+      {
+        path: miniGamesPinnedPagePath,
+        component: <MiniGamesPinnedPage />,
+      },
+      {
+        path: miniGamesReferalsPagePath,
+        component: <MiniGamesReferalsPage />,
       },
     ],
   },

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { FarmAchievmentsType } from "../../../types/FarmAchievmentsType";
-import { FarmAchievmentSettingsType } from "../../../types/FarmAchievmentSettingsType";
+import { FarmAchievmentsType } from "../../../types/Achievments/FarmAchievmentsType";
+import { FarmAchievmentSettingsType } from "../../../types/Achievments/FarmAchievmentSettingsType";
 
 export interface AchievmentsState {
   achievments: FarmAchievmentsType | null;
