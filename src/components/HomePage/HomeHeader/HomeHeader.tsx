@@ -16,8 +16,6 @@ import TransitionProvider, {
 import HomeLanguagesSelectArrowIcon from "../../layout/icons/Home/HomeLanguagesSelectArrowIcon";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setLanguage } from "../../../store/slices/uiSlice";
-import { Link } from "react-router-dom";
-import { onBoardingPagePath } from "../../../router/constants";
 
 const languages = {
   [ELanguages.ru]: {
@@ -52,12 +50,15 @@ const HomeHeader = () => {
             </a>
           </>
         )}
-        <Link to={onBoardingPagePath} className={styles.homeHeader__link}>
+        <a
+          href="https://t.me/dystopiagamebot/start"
+          className={styles.homeHeader__link}
+        >
           <div className={styles.homeHeader__linkIconWrapper}>
             <HomeTgIcon />
           </div>
           <span>Играть в Telegram</span>
-        </Link>
+        </a>
       </div>
       <div className={styles.homeHeader__rightBlock}>
         <div className={styles.homeHeader__langSelect}>
