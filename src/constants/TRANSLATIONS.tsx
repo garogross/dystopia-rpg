@@ -261,13 +261,13 @@ export const TRANSLATIONS = {
       },
 
       titleMiniGames: {
-        [ELanguages.en]: "Mini Games",
-        [ELanguages.ru]: "Мини-игры",
+        [ELanguages.en]: "Mini Games ",
+        [ELanguages.ru]: "Мини-игры ",
       },
 
       comingSoonText: {
-        [ELanguages.en]: "(Coming soon)",
-        [ELanguages.ru]: "(Совсем скоро)",
+        [ELanguages.en]: "(In Dev.)",
+        [ELanguages.ru]: "(В разработке)",
       },
       pay2EarnText: {
         [ELanguages.en]: "(Pay2Earn)",
