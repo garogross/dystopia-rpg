@@ -261,13 +261,13 @@ export const TRANSLATIONS = {
       },
 
       titleMiniGames: {
-        [ELanguages.en]: "Mini Games",
-        [ELanguages.ru]: "Мини-игры",
+        [ELanguages.en]: "Mini Games ",
+        [ELanguages.ru]: "Мини-игры ",
       },
 
       comingSoonText: {
-        [ELanguages.en]: "(Coming soon)",
-        [ELanguages.ru]: "(Совсем скоро)",
+        [ELanguages.en]: "(In Dev.)",
+        [ELanguages.ru]: "(В разработке)",
       },
       pay2EarnText: {
         [ELanguages.en]: "(Pay2Earn)",
@@ -1230,13 +1230,11 @@ export const TRANSLATIONS = {
     puzzle: {
       name: {
         [ELanguages.en]: "Mini Puzzle",
-        [ELanguages.ru]: "Мини-головоломка",
+        [ELanguages.ru]: "Мини-паззл",
       },
       description: {
-        [ELanguages.en]:
-          "Idle economy without the rush: build, upgrade, collect profit.",
-        [ELanguages.ru]:
-          "Idle-экономика без суеты: строй, улучшай, собирай прибыль.",
+        [ELanguages.en]: "Small logic puzzles in a cyberpunk style.",
+        [ELanguages.ru]: "Небольшие логические головоломки в стиле киберпанка.",
       },
     },
     hackTerminal: {
@@ -1245,10 +1243,9 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Взлом терминала",
       },
       description: {
-        [ELanguages.en]:
-          "Test yourself in a fast-paced mini-game for reaction and attention.",
+        [ELanguages.en]: "Hack the terminal code, you only have a few attempts",
         [ELanguages.ru]:
-          "Испытай себя в быстрой мини-игре на реакцию и внимание.",
+          "Взломай код терминала, у тебя всего несколько попыток",
       },
     },
     achievments: {

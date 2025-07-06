@@ -16,20 +16,19 @@ interface Props {
     icon: React.ReactNode;
     disabledForFarm?: boolean;
   }[];
-  isFarm?: boolean;
+  isRpg?: boolean;
 }
 
 const LoyalityTabbar: React.FC<Props> = ({
   activeTab,
   setActiveTab,
   tabs,
-  isFarm,
+  isRpg,
 }) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
-    const language = useAppSelector(state => state.ui.language)
+  const language = useAppSelector((state) => state.ui.language);
 
-
-  const filteredTabs = isFarm
+  const filteredTabs = !isRpg
     ? tabs.filter((tab) => !tab.disabledForFarm)
     : tabs;
   return (
@@ -42,7 +41,7 @@ const LoyalityTabbar: React.FC<Props> = ({
         <button
           key={tab.key}
           className={`${styles.loyalityTabbar__item} ${
-            isFarm ? styles.loyalityTabbar__item_big : ""
+            !isRpg ? styles.loyalityTabbar__item_big : ""
           } ${activeTab === tab.key ? styles.loyalityTabbar__item_active : ""}`}
           onClick={() => setActiveTab(tab.key)}
         >
