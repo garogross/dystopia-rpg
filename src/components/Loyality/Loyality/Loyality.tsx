@@ -17,7 +17,7 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
 
 interface Props {
-  isFarm?: boolean;
+  isRpg?: boolean;
 }
 const { activity, tasks, store, supportProject } = TRANSLATIONS.loyality.tabs;
 
@@ -65,7 +65,7 @@ const tabs = [
   },
 ];
 
-const Loyality: React.FC<Props> = ({ isFarm }) => {
+const Loyality: React.FC<Props> = ({ isRpg }) => {
   const language = useAppSelector((state) => state.ui.language);
   const dailyRewardAvailableDay = useAppSelector(
     (state) => state.cyberfarm.activity.dailyRewardAvailableDay
@@ -83,7 +83,7 @@ const Loyality: React.FC<Props> = ({ isFarm }) => {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         tabs={updatedTabs}
-        isFarm={isFarm}
+        isRpg={isRpg}
       />
       {activeTabDetails && (
         <LoyalityInfo
