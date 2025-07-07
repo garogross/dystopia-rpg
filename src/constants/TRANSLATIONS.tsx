@@ -127,7 +127,7 @@ export const TRANSLATIONS = {
       speedUpCostText: {
         [ELanguages.en]: (
           <>
-            Speed-up costs: 0.1 Cash Point (CP) on fields, 0.5 CP on farms, 1 CP
+            Speed-up costs: 0.2 Cash Point (CP) on fields, 0.6 CP on farms, 1 CP
             in factories. You can also speed up by watching an ad—one view pays
             for 1 CP, so after speeding up on fields or farms, you'll get some
             change back. Also, if some time has passed, the speed-up cost
@@ -138,7 +138,7 @@ export const TRANSLATIONS = {
         ),
         [ELanguages.ru]: (
           <>
-            Ускорение на полях стоит 0,1 Cash Point (CP), на ферме 0,5 CP, на
+            Ускорение на полях стоит 0,2 Cash Point (CP), на ферме 0,6 CP, на
             заводе 1 СР. Можно ускорить за просмотр рекламы, один просмотр
             оплачивает 1 СР, поэтому после ускорений на полях или ферме ты
             получишь сдачу. Также, если прошло некоторые время, стоимость
