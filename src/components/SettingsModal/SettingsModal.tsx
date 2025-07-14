@@ -8,6 +8,8 @@ import { DotsLine } from "../layout/icons/RPGGame/Common";
 import { setLanguage } from "../../store/slices/uiSlice";
 import { ELanguages } from "../../constants/ELanguages";
 import { useTelegram } from "../../hooks/useTelegram";
+import { setLSItem } from "../../helpers/localStorage";
+import { ELSProps } from "../../constants/ELSProps";
 
 interface Props {
   show: boolean;
@@ -25,7 +27,7 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
 
   const onLanguageChange = (lang: ELanguages) => {
     dispatch(setLanguage(lang));
-    setLanguage(lang);
+    setLSItem(ELSProps.language, lang);
   };
 
   return (
