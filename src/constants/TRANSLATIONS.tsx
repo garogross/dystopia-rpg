@@ -224,6 +224,18 @@ export const TRANSLATIONS = {
     },
   },
   home: {
+    playInBrowserText: {
+      [ELanguages.en]: "Play in browser",
+      [ELanguages.ru]: "Играть в браузере",
+    },
+    playInTelegramText: {
+      [ELanguages.en]: "Play in Telegram",
+      [ELanguages.ru]: "Играть в Telegram",
+    },
+    languageNames: {
+      [ELanguages.en]: "English",
+      [ELanguages.ru]: "Русский",
+    },
     titleText: {
       [ELanguages.en]:
         "the game is in development, but we're already playing big",

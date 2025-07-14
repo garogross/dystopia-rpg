@@ -1,7 +1,9 @@
 import { ELSProps } from "../constants/ELSProps";
-import { LsData } from '../models/LsData';
+import { LsData } from "../models/LsData";
 
-export function getLSItem(key: ELSProps): Promise<LsData[typeof key] | undefined> {
+export function getLSItem<T extends ELSProps>(
+  key: T
+): Promise<LsData[T] | undefined> {
   return new Promise((resolve) => {
     if (!window.Telegram?.WebApp.initData) {
       const data = localStorage.getItem(key);
@@ -10,24 +12,29 @@ export function getLSItem(key: ELSProps): Promise<LsData[typeof key] | undefined
         return;
       }
       try {
-        resolve(JSON.parse(data)  as LsData[typeof key]);
+        resolve(JSON.parse(data) as LsData[typeof key]);
       } catch {
-        resolve(data  as LsData[typeof key]);
+        resolve(data as LsData[typeof key]);
       }
       return;
     }
 
-    window.Telegram.WebApp.CloudStorage.getItem(key, (error: string | null, value: any) => {
-      if (error) {
-        resolve(undefined);
-      } else {
-        resolve(value);
+    window.Telegram.WebApp.CloudStorage.getItem(
+      key,
+      (error: string | null, value: any) => {
+        if (error) {
+          resolve(undefined);
+        } else {
+          resolve(value);
+        }
       }
-    });
+    );
   });
 }
 
-export function getLSItems(keys: string[]): Promise<Record<string, string> | undefined> {
+export function getLSItems(
+  keys: string[]
+): Promise<Record<string, string> | undefined> {
   return new Promise((resolve) => {
     if (!window.Telegram?.WebApp.initData) {
       const result: Record<string, any> = {};
@@ -49,7 +56,6 @@ export function getLSItems(keys: string[]): Promise<Record<string, string> | und
 
       if (error) {
         resolve(undefined);
-
       } else {
         resolve(result);
       }
@@ -59,7 +65,6 @@ export function getLSItems(keys: string[]): Promise<Record<string, string> | und
     window.Telegram.WebApp.CloudStorage.getItems(keys, (error, values) => {
       if (error || !values) {
         resolve(undefined);
-
       } else {
         resolve(values);
       }

@@ -3,6 +3,11 @@ import AppRouter from "../../router/AppRouter";
 import { useTelegram } from "../../hooks/useTelegram";
 import { getPlatformType } from "../../utils/getPlatformType";
 import { useOfferwallSdk } from "../../hooks/useOfferwallSdk";
+import { getLSItem } from "../../helpers/localStorage";
+import { ELSProps } from "../../constants/ELSProps";
+import { ELanguages } from "../../constants/ELanguages";
+import { useAppDispatch } from "../../hooks/redux";
+import { setLanguage } from "../../store/slices/uiSlice";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -71,8 +76,22 @@ const loadScripts = (tg: WebApp) => {
   document.head.appendChild(script);
 };
 
+const getLanguage = async (language_code: string | undefined) => {
+  const lang = await getLSItem(ELSProps.language);
+  const languages = [ELanguages.en, ELanguages.ru];
+  if (lang && languages.includes(lang)) return lang;
+  else if (language_code) {
+    if (language_code.includes("ru")) {
+      return ELanguages.ru;
+    }
+  }
+
+  return ELanguages.en;
+};
+
 export const App = () => {
   const tg = useTelegram();
+  const dispatch = useAppDispatch();
   const initOfferwall = useOfferwallSdk();
 
   const isMobile = getPlatformType();
@@ -103,6 +122,11 @@ export const App = () => {
   useEffect(() => {
     loadScripts(tg);
     initOfferwall();
+    (async () => {
+      const code = tg.initDataUnsafe?.user?.language_code;
+      const lang = await getLanguage(code);
+      dispatch(setLanguage(lang));
+    })();
     // const clearCache = () => {
     //   if ("caches" in window) {
     //     caches.keys().then((names) => {

@@ -23,6 +23,11 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
   const language = useAppSelector((state) => state.ui.language);
   const tg = useTelegram();
 
+  const onLanguageChange = (lang: ELanguages) => {
+    dispatch(setLanguage(lang));
+    setLanguage(lang);
+  };
+
   return (
     <ModalWithAdd show={show} onClose={onClose} titleLg={titleText[language]}>
       <div className={styles.settingsModal}>
@@ -37,7 +42,7 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
                   ? styles.settingsModal__languageSwitcherBtn_active
                   : ""
               }`}
-              onClick={() => dispatch(setLanguage(ELanguages.en))}
+              onClick={() => onLanguageChange(ELanguages.en)}
             >
               <span className={styles.settingsModal__languageSwitcherBtnInner}>
                 EN
@@ -49,7 +54,7 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
                   ? styles.settingsModal__languageSwitcherBtn_active
                   : ""
               }`}
-              onClick={() => dispatch(setLanguage(ELanguages.ru))}
+              onClick={() => onLanguageChange(ELanguages.ru)}
             >
               <span className={styles.settingsModal__languageSwitcherBtnInner}>
                 RU
