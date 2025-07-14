@@ -16,6 +16,11 @@ import TransitionProvider, {
 import HomeLanguagesSelectArrowIcon from "../../layout/icons/Home/HomeLanguagesSelectArrowIcon";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setLanguage } from "../../../store/slices/uiSlice";
+import { setLSItem } from "../../../helpers/localStorage";
+import { ELSProps } from "../../../constants/ELSProps";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+
+const { playInBrowserText, playInTelegramText } = TRANSLATIONS.home;
 
 const languages = {
   [ELanguages.ru]: {
@@ -33,7 +38,6 @@ const languages = {
 const HomeHeader = () => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  // const [language, setLanguage] = useState<ELanguages>(ELanguages.ru);
   const [languageModalOpend, setLanguageModalOpend] = useState(false);
 
   return (
@@ -46,7 +50,7 @@ const HomeHeader = () => {
               <div className={styles.homeHeader__linkIconWrapper}>
                 <HomeWebIcon />
               </div>
-              <span>Играть в браузере</span>
+              <span>{playInBrowserText[language]}</span>
             </a>
           </>
         )}
@@ -57,7 +61,7 @@ const HomeHeader = () => {
           <div className={styles.homeHeader__linkIconWrapper}>
             <HomeTgIcon />
           </div>
-          <span>Играть в Telegram</span>
+          <span>{playInTelegramText[language]}</span>
         </a>
       </div>
       <div className={styles.homeHeader__rightBlock}>
@@ -85,6 +89,7 @@ const HomeHeader = () => {
               return (
                 <button
                   onClick={() => {
+                    setLSItem(ELSProps.language, lang);
                     dispatch(setLanguage(lang));
                     setLanguageModalOpend(false);
                   }}
