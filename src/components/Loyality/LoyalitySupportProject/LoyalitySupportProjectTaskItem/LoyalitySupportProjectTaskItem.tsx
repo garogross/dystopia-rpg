@@ -29,7 +29,7 @@ interface TaskItemProps {
   onGetReward?: (id: number | string) => void | Promise<void>;
 }
 
-const TADDY_TASK_PRICE = 1;
+const TADDY_TASK_PRICE = 5;
 
 const { subscribeText, subscribedText, visitText, getText } =
   TRANSLATIONS.loyality.supportProject;
