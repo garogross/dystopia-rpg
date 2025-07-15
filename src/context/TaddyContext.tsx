@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { FeedItem, TaddyWeb } from "taddy-sdk-web";
+import { FeedItem } from "taddy-sdk-web";
 
 interface TaddyContextType {
-  exchange: ReturnType<typeof taddy.exchange> | null;
+  exchange: ReturnType<typeof window.Taddy.exchange> | null;
   taddyTasks: any[];
   fetchTaddyTasks: () => void;
   removeTaddyTask: (id: FeedItem["id"]) => void;
@@ -16,20 +16,23 @@ const TaddyContext = createContext<TaddyContextType>({
 });
 
 const taddyPublicId = process.env.REACT_APP_TADDY_PUBLIC_ID as string;
-const taddy = new TaddyWeb(taddyPublicId);
 
 export const TaddyProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const taddy = window.Taddy;
   const [exchange, setExchange] = useState<ReturnType<
     typeof taddy.exchange
   > | null>(null);
   const [taddyTasks, setTaddyTasks] = useState<any[]>([]);
 
   useEffect(() => {
+    taddy.init(taddyPublicId);
+
     taddy.ready();
     const exchangeInstance = taddy.exchange();
     setExchange(exchangeInstance);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchTaddyTasks = () => {
