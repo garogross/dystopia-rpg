@@ -37,7 +37,7 @@ const TADS_WIDGET_ID = "543";
 const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
-  const { exchange, taddyTasks, fetchTaddyTasks } = useTaddy();
+  const { exchange, taddyTasks, fetchTaddyTasks, removeTaddyTask } = useTaddy();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const language = useAppSelector((state) => state.ui.language);
   const promoTasks = useAppSelector((state) => state.tasks.promoTasks);
@@ -98,15 +98,17 @@ const LoyalitySupportProject = () => {
     }
   };
 
-  const openOfferWall = () => {
-    if (window.gigaOfferWallSDK) {
-      window.gigaOfferWallSDK.open();
-    }
-  };
+  // const openOfferWall = () => {
+  //   if (window.gigaOfferWallSDK) {
+  //     window.gigaOfferWallSDK.open();
+  //   }
+  // };
 
   const onSubscribe = (item: FeedItem) => {
     exchange?.open(item).then(() => {
-      dispatch(claimTaddyReward({ id: item.id.toString() }));
+      dispatch(claimTaddyReward({ id: item.id.toString() })).then(() =>
+        removeTaddyTask(item.id)
+      );
     });
   };
 
@@ -130,12 +132,12 @@ const LoyalitySupportProject = () => {
           onOpen={onOpenBarzhaTasks}
           index={1}
         />
-        <LoyalitySupportProjectAdditionalTaskItem
+        {/* <LoyalitySupportProjectAdditionalTaskItem
           gameInited={gameInited}
           language={language}
           onOpen={openOfferWall}
           index={2}
-        />
+        /> */}
         {/* <AdditionalTaskItem
           gameInited={gameInited}
           language={language}
