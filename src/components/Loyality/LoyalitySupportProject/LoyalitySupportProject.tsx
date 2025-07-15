@@ -106,9 +106,9 @@ const LoyalitySupportProject = () => {
 
   const onSubscribe = (item: FeedItem) => {
     exchange?.open(item).then(() => {
-      dispatch(claimTaddyReward({ id: item.id.toString() })).then(() =>
-        removeTaddyTask(item.id)
-      );
+      dispatch(claimTaddyReward({ id: item.id.toString() }))
+        .unwrap()
+        .then(() => removeTaddyTask(item.id));
     });
   };
 
