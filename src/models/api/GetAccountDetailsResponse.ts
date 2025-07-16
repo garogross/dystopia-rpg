@@ -62,6 +62,11 @@ export interface GetAccountDetailsResponse {
     achievements_settings: FarmAchievmentSettingsType;
     ton_withdraw_commission: number;
   };
+  game_settings_new: {
+    reward_taddy: {
+      exchange: number;
+    };
+  };
   resource_deficit: FarmResourceDeficitType;
   claim_daily_login: {
     next_reward: number;

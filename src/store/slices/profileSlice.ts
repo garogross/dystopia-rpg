@@ -28,6 +28,7 @@ import {
   claimVideoReward,
   claimWallgramReward,
   getPromoTaskReward,
+  getRewardTaddy,
   verifyGigaHash,
 } from "./tasksSlice";
 import { initAchievments } from "./cyberFarm/achievmentsSlice";
@@ -211,6 +212,9 @@ export const getAccountDetails =
         })
       );
     }
+
+    // tasks
+    dispatch(getRewardTaddy(resData?.game_settings_new?.reward_taddy || 0));
 
     return resData;
   };

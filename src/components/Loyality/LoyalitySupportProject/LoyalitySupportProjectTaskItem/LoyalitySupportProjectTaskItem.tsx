@@ -7,6 +7,7 @@ import styles from "./LoyalitySupportProjectTaskItem.module.scss";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { cpImage } from "../../../../assets/imageMaps";
 import { useTelegram } from "../../../../hooks/useTelegram";
+import { useAppSelector } from "../../../../hooks/redux";
 
 interface TaskItemProps {
   task: {
@@ -29,8 +30,6 @@ interface TaskItemProps {
   onGetReward?: (id: number | string) => void | Promise<void>;
 }
 
-const TADDY_TASK_PRICE = 5;
-
 const { subscribeText, subscribedText, visitText, getText } =
   TRANSLATIONS.loyality.supportProject;
 
@@ -44,8 +43,9 @@ const LoyalitySupportProjectTaskItem: React.FC<TaskItemProps> = ({
   onGetReward,
 }) => {
   const tg = useTelegram();
+  const rewardTaddy = useAppSelector((state) => state.tasks.rewardTaddy);
   const title = task.title || task.name;
-  const price = isTaddyTask ? TADDY_TASK_PRICE : task.price;
+  const price = isTaddyTask ? rewardTaddy : task.price;
 
   return (
     <TransitionProvider
@@ -86,11 +86,13 @@ const LoyalitySupportProjectTaskItem: React.FC<TaskItemProps> = ({
                 }
                 onSubscribe({
                   id: task.id,
+                  uid: task.id,
                   title: task.title || "",
                   description: task.description,
                   image: task.image || "",
                   type: task.taddyTasktype || "app",
                   link: task.link || "",
+                  status: "unknown",
                 });
               }}
               disabled={task.subscription}

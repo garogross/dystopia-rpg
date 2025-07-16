@@ -14,10 +14,12 @@ import { GetPromoTaskRewardResponse } from "../../models/api/tasks/promoTasks";
 
 export interface TasksState {
   promoTasks: IPromoTask[];
+  rewardTaddy: number;
 }
 
 const initialState: TasksState = {
   promoTasks: [],
+  rewardTaddy: 0,
 };
 
 const getPromoTasksUrl = "/promo_tasks/";
@@ -262,6 +264,9 @@ export const tasksSlice = createSlice({
         task.subscription = true;
       }
     },
+    getRewardTaddy: (state, { payload }) => {
+      state.rewardTaddy = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getPromoTasks.fulfilled, (state, action) => {
@@ -282,6 +287,6 @@ export const tasksSlice = createSlice({
   },
 });
 
-export const { setPromoTaskSubscribed } = tasksSlice.actions;
+export const { setPromoTaskSubscribed, getRewardTaddy } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
