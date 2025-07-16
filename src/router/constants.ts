@@ -40,3 +40,10 @@ export const puzzleSelectModePagePath = "select-mode";
 export const puzzleGalleryPagePath = "gallery";
 export const puzzleAchievmentsPagePath = "achievments";
 export const puzzleRatingsPagePath = "ratings";
+
+export const influencePagePath = onBoardingPagePath + "/influence";
+export const influenceClanPagePath = "clan";
+export const influenceLoyalityPagePath = "loyality";
+export const influencePlayerPagePath = "player";
+export const influenceNotificationsPagePath = "notifications";
+export const influenceReferalsPagePath = "referals";

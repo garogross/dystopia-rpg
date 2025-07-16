@@ -3,12 +3,12 @@ import React from "react";
 import styles from "./RPGGameHeader.module.scss";
 
 import {
-  RPGHeaderMailIcon,
   RPGHeaderHideIcon,
   RPGHeaderMiniGamesICon,
 } from "../../layout/icons/RPGGame/RPGHeader";
 
 import {
+  HeaderMailIcon,
   HeaderBottomBg,
   HeaderBtnsBg,
   HeaderPremiumIcon,
@@ -73,7 +73,7 @@ const RPGGameHeader: React.FC = () => {
             to={"/mail"}
             className={linkActiveClass(styles.rpgGameHeader__mailBtn)}
           >
-            <RPGHeaderMailIcon />
+            <HeaderMailIcon />
           </NavLink>
         </div>
         <div className={styles.rpgGameHeader__stat}>

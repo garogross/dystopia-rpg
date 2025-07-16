@@ -45,6 +45,12 @@ import {
   puzzleGalleryPagePath,
   puzzleAchievmentsPagePath,
   puzzleRatingsPagePath,
+  influencePagePath,
+  influenceClanPagePath,
+  influenceLoyalityPagePath,
+  influencePlayerPagePath,
+  influenceNotificationsPagePath,
+  influenceReferalsPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -82,6 +88,13 @@ import PuzzleSelectModePage from "../pages/Puzzle/PuzzleSelectModePage";
 import PuzzleGalleryPage from "../pages/Puzzle/PuzzleGalleryPage";
 import PuzzleAchievmentsPage from "../pages/Puzzle/PuzzleAchievmentsPage";
 import PuzzleRatingsPage from "../pages/Puzzle/PuzzleRatingsPage";
+import InfluencePage from "../pages/Influence/InfluencePage";
+import InfluenceMapPage from "../pages/Influence/InfluenceMapPage";
+import InfluenceClanPage from "../pages/Influence/InfluenceClanPage";
+import InfluenceLoyalityPage from "../pages/Influence/InfluenceLoyalityPage";
+import InfluencePlayerPage from "../pages/Influence/InfluencePlayerPage";
+import InfluenceReferalsPage from "../pages/Influence/InfluenceReferalsPage";
+import InfluenceNotificatonsPage from "../pages/Influence/InfluenceNotificatonsPage";
 
 export const homePagePath = "/";
 
@@ -260,6 +273,35 @@ export const routes: IRoute[] = [
       {
         path: puzzleRatingsPagePath,
         component: <PuzzleRatingsPage />,
+      },
+    ],
+  },
+
+  {
+    path: influencePagePath,
+    component: <InfluencePage />,
+    indexComponent: <InfluenceMapPage />,
+    children: [
+      {
+        path: influenceClanPagePath,
+        component: <InfluenceClanPage />,
+      },
+      {
+        path: influenceLoyalityPagePath,
+        component: <InfluenceLoyalityPage />,
+      },
+
+      {
+        path: influencePlayerPagePath,
+        component: <InfluencePlayerPage />,
+      },
+      {
+        path: influenceNotificationsPagePath,
+        component: <InfluenceNotificatonsPage />,
+      },
+      {
+        path: influenceReferalsPagePath,
+        component: <InfluenceReferalsPage />,
       },
     ],
   },
