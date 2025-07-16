@@ -214,7 +214,9 @@ export const getAccountDetails =
     }
 
     // tasks
-    dispatch(getRewardTaddy(resData?.game_settings_new?.reward_taddy || 0));
+    dispatch(
+      getRewardTaddy(resData?.game_settings_new?.reward_taddy?.exchange || 0)
+    );
 
     return resData;
   };
