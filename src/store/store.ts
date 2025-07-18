@@ -9,6 +9,7 @@ import tasksSlice from "./slices/tasksSlice";
 import { cyberfarmReducer } from "./slices/cyberFarm";
 import { hackterminalReducer } from "./slices/hackTerminal";
 import { puzzleReducer } from "./slices/puzzle";
+import { influenceReducer } from "./slices/influence";
 
 const rootReducer = combineReducers({
   profile: ProfileReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   cyberfarm: cyberfarmReducer,
   hackterminal: hackterminalReducer,
   puzzle: puzzleReducer,
+  influence: influenceReducer,
 });
 
 export const store = () => {

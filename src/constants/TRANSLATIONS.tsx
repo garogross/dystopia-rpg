@@ -1838,4 +1838,22 @@ export const TRANSLATIONS = {
       },
     },
   },
+  influence: {
+    header: {
+      throughText: {
+        [ELanguages.en]: "from",
+        [ELanguages.ru]: "через",
+      },
+    },
+    map: {
+      notEnoughActionPointsText: {
+        [ELanguages.en]: "You have not enough action points",
+        [ELanguages.ru]: "У вас недостаточно очков действий",
+      },
+      hexOccupiedText: {
+        [ELanguages.en]: "This hex is already occupied",
+        [ELanguages.ru]: "Этот гекс уже занят",
+      },
+    },
+  },
 };

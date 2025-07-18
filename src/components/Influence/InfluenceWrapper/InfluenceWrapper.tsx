@@ -13,6 +13,7 @@ const InfluenceWrapper = () => {
       images={influenceImages}
       gameInited={false}
       offsetSize={180}
+      mode={"influence"}
     />
   );
 };

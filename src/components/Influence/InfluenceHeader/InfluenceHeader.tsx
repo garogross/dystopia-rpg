@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   HeaderBottomBg,
   HeaderBtnsBg,
@@ -28,11 +28,95 @@ import {
   influenceEnergyImage,
   influenceEnergyImageWebp,
 } from "../../../assets/imageMaps";
+import { formatNumber } from "../../../utils/formatNumber";
+import { useEffect, useRef, useState } from "react";
+import { formatTime } from "../../../utils/formatTime";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { restoreActionPoints } from "../../../store/slices/influence/influenceSlice";
+
+const { throughText } = TRANSLATIONS.influence.header;
+
+const ActionPointTimer = () => {
+  const dispatch = useAppDispatch();
+  const language = useAppSelector((state) => state.ui.language);
+  const lastRestoreActionPointsTs = useAppSelector(
+    (state) => state.influence.influence.lastRestoreActionPointsTs
+  );
+  const actionPointMax = useAppSelector(
+    (state) => state.influence.settings.actionPointMax
+  );
+  const actionPoints = useAppSelector(
+    (state) => state.influence.influence.actionPoints
+  );
+  const actionPointRestore = useAppSelector(
+    (state) => state.influence.settings.actionPointRestore
+  );
+  const [timeLeft, setTimeLeft] = useState(0);
+  const timerRef = useRef<NodeJS.Timer>();
+
+  useEffect(() => {
+    if (!actionPointRestore?.intervalMinutes || !lastRestoreActionPointsTs)
+      return;
+
+    const intervalMs = actionPointRestore.intervalMinutes * 60 * 1000;
+    const getNextRestoreTs = (isInit?: boolean) => {
+      const now = Date.now();
+      let nextRestore = lastRestoreActionPointsTs + intervalMs;
+      if (now > nextRestore) {
+        if (!isInit) {
+          dispatch(restoreActionPoints());
+        }
+        const intervalsPassed = Math.floor(
+          (now - lastRestoreActionPointsTs) / intervalMs
+        );
+        nextRestore =
+          lastRestoreActionPointsTs + (intervalsPassed + 1) * intervalMs;
+      }
+      return nextRestore;
+    };
+
+    const update = (isInit?: boolean) => {
+      const now = Date.now();
+      const nextRestore = getNextRestoreTs(isInit);
+      setTimeLeft(Math.max(0, nextRestore - now));
+    };
+
+    update(true);
+    timerRef.current = setInterval(update, 1000);
+    return () => clearInterval(timerRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [actionPointRestore?.intervalMinutes, lastRestoreActionPointsTs]);
+
+  useEffect(() => {
+    if (actionPoints >= actionPointMax) {
+      clearInterval(timerRef.current);
+    }
+  }, [actionPointMax, actionPoints]);
+
+  return (
+    <div className={styles.influenceHeader__timer}>
+      {actionPoints < actionPointMax && (
+        <>
+          <span>
+            +{actionPointRestore.amount} {throughText[language]}
+          </span>
+          <span>({formatTime(timeLeft / 1000)})</span>
+        </>
+      )}{" "}
+    </div>
+  );
+};
 
 const InfluenceHeader = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
-
+  const cp = useAppSelector((state) => state.profile.stats.cp);
+  const actionPoints = useAppSelector(
+    (state) => state.influence.influence.actionPoints
+  );
+  const actionPointMax = useAppSelector(
+    (state) => state.influence.settings.actionPointMax
+  );
   const linkActiveClass =
     (className?: string) =>
     ({ isActive }: { isActive: boolean }) =>
@@ -77,7 +161,9 @@ const InfluenceHeader = () => {
         </div>
         <div className={styles.influenceHeader__stat}>
           <StatImg stat={EStats.cp} size={19} />
-          <span className={styles.influenceHeader__statText}>126,90k</span>
+          <span className={styles.influenceHeader__statText}>
+            {formatNumber(cp)}
+          </span>
         </div>
       </div>
       <button className={styles.influenceHeader__premiumBtn}>
@@ -117,7 +203,10 @@ const InfluenceHeader = () => {
             alt="energy"
             className={styles.influenceHeader__energyImg}
           />
-          <span className={styles.influenceHeader__statText}>126,90k</span>
+          <span className={styles.influenceHeader__statText}>
+            {actionPoints}/{actionPointMax}
+          </span>
+          <ActionPointTimer />
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { FeedItem } from "taddy-sdk-web";
+import { useTelegram } from "../hooks/useTelegram";
 
 interface TaddyContextType {
   exchange: ReturnType<typeof window.Taddy.exchange> | null;
@@ -24,9 +25,11 @@ export const TaddyProvider: React.FC<{ children: React.ReactNode }> = ({
   const [exchange, setExchange] = useState<ReturnType<
     typeof taddy.exchange
   > | null>(null);
+  const tg = useTelegram();
   const [taddyTasks, setTaddyTasks] = useState<any[]>([]);
 
   useEffect(() => {
+    if (!tg.initDataUnsafe.user?.id) return;
     taddy.init(taddyPublicId);
 
     taddy.ready();

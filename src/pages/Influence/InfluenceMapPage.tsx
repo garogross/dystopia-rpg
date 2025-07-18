@@ -1,4 +1,6 @@
+import InfluenceMap from "../../components/Influence/InfluenceMapPage/InfluenceMap/InfluenceMap";
+
 const InfluenceMapPage = () => {
-  return <></>;
+  return <InfluenceMap />;
 };
 export default InfluenceMapPage;

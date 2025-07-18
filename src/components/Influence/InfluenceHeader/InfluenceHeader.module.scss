@@ -110,6 +110,14 @@
     width: 16px;
   }
 
+  &__timer {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 1px;
+    @include setFont(6px, 400, $font-fam-montserrat, $color-primary);
+  }
+
   &__cornerBlock_right &__stat {
     left: 0;
     right: auto;
