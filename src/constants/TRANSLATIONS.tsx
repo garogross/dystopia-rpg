@@ -276,6 +276,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Mini Games ",
         [ELanguages.ru]: "Мини-игры ",
       },
+      titleInfluence: {
+        [ELanguages.en]: "Influence",
+        [ELanguages.ru]: "Influence",
+      },
 
       comingSoonText: {
         [ELanguages.en]: "(In Dev.)",
@@ -1835,6 +1839,24 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Win 100 times in a row",
           [ELanguages.ru]: "Победить 100 раз подряд",
         },
+      },
+    },
+  },
+  influence: {
+    header: {
+      throughText: {
+        [ELanguages.en]: "from",
+        [ELanguages.ru]: "через",
+      },
+    },
+    map: {
+      notEnoughActionPointsText: {
+        [ELanguages.en]: "You have not enough action points",
+        [ELanguages.ru]: "У вас недостаточно очков действий",
+      },
+      hexOccupiedText: {
+        [ELanguages.en]: "Hex is occupied",
+        [ELanguages.ru]: "Гекс Захвачено",
       },
     },
   },

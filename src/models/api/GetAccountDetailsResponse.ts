@@ -13,14 +13,23 @@ export interface GetAccountDetailsResponse {
   user?: {
     id_tgrm: string;
     name: string;
-    profile: {
+    profile?: {
       cash_point: number;
       dataset: {
         start_choice: AppGameMode;
         tutorial_finished_rewarded: boolean;
       };
     };
+    // influence
+    action_points_current: number;
+    influence_points: number;
+    action_points_max: number;
+    spent_action_points: number;
+    timers: {
+      last_restore_action_points_ts: number;
+    };
   };
+  // cyberfarm
   ton_cyber_farm?: {
     slots: Record<string, { type: EFarmSlotTypes }>;
     timers: {
@@ -78,6 +87,22 @@ export interface GetAccountDetailsResponse {
   metrics: {
     ton_cyber_farm_metrics: {
       tutorial?: ECyberfarmTutorialActions[];
+    };
+  };
+
+  // influence
+  settings?: {
+    attack_neutral_hex: {
+      action_points_cost: number;
+      influence_points_reward: number;
+    };
+    action_point_restore: {
+      amount: number;
+      interval_minutes: number;
+    };
+    attack_enemy_hex_without_building: {
+      action_points_cost: number;
+      influence_points_reward: number;
     };
   };
 }

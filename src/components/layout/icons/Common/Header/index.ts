@@ -5,3 +5,4 @@ export { HeaderReferenceIcon } from "./HeaderReferenceIcon";
 export { HeaderSettingsIcon } from "./HeaderSettingsIcon";
 export { HeaderSwitcherIcon } from "./HeaderSwitcherIcon";
 export { HeaderPremiumIcon } from "./HeaderPremiumIcon";
+export { HeaderMailIcon } from "./HeaderMailIcon";
