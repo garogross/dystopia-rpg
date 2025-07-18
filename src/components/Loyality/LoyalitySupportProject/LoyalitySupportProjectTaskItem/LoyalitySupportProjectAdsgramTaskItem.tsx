@@ -33,9 +33,7 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
   useEffect(() => {
     (async () => {
       const hideUntil = await getLSItem(ELSProps.adsgramLastClickDate);
-      if (hideUntil && Date.now() < Number(hideUntil)) {
-        setHidden(true);
-      }
+      setHidden(!!hideUntil && Date.now() < Number(hideUntil));
     })();
   }, []);
 
