@@ -5,4 +5,4 @@ export * from "./onBoardingImages";
 export * from "./cyberfarmImages";
 export * from "./miniGamesImages";
 export * from "./puzzleImages";
-export * from "./influence";
+export * from "./influenceImages";

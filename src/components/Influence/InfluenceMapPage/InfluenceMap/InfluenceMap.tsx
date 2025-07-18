@@ -10,6 +10,7 @@ import { EHexDirections } from "../../../../constants/influence/EHexDirections";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
+import InfluenceMapControllModal from "../InfluenceMapControllModal/InfluenceMapControllModal";
 
 type BonusArea = {
   id: string;
@@ -226,6 +227,7 @@ const InfluenceMap = () => {
 
   return (
     <div ref={containerRef} className={styles.influenceMap}>
+      <InfluenceMapControllModal />
       <DragAndZoomProvider
         className={styles.influenceMap__inner}
         onUpdateEnd={(offset, scale) => {
@@ -263,7 +265,6 @@ const InfluenceMap = () => {
                   width: size,
                   height: size,
                 }}
-                title={bonus_area_id || ""}
               >
                 <div
                   style={{

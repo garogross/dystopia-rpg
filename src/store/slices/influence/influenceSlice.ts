@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "../../store";
+import { attackHex } from "./mapSlice";
 
 export interface InfluenceState {
   actionPoints: number;
@@ -40,7 +41,12 @@ export const influenceSlice = createSlice({
       state.lastRestoreActionPointsTs = Date.now();
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addCase(attackHex.fulfilled, (state, { payload }) => {
+      state.actionPoints = payload.action_points_current;
+      state.influencePoints = payload.victory_points;
+    });
+  },
 });
 
 export const { initInfluence } = influenceSlice.actions;

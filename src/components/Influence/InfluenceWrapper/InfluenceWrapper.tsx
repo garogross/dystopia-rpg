@@ -3,7 +3,7 @@ import GameWrapper from "../../GameWrapper/GameWrapper";
 import InfluenceHeader from "../InfluenceHeader/InfluenceHeader";
 import InfluenceBottomNavbar from "../InfluenceBottomNavbar/InfluenceBottomNavbar";
 
-import * as influenceImages from "../../../assets/imageMaps/influence";
+import * as influenceImages from "../../../assets/imageMaps/influenceImages";
 
 const InfluenceWrapper = () => {
   return (

@@ -5,6 +5,7 @@ import {
   GetMapResponse,
 } from "../../../models/api/Influence/Map";
 import { fetchRequest } from "../../tools/fetchTools";
+import { RootState } from "../../store";
 
 export interface MapState {
   mapId: number | null;
@@ -36,14 +37,19 @@ export const getMap = createAsyncThunk<GetMapResponse, { id: string }>(
 );
 const attackHexUrl = "/influence/attack_hex/";
 export const attackHex = createAsyncThunk<
-  AttackHexResponse & { x: number; y: number; z: number },
+  AttackHexResponse & {
+    x: number;
+    y: number;
+    z: number;
+    tgId: string | number;
+  },
   {
     mapId: number;
     x: number;
     y: number;
     z: number;
   }
->("activity/attackHex", async (payload, { rejectWithValue }) => {
+>("activity/attackHex", async (payload, { rejectWithValue, getState }) => {
   try {
     const resData = await fetchRequest<AttackHexResponse>(
       attackHexUrl,
@@ -55,8 +61,8 @@ export const attackHex = createAsyncThunk<
         z: payload.z,
       }
     );
-
-    return { ...resData, x: payload.x, y: payload.y, z: payload.z };
+    const tgId = (getState() as RootState).profile.tgId;
+    return { ...resData, x: payload.x, y: payload.y, z: payload.z, tgId };
   } catch (error: any) {
     console.error("error", error);
     return rejectWithValue(error);
@@ -81,6 +87,7 @@ export const mapSlice = createSlice({
       if (updatedHexIndex !== -1) {
         state.hexes = state.hexes.with(updatedHexIndex, {
           ...state.hexes[updatedHexIndex],
+          owner_id: +payload.tgId,
         });
       }
     });

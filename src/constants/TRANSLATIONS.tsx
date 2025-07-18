@@ -276,6 +276,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Mini Games ",
         [ELanguages.ru]: "Мини-игры ",
       },
+      titleInfluence: {
+        [ELanguages.en]: "Influence",
+        [ELanguages.ru]: "Influence",
+      },
 
       comingSoonText: {
         [ELanguages.en]: "(In Dev.)",
@@ -1851,8 +1855,8 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "У вас недостаточно очков действий",
       },
       hexOccupiedText: {
-        [ELanguages.en]: "This hex is already occupied",
-        [ELanguages.ru]: "Этот гекс уже занят",
+        [ELanguages.en]: "Hex is occupied",
+        [ELanguages.ru]: "Гекс Захвачено",
       },
     },
   },

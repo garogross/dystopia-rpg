@@ -29,6 +29,10 @@ const DragAndZoomProvider: FC<Props> = ({
   const [scale, setScale] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const scaleTimeout = useRef<NodeJS.Timeout | null>(null);
+  const [pinchStartDistance, setPinchStartDistance] = useState<number | null>(
+    null
+  );
+  const [pinchStartScale, setPinchStartScale] = useState<number>(1);
 
   const dragThreshold = 8; // px
   const minScale = 0.8;
@@ -127,6 +131,49 @@ const DragAndZoomProvider: FC<Props> = ({
     }, 150);
   };
 
+  const getTouchDistance = (touches: React.TouchList) => {
+    if (touches.length < 2) return 0;
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      // Pinch start
+      const distance = getTouchDistance(e.touches);
+      setPinchStartDistance(distance);
+      setPinchStartScale(scale);
+    } else if (e.touches.length === 1) {
+      handleDragStart(e);
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2 && pinchStartDistance !== null) {
+      e.preventDefault(); // Prevent browser zoom
+      const distance = getTouchDistance(e.touches);
+      let newScale = pinchStartScale * (distance / pinchStartDistance);
+      newScale = Math.max(minScale, Math.min(maxScale, newScale));
+      setScale(newScale);
+      // Debounce onUpdateEnd for scaling
+      if (scaleTimeout.current) clearTimeout(scaleTimeout.current);
+      scaleTimeout.current = setTimeout(() => {
+        onUpdateEnd?.(offset, newScale);
+      }, 150);
+    } else if (e.touches.length === 1 && !pinchStartDistance) {
+      handleMove(e);
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    setPinchStartDistance(null);
+    setPinchStartScale(1);
+    if (e.touches.length === 0) {
+      handleDragEnd();
+    }
+  };
+
   return (
     <div
       ref={containerRef}
@@ -135,9 +182,10 @@ const DragAndZoomProvider: FC<Props> = ({
         transformOrigin: "0 0",
       }}
       className={className}
-      onTouchStart={handleDragStart}
-      onTouchMove={handleMove}
-      onTouchEnd={handleDragEnd}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       onMouseDown={handleDragStart}
       onMouseMove={handleMove}
       onMouseUp={handleDragEnd}
