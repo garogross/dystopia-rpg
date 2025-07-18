@@ -19,6 +19,8 @@ import { setLanguage } from "../../../store/slices/uiSlice";
 import { setLSItem } from "../../../helpers/localStorage";
 import { ELSProps } from "../../../constants/ELSProps";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { Link } from "react-router-dom";
+import { onBoardingPagePath } from "../../../router/constants";
 
 const { playInBrowserText, playInTelegramText } = TRANSLATIONS.home;
 
@@ -46,12 +48,12 @@ const HomeHeader = () => {
       <div className={styles.homeHeader__links}>
         {process.env.NODE_ENV === "development" && (
           <>
-            <a href="/" className={styles.homeHeader__link}>
+            <Link to={onBoardingPagePath} className={styles.homeHeader__link}>
               <div className={styles.homeHeader__linkIconWrapper}>
                 <HomeWebIcon />
               </div>
               <span>{playInBrowserText[language]}</span>
-            </a>
+            </Link>
           </>
         )}
         <a

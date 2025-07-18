@@ -35,6 +35,8 @@ import { initAchievments } from "./cyberFarm/achievmentsSlice";
 import { WithdrawTonResponse } from "../../models/api/WithdrawTonResponse";
 import { convertReferals } from "./refferencesSlice";
 import { finsihTutorial, initTutorial } from "./cyberFarm/tutorialSlice";
+import { initInfluence } from "./influence/influenceSlice";
+import { initSettings } from "./influence/settingsSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -123,7 +125,7 @@ export const getAccountDetails =
     );
     dispatch(
       updateStats({
-        [EStats.cp]: resData.user?.profile.cash_point || 0,
+        [EStats.cp]: resData.user?.profile?.cash_point || 0,
         [EStats.ton]: resData.ton_cyber_farm?.ton || 0,
       })
     );
@@ -184,9 +186,6 @@ export const getAccountDetails =
             })
           );
         }
-    }
-
-    if (resData.ton_cyber_farm) {
       // cyberfarm achievments
       dispatch(
         initAchievments({
@@ -194,12 +193,10 @@ export const getAccountDetails =
           achievmentSettings: resData.game_settings?.achievements_settings,
         })
       );
-    }
 
-    if (resData.ton_cyber_farm) {
       // cyberfarm tutorial
       const tutorialActoion = resData.metrics.ton_cyber_farm_metrics.tutorial;
-      const dataset = resData.user?.profile.dataset;
+      const dataset = resData.user?.profile?.dataset;
       dispatch(
         initTutorial({
           tutorialInProgress:
@@ -209,6 +206,40 @@ export const getAccountDetails =
           tutorialProgressAction: tutorialActoion?.length
             ? tutorialActoion[tutorialActoion.length - 1]
             : null,
+        })
+      );
+    }
+
+    if (mode === "influence") {
+      dispatch(
+        initInfluence({
+          actionPoints: resData.user?.action_points_current || 0,
+          influencePoints: resData.user?.influence_points || 0,
+          lastRestoreActionPointsTs:
+            resData.user?.timers.last_restore_action_points_ts,
+        })
+      );
+      const action_point_restore = resData.settings?.action_point_restore;
+      const attack_enemy_hex_without_building =
+        resData.settings?.attack_enemy_hex_without_building;
+      const attack_neutral_hex = resData.settings?.attack_neutral_hex;
+      dispatch(
+        initSettings({
+          actionPointRestore: {
+            amount: action_point_restore?.amount || 0,
+            intervalMinutes: action_point_restore?.interval_minutes || 0,
+          },
+          attackNeutralHex: {
+            actionPointsCost: attack_neutral_hex?.action_points_cost,
+            influencePointsReward: attack_neutral_hex?.influence_points_reward,
+          },
+          attackEnemyHexWithoutBuilding: {
+            actionPointsCost:
+              attack_enemy_hex_without_building?.action_points_cost,
+            influencePointsReward:
+              attack_enemy_hex_without_building?.influence_points_reward,
+          },
+          actionPointMax: resData.user?.action_points_max,
         })
       );
     }

@@ -6,7 +6,7 @@ interface HeaderMailIconProps {
   className?: string;
 }
 
-export const RPGHeaderMailIcon: React.FC<HeaderMailIconProps> = ({
+export const HeaderMailIcon: React.FC<HeaderMailIconProps> = ({
   width = 14,
   height = 11,
   className,

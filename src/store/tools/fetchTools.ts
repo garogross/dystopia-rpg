@@ -32,7 +32,7 @@ export const fetchRequest = async <Res, Body extends object = {}>(
 
   if (body && !isFormData) {
     for (let key in body) {
-      if (body[key]) {
+      if (body[key] || body[key] === 0) {
         filteredBody[key] = body[key];
       }
     }

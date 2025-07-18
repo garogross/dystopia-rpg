@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
 import styles from "./OnBoardingMain.module.scss";
-import { CyberFarmIcon, MiniGamesIcon } from "../../layout/icons/OnBoarding";
+import { CyberFarmIcon, InfluenceIcon } from "../../layout/icons/OnBoarding";
 import {
   cyberFarmPagePath,
-  miniGamesPagePath,
+  influencePagePath,
 } from "../../../router/constants";
 import { Link } from "react-router-dom";
 import { onBoardingGirl2Video } from "../../../assets/videos";
@@ -27,6 +27,7 @@ const {
   talkText,
   titleTonCyberFarm,
   titleMiniGames,
+  titleInfluence,
   titleRPG,
   titleStrategy,
   comingSoonText,
@@ -38,6 +39,7 @@ const titleKeysMap: Record<string, { [key: string]: string }> = {
   titleMiniGames,
   titleRPG,
   titleStrategy,
+  titleInfluence,
 };
 
 const onBoardingVideos = [
@@ -69,12 +71,19 @@ const options: Option[] = [
     gameModeKey: "ton_cyber_farm",
   },
   {
-    icon: <MiniGamesIcon />,
-    titleKey: "titleMiniGames",
+    icon: <InfluenceIcon />,
+    titleKey: "titleInfluence",
     smallText: comingSoonText,
-    link: miniGamesPagePath,
+    link: influencePagePath,
     // gameModeKey: "mini_games",
   },
+  // {
+  //   icon: <MiniGamesIcon />,
+  //   titleKey: "titleMiniGames",
+  //   smallText: comingSoonText,
+  //   link: miniGamesPagePath,
+  //   // gameModeKey: "mini_games",
+  // },
   // {
   //   icon: <RPGIcon />,
   //   titleKey: "titleRPG",
