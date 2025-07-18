@@ -114,7 +114,7 @@ const LoyalitySupportProject = () => {
 
   return (
     <div className={styles.loyalitySupportProject}>
-      <LoyalitySupportProjectTraffyContainer />
+      {/* <LoyalitySupportProjectTraffyContainer /> */}
       <div className={styles.loyalitySupportProject__list}>
         <TadsWidget
           id={TADS_WIDGET_ID}
@@ -144,10 +144,10 @@ const LoyalitySupportProject = () => {
           onOpen={onShowWallgramTasks}
           index={2}
         /> */}
-        <LoyalitySupportProjectAdsgramTaskItem
+        {/* <LoyalitySupportProjectAdsgramTaskItem
           gameInited={gameInited}
           language={language}
-        />
+        /> */}
         <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
