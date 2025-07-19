@@ -80,15 +80,17 @@ export const mapSlice = createSlice({
       state.mapId = action.payload.map_id;
     });
     builder.addCase(attackHex.fulfilled, (state, { payload }) => {
-      const updatedHexIndex = state.hexes.findIndex(
-        (hex) =>
-          hex.x === payload.x && hex.y === payload.y && hex.z === payload.z
-      );
-      if (updatedHexIndex !== -1) {
-        state.hexes = state.hexes.with(updatedHexIndex, {
-          ...state.hexes[updatedHexIndex],
-          owner_id: +payload.tgId,
-        });
+      if (payload.captured) {
+        const updatedHexIndex = state.hexes.findIndex(
+          (hex) =>
+            hex.x === payload.x && hex.y === payload.y && hex.z === payload.z
+        );
+        if (updatedHexIndex !== -1) {
+          state.hexes = state.hexes.with(updatedHexIndex, {
+            ...state.hexes[updatedHexIndex],
+            owner_id: +payload.tgId,
+          });
+        }
       }
     });
   },

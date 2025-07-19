@@ -1858,6 +1858,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Hex is occupied",
         [ELanguages.ru]: "Гекс Захвачено",
       },
+      hexAttackedText: {
+        [ELanguages.en]: "Hex is attacked",
+        [ELanguages.ru]: "Гекс атакован",
+      },
     },
   },
 };
