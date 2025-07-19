@@ -20,7 +20,7 @@ type BonusArea = {
   height: number;
 };
 
-const { notEnoughActionPointsText, hexOccupiedText } =
+const { notEnoughActionPointsText, hexOccupiedText, hexAttackedText } =
   TRANSLATIONS.influence.map;
 const { somethingWentWrong } = TRANSLATIONS.errors;
 function getBonusAreas(hexes: IHex[], size: number): BonusArea[] {
@@ -216,8 +216,10 @@ const InfluenceMap = () => {
       return;
     }
     try {
-      await dispatch(attackHex({ x, y, z, mapId: mapId })).unwrap();
-      setTooltipText(hexOccupiedText);
+      const res = await dispatch(attackHex({ x, y, z, mapId: mapId })).unwrap();
+
+      setTooltipText(res.captured ? hexOccupiedText : hexAttackedText);
+
       openTooltip();
     } catch (error) {
       setTooltipText(somethingWentWrong);
@@ -271,7 +273,7 @@ const InfluenceMap = () => {
                     backgroundColor: owner_id
                       ? owner_id === tgId
                         ? "#0F9E604D"
-                        : "#bf55568a"
+                        : "rgba(191, 85, 86, 0.54)"
                       : undefined,
                   }}
                   className={`${styles.influenceMap__hexInner} ${
@@ -305,6 +307,38 @@ const InfluenceMap = () => {
                     })}
                   </svg>
                 )}
+                <svg
+                  width={size}
+                  height={size}
+                  viewBox={`0 0 ${size} ${size}`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    pointerEvents: "none",
+                  }}
+                >
+                  {(() => {
+                    // Draw all 6 borders of the hex
+                    const points = getHexPoints(size);
+                    return Array.from({ length: 6 }).map((_, i) => {
+                      const [x1, y1] = points[i];
+                      const [x2, y2] = points[(i + 1) % 6];
+                      return (
+                        <line
+                          key={`full-${i}`}
+                          x1={x1}
+                          y1={y1}
+                          x2={x2}
+                          y2={y2}
+                          stroke="#000"
+                          strokeWidth="1"
+                        />
+                      );
+                    });
+                  })()}
+                </svg>
                 <span style={{ display: "none" }}>{borders?.join()}</span>
               </button>
             );
