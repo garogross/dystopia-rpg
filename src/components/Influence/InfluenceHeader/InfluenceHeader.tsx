@@ -162,7 +162,7 @@ const InfluenceHeader = () => {
         <div className={styles.influenceHeader__stat}>
           <StatImg stat={EStats.cp} size={19} />
           <span className={styles.influenceHeader__statText}>
-            {formatNumber(cp)}
+            {formatNumber(cp, undefined, true)}
           </span>
         </div>
       </div>

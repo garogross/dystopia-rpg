@@ -52,7 +52,7 @@ const MiniGamesHeader = () => {
       <div className={styles.miniGamesHeader__stat}>
         <StatImg stat={EStats.cp} size={19} />
         <span className={styles.miniGamesHeader__statText}>
-          {formatNumber(stats.cp)}
+          {formatNumber(stats.cp, undefined, true)}
         </span>
       </div>
       <div
