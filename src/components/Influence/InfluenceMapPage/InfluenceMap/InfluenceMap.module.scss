@@ -17,11 +17,18 @@
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     @include button();
     @include flexCol();
+  }
 
-    & svg {
-      position: relative;
-      z-index: 2;
-    }
+  &__bonusAreaStroke {
+    position: relative;
+    z-index: 3;
+  }
+  &__ownerAreaStroke {
+    position: relative;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 
   &__hexInner {
@@ -54,7 +61,9 @@
     z-index: 5;
     transform: translate(-50%, -50%);
     text-transform: uppercase;
-    @include setFont(18px, 400, $font-fam-h3, $color-primary);
+    @include setFont(18px, 400, $font-fam-h3, $color-text);
+    text-shadow: -1px -1px 0 #7f5cff, 1px -1px 0 #7f5cff, -1px 1px 0 #7f5cff,
+      1px 1px 0 #7f5cff;
   }
 }
 

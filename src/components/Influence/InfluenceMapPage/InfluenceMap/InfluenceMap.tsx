@@ -20,6 +20,8 @@ type BonusArea = {
   height: number;
 };
 
+const COLOR_OPACITY = "0.44";
+
 const { notEnoughActionPointsText, hexOccupiedText, hexAttackedText } =
   TRANSLATIONS.influence.map;
 const { somethingWentWrong } = TRANSLATIONS.errors;
@@ -82,27 +84,65 @@ const hexKey = (x: number, y: number, z: number) => `${x},${y},${z}`;
 function findBonusAreaBorders(hexes: IHex[]) {
   // Group hexes by bonus_area_id
   const areaMap = new Map<string, Set<string>>();
+  // Group hexes by owner_id
+  const ownerMap = new Map<number | null, Set<string>>();
+
   for (const hex of hexes) {
-    if (!hex.bonus_area_id) continue;
-    if (!areaMap.has(hex.bonus_area_id))
-      areaMap.set(hex.bonus_area_id, new Set());
-    areaMap.get(hex.bonus_area_id)!.add(hexKey(hex.x, hex.y, hex.z));
+    // For bonus_area_id
+    if (hex.bonus_area_id) {
+      if (!areaMap.has(hex.bonus_area_id))
+        areaMap.set(hex.bonus_area_id, new Set());
+      areaMap.get(hex.bonus_area_id)!.add(hexKey(hex.x, hex.y, hex.z));
+    }
+    // For owner_id
+    if (!ownerMap.has(hex.owner_id)) ownerMap.set(hex.owner_id, new Set());
+    ownerMap.get(hex.owner_id)!.add(hexKey(hex.x, hex.y, hex.z));
   }
 
   return hexes.map((hex) => {
-    if (!hex.bonus_area_id) return hex;
-    const areaSet = areaMap.get(hex.bonus_area_id)!;
-    const borders: EHexDirections[] = [];
-    for (const dir of HEX_DIRECTIONS) {
-      const nx = hex.x + dir.dx;
-      const ny = hex.y + dir.dy;
-      const nz = hex.z + dir.dz;
-      if (!areaSet.has(hexKey(nx, ny, nz))) {
-        borders.push(dir.name);
+    let bonusAreaBorders: EHexDirections[] | undefined = undefined;
+    let ownerBorders: EHexDirections[] | undefined = undefined;
+
+    // Calculate bonusAreaBorders if applicable
+    if (hex.bonus_area_id) {
+      const areaSet = areaMap.get(hex.bonus_area_id)!;
+      const borders: EHexDirections[] = [];
+      for (const dir of HEX_DIRECTIONS) {
+        const nx = hex.x + dir.dx;
+        const ny = hex.y + dir.dy;
+        const nz = hex.z + dir.dz;
+        if (!areaSet.has(hexKey(nx, ny, nz))) {
+          borders.push(dir.name);
+        }
+      }
+      if (borders.length > 0) {
+        bonusAreaBorders = borders;
       }
     }
-    if (borders.length > 0) {
-      return { ...hex, borders };
+
+    // Calculate ownerBorders if applicable
+    if (hex.owner_id !== undefined) {
+      const ownerSet = ownerMap.get(hex.owner_id)!;
+      const borders: EHexDirections[] = [];
+      for (const dir of HEX_DIRECTIONS) {
+        const nx = hex.x + dir.dx;
+        const ny = hex.y + dir.dy;
+        const nz = hex.z + dir.dz;
+        if (!ownerSet.has(hexKey(nx, ny, nz))) {
+          borders.push(dir.name);
+        }
+      }
+      if (borders.length > 0) {
+        ownerBorders = borders;
+      }
+    }
+
+    if (bonusAreaBorders || ownerBorders) {
+      return {
+        ...hex,
+        ...(bonusAreaBorders ? { bonusAreaBorders } : {}),
+        ...(ownerBorders ? { ownerBorders } : {}),
+      };
     }
     return hex;
   });
@@ -160,6 +200,19 @@ const InfluenceMap = () => {
   const hexesWithBorders = findBonusAreaBorders(visibleHexes);
 
   const bonusAreas = getBonusAreas(hexesWithBorders, HEX_SIZE);
+
+  const ownerIdColors: Record<string, string> = {};
+  for (const hex of hexes) {
+    const orderId = hex.owner_id;
+    if (orderId && !ownerIdColors[orderId]) {
+      ownerIdColors[orderId] = `rgba(${Math.floor(
+        Math.random() * 256
+      )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
+        Math.random() * 256
+      )}, ${COLOR_OPACITY})`;
+    }
+  }
+
   useEffect(() => {
     dispatch(getMap({ id: "1" }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -253,11 +306,12 @@ const InfluenceMap = () => {
           </p>
         ))}
         {hexesWithBorders.map(
-          ({ x, y, z, bonus_area_id, owner_id, borders }) => {
+          ({ x, y, z, owner_id, ownerBorders, bonusAreaBorders }) => {
             const { left, top } = cubeToPixel({ x, z }, HEX_SIZE);
             const size = HEX_SIZE * 2;
             return (
               <button
+                title={owner_id?.toString() || ""}
                 onClick={() => onAttack({ x, y, z, owner_id })}
                 key={`${x},${y},${z}`}
                 className={styles.influenceMap__hex}
@@ -273,73 +327,100 @@ const InfluenceMap = () => {
                     backgroundColor: owner_id
                       ? owner_id === tgId
                         ? "#0F9E604D"
-                        : "rgba(191, 85, 86, 0.54)"
+                        : ownerIdColors[owner_id]
                       : undefined,
                   }}
                   className={`${styles.influenceMap__hexInner} ${
                     x % 2 ? styles.influenceMap__hexInner_rotated : ""
                   }`}
                 ></div>
-                {borders?.length && (
-                  <svg
-                    width={size}
-                    height={size}
-                    viewBox={`0 0 ${size} ${size}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    {borders?.map((dir) => {
-                      const [startIdx, endIdx] = directionToLine[dir];
-                      const points = getHexPoints(size);
-                      const [x1, y1] = points[startIdx];
-                      const [x2, y2] = points[endIdx];
 
-                      return (
-                        <line
-                          key={dir}
-                          x1={x1}
-                          y1={y1}
-                          x2={x2}
-                          y2={y2}
-                          stroke="#7F5CFF"
-                          strokeWidth="2"
-                        />
-                      );
-                    })}
-                  </svg>
-                )}
                 <svg
+                  className={styles.influenceMap__bonusAreaStroke}
                   width={size}
                   height={size}
                   viewBox={`0 0 ${size} ${size}`}
                   xmlns="http://www.w3.org/2000/svg"
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    pointerEvents: "none",
-                  }}
                 >
-                  {(() => {
-                    // Draw all 6 borders of the hex
-                    const points = getHexPoints(size);
-                    return Array.from({ length: 6 }).map((_, i) => {
-                      const [x1, y1] = points[i];
-                      const [x2, y2] = points[(i + 1) % 6];
-                      return (
-                        <line
-                          key={`full-${i}`}
-                          x1={x1}
-                          y1={y1}
-                          x2={x2}
-                          y2={y2}
-                          stroke="#000"
-                          strokeWidth="1"
-                        />
-                      );
-                    });
-                  })()}
+                  {getHexPoints(size).map((_, idx, points) => {
+                    // Each side is from idx to (idx+1)%6
+                    const startIdx = idx;
+                    const endIdx = (idx + 1) % points.length;
+                    const [x1, y1] = points[startIdx];
+                    const [x2, y2] = points[endIdx];
+                    // Find direction key for this side
+                    // directionToLine: { [dir]: [startIdx, endIdx] }
+                    // We need to find if this side is in borders
+                    let isBorder = false;
+                    if (bonusAreaBorders && bonusAreaBorders.length > 0) {
+                      isBorder = bonusAreaBorders.some((dir) => {
+                        const [dStart, dEnd] = directionToLine[dir];
+                        return (
+                          (dStart === startIdx && dEnd === endIdx) ||
+                          (dStart === endIdx && dEnd === startIdx)
+                        );
+                      });
+                    }
+                    return (
+                      <line
+                        key={idx}
+                        x1={x1}
+                        y1={y1}
+                        x2={x2}
+                        y2={y2}
+                        stroke={isBorder ? "#7F5CFF" : "transparent"}
+                        strokeDasharray={isBorder ? "6,4" : undefined}
+                        strokeWidth="2"
+                      />
+                    );
+                  })}
                 </svg>
-                <span style={{ display: "none" }}>{borders?.join()}</span>
+                <svg
+                  className={styles.influenceMap__ownerAreaStroke}
+                  width={size}
+                  height={size}
+                  viewBox={`0 0 ${size} ${size}`}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {getHexPoints(size).map((_, idx, points) => {
+                    // Each side is from idx to (idx+1)%6
+                    const startIdx = idx;
+                    const endIdx = (idx + 1) % points.length;
+                    const [x1, y1] = points[startIdx];
+                    const [x2, y2] = points[endIdx];
+                    // Find direction key for this side
+                    // directionToLine: { [dir]: [startIdx, endIdx] }
+                    // We need to find if this side is in borders
+                    let isBorder = false;
+                    if (ownerBorders && ownerBorders.length > 0) {
+                      isBorder = ownerBorders.some((dir) => {
+                        const [dStart, dEnd] = directionToLine[dir];
+                        return (
+                          (dStart === startIdx && dEnd === endIdx) ||
+                          (dStart === endIdx && dEnd === startIdx)
+                        );
+                      });
+                    }
+                    return (
+                      <line
+                        key={idx}
+                        x1={x1}
+                        y1={y1}
+                        x2={x2}
+                        y2={y2}
+                        stroke={
+                          isBorder && owner_id
+                            ? ownerIdColors[owner_id].replace(
+                                COLOR_OPACITY,
+                                "1"
+                              )
+                            : "transparent"
+                        }
+                        strokeWidth="2"
+                      />
+                    );
+                  })}
+                </svg>
               </button>
             );
           }
