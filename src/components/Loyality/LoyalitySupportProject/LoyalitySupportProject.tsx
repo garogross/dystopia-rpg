@@ -152,7 +152,7 @@ const LoyalitySupportProject = () => {
           language={language}
           gameInited={gameInited}
         />
-        {taddyTasks.map((task, index) => (
+        {taddyTasks?.map((task, index) => (
           <LoyalitySupportProjectTaskItem
             key={task.id}
             task={{ ...task, taddyTasktype: task.type, link: task.link }}
@@ -163,7 +163,7 @@ const LoyalitySupportProject = () => {
             onSubscribe={onSubscribe}
           />
         ))}
-        {promoTasks.map(
+        {promoTasks?.map(
           (
             { name, id, description, reward, target_url, subscription },
             index
