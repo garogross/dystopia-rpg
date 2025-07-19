@@ -17,7 +17,7 @@ const LoyalitySupportProjectTraffyContainer = () => {
   const traffyTasks = useRef<HTMLDivElement | null>(null);
   const { show: showTooltip, openTooltip } = useTooltip();
   const language = useAppSelector((state) => state.ui.language);
-  const [hidden, setHidden] = React.useState(false);
+  const [hidden, setHidden] = React.useState(true);
 
   useEffect(() => {
     // Check if we should hide the container
@@ -31,6 +31,8 @@ const LoyalitySupportProjectTraffyContainer = () => {
           Number(hideUntil) - Date.now()
         );
         return () => clearTimeout(timeout);
+      } else {
+        setHidden(false);
       }
     })();
     initTraffyTasks(
