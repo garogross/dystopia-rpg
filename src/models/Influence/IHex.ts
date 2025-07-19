@@ -12,5 +12,6 @@ export interface IHex {
   resource_type: null;
   artifact: {};
   bonus_area_id: null | string;
-  borders?: EHexDirections[];
+  bonusAreaBorders?: EHexDirections[];
+  ownerBorders?: EHexDirections[];
 }
