@@ -75,7 +75,7 @@ const CyberFarmHeader = () => {
         <div className={styles.cyberFarmHeader__stat}>
           <StatImg stat={EStats.cp} size={19} />
           <span className={styles.cyberFarmHeader__statText}>
-            {formatNumber(stats.cp)}
+            {formatNumber(stats.cp, undefined, true)}
           </span>
         </div>
       </div>
