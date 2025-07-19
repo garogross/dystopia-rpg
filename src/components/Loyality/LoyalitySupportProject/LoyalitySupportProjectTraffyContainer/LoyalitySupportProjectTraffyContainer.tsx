@@ -35,20 +35,28 @@ const LoyalitySupportProjectTraffyContainer = () => {
         setHidden(false);
       }
     })();
-    initTraffyTasks(
-      traffyTasks.current,
-      (signedToken, id) => {
-        dispatch(claimTraffyReward({ signedToken, id }));
-        // hide tasks for 1 hour
-        const hideUntil = Date.now() + 60 * 60 * 1000;
-        setLSItem(ELSProps.hideTraffyContainerUntil, hideUntil);
-        setHidden(true);
-        setTimeout(() => setHidden(false), 60 * 60 * 1000);
-      },
-      openTooltip
-    );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!hidden) {
+      initTraffyTasks(
+        traffyTasks.current,
+        (signedToken, id) => {
+          dispatch(claimTraffyReward({ signedToken, id }));
+          // hide tasks for 1 hour
+          const hideUntil = Date.now() + 60 * 60 * 1000;
+          setLSItem(ELSProps.hideTraffyContainerUntil, hideUntil);
+          setHidden(true);
+          setTimeout(() => setHidden(false), 60 * 60 * 1000);
+        },
+        openTooltip
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hidden]);
+
   return (
     <>
       {!hidden && (
