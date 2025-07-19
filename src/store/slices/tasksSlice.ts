@@ -32,7 +32,7 @@ export const getPromoTasks = createAsyncThunk<
       getPromoTasksUrl
     );
 
-    return resData;
+    return resData || [];
   } catch (error: any) {
     console.error("error", error);
     return rejectWithValue(error);
