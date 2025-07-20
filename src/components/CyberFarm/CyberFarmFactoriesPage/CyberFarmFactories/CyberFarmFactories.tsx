@@ -5,6 +5,7 @@ import { useAppSelector } from "../../../../hooks/redux";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 import { getFarmFieldsFromSlots } from "../../../../utils/getFarmFieldsFromSlots";
+import { useFarmFieldsProgressCheck } from "../../../../hooks/useFarmFieldsProgressCheck";
 
 const { titleText, emptyText } = TRANSLATIONS.cyberFarm.factories;
 
@@ -12,11 +13,14 @@ const CyberFarmFactories = () => {
   const language = useAppSelector((state) => state.ui.language);
   const slots = useAppSelector((state) => state.cyberfarm.slots.slots);
 
-  const fields= getFarmFieldsFromSlots(slots)
+  const fields = getFarmFieldsFromSlots(slots);
 
   const data: IFarmField[] = [
     ...fields.filter((item) => item.type === EFarmSlotTypes.FACTORY),
   ];
+
+  useFarmFieldsProgressCheck(data);
+
   return (
     <main className="cyberFarmContainer fullheight">
       <CyberFarmWrapperWithList

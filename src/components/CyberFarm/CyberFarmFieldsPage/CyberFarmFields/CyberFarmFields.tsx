@@ -12,6 +12,7 @@ import { getFarmFieldsFromSlots } from "../../../../utils/getFarmFieldsFromSlots
 import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
 import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
 import { getFarmFieldProgress } from "../../../../utils/getFarmFieldProgress";
+import { useFarmFieldsProgressCheck } from "../../../../hooks/useFarmFieldsProgressCheck";
 
 const { titleText, emptyText } = TRANSLATIONS.cyberFarm.fields;
 
@@ -62,10 +63,12 @@ const CyberFarmFields = () => {
       idArg: ECyberfarmTutorialActions.openProgressModal,
     };
   }
+  const showBlockedField =
+    maxSlotCount && slots && maxSlotCount > Object.keys(slots).length;
+
   const data: IFarmField[] = [
     ...filteredFields,
-
-    ...(maxSlotCount && slots && maxSlotCount > Object.keys(slots).length
+    ...(showBlockedField
       ? [
           {
             id: v4(),
@@ -76,6 +79,8 @@ const CyberFarmFields = () => {
         ]
       : []),
   ];
+
+  useFarmFieldsProgressCheck(filteredFields);
 
   const onBuy = (field: IFarmField) => {
     setBuyingSlotId(field.id);
