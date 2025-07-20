@@ -5,6 +5,7 @@ import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../../hooks/redux";
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 import { getFarmFieldsFromSlots } from "../../../../utils/getFarmFieldsFromSlots";
+import { useFarmFieldsProgressCheck } from "../../../../hooks/useFarmFieldsProgressCheck";
 
 const { titleText, emptyText } = TRANSLATIONS.cyberFarm.farms;
 const CyberFarmFarms = () => {
@@ -16,6 +17,9 @@ const CyberFarmFarms = () => {
   const data: IFarmField[] = [
     ...farms.filter((item) => item.type === EFarmSlotTypes.FARM),
   ];
+
+  useFarmFieldsProgressCheck(data);
+
   return (
     <main className="cyberFarmContainer fullheight">
       <CyberFarmWrapperWithList
