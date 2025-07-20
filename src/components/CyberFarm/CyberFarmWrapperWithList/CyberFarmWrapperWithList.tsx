@@ -92,7 +92,7 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
     if (!progressModalOpened)
       setTimeout(() => {
         setActiveProgresModalItemId(null);
-      }, 1000);
+      }, 300);
   }, [progressModalOpened]);
 
   const onClickItem = (field: T) => {
