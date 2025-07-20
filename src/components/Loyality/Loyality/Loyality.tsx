@@ -72,7 +72,9 @@ const Loyality: React.FC<Props> = ({ isRpg }) => {
   );
   const [activeTab, setActiveTab] = useState<string>(tabs[0].key);
   const updatedTabs = tabs.map((tab, index) =>
-    index === 0 ? { ...tab, statValue: dailyRewardAvailableDay } : tab
+    tab.key === "activity"
+      ? { ...tab, statValue: dailyRewardAvailableDay }
+      : tab
   );
   const activeTabDetails = updatedTabs.find((tab) => tab.key === activeTab);
 
