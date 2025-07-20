@@ -8,6 +8,7 @@ import { fetchRequest } from "../../tools/fetchTools";
 import { RootState } from "../../store";
 
 export interface MapState {
+  nextAttackTs: number;
   mapId: number | null;
   radius: number;
   hexes: IHex[];
@@ -15,6 +16,7 @@ export interface MapState {
 
 const initialState: MapState = {
   mapId: null,
+  nextAttackTs: 0,
   radius: 0,
   hexes: [],
 };
@@ -72,7 +74,11 @@ export const attackHex = createAsyncThunk<
 export const mapSlice = createSlice({
   name: "mapSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    initMap(state, action) {
+      state.nextAttackTs = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getMap.fulfilled, (state, action) => {
       state.radius = action.payload.radius;
@@ -92,10 +98,11 @@ export const mapSlice = createSlice({
           });
         }
       }
+      state.nextAttackTs = payload.next_attack_ts;
     });
   },
 });
 
-// export const {  } = mapSlice.actions;
+export const { initMap } = mapSlice.actions;
 
 export default mapSlice.reducer;

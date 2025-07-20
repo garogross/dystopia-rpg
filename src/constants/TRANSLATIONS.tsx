@@ -1854,6 +1854,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "You have not enough action points",
         [ELanguages.ru]: "У вас недостаточно очков действий",
       },
+      actionWillEnableInText: {
+        [ELanguages.en]: "Action will enable in SECONDS seconds",
+        [ELanguages.ru]: "Действие будет доступно через SECONDS секунд",
+      },
       hexOccupiedText: {
         [ELanguages.en]: "Hex is occupied",
         [ELanguages.ru]: "Гекс Захвачено",

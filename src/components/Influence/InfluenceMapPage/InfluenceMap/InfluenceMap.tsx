@@ -22,8 +22,12 @@ type BonusArea = {
 
 const COLOR_OPACITY = "0.44";
 
-const { notEnoughActionPointsText, hexOccupiedText, hexAttackedText } =
-  TRANSLATIONS.influence.map;
+const {
+  notEnoughActionPointsText,
+  actionWillEnableInText,
+  hexOccupiedText,
+  hexAttackedText,
+} = TRANSLATIONS.influence.map;
 const { somethingWentWrong } = TRANSLATIONS.errors;
 function getBonusAreas(hexes: IHex[], size: number): BonusArea[] {
   // Group hexes by bonus_area_id
@@ -178,6 +182,9 @@ const InfluenceMap = () => {
   const tgId = useAppSelector((state) => state.profile.tgId);
   const mapId = useAppSelector((state) => state.influence.map.mapId);
   const hexes = useAppSelector((state) => state.influence.map.hexes);
+  const nextAttackTs = useAppSelector(
+    (state) => state.influence.map.nextAttackTs
+  );
   const actionPoints = useAppSelector(
     (state) => state.influence.influence.actionPoints
   );
@@ -194,29 +201,40 @@ const InfluenceMap = () => {
     y: 0,
   });
   const [scale, setScale] = useState(1);
-  const [tooltipText, setTooltipText] = useState(hexOccupiedText);
+  const [tooltipText, setTooltipText] = useState(hexOccupiedText[language]);
   const { show: showTooltip, openTooltip } = useTooltip();
 
   const hexesWithBorders = findBonusAreaBorders(visibleHexes);
 
   const bonusAreas = getBonusAreas(hexesWithBorders, HEX_SIZE);
 
-  const ownerIdColors: Record<string, string> = {};
-  for (const hex of hexes) {
-    const orderId = hex.owner_id;
-    if (orderId && !ownerIdColors[orderId]) {
-      ownerIdColors[orderId] = `rgba(${Math.floor(
-        Math.random() * 256
-      )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
-        Math.random() * 256
-      )}, ${COLOR_OPACITY})`;
-    }
-  }
+  const [ownerIdColors, setOwnerIdColors] = useState<Record<string, string>>(
+    {}
+  );
 
   useEffect(() => {
     dispatch(getMap({ id: "1" }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (hexes && !Object.keys(ownerIdColors).length) {
+      const colors: typeof ownerIdColors = {};
+      for (const hex of hexes) {
+        const orderId = hex.owner_id;
+        if (orderId && !colors[orderId]) {
+          colors[orderId] = `rgba(${Math.floor(
+            Math.random() * 256
+          )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
+            Math.random() * 256
+          )}, ${COLOR_OPACITY})`;
+        }
+      }
+
+      setOwnerIdColors(colors);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hexes]);
 
   useEffect(() => {
     if (gameInited && containerRef.current) {
@@ -259,23 +277,39 @@ const InfluenceMap = () => {
     owner_id: IHex["owner_id"];
   }) => {
     if (!mapId || owner_id === tgId) return;
+
+    // check timer enable
+    if (nextAttackTs && Date.now() < nextAttackTs) {
+      setTooltipText(
+        actionWillEnableInText[language].replace(
+          "SECONDS",
+          Math.ceil((nextAttackTs - Date.now()) / 1000).toString()
+        )
+      );
+      openTooltip();
+      return;
+    }
+
+    // check enough AP
     if (
       (owner_id &&
         actionPoints < attackEnemyHexWithoutBuilding.actionPointsCost) ||
       (!owner_id && actionPoints < attackNeutralHex.actionPointsCost)
     ) {
-      setTooltipText(notEnoughActionPointsText);
+      setTooltipText(notEnoughActionPointsText[language]);
       openTooltip();
       return;
     }
     try {
       const res = await dispatch(attackHex({ x, y, z, mapId: mapId })).unwrap();
 
-      setTooltipText(res.captured ? hexOccupiedText : hexAttackedText);
+      setTooltipText(
+        (res.captured ? hexOccupiedText : hexAttackedText)[language]
+      );
 
       openTooltip();
     } catch (error) {
-      setTooltipText(somethingWentWrong);
+      setTooltipText(somethingWentWrong[language]);
       openTooltip();
     }
   };
@@ -410,10 +444,12 @@ const InfluenceMap = () => {
                         y2={y2}
                         stroke={
                           isBorder && owner_id
-                            ? ownerIdColors[owner_id].replace(
-                                COLOR_OPACITY,
-                                "1"
-                              )
+                            ? owner_id === tgId
+                              ? "#0f9e60"
+                              : ownerIdColors[owner_id]?.replace(
+                                  COLOR_OPACITY,
+                                  "1"
+                                )
                             : "transparent"
                         }
                         strokeWidth="2"
@@ -427,7 +463,7 @@ const InfluenceMap = () => {
         )}
         {/* <div className={styles.influenceMap__hex}></div> */}
       </DragAndZoomProvider>
-      <Tooltip show={showTooltip} text={tooltipText[language]} />
+      <Tooltip show={showTooltip} text={tooltipText} />
     </div>
   );
 };

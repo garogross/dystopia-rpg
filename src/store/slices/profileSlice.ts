@@ -37,6 +37,7 @@ import { convertReferals } from "./refferencesSlice";
 import { finsihTutorial, initTutorial } from "./cyberFarm/tutorialSlice";
 import { initInfluence } from "./influence/influenceSlice";
 import { initSettings } from "./influence/settingsSlice";
+import { initMap } from "./influence/mapSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -242,6 +243,8 @@ export const getAccountDetails =
           actionPointMax: resData.user?.action_points_max,
         })
       );
+
+      dispatch(initMap(resData.user?.next_attack_ts || 0));
     }
 
     // tasks
