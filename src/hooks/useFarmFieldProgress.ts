@@ -1,59 +1,33 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { getFarmFieldProgress } from "../utils/getFarmFieldProgress";
 import { IFarmField } from "../models/CyberFarm/IFarmField";
+import { useAppSelector } from "./redux";
 
 export const useFarmFieldProgress = (
   process: IFarmField["process"],
   dependencies?: unknown[]
 ) => {
-  const initialProgressObj =
+  const freshDate = useAppSelector((state) => state.ui.freshDate);
+
+  const getProgressObj = () =>
     process && getFarmFieldProgress(process.startDate, process.endDate);
-  const initialprogressPercent = initialProgressObj?.progress;
-  const initialremainingTimeInSecs = initialProgressObj?.remainingTimeInSecs;
+
   const [progressPercent, setProgressPercent] = useState(
-    initialprogressPercent
+    () => getProgressObj()?.progress
   );
   const [remainingTimeInSecs, setRemainingTimeInSecs] = useState(
-    initialremainingTimeInSecs
+    () => getProgressObj()?.remainingTimeInSecs
   );
-  const intervalRef = useRef<NodeJS.Timer | null>(null);
-  const processRef = useRef(process);
 
   useEffect(() => {
-    processRef.current = process;
-  }, [process]);
+    if (!process) return;
+    if (dependencies && dependencies.some((item) => !item)) return;
 
-  const updateProcess = () => {
-    const updatedProgress =
-      process && getFarmFieldProgress(process.startDate, process.endDate);
-    const updatedprogressPercent = updatedProgress?.progress;
-    const updatedremainingTimeInSecs = updatedProgress?.remainingTimeInSecs;
-    setProgressPercent(updatedprogressPercent);
-    setRemainingTimeInSecs(updatedremainingTimeInSecs);
-
-    return updatedprogressPercent;
-  };
-
-  useEffect(
-    () => {
-
-      if (!process) return;
-      if (dependencies && dependencies.some((item) => !item)) return;
-      updateProcess();
-      intervalRef.current = setInterval(() => {
-        const updatedProgressPercent = updateProcess();
-        if (!updatedProgressPercent || updatedProgressPercent >= 100) {
-          if (intervalRef.current) clearInterval(intervalRef.current);
-        }
-      }, 1000);
-
-      return () => {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-      };
-    },
+    const updatedProgress = getProgressObj();
+    setProgressPercent(updatedProgress?.progress);
+    setRemainingTimeInSecs(updatedProgress?.remainingTimeInSecs);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    dependencies ? dependencies : []
-  );
+  }, [freshDate, process, ...(dependencies || [])]);
 
   return { progressPercent, remainingTimeInSecs };
 };

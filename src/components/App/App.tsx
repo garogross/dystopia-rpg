@@ -8,6 +8,7 @@ import { ELSProps } from "../../constants/ELSProps";
 import { ELanguages } from "../../constants/ELanguages";
 import { useAppDispatch } from "../../hooks/redux";
 import { setLanguage } from "../../store/slices/uiSlice";
+import { useFreshDate } from "../../hooks/useFreshDate";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -95,6 +96,9 @@ export const App = () => {
   const initOfferwall = useOfferwallSdk();
 
   const isMobile = getPlatformType();
+
+  // update freshDate in store for use in timers if needed
+  useFreshDate();
 
   useEffect(() => {
     if (!tg) return;

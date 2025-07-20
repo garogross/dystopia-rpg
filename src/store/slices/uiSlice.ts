@@ -4,11 +4,15 @@ import { ELanguages } from "../../constants/ELanguages";
 export interface UIState {
   gameInited: boolean;
   language: ELanguages;
+  freshDateUpdating: boolean;
+  freshDate: number;
 }
 
 const initialState: UIState = {
   gameInited: false,
   language: ELanguages.ru,
+  freshDateUpdating: false,
+  freshDate: Date.now(),
 };
 
 export const uISlice = createSlice({
@@ -21,10 +25,21 @@ export const uISlice = createSlice({
     setLanguage(state, { payload }) {
       state.language = payload;
     },
+    setFreshDateUpdating(state, { payload }) {
+      state.freshDateUpdating = payload;
+    },
+    updateFreshDate(state) {
+      state.freshDate = Date.now();
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { setGameInited, setLanguage } = uISlice.actions;
+export const {
+  setGameInited,
+  setLanguage,
+  setFreshDateUpdating,
+  updateFreshDate,
+} = uISlice.actions;
 
 export default uISlice.reducer;

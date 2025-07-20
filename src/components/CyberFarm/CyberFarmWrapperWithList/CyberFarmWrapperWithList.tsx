@@ -88,6 +88,13 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionsModalOpened]);
 
+  useEffect(() => {
+    if (!progressModalOpened)
+      setTimeout(() => {
+        setActiveProgresModalItemId(null);
+      }, 1000);
+  }, [progressModalOpened]);
+
   const onClickItem = (field: T) => {
     if ("count" in field) {
       onSellItem?.(field);
