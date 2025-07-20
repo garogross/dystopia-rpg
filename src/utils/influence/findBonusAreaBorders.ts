@@ -1,5 +1,6 @@
 import { EHexDirections } from "../../constants/influence/EHexDirections";
 import { IHex } from "../../models/Influence/IHex";
+import { makeHexKey } from "./makeHexKey";
 
 // Directions in cube coordinates and their names
 const HEX_DIRECTIONS = [
@@ -10,9 +11,6 @@ const HEX_DIRECTIONS = [
   { name: EHexDirections.Left, dx: -1, dy: +1, dz: 0 },
   { name: EHexDirections.TopLeft, dx: 0, dy: +1, dz: -1 },
 ];
-
-// Helper to make a unique key for a hex
-const hexKey = (x: number, y: number, z: number) => `${x},${y},${z}`;
 
 export function findBonusAreaBorders(hexes: IHex[]) {
   // Group hexes by bonus_area_id
@@ -25,11 +23,11 @@ export function findBonusAreaBorders(hexes: IHex[]) {
     if (hex.bonus_area_id) {
       if (!areaMap.has(hex.bonus_area_id))
         areaMap.set(hex.bonus_area_id, new Set());
-      areaMap.get(hex.bonus_area_id)!.add(hexKey(hex.x, hex.y, hex.z));
+      areaMap.get(hex.bonus_area_id)!.add(makeHexKey(hex.x, hex.y, hex.z));
     }
     // For owner_id
     if (!ownerMap.has(hex.owner_id)) ownerMap.set(hex.owner_id, new Set());
-    ownerMap.get(hex.owner_id)!.add(hexKey(hex.x, hex.y, hex.z));
+    ownerMap.get(hex.owner_id)!.add(makeHexKey(hex.x, hex.y, hex.z));
   }
 
   return hexes.map((hex) => {
@@ -44,7 +42,7 @@ export function findBonusAreaBorders(hexes: IHex[]) {
         const nx = hex.x + dir.dx;
         const ny = hex.y + dir.dy;
         const nz = hex.z + dir.dz;
-        if (!areaSet.has(hexKey(nx, ny, nz))) {
+        if (!areaSet.has(makeHexKey(nx, ny, nz))) {
           borders.push(dir.name);
         }
       }
@@ -61,7 +59,7 @@ export function findBonusAreaBorders(hexes: IHex[]) {
         const nx = hex.x + dir.dx;
         const ny = hex.y + dir.dy;
         const nz = hex.z + dir.dz;
-        if (!ownerSet.has(hexKey(nx, ny, nz))) {
+        if (!ownerSet.has(makeHexKey(nx, ny, nz))) {
           borders.push(dir.name);
         }
       }

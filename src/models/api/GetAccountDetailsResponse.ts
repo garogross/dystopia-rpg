@@ -105,5 +105,6 @@ export interface GetAccountDetailsResponse {
       action_points_cost: number;
       influence_points_reward: number;
     };
+    max_action_points_per_turn: number;
   };
 }

@@ -1866,6 +1866,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Hex is attacked",
         [ELanguages.ru]: "Гекс атакован",
       },
+      nextStepInText: {
+        [ELanguages.en]: "Next step in SECONDS sec.",
+        [ELanguages.ru]: "Следующий ход через SECONDS сек.",
+      },
     },
   },
 };

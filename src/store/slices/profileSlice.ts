@@ -240,7 +240,7 @@ export const getAccountDetails =
             influencePointsReward:
               attack_enemy_hex_without_building?.influence_points_reward,
           },
-          actionPointMax: resData.user?.action_points_max,
+          actionPointMax: resData.settings?.max_action_points_per_turn || 0,
         })
       );
 

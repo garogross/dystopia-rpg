@@ -5,6 +5,7 @@ interface Props {
   size: number;
   stroke?: (isBorder: boolean) => string | undefined;
   strokeDash?: (isBorder: boolean) => string | undefined;
+  strokeWidth?: (isBorder: boolean) => number | undefined;
   className?: string;
   borders: EHexDirections[] | undefined;
 }
@@ -36,6 +37,7 @@ const InfluenceMapHexVector: React.FC<Props> = ({
   className,
   stroke,
   strokeDash,
+  strokeWidth,
 }) => {
   return (
     <svg
@@ -72,7 +74,8 @@ const InfluenceMapHexVector: React.FC<Props> = ({
             y2={y2}
             stroke={stroke?.(isBorder)}
             strokeDasharray={strokeDash?.(isBorder)}
-            strokeWidth="2"
+            strokeWidth={strokeWidth?.(isBorder) || 2}
+            strokeLinecap="round"
           />
         );
       })}

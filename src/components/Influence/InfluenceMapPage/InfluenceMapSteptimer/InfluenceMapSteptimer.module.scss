@@ -1,0 +1,24 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.influenceMapSteptimer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1px;
+  background-color: $color-primary;
+  z-index: 5;
+
+  &__inner {
+    height: 100%;
+    padding: 5px 12px;
+    background-color: $color-bg;
+    @include setFont(12px, 400, $font-fam-main, $color-primary);
+  }
+
+  &,
+  &__inner {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 43%, 96% 100%, 6% 100%, 0% 43%);
+  }
+}

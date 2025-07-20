@@ -1,0 +1,147 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.influenceMapHexInfoModal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-width: calc(100% - 40px);
+  z-index: 999;
+
+  &__inner {
+    padding: 10px 10px 15px;
+    background: $color-bg;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__header {
+    @include flexCol(space-between);
+    gap: 10px;
+  }
+  &__headerMain {
+    @include flexCol();
+    gap: 6px;
+  }
+  &__headerHexImgWrapper {
+    width: 22px;
+    height: 22px;
+    background-color: $color-primary;
+    @include flexCol();
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+  &__hexImg {
+    width: 19px;
+    height: 19px;
+  }
+  &__titleText {
+    @include setFont(12px, 800);
+  }
+  &__closeBtn {
+    @include button();
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  &__infoBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  &__gradientInfoBlock {
+    height: 20px;
+    @include flexCol(flex-start);
+    gap: 3px;
+    background: linear-gradient(90deg, $color-primary 0%, #2a1e5400 100%);
+    padding-inline: 5px;
+    min-width: 60%;
+  }
+  &__infoText {
+    @include setFont(12px, 400, $font-fam-main, $color-black);
+  }
+  &__infoTextValue {
+    color: $color-text;
+  }
+  &__neutralText {
+    @include setFont(12px, 400);
+  }
+  &__actionBtnsWrapper {
+    @include flexCol(flex-start);
+    gap: 8px;
+  }
+  &__actionBtn {
+    @include button($color-primary);
+    padding: 1px;
+    height: 22px;
+  }
+  &__actionBtnInner {
+    height: 100%;
+    padding-inline: 16px;
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      rgb(61, 43, 126) 0%,
+      rgb(4, 0, 16) 100%
+    );
+    @include flexCol();
+    gap: 5px;
+    @include setFont(12px, 400);
+    fill: $color-text;
+
+    & svg {
+      fill: inherit;
+      transition: $transition;
+    }
+  }
+  &__actionBtn_active &__actionBtnInner {
+    fill: $color-black;
+    color: $color-black;
+    background: radial-gradient(
+      71.72% 71.72% at 50% 50%,
+      rgb(61, 43, 126) 0%,
+      rgb(90, 65, 181) 100%
+    );
+  }
+
+  &__actionBtn,
+  &__actionBtnInner {
+    clip-path: polygon(
+      7.6% 0%,
+      96.2% 0%,
+      100% 13.3%,
+      100% 86.7%,
+      96.2% 100%,
+      7.6% 100%,
+      3.8% 86.7%,
+      3.8% 13.3%
+    );
+  }
+
+  &__actionDetails {
+    display: flex;
+    flex-direction: column;
+  }
+  &__actionDetailsDotsline {
+    width: 100%;
+
+    & svg {
+      width: 100%;
+    }
+  }
+  &__spendingAP {
+    @include flexCol(flex-start);
+    margin-top: 5px;
+    gap: 3px;
+  }
+  &__actionPointsImg {
+    width: 10px;
+  }
+
+  &__confirmBtn {
+    margin-top: 8px;
+    margin-inline: auto;
+  }
+}

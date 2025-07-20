@@ -1,17 +1,17 @@
 import React from "react";
 
 import styles from "./WrapperWithFrame.module.scss";
-import {ImageFrame,
-ImageFrameBig,
-ImageFrameMd,
-
+import {
+  ImageFrame,
+  ImageFrameBig,
+  ImageFrameMd,
 } from "../icons/RPGGame/Common";
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  className?: string;
   innerClassName?: string;
   withoutBorder?: boolean;
+  frameColor?: string;
   size?: "md" | "lg";
 }
 
@@ -20,24 +20,29 @@ const WrapperWithFrame: React.FC<Props> = ({
   className,
   innerClassName,
   withoutBorder,
+  frameColor,
   size,
+  ...attrs
 }) => {
   return (
     <div className={`${styles.wrapperWithFrame} ${className || ""}`}>
       {withoutBorder ? (
         children
       ) : (
-        <div className={`${styles.wrapperWithFrame__inner} ${innerClassName}`}>
+        <div
+          {...attrs}
+          className={`${styles.wrapperWithFrame__inner} ${innerClassName}`}
+        >
           {children}
         </div>
       )}
       <div className={styles.wrapperWithFrame__frame}>
         {size === "lg" ? (
-          <ImageFrameBig />
+          <ImageFrameBig fill={frameColor} />
         ) : size === "md" ? (
-          <ImageFrameMd />
+          <ImageFrameMd fill={frameColor} />
         ) : (
-          <ImageFrame />
+          <ImageFrame fill={frameColor} />
         )}
       </div>
     </div>
