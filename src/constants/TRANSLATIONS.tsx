@@ -14,6 +14,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Failed to load ad",
       [ELanguages.ru]: "Не удалось загрузить рекламу",
     },
+    noAdText: {
+      [ELanguages.en]: "No ad at this moment",
+      [ELanguages.ru]: "Реклама сейчас недоступна",
+    },
     willBeAvailableFromSecondText: {
       [ELanguages.en]: "Will be available from NUMBER minute",
       [ELanguages.ru]: "Будет доступно через NUMBER минуту",

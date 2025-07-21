@@ -16,7 +16,7 @@ const MIN_PAUSE_MS = 60 * 1000; // 60 секунд
 
 const {
   loadAdText,
-
+  noAdText,
   dailyLimitReachedText,
   hourlyLimitReachedText,
   adAvailableInSecondsText,
@@ -79,7 +79,10 @@ export const useVideoAd = (
     adType || EAdTypes.GIGA_V,
     "",
     onReward,
-    openTooltip
+    (noAd) => {
+      if (noAd) setTooltipText(noAdText[language]);
+      openTooltip();
+    }
   );
 
   async function canShowVideoAd() {
