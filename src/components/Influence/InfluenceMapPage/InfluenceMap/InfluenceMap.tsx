@@ -5,10 +5,12 @@ import DragAndZoomProvider, {
 } from "../../../../providers/DragAndZoomProvider";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { IHex } from "../../../../models/Influence/IHex";
-import { getMap } from "../../../../store/slices/influence/mapSlice";
+import {
+  getMap,
+  getPlayerColors,
+} from "../../../../store/slices/influence/mapSlice";
 import InfluenceMapControllModal from "../InfluenceMapControllModal/InfluenceMapControllModal";
 import { getHexPixelPositions } from "../../../../utils/influence/getHexPixelPositions";
-import { generateRandomColorsForHexOwners } from "../../../../utils/influence/generateRandomColorsForHexOwners";
 import InfluenceMapBonusAreas from "../InfluenceMapBonusAreas/InfluenceMapBonusAreas";
 import InfluenceMapHexVector from "../InfluenceMapHexVector/InfluenceMapHexVector";
 import { findBonusAreaBorders } from "../../../../utils/influence/findBonusAreaBorders";
@@ -16,7 +18,7 @@ import InfluenceMapSteptimer from "../InfluenceMapSteptimer/InfluenceMapSteptime
 import InfluenceMapHexInfoModal from "../InfluenceMapHexVector/InfluenceMapHexInfoModal";
 import { makeHexKey } from "../../../../utils/influence/makeHexKey";
 
-const COLOR_OPACITY = "0.44";
+const COLOR_OPACITY = "70"; // in hex
 const BONUS_AREA_BORDER_COLOR = "#7f5cff";
 
 const HEX_SIZE = 24;
@@ -24,8 +26,10 @@ const HEX_SIZE = 24;
 const InfluenceMap = () => {
   const dispatch = useAppDispatch();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
-  const tgId = useAppSelector((state) => state.profile.tgId);
   const hexes = useAppSelector((state) => state.influence.map.hexes);
+  const playerColors = useAppSelector(
+    (state) => state.influence.map.playerColors
+  );
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleHexes, setVisibleHexes] = useState<IHex[]>([]);
@@ -37,9 +41,6 @@ const InfluenceMap = () => {
 
   const hexesWithBorders = findBonusAreaBorders(visibleHexes);
 
-  const [ownerIdColors, setOwnerIdColors] = useState<Record<string, string>>(
-    {}
-  );
   const [selectedHexId, setSelectedHexId] = useState<string | null>(null);
   const [infoMoadlOpened, setInfoMoadlOpened] = useState(Boolean);
 
@@ -48,18 +49,12 @@ const InfluenceMap = () => {
     visibleHexes.find(({ x, y, z }) => makeHexKey(x, y, z) === selectedHexId);
 
   useEffect(() => {
-    dispatch(getMap({ id: "1" }));
+    (async () => {
+      await dispatch(getMap({ id: "1" }));
+      await dispatch(getPlayerColors({ id: "1" }));
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (hexes && !Object.keys(ownerIdColors).length) {
-      setOwnerIdColors(
-        generateRandomColorsForHexOwners(hexes, COLOR_OPACITY, tgId)
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hexes]);
 
   useEffect(() => {
     if (gameInited && containerRef.current) {
@@ -128,7 +123,7 @@ const InfluenceMap = () => {
                 <div
                   style={{
                     backgroundColor: owner_id
-                      ? ownerIdColors[owner_id]
+                      ? playerColors[owner_id] + COLOR_OPACITY
                       : undefined,
                   }}
                   className={`${styles.influenceMap__hexInner} ${
@@ -149,7 +144,7 @@ const InfluenceMap = () => {
                   className={styles.influenceMap__ownerAreaStroke}
                   stroke={(isBorder) =>
                     isBorder && owner_id
-                      ? ownerIdColors[owner_id]?.replace(COLOR_OPACITY, "1")
+                      ? playerColors[owner_id]
                       : "transparent"
                   }
                   strokeWidth={(isBorder) => (isBorder ? 5 : undefined)}
@@ -168,7 +163,7 @@ const InfluenceMap = () => {
           show={infoMoadlOpened}
           color={
             selectedHex.owner_id
-              ? ownerIdColors[selectedHex.owner_id]
+              ? playerColors[selectedHex.owner_id]
               : undefined
           }
           onClose={() => setInfoMoadlOpened(false)}

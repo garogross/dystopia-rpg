@@ -7,11 +7,14 @@ import {
 import { fetchRequest } from "../../tools/fetchTools";
 import { RootState } from "../../store";
 
+const MY_COLOR = `#0f9e60`;
+
 export interface MapState {
   nextAttackTs: number;
   mapId: number | null;
   radius: number;
   hexes: IHex[];
+  playerColors: Record<string, string>;
 }
 
 const initialState: MapState = {
@@ -19,11 +22,12 @@ const initialState: MapState = {
   nextAttackTs: 0,
   radius: 0,
   hexes: [],
+  playerColors: {},
 };
 
 const getMapUrl = "/influence/map/";
 export const getMap = createAsyncThunk<GetMapResponse, { id: string }>(
-  "activity/getMap",
+  "map/getMap",
   async (payload, { rejectWithValue }) => {
     try {
       const resData = await fetchRequest<GetMapResponse>(
@@ -51,7 +55,7 @@ export const attackHex = createAsyncThunk<
     y: number;
     z: number;
   }
->("activity/attackHex", async (payload, { rejectWithValue, getState }) => {
+>("map/attackHex", async (payload, { rejectWithValue, getState }) => {
   try {
     const resData = await fetchRequest<AttackHexResponse>(
       attackHexUrl,
@@ -65,6 +69,25 @@ export const attackHex = createAsyncThunk<
     );
     const tgId = (getState() as RootState).profile.tgId;
     return { ...resData, x: payload.x, y: payload.y, z: payload.z, tgId };
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+const getPlayerColorsUrl = "/influence/player_colors/";
+export const getPlayerColors = createAsyncThunk<
+  Record<string, string>,
+  {
+    id: string;
+  }
+>("map/getPlayerColors", async (payload, { rejectWithValue, getState }) => {
+  try {
+    const resData = await fetchRequest<Record<string, string>>(
+      `${getPlayerColorsUrl}?map_id=${payload.id}`
+    );
+    const tgId = (getState() as RootState).profile.tgId;
+
+    return { ...resData, [tgId.toString()]: MY_COLOR };
   } catch (error: any) {
     console.error("error", error);
     return rejectWithValue(error);
@@ -84,6 +107,9 @@ export const mapSlice = createSlice({
       state.radius = action.payload.radius;
       state.hexes = action.payload.hexes;
       state.mapId = action.payload.map_id;
+    });
+    builder.addCase(getPlayerColors.fulfilled, (state, action) => {
+      state.playerColors = action.payload;
     });
     builder.addCase(attackHex.fulfilled, (state, { payload }) => {
       if (payload.captured) {
