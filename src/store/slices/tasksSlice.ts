@@ -107,7 +107,7 @@ export const claimTraffyReward = createAsyncThunk<
 const claimTaddyRewardUrl = "/reward/taddy/";
 export const claimTaddyReward = createAsyncThunk<
   ClaimTaddyRewardResponse,
-  { id: string }
+  { id: string; task_type?: "exchange" | "video" }
 >("tasks/claimTaddyReward", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<ClaimTaddyRewardResponse>(
@@ -115,7 +115,7 @@ export const claimTaddyReward = createAsyncThunk<
       "POST",
       {
         identifier: payload.id,
-        task_type: "exchange",
+        task_type: payload.task_type || "exchange",
       }
     );
 
