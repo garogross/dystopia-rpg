@@ -31,6 +31,7 @@ export const TaddyProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (!tg.initDataUnsafe.user?.id) return;
     taddy.init(taddyPublicId);
+    console.log("taddy.init");
 
     taddy.ready();
     const exchangeInstance = taddy.exchange();

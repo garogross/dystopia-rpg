@@ -22,9 +22,12 @@ const {
   adAvailableInSecondsText,
 } = TRANSLATIONS.errors;
 const { rewardReceivedText } = TRANSLATIONS.loyality.tabs.supportProject;
+const { somethingWentWrong } = TRANSLATIONS.errors;
 
-async function getVideoAdViewTimestamps(): Promise<number[]> {
-  const raw = await getLSItem(ELSProps.videoAdViewTimestamps);
+async function getVideoAdViewTimestamps(index?: number): Promise<number[]> {
+  const raw = await getLSItem(
+    index ? ELSProps.videoAdViewTimestamps2 : ELSProps.videoAdViewTimestamps
+  );
   if (!raw) return [];
   try {
     if (typeof raw === "string") return JSON.parse(raw);
@@ -35,13 +38,18 @@ async function getVideoAdViewTimestamps(): Promise<number[]> {
   }
 }
 
-function saveVideoAdViewTimestamps(timestamps: number[]) {
-  setLSItem(ELSProps.videoAdViewTimestamps, timestamps);
+function saveVideoAdViewTimestamps(timestamps: number[], index?: number) {
+  setLSItem(
+    index ? ELSProps.videoAdViewTimestamps2 : ELSProps.videoAdViewTimestamps,
+    timestamps
+  );
 }
 
 export const useVideoAd = (
-  scsClb?: () => void,
-  speedUpCompleteText?: TranslationItemType
+  scsClb?: (id?: string) => void,
+  speedUpCompleteText?: TranslationItemType,
+  adType?: EAdTypes,
+  index?: number
 ) => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
@@ -51,19 +59,24 @@ export const useVideoAd = (
 
   const onReward = async () => {
     // Сохраняем новый просмотр
-    const now = Date.now();
-    let timestamps = await getVideoAdViewTimestamps();
-    timestamps = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
-    timestamps.push(now);
-    saveVideoAdViewTimestamps(timestamps);
-    if (scsClb) scsClb();
-    else dispatch(claimVideoReward({ id: tgId.toString() }));
-    setTooltipText((speedUpCompleteText || rewardReceivedText)[language]);
-    openTooltip();
+    try {
+      const now = Date.now();
+      let timestamps = await getVideoAdViewTimestamps(index);
+      timestamps = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
+      timestamps.push(now);
+      saveVideoAdViewTimestamps(timestamps, index);
+      if (scsClb) await scsClb();
+      else await dispatch(claimVideoReward({ id: tgId.toString() }));
+      setTooltipText((speedUpCompleteText || rewardReceivedText)[language]);
+    } catch (error) {
+      setTooltipText(somethingWentWrong[language]);
+    } finally {
+      openTooltip();
+    }
   };
 
   const onShowOnClickaAd = useGlobalAdController(
-    EAdTypes.GIGA_V,
+    adType || EAdTypes.GIGA_V,
     "",
     onReward,
     openTooltip

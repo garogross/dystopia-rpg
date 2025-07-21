@@ -1,3 +1,4 @@
+import { EAdTypes } from "../../../../constants/EAdTypes";
 import { ELanguages } from "../../../../constants/ELanguages";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useVideoAd } from "../../../../hooks/useVideoAd";
@@ -12,11 +13,22 @@ const { watchAdAndGetCpText, watchAdText } = TRANSLATIONS.common;
 const LoyalitySupportProjectVideoTaskItem = ({
   gameInited,
   language,
+  scsClb,
+  adType,
+  index,
 }: {
   language: ELanguages;
   gameInited: boolean;
+  scsClb?: (id?: string) => void;
+  adType?: EAdTypes;
+  index?: number;
 }) => {
-  const { onShowAd, showTooltip, tooltipText } = useVideoAd();
+  const { onShowAd, showTooltip, tooltipText } = useVideoAd(
+    scsClb,
+    undefined,
+    adType,
+    index
+  );
 
   return (
     <>

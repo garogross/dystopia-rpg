@@ -6,7 +6,7 @@ import { AdsgramController } from "../types/AdsgramController";
 export const useGlobalAdController = (
   type: EAdTypes,
   id: string,
-  scsClb?: () => void,
+  scsClb?: (id?: string) => void,
   errClb?: () => void,
   dependencies?: unknown[]
 ) => {
@@ -84,6 +84,18 @@ export const useGlobalAdController = (
             .catch(() => {
               errClb?.();
             });
+          break;
+        }
+        case EAdTypes.TADDY_V: {
+          window.Taddy.ads()
+            .interstitial({
+              onClosed: () => console.log("Объявление закрыто"),
+              onViewThrough: (id: string) => scsClb?.(id),
+            })
+            .then((success: boolean) => {
+              // success содержит признак того, что объявление было показано
+            })
+            .catch((err) => console.error("error"));
           break;
         }
         default: {
