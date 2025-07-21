@@ -7,7 +7,7 @@ export const useGlobalAdController = (
   type: EAdTypes,
   id: string,
   scsClb?: (id?: string) => void,
-  errClb?: () => void,
+  errClb?: (noAds?: boolean) => void,
   dependencies?: unknown[]
 ) => {
   const [onclickaAd, setOnclickaAd] = useState<any>(null);
@@ -93,7 +93,7 @@ export const useGlobalAdController = (
               onViewThrough: (id: string) => scsClb?.(id),
             })
             .then((success: boolean) => {
-              // success содержит признак того, что объявление было показано
+              if (!success) errClb?.(true);
             })
             .catch((err) => console.error("error"));
           break;
