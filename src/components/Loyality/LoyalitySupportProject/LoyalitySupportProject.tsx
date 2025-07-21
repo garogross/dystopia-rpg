@@ -28,7 +28,6 @@ import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraff
 import { useTooltip } from "../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import Tooltip from "../../layout/Tooltip/Tooltip";
-import { EAdTypes } from "../../../constants/EAdTypes";
 
 const { taskNotCompletedText, taskCompletedText } =
   TRANSLATIONS.loyality.supportProject;
@@ -153,7 +152,7 @@ const LoyalitySupportProject = () => {
           language={language}
           gameInited={gameInited}
         />
-        <LoyalitySupportProjectVideoTaskItem
+        {/* <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
           scsClb={(id) => {
@@ -161,7 +160,7 @@ const LoyalitySupportProject = () => {
           }}
           adType={EAdTypes.TADDY_V}
           index={1}
-        />
+        /> */}
         {taddyTasks?.map((task, index) => (
           <LoyalitySupportProjectTaskItem
             key={task.id}
