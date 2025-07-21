@@ -90,7 +90,7 @@ export const useGlobalAdController = (
           window.Taddy.ads()
             .interstitial({
               onClosed: () => console.log("Объявление закрыто"),
-              onViewThrough: (id: string) => scsClb?.(id),
+              onViewThrough: (id: string) => scsClb?.(id || "id"),
             })
             .then((success: boolean) => {
               if (!success) errClb?.(true);
