@@ -57,7 +57,7 @@ export const useVideoAd = (
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(loadAdText[language]);
 
-  const onReward = async () => {
+  const onReward = async (id?: string) => {
     // Сохраняем новый просмотр
     try {
       const now = Date.now();
@@ -65,7 +65,7 @@ export const useVideoAd = (
       timestamps = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
       timestamps.push(now);
       saveVideoAdViewTimestamps(timestamps, index);
-      if (scsClb) await scsClb();
+      if (scsClb) await scsClb(id);
       else await dispatch(claimVideoReward({ id: tgId.toString() }));
       setTooltipText((speedUpCompleteText || rewardReceivedText)[language]);
     } catch (error) {
@@ -87,7 +87,7 @@ export const useVideoAd = (
 
   async function canShowVideoAd() {
     const now = Date.now();
-    const timestamps = await getVideoAdViewTimestamps();
+    const timestamps = await getVideoAdViewTimestamps(index);
     const last24h = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000);
     const lastHour = timestamps.filter((ts) => now - ts < 60 * 60 * 1000);
     const last = timestamps.length > 0 ? timestamps[timestamps.length - 1] : 0;
