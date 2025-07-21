@@ -22,7 +22,6 @@ import {
   DemolishIcon,
   PersonIcon,
   RepairIcon,
-  SqoutIcon,
   UpdateBuildingIcon,
 } from "../../../layout/icons/Influence/InfluenceMaphexInfoModal";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
@@ -158,11 +157,11 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
       condition: hex.owner_id !== tgId,
       onclick: onAttack,
     },
-    {
-      text: "Разведка",
-      icon: <SqoutIcon />,
-      condition: hex.owner_id !== tgId,
-    },
+    // {
+    //   text: "Разведка",
+    //   icon: <SqoutIcon />,
+    //   condition: hex.owner_id !== tgId,
+    // },
   ];
 
   const activeBtn = buttons.find((btn) => btn.text === selectedAction);
@@ -197,7 +196,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                     Координаты: X{hex.x}-Y{hex.y}-Z{hex.z}
                   </h6>
                 </div>
-                <HeaderBtn type={"close"} fill={color} />
+                <HeaderBtn type={"close"} fill={color} onClick={onClose} />
               </div>
               <div className={styles.influenceMapHexInfoModal__info}>
                 {hex.owner_id ? (
