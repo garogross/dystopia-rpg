@@ -49,9 +49,9 @@ const GameWrapper: FC<Props> = ({
   }, [appLoading, loaderTimerFinished]);
 
   useEffect(() => {
-    const fetchData = async (initData: string) => {
+    const fetchData = async (initData: string, avatar?: string) => {
       try {
-        await dispatch(authorizeUser(initData, mode));
+        await dispatch(authorizeUser(initData, avatar, mode));
       } catch (error) {
         console.error(error);
       } finally {
@@ -59,7 +59,7 @@ const GameWrapper: FC<Props> = ({
       }
     };
     if (!gameInited) {
-      fetchData(tg.initData);
+      fetchData(tg.initData, tg.initDataUnsafe.user?.photo_url);
     } else {
       setLoading(false);
     }
