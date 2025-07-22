@@ -9,6 +9,7 @@ import Tooltip from "../../../layout/Tooltip/Tooltip";
 import styles from "./LoyalitySupportProjectTaskItem.module.scss";
 
 const { watchAdAndGetCpText, watchAdText } = TRANSLATIONS.common;
+const { perDayText } = TRANSLATIONS.loyality.supportProject;
 
 const LoyalitySupportProjectVideoTaskItem = ({
   gameInited,
@@ -23,12 +24,8 @@ const LoyalitySupportProjectVideoTaskItem = ({
   adType?: EAdTypes;
   index?: number;
 }) => {
-  const { onShowAd, showTooltip, tooltipText } = useVideoAd(
-    scsClb,
-    undefined,
-    adType,
-    index
-  );
+  const { onShowAd, showTooltip, tooltipText, maxPerDay, viewsInDay, loading } =
+    useVideoAd(scsClb, undefined, adType, index);
 
   return (
     <>
@@ -43,10 +40,14 @@ const LoyalitySupportProjectVideoTaskItem = ({
               <p className={styles.loyalitySupportProjectTaskItem__name}>
                 {watchAdAndGetCpText[language]}
               </p>
+              <p className={styles.loyalitySupportProjectTaskItem__description}>
+                {viewsInDay}/{maxPerDay} {perDayText[language]}
+              </p>
             </div>
             <div className={styles.loyalitySupportProjectTaskItem__actions}>
               <button
                 onClick={onShowAd}
+                disabled={loading}
                 className={styles.loyalitySupportProjectTaskItem__getBtn}
               >
                 <div

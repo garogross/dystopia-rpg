@@ -1142,6 +1142,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Support the sponsor's project and get 5 CP",
         [ELanguages.ru]: "Поддержите проект спонсора и получите 5 CP",
       },
+      perDayText: {
+        [ELanguages.en]: "per day",
+        [ELanguages.ru]: "в день",
+      },
     },
     collectReward: {
       collectRewardText: {
