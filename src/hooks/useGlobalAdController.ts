@@ -11,6 +11,7 @@ export const useGlobalAdController = (
   dependencies?: unknown[]
 ) => {
   const [onclickaAd, setOnclickaAd] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   const tgId = useAppSelector((state) => state.profile.tgId);
 
@@ -39,20 +40,14 @@ export const useGlobalAdController = (
     dependencies ? [...dependencies, tgId] : [tgId]
   );
 
-  const onShowAd = () => {
-    const showCurAd = () => {
+  const onShowAd = async () => {
+    setLoading(true);
+    try {
       switch (type) {
         case EAdTypes.ADSGRAM_V: {
           if (AdController) {
-            AdController.show()
-              .then((result: { done: boolean }) => {
-                if (result.done) {
-                  onSuccess();
-                }
-              })
-              .catch((result: unknown) => {
-                console.error("err", result);
-              });
+            const result = await AdController.show();
+            if (result.done) onSuccess();
           }
           break;
         }
@@ -61,15 +56,8 @@ export const useGlobalAdController = (
             errClb?.();
             return;
           }
-          window
-            .showGiga()
-            .then(() => {
-              onSuccess();
-            })
-            .catch((e) => {
-              errClb?.();
-            });
-
+          await window.showGiga();
+          onSuccess();
           break;
         }
         case EAdTypes.ONCLICKA_V: {
@@ -77,35 +65,28 @@ export const useGlobalAdController = (
             errClb?.();
             return;
           }
-          onclickaAd?.()
-            .then(() => {
-              onSuccess();
-            })
-            .catch(() => {
-              errClb?.();
-            });
+          await onclickaAd();
+          onSuccess();
           break;
         }
         case EAdTypes.TADDY_V: {
-          window.Taddy.ads()
-            .interstitial({
-              onClosed: () => console.log("Объявление закрыто"),
-              onViewThrough: (id: string) => scsClb?.(id || "id"),
-            })
-            .then((success: boolean) => {
-              if (!success) errClb?.(true);
-            })
-            .catch((err) => console.error("error"));
+          const success = await window.Taddy.ads().interstitial({
+            onClosed: () => console.log("Объявление закрыто"),
+            onViewThrough: (id: string) => scsClb?.(id || "id"),
+          });
+          if (!success) errClb?.(true);
           break;
         }
-        default: {
+        default:
           break;
-        }
       }
-    };
-
-    showCurAd();
+    } catch (e) {
+      errClb?.();
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return onShowAd;
+  return { onShowAd, loading };
 };
