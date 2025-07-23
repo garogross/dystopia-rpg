@@ -1,6 +1,6 @@
 import React from "react";
 
-export const RPGGameClanEditIcon = () => {
+export const EditIcon = () => {
   return (
     <svg
       width="12"
@@ -52,4 +52,3 @@ export const RPGGameClanEditIcon = () => {
     </svg>
   );
 };
-

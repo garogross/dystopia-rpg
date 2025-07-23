@@ -1,13 +1,13 @@
 import styles from "./RPGGameClanHeader.module.scss";
 import WrapperWithFrame from "../../../../layout/WrapperWithFrame/WrapperWithFrame";
-import {RPGGameClanEditIcon} from "../../../../layout/icons/RPGGame/RPGGameClanPage/RPGGameClanAbout";
-import {RPGGameClanLeaveIcon} from "../../../../layout/icons/RPGGame/RPGGameClanPage";
+import { RPGGameClanLeaveIcon } from "../../../../layout/icons/RPGGame/RPGGameClanPage";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../../../hooks/redux";
 import React from "react";
 import { IClan } from "../../../../../models/IClan";
+import { EditIcon } from "../../../../layout/icons/Common";
 
 interface Props {
   clan?: {
@@ -43,7 +43,7 @@ const RPGGameClanHeader: React.FC<Props> = ({ clan, descriptionText }) => {
                     <h2 className={styles.rpgGameClanHeader__nameText}>
                       <span>{clan.name}</span>
                       <button className={styles.rpgGameClanHeader__editBtn}>
-                        <RPGGameClanEditIcon />
+                        <EditIcon />
                       </button>
                     </h2>
                     <h6 className={styles.rpgGameClanHeader__levelText}>
@@ -51,7 +51,9 @@ const RPGGameClanHeader: React.FC<Props> = ({ clan, descriptionText }) => {
                     </h6>
                   </div>
                   <button className={styles.rpgGameClanHeader__leaveClanBtn}>
-                    <div className={styles.rpgGameClanHeader__leaveClanBtnInner}>
+                    <div
+                      className={styles.rpgGameClanHeader__leaveClanBtnInner}
+                    >
                       <RPGGameClanLeaveIcon />
                       <span>
                         {clan.id === userClan?.id

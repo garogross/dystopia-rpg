@@ -1,4 +1,3 @@
-export { RPGGameClanEditIcon } from "./RPGGameClanEditIcon";
 export { RPGGameClanEditMessageIcon } from "./RPGGameClanEditMessageIcon";
 export { RPGGameClanEditSettingsIcon } from "./RPGGameClanEditSettingsIcon";
 export { RPGGameClanHistoryIcon } from "./RPGGameClanHistoryIcon";

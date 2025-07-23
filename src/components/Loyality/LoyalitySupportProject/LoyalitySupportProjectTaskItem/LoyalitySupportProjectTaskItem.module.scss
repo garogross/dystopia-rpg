@@ -16,7 +16,7 @@
   &__inner {
     @include flexCol();
     gap: 10px;
-    background: #090419;
+    background: $color-darkBlueBg;
     padding: 7px;
   }
   &__main {
@@ -95,7 +95,7 @@
   }
 
   &__adsgramWrapper {
-    background: #090419;
+    background: $color-darkBlueBg;
     padding: 7px;
   }
 }

@@ -1,2 +1,67 @@
 @import "../../../../styles/mixins";
 @import "../../../../styles/vars";
+
+.influencePlayer {
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid $color-primary;
+    background-color: $color-darkBlueBg;
+  }
+  &__mainHeader {
+    @include flexCol();
+    height: 36px;
+    margin-top: -18px;
+  }
+  &__mainAvatar {
+  }
+  &__mainAvatarImg {
+  }
+  &__mainHeaderContent {
+  }
+  &__nameEditBtn {
+  }
+  &__dropdownArrowWrapper {
+  }
+  &__mainDropdownContent {
+  }
+  &__mainDropdownContentCol {
+  }
+  &__boldText {
+  }
+  &__valueText {
+  }
+  &__dropdown {
+  }
+  &__dropdownBtn {
+  }
+  &__dropdownBtnDotsline {
+  }
+  &__dropdownContent {
+  }
+  &__checkBox {
+  }
+  &__checkBoxInput {
+  }
+  &__checkBoxLabel {
+  }
+  &__radioList {
+  }
+  &__radioListRadio {
+  }
+  &__radioListInput {
+  }
+  &__radioListLabel {
+  }
+  &__btn {
+  }
+  &__btnInner {
+  }
+}

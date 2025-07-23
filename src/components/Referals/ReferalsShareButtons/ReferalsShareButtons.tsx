@@ -5,11 +5,9 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { useAppSelector } from "../../../hooks/redux";
-import {
-  ReferalsCopyIcon,
-  ReferalsInviteIcon,
-} from "../../layout/icons/Referals";
+import { ReferalsInviteIcon } from "../../layout/icons/Referals";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { CopyIcon } from "../../layout/icons/Common";
 
 const { copyLinkText, copiedText, inviteFriendText } =
   TRANSLATIONS.referals.shareButtons;
@@ -59,7 +57,7 @@ const ReferalsShareButtons = () => {
         className={styles.referalsShareButtons__button}
       >
         <div className={styles.referalsShareButtons__buttonInner}>
-          <ReferalsCopyIcon />
+          <CopyIcon />
           <span>{(copied ? copiedText : copyLinkText)[language]}</span>
         </div>
       </button>
