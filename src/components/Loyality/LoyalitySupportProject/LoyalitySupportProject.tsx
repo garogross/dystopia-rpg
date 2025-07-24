@@ -90,10 +90,10 @@ const LoyalitySupportProject = () => {
       };
 
       window.bQuestInstance = new window.bQuest()
-        .withElementIdAsModal("modal")
-        .mount()
-        .onReward(callback)
-        .openModal();
+        ?.withElementIdAsModal("modal")
+        ?.mount()
+        ?.onReward(callback)
+        ?.openModal();
     }
   };
 
@@ -105,9 +105,9 @@ const LoyalitySupportProject = () => {
 
   const onSubscribe = (item: FeedItem) => {
     exchange?.open(item).then(() => {
-      dispatch(claimTaddyReward({ id: item.id.toString() }))
+      dispatch(claimTaddyReward({ id: item?.id?.toString() }))
         .unwrap()
-        .then(() => removeTaddyTask(item.id));
+        .then(() => removeTaddyTask(item?.id));
     });
   };
 
@@ -162,8 +162,8 @@ const LoyalitySupportProject = () => {
         />
         {taddyTasks?.map((task, index) => (
           <LoyalitySupportProjectTaskItem
-            key={task.id}
-            task={{ ...task, taddyTasktype: task.type, link: task.link }}
+            key={task?.id}
+            task={{ ...task, taddyTasktype: task?.type, link: task?.link }}
             index={index}
             gameInited={gameInited}
             language={language}
@@ -184,7 +184,7 @@ const LoyalitySupportProject = () => {
                 description: description,
                 price: reward,
                 subscription: !!subscription,
-                byLink: !target_url.includes("t.me"),
+                byLink: target_url?.includes("t.me"),
                 link: target_url,
               }}
               index={index}

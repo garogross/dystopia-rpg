@@ -23,21 +23,21 @@ const initialState: TasksState = {
 };
 
 const getPromoTasksUrl = "/promo_tasks/";
-export const getPromoTasks = createAsyncThunk<
-  { tasks: IPromoTask[] },
-  undefined
->("tasks/getPromoTasks", async (_payload, { rejectWithValue }) => {
-  try {
-    const resData = await fetchRequest<{ tasks: IPromoTask[] }>(
-      getPromoTasksUrl
-    );
+export const getPromoTasks = createAsyncThunk<IPromoTask[], undefined>(
+  "tasks/getPromoTasks",
+  async (_payload, { rejectWithValue }) => {
+    try {
+      const resData = await fetchRequest<{ tasks: IPromoTask[] }>(
+        getPromoTasksUrl
+      );
 
-    return resData || [];
-  } catch (error: any) {
-    console.error("error", error);
-    return rejectWithValue(error);
+      return resData?.tasks || [];
+    } catch (error: any) {
+      console.error("error", error);
+      return rejectWithValue(error);
+    }
   }
-});
+);
 const getPromoTaskRewardUrl = "/promo_tasks/reward/";
 export const getPromoTaskReward = createAsyncThunk<
   GetPromoTaskRewardResponse,
@@ -70,9 +70,9 @@ export const claimBarzhaReward = createAsyncThunk<
       claimBarzhaRewardUrl,
       "POST",
       {
-        notification_uuid: payload.notification_uuid,
-        reward: payload.reward,
-        task_type: payload.task_type,
+        notification_uuid: payload?.notification_uuid,
+        reward: payload?.reward,
+        task_type: payload?.task_type,
       }
     );
 
@@ -209,7 +209,7 @@ export const claimTadsReward = createAsyncThunk<
       claimTadsRewardUrl,
       "POST",
       {
-        task_id: payload.id.toString(),
+        task_id: payload.id?.toString(),
       }
     );
 
@@ -270,7 +270,7 @@ export const tasksSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getPromoTasks.fulfilled, (state, action) => {
-      state.promoTasks = action.payload.tasks;
+      state.promoTasks = action.payload;
     });
     builder.addCase(getPromoTaskReward.fulfilled, (state, { payload }) => {
       state.promoTasks = state.promoTasks.filter(
