@@ -7,8 +7,6 @@ export const DotslineLong = ({
 }) => {
   return (
     <svg
-      width="189"
-      height="10"
       viewBox="0 0 189 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

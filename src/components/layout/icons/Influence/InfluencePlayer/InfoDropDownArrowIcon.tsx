@@ -3,9 +3,9 @@ import React from "react";
 export const InfoDropDownArrowIcon = ({ rotated }: { rotated?: boolean }) => {
   return (
     <svg
-      width="20"
-      height="18"
-      viewBox="0 0 20 18"
+      width="12"
+      height="10"
+      viewBox="0 0 12 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{
@@ -13,22 +13,24 @@ export const InfoDropDownArrowIcon = ({ rotated }: { rotated?: boolean }) => {
         transition: "transform 0.2s ease",
       }}
     >
-      <g filter="url(#filter0_d_2629_22281)">
-        <path
-          d="M10 1L5.66987 8.5H14.3301L10 1Z"
-          fill="url(#paint0_radial_2629_22281)"
-        />
-        <path
-          d="M10 0.5C9.82143 0.5 9.65672 0.5954 9.56738 0.75L5.2373 8.25C5.14799 8.4047 5.14799 8.5953 5.2373 8.75C5.32665 8.90459 5.49136 9 5.66992 9H14.3301C14.5086 9 14.6734 8.90459 14.7627 8.75C14.852 8.5953 14.852 8.4047 14.7627 8.25L10.4326 0.75L10.3965 0.695312C10.3026 0.573142 10.1565 0.5 10 0.5Z"
-          stroke="#7F5CFF"
-          strokeLinejoin="round"
-        />
+      <g clipPath="url(#clip0_4010_29600)">
+        <g filter="url(#filter0_d_4010_29600)">
+          <path
+            d="M6 9L10.3301 1.5H1.66987L6 9Z"
+            fill="url(#paint0_radial_4010_29600)"
+          />
+          <path
+            d="M6 9.5C6.17857 9.5 6.34328 9.4046 6.43262 9.25L10.7627 1.75C10.852 1.5953 10.852 1.4047 10.7627 1.25C10.6734 1.09541 10.5086 1 10.3301 1H1.66992C1.49136 1 1.32665 1.09541 1.2373 1.25C1.14799 1.4047 1.14799 1.5953 1.2373 1.75L5.56738 9.25L5.60352 9.30469C5.69737 9.42686 5.84349 9.5 6 9.5Z"
+            stroke="#7F5CFF"
+            strokeLinejoin="round"
+          />
+        </g>
       </g>
       <defs>
         <filter
-          id="filter0_d_2629_22281"
-          x="0.669922"
-          y="0"
+          id="filter0_d_4010_29600"
+          x="-3.33008"
+          y="0.5"
           width="18.6602"
           height="17.5"
           filterUnits="userSpaceOnUse"
@@ -51,26 +53,29 @@ export const InfoDropDownArrowIcon = ({ rotated }: { rotated?: boolean }) => {
           <feBlend
             mode="normal"
             in2="BackgroundImageFix"
-            result="effect1_dropShadow_2629_22281"
+            result="effect1_dropShadow_4010_29600"
           />
           <feBlend
             mode="normal"
             in="SourceGraphic"
-            in2="effect1_dropShadow_2629_22281"
+            in2="effect1_dropShadow_4010_29600"
             result="shape"
           />
         </filter>
         <radialGradient
-          id="paint0_radial_2629_22281"
+          id="paint0_radial_4010_29600"
           cx="0"
           cy="0"
           r="1"
           gradientUnits="userSpaceOnUse"
-          gradientTransform="translate(10 6) rotate(90) scale(8.88889)"
+          gradientTransform="translate(6 4) rotate(-90) scale(8.88889)"
         >
           <stop stopColor="#3D2B7E" />
           <stop offset="1" stopColor="#040010" />
         </radialGradient>
+        <clipPath id="clip0_4010_29600">
+          <rect width="12" height="10" fill="white" />
+        </clipPath>
       </defs>
     </svg>
   );
