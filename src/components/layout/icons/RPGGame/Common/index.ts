@@ -1,4 +1,3 @@
-export { ArrowIcon } from "./ArrowIcon";
 export { CloseIcon } from "./CloseIcon";
 export { CubeArrowIcon } from "./CubeArrowIcon";
 export { DotsLine } from "./DotsLine";

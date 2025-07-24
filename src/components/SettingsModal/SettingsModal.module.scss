@@ -62,5 +62,6 @@
   &__link {
     @include setFont(16px, 400, $font-fam-main, $color-primary);
     white-space: nowrap;
+    @include button();
   }
 }

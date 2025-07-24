@@ -18,7 +18,7 @@ import { formatNumber } from "../../../utils/formatNumber";
 import SettingsModal from "../../SettingsModal/SettingsModal";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 
-const { getPremiumText } = TRANSLATIONS.miniGames.header;
+const { getPremiumText } = TRANSLATIONS.common;
 
 const MiniGamesHeader = () => {
   const navigate = useNavigate();

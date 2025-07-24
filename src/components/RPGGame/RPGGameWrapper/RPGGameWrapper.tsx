@@ -9,7 +9,7 @@ const RPGGameWrapper = () => {
       header={<RPGGameHeader />}
       bottomNavbar={<BottomNavbar />}
       images={rpgGameImages}
-      gameInited={false}
+      gameInited={true}
       offsetSize={195}
     />
   );

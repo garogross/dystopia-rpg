@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import styles from "./RPGGameCharacterTrainingAccordionList.module.scss";
-import { PlusIcon, ArrowIcon} from "../../../../layout/icons/RPGGame/Common";
-import {RPGGameCharacterTrainingUpgradeIcon,RPGGameCharacterTrainingDotline} from "../../../../layout/icons/RPGGame/RPGGameCharacterPage/RPGGameCharacterTraining/development";
+import { ArrowIcon } from "../../../../layout/icons/Common";
+import { PlusIcon } from "../../../../layout/icons/RPGGame/Common";
+import {
+  RPGGameCharacterTrainingUpgradeIcon,
+  RPGGameCharacterTrainingDotline,
+} from "../../../../layout/icons/RPGGame/RPGGameCharacterPage/RPGGameCharacterTraining/development";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../../providers/TransitionProvider";
@@ -88,7 +92,9 @@ export const RPGGameCharacterTrainingAccordionList: React.FC<Props> = ({
             )}
           </div>
           <TransitionProvider
-            className={styles.rpgGameCharacterTrainingAccordionList__dropdownList}
+            className={
+              styles.rpgGameCharacterTrainingAccordionList__dropdownList
+            }
             inProp={openSections.includes(item.name)}
             height={25 * item.items.length + 10 * (item.items.length - 1)}
             style={TransitionStyleTypes.height}

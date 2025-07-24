@@ -28,10 +28,14 @@ import {
 } from "../../../router/constants";
 import { EStats } from "../../../constants/EStats";
 import StatImg from "../../layout/StatImg/StatImg";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+
+const { getPremiumText } = TRANSLATIONS.common;
 
 const RPGGameHeader: React.FC = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
 
   const linkActiveClass =
     (className?: string) =>
@@ -83,7 +87,7 @@ const RPGGameHeader: React.FC = () => {
       </div>
       <button className={styles.rpgGameHeader__premiumBtn}>
         <HeaderPremiumIcon />
-        <span>Получить премиум</span>
+        <span>{getPremiumText[language]}</span>
       </button>
       <div
         className={`${styles.rpgGameHeader__cornerBlock} ${styles.rpgGameHeader__cornerBlock_right}`}

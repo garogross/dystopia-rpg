@@ -1,0 +1,106 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.influencePlayerStrengthening {
+  &__boldText {
+    @include setFont(10px, 700);
+  }
+  &__valueText {
+    @include setFont(10px, 400);
+  }
+
+  &__checkBox {
+    @include flexCol(flex-start);
+  }
+  &__checkBoxInput {
+    visibility: hidden;
+    width: 0;
+
+    &:checked + label {
+      &::before {
+        background-image: url("../../../../assets/images/common/checkbox.svg");
+      }
+    }
+  }
+  &__checkBoxLabel {
+    position: relative;
+    padding-left: 15px;
+    @include flexCol();
+    @include setFont(10px, 400);
+    cursor: pointer;
+
+    &:before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border: 1px solid $color-text;
+      border-radius: 1px;
+      position: absolute;
+      left: 0;
+      transform: translateY(-50%);
+      top: 50%;
+      background-repeat: no-repeat;
+      background-size: 6px;
+      background-position: center;
+    }
+  }
+
+  &__radioList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  &__radioListRadio {
+    @include flexCol(flex-start);
+
+    & svg {
+      transition: $transition;
+      fill: transparent;
+    }
+  }
+  &__radioListInput {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+
+    &:checked + svg {
+      fill: $color-text;
+    }
+  }
+  &__radioListLabel {
+    @include setFont(10px, 400);
+    padding-left: 8px;
+    cursor: pointer;
+  }
+  &__btn {
+    padding: 1px;
+    @include button($color-primary);
+    align-self: center;
+  }
+  &__btnInner {
+    height: 100%;
+    padding: 4px 22px;
+    @include flexCol();
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      rgb(61, 43, 126) 0%,
+      rgb(4, 0, 16) 100%
+    );
+    gap: 6px;
+    @include setFont(12px, 400);
+  }
+
+  &__btn,
+  &__btnInner {
+    clip-path: polygon(
+      8% 0%,
+      92% 0%,
+      100% 13%,
+      100% 87%,
+      92% 100%,
+      8% 100%,
+      0% 87%,
+      0% 13%
+    );
+  }
+}

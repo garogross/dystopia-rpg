@@ -25,6 +25,11 @@
       #3d2b7e 0%,
       #040010 98.08%
     );
+
+    & svg {
+      width: 20px;
+      height: 20px;
+    }
   }
 
   &__button:nth-child(1),

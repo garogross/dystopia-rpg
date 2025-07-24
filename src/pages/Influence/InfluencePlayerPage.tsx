@@ -1,4 +1,6 @@
+import InfluencePlayer from "../../components/Influence/InfluencePlayerPage/InfluencePlayer/InfluencePlayer";
+
 const InfluencePlayerPage = () => {
-  return <></>;
+  return <InfluencePlayer />;
 };
 export default InfluencePlayerPage;

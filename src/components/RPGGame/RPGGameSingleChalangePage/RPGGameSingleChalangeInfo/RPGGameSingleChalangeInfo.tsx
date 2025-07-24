@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 
 import styles from "./RPGGameSingleChalangeInfo.module.scss";
-import {CyberRodentIcon,RoboshooterIcon,RPGGameSingleChalangeStartIcon} from "../../../layout/icons/RPGGame/RPGGameSingleChalangePage";
+import {
+  CyberRodentIcon,
+  RoboshooterIcon,
+  RPGGameSingleChalangeStartIcon,
+} from "../../../layout/icons/RPGGame/RPGGameSingleChalangePage";
 import { EStats } from "../../../../constants/EStats";
-import {DotsLine,ArrowIcon} from "../../../layout/icons/RPGGame/Common";
+import { ArrowIcon } from "../../../layout/icons/Common";
+import { DotsLine } from "../../../layout/icons/RPGGame/Common";
 import StatImg from "../../../layout/StatImg/StatImg";
 import TransitionProvider, {
   TransitionStyleTypes,
@@ -64,7 +69,9 @@ const RPGGameSingleChalangeInfo = () => {
               <div className={styles.rpgGameSingleChalangeInfo__dotLines}>
                 <DotsLine />
               </div>
-              <div className={styles.rpgGameSingleChalangeInfo__accordionBtnMain}>
+              <div
+                className={styles.rpgGameSingleChalangeInfo__accordionBtnMain}
+              >
                 <span>{accordion.name}</span>
                 <ArrowIcon
                   rotate={activeAccordionIndexes.includes(accordionIndex)}
