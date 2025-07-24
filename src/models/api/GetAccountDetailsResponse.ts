@@ -21,8 +21,8 @@ export interface GetAccountDetailsResponse {
       };
     };
     // influence
-    action_points_current: number;
     influence_points: number;
+    action_points_current: number;
     action_points_max: number;
     spent_action_points: number;
     next_attack_ts: number;

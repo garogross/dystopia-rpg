@@ -14,4 +14,5 @@ export interface IHex {
   bonus_area_id: null | string;
   bonusAreaBorders?: EHexDirections[];
   ownerBorders?: EHexDirections[];
+  harmedPoints?: number;
 }
