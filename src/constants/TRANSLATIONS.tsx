@@ -54,6 +54,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Watch",
       [ELanguages.ru]: "Посмотреть",
     },
+    getPremiumText: {
+      [ELanguages.en]: "Get Premium",
+      [ELanguages.ru]: "Получить премиум",
+    },
   },
   tutorialPopup: {
     closeText: {
@@ -1231,12 +1235,6 @@ export const TRANSLATIONS = {
     },
   },
   miniGames: {
-    header: {
-      getPremiumText: {
-        [ELanguages.en]: "Get Premium",
-        [ELanguages.ru]: "Получить премиум",
-      },
-    },
     catalog: {
       titleText: {
         [ELanguages.en]: "Mini games",

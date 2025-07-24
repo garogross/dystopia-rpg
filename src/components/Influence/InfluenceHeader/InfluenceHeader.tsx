@@ -36,6 +36,7 @@ import { restoreActionPoints } from "../../../store/slices/influence/influenceSl
 import SettingsModal from "../../SettingsModal/SettingsModal";
 
 const { throughText } = TRANSLATIONS.influence.header;
+const { getPremiumText } = TRANSLATIONS.common;
 
 const ActionPointTimer = () => {
   const dispatch = useAppDispatch();
@@ -111,6 +112,7 @@ const ActionPointTimer = () => {
 const InfluenceHeader = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const actionPoints = useAppSelector(
     (state) => state.influence.influence.actionPoints
@@ -171,7 +173,7 @@ const InfluenceHeader = () => {
       </div>
       <button className={styles.influenceHeader__premiumBtn}>
         <HeaderPremiumIcon />
-        <span>Получить премиум</span>
+        <span>{getPremiumText[language]}</span>
       </button>
       <div
         className={`${styles.influenceHeader__cornerBlock} ${styles.influenceHeader__cornerBlock_right}`}
