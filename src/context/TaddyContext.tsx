@@ -29,11 +29,10 @@ export const TaddyProvider: React.FC<{ children: React.ReactNode }> = ({
   const [taddyTasks, setTaddyTasks] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!tg.initDataUnsafe.user?.id) return;
-    taddy.init(taddyPublicId);
-    console.log("taddy.init");
+    if (!tg.initDataUnsafe.user?.id || !taddy) return;
+    taddy?.init(taddyPublicId);
 
-    taddy.ready();
+    taddy?.ready();
     const exchangeInstance = taddy.exchange();
     setExchange(exchangeInstance);
     // eslint-disable-next-line react-hooks/exhaustive-deps

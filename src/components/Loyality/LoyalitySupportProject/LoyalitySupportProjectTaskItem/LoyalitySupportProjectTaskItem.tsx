@@ -78,7 +78,7 @@ const LoyalitySupportProjectTaskItem: React.FC<TaskItemProps> = ({
             <button
               onClick={() => {
                 if (!task.taddyTasktype && task.link && tg.initData) {
-                  if (!task.link.includes("t.me")) {
+                  if (!task.link?.includes("t.me")) {
                     tg.openLink(task.link);
                   } else {
                     tg.openTelegramLink(task.link);
