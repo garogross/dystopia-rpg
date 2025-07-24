@@ -66,7 +66,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
     (state) => state.influence.influence.actionPoints
   );
   const actionPointMax = useAppSelector(
-    (state) => state.influence.settings.actionPointMax
+    (state) => state.influence.settings.actionPointMaxPerTurn
   );
   const attackEnemyHexWithoutBuilding = useAppSelector(
     (state) => state.influence.settings.attackEnemyHexWithoutBuilding
@@ -80,6 +80,13 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
   const { show: showTooltip, openTooltip } = useTooltip();
 
   if (!color) color = DEFAULT_COLOR;
+
+  const requiredPoints = hex.owner_id
+    ? attackEnemyHexWithoutBuilding.actionPointsCost
+    : attackNeutralHex.actionPointsCost;
+
+  let nextHarm = (hex?.harmedPoints || 0) + actionPointMax;
+  if (nextHarm > requiredPoints) nextHarm = requiredPoints;
 
   useEffect(() => {
     if (!show) {
@@ -308,10 +315,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                 </div>
                 <div className={styles.influenceMapHexInfoModal__spendingAP}>
                   <p className={styles.influenceMapHexInfoModal__titleText}>
-                    Будет потрачено ОД: {actionPointMax}/
-                    {hex.owner_id
-                      ? attackEnemyHexWithoutBuilding.actionPointsCost
-                      : attackNeutralHex.actionPointsCost}
+                    Будет потрачено ОД: {nextHarm}/{requiredPoints}
                   </p>
                   <ImageWebp
                     src={influenceEnergyImage}

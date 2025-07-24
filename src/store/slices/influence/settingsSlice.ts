@@ -14,6 +14,7 @@ export interface SettingsState {
     influencePointsReward: number;
   };
   actionPointMax: number;
+  actionPointMaxPerTurn: number;
 }
 
 const initialState: SettingsState = {
@@ -30,6 +31,7 @@ const initialState: SettingsState = {
     influencePointsReward: 0,
   },
   actionPointMax: 0,
+  actionPointMaxPerTurn: 0,
 };
 
 export const settingsSlice = createSlice({

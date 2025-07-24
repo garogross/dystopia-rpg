@@ -112,18 +112,19 @@ export const mapSlice = createSlice({
       state.playerColors = action.payload;
     });
     builder.addCase(attackHex.fulfilled, (state, { payload }) => {
-      if (payload.captured) {
-        const updatedHexIndex = state.hexes.findIndex(
-          (hex) =>
-            hex.x === payload.x && hex.y === payload.y && hex.z === payload.z
-        );
-        if (updatedHexIndex !== -1) {
-          state.hexes = state.hexes.with(updatedHexIndex, {
-            ...state.hexes[updatedHexIndex],
-            owner_id: +payload.tgId,
-          });
-        }
+      const updatedHexIndex = state.hexes.findIndex(
+        (hex) =>
+          hex.x === payload.x && hex.y === payload.y && hex.z === payload.z
+      );
+      if (updatedHexIndex !== -1) {
+        state.hexes = state.hexes.with(updatedHexIndex, {
+          ...state.hexes[updatedHexIndex],
+          ...(payload.captured
+            ? { owner_id: +payload.tgId }
+            : { harmedPoints: payload.ap_spent }),
+        });
       }
+
       state.nextAttackTs = payload.next_attack_ts;
     });
   },
