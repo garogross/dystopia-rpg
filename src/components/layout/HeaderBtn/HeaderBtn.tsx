@@ -7,9 +7,10 @@ interface Props {
   className?: string;
   onClick?: () => void;
   type: "info" | "close";
+  fill?: string;
 }
 
-const HeaderBtn: React.FC<Props> = ({ className, onClick, type }) => {
+const HeaderBtn: React.FC<Props> = ({ className, onClick, type, fill }) => {
   let icon = null;
 
   switch (type) {
@@ -17,7 +18,7 @@ const HeaderBtn: React.FC<Props> = ({ className, onClick, type }) => {
       icon = <InfoIcon />;
       break;
     case "close":
-      icon = <CloseIcon />;
+      icon = <CloseIcon fill={fill} />;
       break;
     default:
       icon = null;
@@ -27,6 +28,7 @@ const HeaderBtn: React.FC<Props> = ({ className, onClick, type }) => {
   return (
     <button
       onClick={onClick}
+      style={{ borderColor: fill || undefined }}
       className={`${styles.headerBtn} ${className || ""}`}
     >
       {icon}

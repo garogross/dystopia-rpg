@@ -19,10 +19,7 @@ import { cpImage, cpImageWebp } from "../../../assets/imageMaps";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
-import {
-  ConfirmIcon,
-  BuyIcon,
-} from "../../layout/icons/CyberFarm/CyberFarmOptionsModal";
+import { BuyIcon } from "../../layout/icons/CyberFarm/CyberFarmOptionsModal";
 import {
   buyResourceDeflict,
   getResourcesDeflict,
@@ -30,6 +27,7 @@ import {
 import { EPlants } from "../../../constants/cyberfarm/EPlants";
 import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
 import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
+import { ConfirmIcon } from "../../layout/icons/Common";
 
 interface Props {
   show: boolean;

@@ -54,6 +54,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Watch",
       [ELanguages.ru]: "Посмотреть",
     },
+    getPremiumText: {
+      [ELanguages.en]: "Get Premium",
+      [ELanguages.ru]: "Получить премиум",
+    },
   },
   tutorialPopup: {
     closeText: {
@@ -1231,12 +1235,6 @@ export const TRANSLATIONS = {
     },
   },
   miniGames: {
-    header: {
-      getPremiumText: {
-        [ELanguages.en]: "Get Premium",
-        [ELanguages.ru]: "Получить премиум",
-      },
-    },
     catalog: {
       titleText: {
         [ELanguages.en]: "Mini games",
@@ -1862,6 +1860,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "You have not enough action points",
         [ELanguages.ru]: "У вас недостаточно очков действий",
       },
+      actionWillEnableInText: {
+        [ELanguages.en]: "Action will enable in SECONDS seconds",
+        [ELanguages.ru]: "Действие будет доступно через SECONDS секунд",
+      },
       hexOccupiedText: {
         [ELanguages.en]: "Hex is occupied",
         [ELanguages.ru]: "Гекс Захвачено",
@@ -1869,6 +1871,160 @@ export const TRANSLATIONS = {
       hexAttackedText: {
         [ELanguages.en]: "Hex is attacked",
         [ELanguages.ru]: "Гекс атакован",
+      },
+      nextStepInText: {
+        [ELanguages.en]: "Next step in SECONDS sec.",
+        [ELanguages.ru]: "Следующий ход через SECONDS сек.",
+      },
+    },
+    player: {
+      titleText: {
+        [ELanguages.en]: "Player",
+        [ELanguages.ru]: "Игрок",
+      },
+      sessionBuffsTitle: {
+        [ELanguages.en]: "Session Buffs",
+        [ELanguages.ru]: "Усиления на игровую сессию",
+      },
+      achievementsBonusesTitle: {
+        [ELanguages.en]: "Bonuses from achievements",
+        [ELanguages.ru]: "Бонусы от достижений",
+      },
+      clanBonusesTitle: {
+        [ELanguages.en]: "Bonuses from clan",
+        [ELanguages.ru]: "Бонусы от клана",
+      },
+
+      achievementBonusesList: {
+        [ELanguages.en]: [
+          "- Up to +15 max AP (permanently)",
+          "- Up to −15% AP cost for sector attack",
+          "- Up to −15% AP cost for construction",
+          "- Up to +2.5 max AP spend per turn",
+          "- Up to −25% AP cost for building repair",
+        ],
+        [ELanguages.ru]: [
+          "- До +15 макс. ОД (навсегда)",
+          "- До −15% стоимости в ОД атаки сектора",
+          "- До −15% стоимости в ОД строительства",
+          "- До +2.5 максимальной траты ОД за ход",
+          "- До −25% к стоимости в ОД ремонта строений",
+        ],
+      },
+      clanBonusesList: {
+        [ELanguages.en]: [
+          "- Up to +15 max AP (permanently)",
+          "- Up to −15% AP cost for sector attack",
+          "- Up to −15% AP cost for construction",
+          "- Up to +2.5 max AP spend per turn",
+          "- Up to −25% AP cost for building repair",
+        ],
+        [ELanguages.ru]: [
+          "- До +15 макс. ОД (навсегда)",
+          "- До −15% стоимости в ОД атаки сектора",
+          "- До −15% стоимости в ОД строительства",
+          "- До +2.5 максимальной траты ОД за ход",
+          "- До −25% к стоимости в ОД ремонта строений",
+        ],
+      },
+      main: {
+        copyText: {
+          [ELanguages.en]: "Copied",
+          [ELanguages.ru]: "Скопировано",
+        },
+        clanText: {
+          [ELanguages.en]: "Clan",
+          [ELanguages.ru]: "Клан",
+        },
+
+        apCostReductionText: {
+          [ELanguages.en]: "AP cost reduction",
+          [ELanguages.ru]: "Снижение стоимости в ОД",
+        },
+        sectorAttackText: {
+          [ELanguages.en]: "sector attack",
+          [ELanguages.ru]: "атака сектора",
+        },
+        constructionText: {
+          [ELanguages.en]: "construction",
+          [ELanguages.ru]: "строительство",
+        },
+        buildingRepairText: {
+          [ELanguages.en]: "building repair",
+          [ELanguages.ru]: "ремонт строений",
+        },
+      },
+      strengthening: {
+        singleBuffsText: {
+          [ELanguages.en]: "Single buffs",
+          [ELanguages.ru]: "Одиночные усиления",
+        },
+        chooseOneOptionGroupAText: {
+          [ELanguages.en]: "Choose only one option from group A",
+          [ELanguages.ru]: "Выбор только одной опции из группы A",
+        },
+        chooseOneOptionGroupBText: {
+          [ELanguages.en]: "Choose only one option from group B",
+          [ELanguages.ru]: "Выбор только одной опции из группы Б",
+        },
+        buyButtonText: {
+          [ELanguages.en]: "Buy",
+          [ELanguages.ru]: "Купить",
+        },
+        groupAOptionsTexts: {
+          apRecoveryText: {
+            [ELanguages.en]: "- PERCENT% to AP recovery (CASH_POINT CP)",
+            [ELanguages.ru]: "- PERCENT% к восстановлению ОД (CASH_POINT CP)",
+          },
+          attackText: {
+            [ELanguages.en]: "−PERCENT% to attack (CASH_POINT CP)",
+            [ELanguages.ru]: "−PERCENT% к атаке (CASH_POINT CP)",
+          },
+          constructionText: {
+            [ELanguages.en]: "−PERCENT% to construction (CASH_POINT CP)",
+            [ELanguages.ru]: "−PERCENT% к строительству (CASH_POINT CP)",
+          },
+          repairText: {
+            [ELanguages.en]: "−PERCENT% to repair (CASH_POINT CP)",
+            [ELanguages.ru]: "−PERCENT% к ремонту (CASH_POINT CP)",
+          },
+        },
+
+        groupBOptionsTexts: {
+          apRecoveryText: {
+            [ELanguages.en]: "+PERCENT% to AP recovery (CASH_POINT CP)",
+            [ELanguages.ru]: "+PERCENT% к восстановлению ОД (CASH_POINT CP)",
+          },
+          attackText: {
+            [ELanguages.en]: "−PERCENT% to attack (CASH_POINT CP)",
+            [ELanguages.ru]: "−PERCENT% к атаке (CASH_POINT CP)",
+          },
+          constructionText: {
+            [ELanguages.en]: "−PERCENT% to construction (CASH_POINT CP)",
+            [ELanguages.ru]: "−PERCENT% к строительству (CASH_POINT CP)",
+          },
+          repairText: {
+            [ELanguages.en]: "−PERCENT% to repair (CASH_POINT CP)",
+            [ELanguages.ru]: "−PERCENT% к ремонту (CASH_POINT CP)",
+          },
+        },
+
+        checkBoxOptionsTexts: {
+          maxOdAndRecoveryText: {
+            [ELanguages.en]:
+              "- +MAX_OD max AP, +RECOVERY to recovery (CASH_POINT CP)",
+            [ELanguages.ru]:
+              "- +MAX_OD макс. ОД, +RECOVERY к восстановлению (CASH_POINT CP)",
+          },
+          recoveryText: {
+            [ELanguages.en]: "- +RECOVERY to recovery (CASH_POINT CP)",
+            [ELanguages.ru]: "- +RECOVERY к восстановлению (CASH_POINT CP)",
+          },
+          maxOdText: {
+            [ELanguages.en]: "- +MAX_OD max AP (CASH_POINT CP)",
+            [ELanguages.ru]: "- +MAX_OD макс. ОД (CASH_POINT CP)",
+          },
+        },
       },
     },
   },

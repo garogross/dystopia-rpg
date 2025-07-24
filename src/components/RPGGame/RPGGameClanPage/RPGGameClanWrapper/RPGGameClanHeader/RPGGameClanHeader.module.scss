@@ -39,6 +39,10 @@
   &__editBtn {
     @include button();
     display: flex;
+
+    & svg {
+      fill: $color-text;
+    }
   }
   &__levelText {
     @include setFont(12px, 400);

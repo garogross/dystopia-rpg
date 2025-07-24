@@ -25,6 +25,7 @@ export interface GetAccountDetailsResponse {
     influence_points: number;
     action_points_max: number;
     spent_action_points: number;
+    next_attack_ts: number;
     timers: {
       last_restore_action_points_ts: number;
     };
@@ -104,5 +105,6 @@ export interface GetAccountDetailsResponse {
       action_points_cost: number;
       influence_points_reward: number;
     };
+    max_action_points_per_turn: number;
   };
 }

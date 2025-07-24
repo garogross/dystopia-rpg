@@ -1,14 +1,8 @@
 import React from "react";
 
-export const ReferalsCopyIcon = () => {
+export const CopyIcon = () => {
   return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M14 10.9V15.1C14 18.6 12.6 20 9.1 20H4.9C1.4 20 0 18.6 0 15.1V10.9C0 7.4 1.4 6 4.9 6H9.1C12.6 6 14 7.4 14 10.9Z"
         fill="#C6B7FF"

@@ -33,8 +33,10 @@ import { useEffect, useRef, useState } from "react";
 import { formatTime } from "../../../utils/formatTime";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { restoreActionPoints } from "../../../store/slices/influence/influenceSlice";
+import SettingsModal from "../../SettingsModal/SettingsModal";
 
 const { throughText } = TRANSLATIONS.influence.header;
+const { getPremiumText } = TRANSLATIONS.common;
 
 const ActionPointTimer = () => {
   const dispatch = useAppDispatch();
@@ -110,6 +112,7 @@ const ActionPointTimer = () => {
 const InfluenceHeader = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const actionPoints = useAppSelector(
     (state) => state.influence.influence.actionPoints
@@ -117,6 +120,8 @@ const InfluenceHeader = () => {
   const actionPointMax = useAppSelector(
     (state) => state.influence.settings.actionPointMax
   );
+  const [settingsOpened, setSettingsOpened] = useState(false);
+
   const linkActiveClass =
     (className?: string) =>
     ({ isActive }: { isActive: boolean }) =>
@@ -168,7 +173,7 @@ const InfluenceHeader = () => {
       </div>
       <button className={styles.influenceHeader__premiumBtn}>
         <HeaderPremiumIcon />
-        <span>Получить премиум</span>
+        <span>{getPremiumText[language]}</span>
       </button>
       <div
         className={`${styles.influenceHeader__cornerBlock} ${styles.influenceHeader__cornerBlock_right}`}
@@ -179,7 +184,10 @@ const InfluenceHeader = () => {
         <div className={styles.influenceHeader__dotsLine}>
           <DotsLine />
         </div>
-        <button className={styles.influenceHeader__mainBtn}>
+        <button
+          onClick={() => setSettingsOpened(true)}
+          className={styles.influenceHeader__mainBtn}
+        >
           <HeaderSettingsIcon />
         </button>
         <div className={styles.influenceHeader__navBtns}>
@@ -223,6 +231,10 @@ const InfluenceHeader = () => {
           </button>
         </div>
       </div>
+      <SettingsModal
+        show={settingsOpened}
+        onClose={() => setSettingsOpened(false)}
+      />
     </header>
   );
 };

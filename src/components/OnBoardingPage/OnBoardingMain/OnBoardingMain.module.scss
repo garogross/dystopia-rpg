@@ -20,7 +20,7 @@
     width: 100%;
     padding: 12px;
     position: relative;
-    background-color: #090419;
+    background-color: $color-black;
   }
 
   &__talkText {
@@ -35,7 +35,7 @@
     clip-path: polygon(40% 0%, 100% 0%, 20% 100%);
     width: 18px;
     height: 18px;
-    background-color: #090419;
+    background-color: $color-darkBlueBg;
     z-index: 4;
   }
   &__videoWrapper {

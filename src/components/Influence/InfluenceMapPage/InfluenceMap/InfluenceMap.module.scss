@@ -17,6 +17,11 @@
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     @include button();
     @include flexCol();
+    transition: $transition;
+
+    &_attacked {
+      transform: translate(-50%, -50%) scale(0.8);
+    }
   }
 
   &__bonusAreaStroke {
@@ -54,16 +59,6 @@
   &__hex:hover &__hexInner,
   &__hex:active &__hexInner {
     background-color: #7f5cff52;
-  }
-
-  &__bonusArea {
-    position: absolute;
-    z-index: 5;
-    transform: translate(-50%, -50%);
-    text-transform: uppercase;
-    @include setFont(18px, 400, $font-fam-h3, $color-text);
-    text-shadow: -1px -1px 0 #7f5cff, 1px -1px 0 #7f5cff, -1px 1px 0 #7f5cff,
-      1px 1px 0 #7f5cff;
   }
 }
 

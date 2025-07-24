@@ -37,6 +37,7 @@ import { convertReferals } from "./refferencesSlice";
 import { finsihTutorial, initTutorial } from "./cyberFarm/tutorialSlice";
 import { initInfluence } from "./influence/influenceSlice";
 import { initSettings } from "./influence/settingsSlice";
+import { initMap } from "./influence/mapSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -46,6 +47,7 @@ export interface ProfileState {
   tgId: string | number;
   token: string;
   username: string;
+  avatar?: string;
   stats: {
     [key in EStats]: number;
   };
@@ -69,6 +71,7 @@ const initUserData =
 const initialState: ProfileState = {
   id: "",
   ...initUserData,
+  avatar: "",
   stats: {
     [EStats.kredit]: 0,
     [EStats.darkMatter]: 0,
@@ -108,13 +111,17 @@ export const authUser = createAsyncThunk<AuthUserResponse, string>(
 const getAccountDetailsUrl = "/account/";
 
 export const getAccountDetails =
-  (mode?: AppGameMode) => async (dispatch: AppDispatch) => {
+  (avatar?: string, mode?: AppGameMode) => async (dispatch: AppDispatch) => {
     const resData = await fetchRequest<GetAccountDetailsResponse>(
       `${getAccountDetailsUrl}${mode ? `?mode=${mode}` : ""}`
     );
 
     dispatch(
-      setUser({ id: resData.user?.id_tgrm, tgId: resData.user?.id_tgrm })
+      setUser({
+        id: resData.user?.id_tgrm,
+        tgId: resData.user?.id_tgrm,
+        avatar,
+      })
     );
 
     dispatch(
@@ -239,9 +246,11 @@ export const getAccountDetails =
             influencePointsReward:
               attack_enemy_hex_without_building?.influence_points_reward,
           },
-          actionPointMax: resData.user?.action_points_max,
+          actionPointMax: resData.settings?.max_action_points_per_turn || 0,
         })
       );
+
+      dispatch(initMap(resData.user?.next_attack_ts || 0));
     }
 
     // tasks
@@ -253,7 +262,8 @@ export const getAccountDetails =
   };
 
 export const authorizeUser =
-  (initData: string, mode?: AppGameMode) => async (dispatch: AppDispatch) => {
+  (initData: string, avatar?: string, mode?: AppGameMode) =>
+  async (dispatch: AppDispatch) => {
     // for test in dev mode
     if (process.env.NODE_ENV === "development") {
       const testToken = process.env.REACT_APP_TEST_TOKEN;
@@ -268,7 +278,7 @@ export const authorizeUser =
     }
 
     try {
-      const res = await dispatch(getAccountDetails(mode));
+      const res = await dispatch(getAccountDetails(avatar, mode));
 
       if (res.ton_cyber_farm) {
         dispatch(initCyberFarm());
@@ -319,6 +329,7 @@ export const profileSlice = createSlice({
     setUser(state, { payload }) {
       state.id = payload.id;
       state.tgId = payload.tgId;
+      state.avatar = payload.avatar;
     },
     updateStats(state, { payload }) {
       state.stats = { ...state.stats, ...payload };

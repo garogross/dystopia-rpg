@@ -16,8 +16,12 @@ import {
   clan10Image,
   clan11Image,
 } from "../../../../assets/imageMaps";
-import {RPGGameCreateClanAddLogoIcon,RPGGameCreateClanSubmitcon} from "../../../layout/icons/RPGGame/RPGGameCreateClanPage";
-import {HeaderWings,ArrowIcon} from "../../../layout/icons/RPGGame/Common";
+import {
+  RPGGameCreateClanAddLogoIcon,
+  RPGGameCreateClanSubmitcon,
+} from "../../../layout/icons/RPGGame/RPGGameCreateClanPage";
+import { HeaderWings } from "../../../layout/icons/RPGGame/Common";
+import { ArrowIcon } from "../../../layout/icons/Common";
 import Checkbox from "../../../layout/Checkbox/Checkbox";
 import StatImg from "../../../layout/StatImg/StatImg";
 import { EStats } from "../../../../constants/EStats";
@@ -84,10 +88,14 @@ const RPGGameCreateClanMain = () => {
           style={TransitionStyleTypes.zoomIn}
           className={styles.rpgGameCreateClanMain__logoSelect}
         >
-          <h5 className={styles.rpgGameCreateClanMain__title}>Выберите эмблему</h5>
+          <h5 className={styles.rpgGameCreateClanMain__title}>
+            Выберите эмблему
+          </h5>
           <div
             className={`${styles.rpgGameCreateClanMain__logoList} ${
-              logoListOpened ? styles.rpgGameCreateClanMain__logoList_opened : ""
+              logoListOpened
+                ? styles.rpgGameCreateClanMain__logoList_opened
+                : ""
             }`}
           >
             <button className={styles.rpgGameCreateClanMain__logoListAddBtn}>
