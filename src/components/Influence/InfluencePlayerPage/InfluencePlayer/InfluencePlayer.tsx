@@ -11,6 +11,7 @@ import { InfoDropDownArrowIcon } from "../../../layout/icons/Influence/Influence
 import { BuyWalletIcon } from "../../../layout/icons/Common";
 
 import styles from "./InfluencePlayer.module.scss";
+import { CheckBoxIcon } from "../../../layout/icons/Checkbox/CheckBoxIcon";
 
 const groupAOptions = [
   {
@@ -121,6 +122,7 @@ const RadioList: FC<RadiolistProps> = ({ arr, onChange, name, checked }) => {
               id={value + name + "Radio"}
               className={styles.influencePlayer__radioListInput}
             />
+            <CheckBoxIcon />
             <label
               htmlFor={value + name + "Radio"}
               className={styles.influencePlayer__radioListLabel}
@@ -143,14 +145,16 @@ const InfluencePlayer = () => {
       <TitleH3>Player</TitleH3>
       <div className={styles.influencePlayer__main}>
         <div className={styles.influencePlayer__mainHeader}>
-          <div className={styles.influencePlayer__mainAvatar}>
-            {avatar && (
-              <img
-                src={avatar}
-                alt="avatar"
-                className={styles.influencePlayer__mainAvatarImg}
-              />
-            )}
+          <div className={styles.influencePlayer__mainHeaderInner}>
+            <div className={styles.influencePlayer__mainAvatar}>
+              {avatar && (
+                <img
+                  src={avatar}
+                  alt="avatar"
+                  className={styles.influencePlayer__mainAvatarImg}
+                />
+              )}
+            </div>
           </div>
           <div className={styles.influencePlayer__mainHeaderContent}>
             <button className={styles.influencePlayer__nameEditBtn}>
