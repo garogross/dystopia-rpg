@@ -44,7 +44,7 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
       dispatch(claimAdsgramReward({ taskId: event.detail }));
       // Hide the task for 1 hour
       const hideUntil = Date.now() + HIDE_DURATION_MS;
-      setLSItem(ELSProps.adsgramLastClickDate, hideUntil.toString());
+      setLSItem(ELSProps.adsgramLastClickDate, hideUntil?.toString());
       setHidden(true);
     };
     const task = taskRef.current;
