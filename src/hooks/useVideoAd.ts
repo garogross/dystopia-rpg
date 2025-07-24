@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EAdTypes } from "../constants/EAdTypes";
 import { ELSProps } from "../constants/ELSProps";
 import { getLSItem, setLSItem } from "../helpers/localStorage";
@@ -16,7 +16,7 @@ const MIN_PAUSE_MS = 60 * 1000; // 60 секунд
 
 const {
   loadAdText,
-
+  noAdText,
   dailyLimitReachedText,
   hourlyLimitReachedText,
   adAvailableInSecondsText,
@@ -56,17 +56,20 @@ export const useVideoAd = (
   const language = useAppSelector((state) => state.ui.language);
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(loadAdText[language]);
+  const [viewsInDay, setViewsInDay] = useState(0);
 
-  const onReward = async () => {
-    // Сохраняем новый просмотр
+  const onReward = async (id?: string) => {
     try {
+      // Сохраняем новый просмотр
       const now = Date.now();
       let timestamps = await getVideoAdViewTimestamps(index);
       timestamps = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
       timestamps.push(now);
       saveVideoAdViewTimestamps(timestamps, index);
-      if (scsClb) await scsClb();
-      else await dispatch(claimVideoReward({ id: tgId.toString() }));
+      if (scsClb) await scsClb(id);
+      else await dispatch(claimVideoReward({ id: tgId.toString() })).unwrap();
+      setViewsInDay(timestamps.length);
+
       setTooltipText((speedUpCompleteText || rewardReceivedText)[language]);
     } catch (error) {
       setTooltipText(somethingWentWrong[language]);
@@ -75,20 +78,27 @@ export const useVideoAd = (
     }
   };
 
-  const onShowOnClickaAd = useGlobalAdController(
+  const { onShowAd: onShowOnClickaAd, loading } = useGlobalAdController(
     adType || EAdTypes.GIGA_V,
     "",
     onReward,
-    openTooltip
+    (noAd) => {
+      if (noAd) setTooltipText(noAdText[language]);
+      openTooltip();
+    }
   );
 
-  async function canShowVideoAd() {
+  async function canShowVideoAd(isInit?: boolean) {
     const now = Date.now();
-    const timestamps = await getVideoAdViewTimestamps();
+    const timestamps = await getVideoAdViewTimestamps(index);
     const last24h = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000);
     const lastHour = timestamps.filter((ts) => now - ts < 60 * 60 * 1000);
     const last = timestamps.length > 0 ? timestamps[timestamps.length - 1] : 0;
 
+    if (isInit) {
+      setViewsInDay(last24h.length);
+      return true;
+    } // for update viewsInDay on mount
     if (last24h.length >= MAX_PER_DAY) {
       setTooltipText(dailyLimitReachedText[language]);
       return false;
@@ -102,8 +112,14 @@ export const useVideoAd = (
       setTooltipText(adAvailableInSecondsText[language](seconds));
       return false;
     }
+
     return true;
   }
+
+  useEffect(() => {
+    canShowVideoAd(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onShowAd = async () => {
     const showValidation = await canShowVideoAd();
@@ -120,5 +136,8 @@ export const useVideoAd = (
     onShowAd,
     showTooltip,
     tooltipText,
+    loading,
+    maxPerDay: MAX_PER_DAY,
+    viewsInDay,
   };
 };

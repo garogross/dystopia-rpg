@@ -11,13 +11,11 @@ import {
   claimBarzhaReward,
   claimTaddyReward,
   claimTadsReward,
-  claimWallgramReward,
   getPromoTaskReward,
   getPromoTasks,
   setPromoTaskSubscribed,
 } from "../../../store/slices/tasksSlice";
 import { FeedItem } from "taddy-sdk-web";
-import { WallgramFinishTaskItemType } from "../../../types/WallgramFinishTaskItemType";
 import { useTaddy } from "../../../context/TaddyContext";
 import { TadsWidget } from "react-tads-widget";
 import LoyalitySupportProjectAdditionalTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdditionalTaskItem";
@@ -28,6 +26,7 @@ import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraff
 import { useTooltip } from "../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import Tooltip from "../../layout/Tooltip/Tooltip";
+import { EAdTypes } from "../../../constants/EAdTypes";
 
 const { taskNotCompletedText, taskCompletedText } =
   TRANSLATIONS.loyality.supportProject;
@@ -48,28 +47,28 @@ const LoyalitySupportProject = () => {
     dispatch(getPromoTasks());
 
     // init wallgram
-    const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
+    // const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
 
-    if (wallgramPublicId) {
-      window.WallgramShowcase?.init(wallgramPublicId, {
-        container: "#wallgram_showcase",
-        onLoad: () => {
-          // Ваш код при загрузке витрины
-        },
-        onFinishTask: (task: WallgramFinishTaskItemType) => {
-          dispatch(
-            claimWallgramReward({
-              taskId: task.data.taskId,
-              value: task.data.rewards[0].value,
-            })
-          );
-          // Ваш код после успешного выполнения задания (обычно выдача вознаграждения пользователю)
-        },
-        onStartTask: (task) => {
-          // Ваш код при начале выполнения задания (не обязательно)
-        },
-      });
-    }
+    // if (wallgramPublicId) {
+    //   window.WallgramShowcase?.init(wallgramPublicId, {
+    //     container: "#wallgram_showcase",
+    //     onLoad: () => {
+    //       // Ваш код при загрузке витрины
+    //     },
+    //     onFinishTask: (task: WallgramFinishTaskItemType) => {
+    //       dispatch(
+    //         claimWallgramReward({
+    //           taskId: task.data.taskId,
+    //           value: task.data.rewards[0].value,
+    //         })
+    //       );
+    //       // Ваш код после успешного выполнения задания (обычно выдача вознаграждения пользователю)
+    //     },
+    //     onStartTask: (task) => {
+    //       // Ваш код при начале выполнения задания (не обязательно)
+    //     },
+    //   });
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -152,7 +151,7 @@ const LoyalitySupportProject = () => {
           language={language}
           gameInited={gameInited}
         />
-        {/* <LoyalitySupportProjectVideoTaskItem
+        <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
           scsClb={(id) => {
@@ -160,7 +159,7 @@ const LoyalitySupportProject = () => {
           }}
           adType={EAdTypes.TADDY_V}
           index={1}
-        /> */}
+        />
         {taddyTasks?.map((task, index) => (
           <LoyalitySupportProjectTaskItem
             key={task.id}
@@ -211,7 +210,7 @@ const LoyalitySupportProject = () => {
             />
           )
         )}
-        <div id="wallgram_showcase"></div>
+        {/* <div id="wallgram_showcase"></div> */}
       </div>
       <TransitionProvider
         inProp={gameInited}
