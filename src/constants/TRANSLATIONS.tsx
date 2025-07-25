@@ -58,6 +58,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Get Premium",
       [ELanguages.ru]: "Получить премиум",
     },
+    minText: {
+      [ELanguages.en]: "min.",
+      [ELanguages.ru]: "мин.",
+    },
   },
   tutorialPopup: {
     closeText: {
@@ -1937,9 +1941,21 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Клан",
         },
 
-        apCostReductionText: {
-          [ELanguages.en]: "AP cost reduction",
-          [ELanguages.ru]: "Снижение стоимости в ОД",
+        mainParametersText: {
+          [ELanguages.en]: "Main parameters",
+          [ELanguages.ru]: "Основные параметры",
+        },
+        actionPointsText: {
+          [ELanguages.en]: "Action Points",
+          [ELanguages.ru]: "Очки Действия",
+        },
+        apRecoverySpeedText: {
+          [ELanguages.en]: "AP recovery speed",
+          [ELanguages.ru]: "Скорость восстановления ОД",
+        },
+        apSpendPerTurnText: {
+          [ELanguages.en]: "Max AP per turn",
+          [ELanguages.ru]: "Макс. ОД за ход",
         },
         sectorAttackText: {
           [ELanguages.en]: "sector attack",

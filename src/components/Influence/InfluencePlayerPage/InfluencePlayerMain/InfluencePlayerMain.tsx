@@ -12,11 +12,15 @@ import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 const {
   copyText,
   clanText,
-  apCostReductionText,
+  mainParametersText,
+  actionPointsText,
+  apRecoverySpeedText,
+  apSpendPerTurnText,
   sectorAttackText,
   constructionText,
   buildingRepairText,
 } = TRANSLATIONS.influence.player.main;
+const { minText } = TRANSLATIONS.common;
 
 const InfluencePlayerMain = () => {
   const avatar = useAppSelector((state) => state.profile.avatar);
@@ -24,6 +28,15 @@ const InfluencePlayerMain = () => {
   const tgId = useAppSelector((state) => state.profile.tgId);
   const language = useAppSelector((state) => state.ui.language);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const actionPoints = useAppSelector(
+    (state) => state.influence.influence.actionPoints
+  );
+  const actionPointMaxPerTurn = useAppSelector(
+    (state) => state.influence.settings.actionPointMaxPerTurn
+  );
+  const actionPointRestore = useAppSelector(
+    (state) => state.influence.settings.actionPointRestore
+  );
 
   const clan = "";
   const [opened, setOpened] = useState(true);
@@ -109,10 +122,34 @@ const InfluencePlayerMain = () => {
         )}
         <div className={styles.influencePlayerMain__dropdownContentCol}>
           <span className={styles.influencePlayerMain__boldText}>
-            {apCostReductionText[language]}{" "}
+            {mainParametersText[language]}{" "}
           </span>
           <span className={styles.influencePlayerMain__dotsLine}>
             <DotslineLong preserveAspectRatio />{" "}
+          </span>
+        </div>
+        <div className={styles.influencePlayerMain__dropdownContentCol}>
+          <span className={styles.influencePlayerMain__boldText}>
+            - {actionPointsText[language]}:{" "}
+          </span>
+          <span className={styles.influencePlayerMain__valueText}>
+            {actionPoints}
+          </span>
+        </div>
+        <div className={styles.influencePlayerMain__dropdownContentCol}>
+          <span className={styles.influencePlayerMain__boldText}>
+            - {apRecoverySpeedText[language]}:{" "}
+          </span>
+          <span className={styles.influencePlayerMain__valueText}>
+            {actionPointRestore.intervalMinutes} {minText[language]}
+          </span>
+        </div>
+        <div className={styles.influencePlayerMain__dropdownContentCol}>
+          <span className={styles.influencePlayerMain__boldText}>
+            - {apSpendPerTurnText[language]}:{" "}
+          </span>
+          <span className={styles.influencePlayerMain__valueText}>
+            {actionPointMaxPerTurn}
           </span>
         </div>
         <div className={styles.influencePlayerMain__dropdownContentCol}>
