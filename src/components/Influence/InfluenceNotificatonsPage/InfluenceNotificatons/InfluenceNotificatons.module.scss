@@ -1,0 +1,150 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.influenceNotificatons {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding-block: 10px;
+
+  &__notificationsCount {
+    padding: 6px 20px;
+    @include setFont(12px, 700);
+    background: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
+    clip-path: polygon(
+      95% 0%,
+      5% 0%,
+      0% 50%,
+      5% 100%,
+      95% 100%,
+      100% 50%,
+      95% 0%
+    );
+    margin-top: 20px;
+    margin-bottom: 8px;
+    align-self: center;
+  }
+  &__dotsLine {
+    width: 100%;
+
+    & svg {
+      width: 100%;
+    }
+  }
+  &__tabbar {
+    @include flexCol();
+    gap: 5px;
+    margin-block: 8px;
+  }
+  &__tab {
+    height: 20px;
+    flex: 1;
+    overflow: hidden;
+    @include flexCol();
+    gap: 2px;
+    @include setFont(8px, 700);
+    @include button(linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%));
+    transition: $transition;
+    fill: $color-text;
+    stroke: $color-text;
+
+    & span {
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    & svg {
+      fill: inherit;
+      stroke: inherit;
+      transition: $transition;
+    }
+
+    &_active {
+      color: $color-black;
+      fill: $color-black;
+      stroke: $color-black;
+      background: radial-gradient(
+        71.72% 71.72% at 50% 50%,
+        #3d2b7e 0%,
+        #5a41b5 100%
+      );
+    }
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    overflow: auto;
+  }
+  &__item {
+    width: 100%;
+    border: 2px solid $color-primary;
+    @include flexCol();
+    gap: 10px;
+    padding: 10px;
+    background: linear-gradient(90deg, #2e147f 0%, #090419 24.04%);
+  }
+  &__iconWrapper {
+    display: flex;
+  }
+  &__main {
+    display: flex;
+    flex-direction: column;
+  }
+  &__title {
+    @include setFont(14px, 700);
+    margin-bottom: 5px;
+  }
+  &__descriptionText {
+    @include setFont(14px, 400);
+    margin-bottom: 8px;
+  }
+
+  &__itemFooter {
+    @include flexCol(space-between, flex-end);
+  }
+  &__showBtn {
+    @include button($color-primary);
+    padding: 1px;
+  }
+  &__showBtnInner {
+    padding: 4px 14px;
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      rgb(61, 43, 126) 0%,
+      rgb(4, 0, 16) 100%
+    );
+    @include setFont(12px, 400);
+    @include flexCol();
+    gap: 2px;
+  }
+  &__showBtn,
+  &__showBtnInner {
+    clip-path: polygon(
+      7% 0%,
+      96% 0%,
+      100% 13%,
+      100% 87%,
+      96% 100%,
+      7% 100%,
+      3% 87%,
+      3% 13%
+    );
+  }
+
+  &__deleteBtn {
+    @include button();
+  }
+  &__wings {
+    width: 100%;
+    padding-top: 10px;
+
+    & svg {
+      width: 100%;
+    }
+  }
+}

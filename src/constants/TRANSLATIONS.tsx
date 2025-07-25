@@ -2027,5 +2027,52 @@ export const TRANSLATIONS = {
         },
       },
     },
+    notifications: {
+      titleText: {
+        [ELanguages.en]: "Summary",
+        [ELanguages.ru]: "Сводка",
+      },
+      tabsTexts: {
+        fightText: {
+          [ELanguages.en]: "Fight",
+          [ELanguages.ru]: "Бои",
+        },
+        buildingsText: {
+          [ELanguages.en]: "Buildings",
+          [ELanguages.ru]: "ПОСТРОЙКИ",
+        },
+        clanText: {
+          [ELanguages.en]: "Clan",
+          [ELanguages.ru]: "КЛАН",
+        },
+        miscText: {
+          [ELanguages.en]: "Misc",
+          [ELanguages.ru]: "РАЗНОЕ",
+        },
+      },
+      newMessagesCountText: {
+        [ELanguages.en]: (count: number) =>
+          `${count} new message${count === 1 ? "" : "s"}`,
+        [ELanguages.ru]: (count: number) =>
+          `${count} новых сообщени${
+            count % 10 === 1 && count % 100 !== 11
+              ? "е"
+              : count % 10 >= 2 &&
+                count % 10 <= 4 &&
+                (count % 100 < 10 || count % 100 >= 20)
+              ? "я"
+              : "й"
+          }`,
+      },
+      showOnMapText: {
+        [ELanguages.en]: "Show on map",
+        [ELanguages.ru]: "Показать на карте",
+      },
+
+      agoText: {
+        [ELanguages.en]: (minutes: number) => `[${minutes} min. ago]`,
+        [ELanguages.ru]: (minutes: number) => `[${minutes} мин. назад]`,
+      },
+    },
   },
 };
