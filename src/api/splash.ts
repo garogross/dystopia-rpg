@@ -7,9 +7,7 @@ export const randomSplashPath = "/random-splash";
 
 export const fecthRandomSplashImage = async (type?: ESplashTypes) => {
   const path =
-    type === ESplashTypes.CYBERFARM
-      ? DYSTOPIA_GAME_MEDIA_BASE_PATH + randomSplashPath + `?type=${type}`
-      : PUZZLE_MEDIA_BASE_PATH;
+    DYSTOPIA_GAME_MEDIA_BASE_PATH + randomSplashPath + `?type=${type}`;
   const res = await fetch(path);
   const data = await res.json();
 
