@@ -20,6 +20,8 @@ interface Props {
 const paths: Record<ESplashTypes, string> = {
   [ESplashTypes.CYBERFARM]:
     DYSTOPIA_GAME_MEDIA_BASE_PATH + "/splash-cyberfarm/",
+  [ESplashTypes.INFLUENCE]:
+    DYSTOPIA_GAME_MEDIA_BASE_PATH + "/splash-influence/",
 };
 
 const AppLoader = ({
