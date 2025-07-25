@@ -81,11 +81,11 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
 
   if (!color) color = DEFAULT_COLOR;
 
-  const requiredPoints = hex.owner_id
+  let requiredPoints = hex.owner_id
     ? attackEnemyHexWithoutBuilding.actionPointsCost
     : attackNeutralHex.actionPointsCost;
-
-  let nextHarm = (hex?.harmedPoints || 0) + actionPointMax;
+  if (hex?.harmedPoints) requiredPoints -= hex.harmedPoints;
+  let nextHarm = actionPointMax;
   if (nextHarm > requiredPoints) nextHarm = requiredPoints;
 
   useEffect(() => {

@@ -1855,7 +1855,7 @@ export const TRANSLATIONS = {
   influence: {
     header: {
       throughText: {
-        [ELanguages.en]: "from",
+        [ELanguages.en]: "in",
         [ELanguages.ru]: "через",
       },
     },
