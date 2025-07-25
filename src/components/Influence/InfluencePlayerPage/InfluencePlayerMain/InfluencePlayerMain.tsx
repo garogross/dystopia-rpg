@@ -23,6 +23,8 @@ const InfluencePlayerMain = () => {
   const username = useAppSelector((state) => state.profile.username);
   const tgId = useAppSelector((state) => state.profile.tgId);
   const language = useAppSelector((state) => state.ui.language);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+
   const clan = "";
   const [opened, setOpened] = useState(true);
   const [copied, setCopied] = useState(false);
@@ -36,7 +38,9 @@ const InfluencePlayerMain = () => {
   };
 
   return (
-    <div
+    <TransitionProvider
+      inProp={gameInited}
+      style={TransitionStyleTypes.zoomIn}
       className={`${styles.influencePlayerMain} ${
         !opened ? styles.influencePlayerMain_closed : ""
       }`}
@@ -130,7 +134,7 @@ const InfluencePlayerMain = () => {
           <span className={styles.influencePlayerMain__valueText}>−20%</span>
         </div>
       </TransitionProvider>
-    </div>
+    </TransitionProvider>
   );
 };
 

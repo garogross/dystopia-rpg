@@ -28,10 +28,16 @@ const Dropdown = ({
   title: string;
   children: ReactNode;
 }) => {
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+
   const [opened, setOpened] = useState(false);
 
   return (
-    <div className={styles.influencePlayer__dropdown}>
+    <TransitionProvider
+      inProp={gameInited}
+      style={TransitionStyleTypes.zoomIn}
+      className={styles.influencePlayer__dropdown}
+    >
       <button
         className={styles.influencePlayer__dropdownBtn}
         onClick={() => setOpened((prev) => !prev)}
@@ -50,12 +56,13 @@ const Dropdown = ({
       >
         {children}
       </TransitionProvider>
-    </div>
+    </TransitionProvider>
   );
 };
 
 const InfluencePlayer = () => {
   const language = useAppSelector((state) => state.ui.language);
+
   return (
     <section className={styles.influencePlayer}>
       <TitleH3 wingsReverse={false} hideDotline>
