@@ -111,7 +111,8 @@ export const authUser = createAsyncThunk<AuthUserResponse, string>(
 const getAccountDetailsUrl = "/account/";
 
 export const getAccountDetails =
-  (avatar?: string, mode?: AppGameMode) => async (dispatch: AppDispatch) => {
+  (avatar?: string, username?: string, mode?: AppGameMode) =>
+  async (dispatch: AppDispatch) => {
     const resData = await fetchRequest<GetAccountDetailsResponse>(
       `${getAccountDetailsUrl}${mode ? `?mode=${mode}` : ""}`
     );
@@ -121,6 +122,7 @@ export const getAccountDetails =
         id: resData.user?.id_tgrm,
         tgId: resData.user?.id_tgrm,
         avatar,
+        username,
       })
     );
 
@@ -264,7 +266,7 @@ export const getAccountDetails =
   };
 
 export const authorizeUser =
-  (initData: string, avatar?: string, mode?: AppGameMode) =>
+  (initData: string, avatar?: string, username?: string, mode?: AppGameMode) =>
   async (dispatch: AppDispatch) => {
     // for test in dev mode
     if (process.env.NODE_ENV === "development") {
@@ -280,7 +282,7 @@ export const authorizeUser =
     }
 
     try {
-      const res = await dispatch(getAccountDetails(avatar, mode));
+      const res = await dispatch(getAccountDetails(avatar, username, mode));
 
       if (res.ton_cyber_farm) {
         dispatch(initCyberFarm());
@@ -332,6 +334,7 @@ export const profileSlice = createSlice({
       state.id = payload.id;
       state.tgId = payload.tgId;
       state.avatar = payload.avatar;
+      state.username = payload.username;
     },
     updateStats(state, { payload }) {
       state.stats = { ...state.stats, ...payload };

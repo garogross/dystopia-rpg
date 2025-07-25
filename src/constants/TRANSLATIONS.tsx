@@ -58,6 +58,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Get Premium",
       [ELanguages.ru]: "Получить премиум",
     },
+    minText: {
+      [ELanguages.en]: "min.",
+      [ELanguages.ru]: "мин.",
+    },
   },
   tutorialPopup: {
     closeText: {
@@ -1851,7 +1855,7 @@ export const TRANSLATIONS = {
   influence: {
     header: {
       throughText: {
-        [ELanguages.en]: "from",
+        [ELanguages.en]: "in",
         [ELanguages.ru]: "через",
       },
     },
@@ -1937,9 +1941,21 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Клан",
         },
 
-        apCostReductionText: {
-          [ELanguages.en]: "AP cost reduction",
-          [ELanguages.ru]: "Снижение стоимости в ОД",
+        mainParametersText: {
+          [ELanguages.en]: "Main parameters",
+          [ELanguages.ru]: "Основные параметры",
+        },
+        actionPointsText: {
+          [ELanguages.en]: "Action Points",
+          [ELanguages.ru]: "Очки Действия",
+        },
+        apRecoverySpeedText: {
+          [ELanguages.en]: "AP recovery speed",
+          [ELanguages.ru]: "Скорость восстановления ОД",
+        },
+        apSpendPerTurnText: {
+          [ELanguages.en]: "Max AP per turn",
+          [ELanguages.ru]: "Макс. ОД за ход",
         },
         sectorAttackText: {
           [ELanguages.en]: "sector attack",
@@ -2025,6 +2041,53 @@ export const TRANSLATIONS = {
             [ELanguages.ru]: "- +MAX_OD макс. ОД (CASH_POINT CP)",
           },
         },
+      },
+    },
+    notifications: {
+      titleText: {
+        [ELanguages.en]: "Summary",
+        [ELanguages.ru]: "Сводка",
+      },
+      tabsTexts: {
+        fightText: {
+          [ELanguages.en]: "Fight",
+          [ELanguages.ru]: "Бои",
+        },
+        buildingsText: {
+          [ELanguages.en]: "Buildings",
+          [ELanguages.ru]: "ПОСТРОЙКИ",
+        },
+        clanText: {
+          [ELanguages.en]: "Clan",
+          [ELanguages.ru]: "КЛАН",
+        },
+        miscText: {
+          [ELanguages.en]: "Misc",
+          [ELanguages.ru]: "РАЗНОЕ",
+        },
+      },
+      newMessagesCountText: {
+        [ELanguages.en]: (count: number) =>
+          `${count} new message${count === 1 ? "" : "s"}`,
+        [ELanguages.ru]: (count: number) =>
+          `${count} новых сообщени${
+            count % 10 === 1 && count % 100 !== 11
+              ? "е"
+              : count % 10 >= 2 &&
+                count % 10 <= 4 &&
+                (count % 100 < 10 || count % 100 >= 20)
+              ? "я"
+              : "й"
+          }`,
+      },
+      showOnMapText: {
+        [ELanguages.en]: "Show on map",
+        [ELanguages.ru]: "Показать на карте",
+      },
+
+      agoText: {
+        [ELanguages.en]: (minutes: number) => `[${minutes} min. ago]`,
+        [ELanguages.ru]: (minutes: number) => `[${minutes} мин. назад]`,
       },
     },
   },
