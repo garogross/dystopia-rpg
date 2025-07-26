@@ -1,0 +1,195 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.influenceClans {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding-block: 10px;
+
+  &__main {
+    width: 100%;
+    border: 1px solid $color-primary;
+    padding: 10px;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__filters {
+    @include flexCol();
+    gap: 5px;
+  }
+  &__select {
+    flex: 1;
+    position: relative;
+  }
+  &__selectBtn {
+    width: 100%;
+    @include button($color-primary);
+    padding: 1px;
+  }
+  &__selectBtnInner {
+    width: 100%;
+    padding: 5px;
+    background: $color-primary-dark-radial-gradient;
+    @include flexCol();
+    gap: 5px;
+    @include setFont(10px, 700);
+    transition: $transition;
+  }
+
+  &__selectBtn:hover &__selectBtnInner,
+  &__selectBtn:active &__selectBtnInner,
+  &__selectBtn_active &__selectBtnInner {
+    background: $color-primary;
+  }
+
+  &__selectDropdownContent {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    bottom: -8px;
+    border: 1px solid $color-primary;
+    display: flex;
+    flex-direction: column;
+    background: $color-primary-dark-radial-gradient;
+    transform: translateY(100%);
+  }
+  &__dropdonContentItem {
+    @include button();
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid $color-secondary;
+    @include setFont(10px, 700);
+  }
+  &__list {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  &__listItem {
+    width: 100%;
+    @include button(
+      linear-gradient(90deg, #2e147f 0%, #090419 24.04%),
+      1px solid $color-primary
+    );
+    @include flexCol(flex-start, flex-start);
+    padding: 8px;
+    gap: 10px;
+
+    &_active {
+      border-width: 2px;
+    }
+  }
+  &__listItemImg {
+    width: 38px;
+  }
+  &__listItemMain {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  &__listItemTopBlock {
+    @include flexCol(flex-start);
+    gap: 5px;
+  }
+  &__nameText {
+    @include setFont(12px, 700);
+  }
+  &__levelText {
+    @include setFont(12px, 400, $font-fam-main, $color-primary);
+  }
+  &__settings {
+    @include flexCol(flex-start);
+    gap: 10px;
+  }
+  &__settingsItem {
+    @include flexCol();
+    gap: 5px;
+    @include setFont(12px, 400);
+  }
+
+  &__description {
+    @include setFont(10px, 400);
+  }
+  &__footer {
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+    @include flexCol();
+    gap: 10px;
+    padding-inline: 10%;
+  }
+  &__footerBtn {
+    @include button($color-primary);
+    padding: 1px;
+    flex: 1;
+    height: 22px;
+    transition: $transition;
+
+    &:disabled {
+      opacity: 0.7;
+    }
+  }
+  &__footerBtnInner {
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    @include flexCol();
+    gap: 5px;
+    @include setFont(12px, 400);
+    background: $color-primary-dark-radial-gradient;
+  }
+
+  &__footerBtn:nth-child(1),
+  &__footerBtn:nth-child(1) &__footerBtnInner {
+    clip-path: polygon(
+      100% 0%,
+      // right top
+      100% 100%,
+      // right bottom
+      8% 100%,
+      // left bottom inner
+      0% 34%,
+      // left notch
+      2.3% 0%,
+      // left top
+      100% 0% // right top (close)
+    );
+  }
+  &__footerBtn:nth-child(2),
+  &__footerBtn:nth-child(2) &__footerBtnInner {
+    clip-path: polygon(
+      0% 0%,
+      // left top
+      0% 100%,
+      // left bottom
+      92% 100%,
+      // right bottom inner
+      100% 34%,
+      // right notch
+      98% 0%,
+      // right top
+      0% 0% // left top (close)
+    );
+  }
+
+  &__wings {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+    & svg {
+      width: 100%;
+      height: 8px;
+    }
+  }
+}

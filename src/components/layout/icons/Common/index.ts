@@ -6,3 +6,4 @@ export { EditIcon } from "./EditIcon";
 export { CopyIcon } from "./CopyIcon";
 export { DotslineLong } from "./DotslineLong";
 export { ArrowIcon } from "./ArrowIcon";
+export { SearchLupeIcon } from "./SearchLupeIcon";

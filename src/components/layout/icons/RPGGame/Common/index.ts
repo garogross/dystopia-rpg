@@ -7,5 +7,4 @@ export { ImageFrameBig } from "./ImageFrameBig";
 export { ImageFrameMd } from "./ImageFrameMd";
 export { InfoIcon } from "./InfoIcon";
 export { PlusIcon } from "./PlusIcon";
-export { SearchLupeIcon } from "./SearchLupeIcon";
 export { SelectMarkIcon } from "./SelectMarkIcon";

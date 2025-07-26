@@ -1,4 +1,6 @@
+import InfluenceClans from "../../components/Influence/InfluenceClanPage/InfluenceClans/InfluenceClans";
+
 const InfluenceClanPage = () => {
-  return <></>;
+  return <InfluenceClans />;
 };
 export default InfluenceClanPage;
