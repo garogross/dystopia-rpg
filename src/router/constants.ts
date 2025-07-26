@@ -43,6 +43,8 @@ export const puzzleRatingsPagePath = "ratings";
 
 export const influencePagePath = onBoardingPagePath + "/influence";
 export const influenceClanPagePath = "clan";
+export const influenceMyClanPagePath = "clan/my";
+export const influenceCreateClanPagePath = "clan/create";
 export const influenceLoyalityPagePath = "loyality";
 export const influencePlayerPagePath = "player";
 export const influenceNotificationsPagePath = "notifications";

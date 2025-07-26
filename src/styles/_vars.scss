@@ -20,6 +20,11 @@ $color-primary-light-gradient: linear-gradient(
   #7f5cff 100%
 );
 $color-primary-dark-gradient: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
+$color-primary-dark-radial-gradient: radial-gradient(
+  88.89% 88.89% at 50% 50%,
+  #3d2b7e 0%,
+  rgb(4, 0, 16) 100%
+);
 $color-secondary: #2a1e54;
 $color-text: #c6b7ff;
 

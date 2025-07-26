@@ -32,8 +32,10 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
   // Check if the task should be hidden on mount
   useEffect(() => {
     (async () => {
-      const hideUntil = await getLSItem(ELSProps.adsgramLastClickDate);
-      setHidden(!!hideUntil && Date.now() < Number(hideUntil));
+      try {
+        const hideUntil = await getLSItem(ELSProps.adsgramLastClickDate);
+        setHidden(!!hideUntil && Date.now() < Number(hideUntil));
+      } catch (error) {}
     })();
   }, []);
 
