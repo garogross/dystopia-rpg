@@ -25,11 +25,11 @@ const { rewardReceivedText } = TRANSLATIONS.loyality.tabs.supportProject;
 const { somethingWentWrong } = TRANSLATIONS.errors;
 
 async function getVideoAdViewTimestamps(index?: number): Promise<number[]> {
-  const raw = await getLSItem(
-    index ? ELSProps.videoAdViewTimestamps2 : ELSProps.videoAdViewTimestamps
-  );
-  if (!raw) return [];
   try {
+    const raw = await getLSItem(
+      index ? ELSProps.videoAdViewTimestamps2 : ELSProps.videoAdViewTimestamps
+    );
+    if (!raw) return [];
     if (typeof raw === "string") return JSON.parse(raw);
     if (Array.isArray(raw)) return raw;
     return [];
@@ -63,12 +63,12 @@ export const useVideoAd = (
       // Сохраняем новый просмотр
       const now = Date.now();
       let timestamps = await getVideoAdViewTimestamps(index);
-      timestamps = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
-      timestamps.push(now);
+      timestamps = timestamps?.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
+      timestamps?.push(now);
       saveVideoAdViewTimestamps(timestamps, index);
       if (scsClb) await scsClb(id);
-      else await dispatch(claimVideoReward({ id: tgId.toString() })).unwrap();
-      setViewsInDay(timestamps.length);
+      else await dispatch(claimVideoReward({ id: tgId?.toString() })).unwrap();
+      setViewsInDay(timestamps?.length);
 
       setTooltipText((speedUpCompleteText || rewardReceivedText)[language]);
     } catch (error) {
@@ -89,31 +89,34 @@ export const useVideoAd = (
   );
 
   async function canShowVideoAd(isInit?: boolean) {
-    const now = Date.now();
-    const timestamps = await getVideoAdViewTimestamps(index);
-    const last24h = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000);
-    const lastHour = timestamps.filter((ts) => now - ts < 60 * 60 * 1000);
-    const last = timestamps.length > 0 ? timestamps[timestamps.length - 1] : 0;
+    try {
+      const now = Date.now();
+      const timestamps = await getVideoAdViewTimestamps(index);
+      const last24h = timestamps.filter((ts) => now - ts < 24 * 60 * 60 * 1000);
+      const lastHour = timestamps.filter((ts) => now - ts < 60 * 60 * 1000);
+      const last =
+        timestamps.length > 0 ? timestamps[timestamps.length - 1] : 0;
 
-    if (isInit) {
-      setViewsInDay(last24h.length);
+      if (isInit) {
+        setViewsInDay(last24h.length);
+        return true;
+      } // for update viewsInDay on mount
+      if (last24h.length >= MAX_PER_DAY) {
+        setTooltipText(dailyLimitReachedText[language]);
+        return false;
+      }
+      if (lastHour.length >= MAX_PER_HOUR) {
+        setTooltipText(hourlyLimitReachedText[language]);
+        return false;
+      }
+      if (now - last < MIN_PAUSE_MS) {
+        const seconds = Math.ceil((MIN_PAUSE_MS - (now - last)) / 1000);
+        setTooltipText(adAvailableInSecondsText[language](seconds));
+        return false;
+      }
+
       return true;
-    } // for update viewsInDay on mount
-    if (last24h.length >= MAX_PER_DAY) {
-      setTooltipText(dailyLimitReachedText[language]);
-      return false;
-    }
-    if (lastHour.length >= MAX_PER_HOUR) {
-      setTooltipText(hourlyLimitReachedText[language]);
-      return false;
-    }
-    if (now - last < MIN_PAUSE_MS) {
-      const seconds = Math.ceil((MIN_PAUSE_MS - (now - last)) / 1000);
-      setTooltipText(adAvailableInSecondsText[language](seconds));
-      return false;
-    }
-
-    return true;
+    } catch (error) {}
   }
 
   useEffect(() => {

@@ -22,18 +22,20 @@ const LoyalitySupportProjectTraffyContainer = () => {
   useEffect(() => {
     // Check if we should hide the container
     (async () => {
-      const hideUntil = await getLSItem(ELSProps.hideTraffyContainerUntil);
-      if (hideUntil && Number(hideUntil) > Date.now()) {
-        setHidden(true);
-        // Set a timeout to show again after the period ends
-        const timeout = setTimeout(
-          () => setHidden(false),
-          Number(hideUntil) - Date.now()
-        );
-        return () => clearTimeout(timeout);
-      } else {
-        setHidden(false);
-      }
+      try {
+        const hideUntil = await getLSItem(ELSProps.hideTraffyContainerUntil);
+        if (hideUntil && Number(hideUntil) > Date.now()) {
+          setHidden(true);
+          // Set a timeout to show again after the period ends
+          const timeout = setTimeout(
+            () => setHidden(false),
+            Number(hideUntil) - Date.now()
+          );
+          return () => clearTimeout(timeout);
+        } else {
+          setHidden(false);
+        }
+      } catch (error) {}
     })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
