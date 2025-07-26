@@ -9,6 +9,7 @@ import { ELanguages } from "../../constants/ELanguages";
 import { useAppDispatch } from "../../hooks/redux";
 import { setLanguage } from "../../store/slices/uiSlice";
 import { useFreshDate } from "../../hooks/useFreshDate";
+import { DYSTOPIA_GAME_MEDIA_BASE_PATH } from "../../api/splash";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -119,7 +120,21 @@ export const App = () => {
       window.scrollTo(0, overflow);
     }
     tg.ready();
+    window.onerror = function (message, source, lineno, colno, error) {
+      console.log("onerror");
 
+      fetch(`${DYSTOPIA_GAME_MEDIA_BASE_PATH}/log-error`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message,
+          source,
+          lineno,
+          colno,
+          error: error?.stack,
+        }),
+      });
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
