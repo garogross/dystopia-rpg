@@ -71,15 +71,11 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
     <TransitionProvider
       inProp={gameInited}
       style={TransitionStyleTypes.bottom}
-      className={styles.loyalitySupportProjectTaskItem}
+      className={`${styles.loyalitySupportProjectTaskItem} ${
+        !inited ? styles.loyalitySupportProjectTaskItem_inited : ""
+      }`}
     >
-      <div
-        className={`${styles.loyalitySupportProjectTaskItem__adsgramWrapper} ${
-          inited
-            ? styles.loyalitySupportProjectTaskItem__adsgramWrapper_inited
-            : ""
-        }`}
-      >
+      <div className={styles.loyalitySupportProjectTaskItem__adsgramWrapper}>
         <adsgram-task
           data-block-id="task-12038"
           data-debug="false"
