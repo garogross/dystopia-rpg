@@ -130,6 +130,32 @@ export const App = () => {
         error: error?.stack,
       });
     };
+
+    const handleDocumentClick = (event: MouseEvent) => {
+      // Avoid circular structure by logging only relevant info about the target
+      let targetInfo: any = {};
+      if (event.target instanceof HTMLElement) {
+        targetInfo = {
+          tag: event.target.tagName,
+          id: event.target.id,
+          className: event.target.className,
+          name: (event.target as HTMLInputElement).name,
+          type: (event.target as HTMLInputElement).type,
+          text: event.target.textContent?.slice(0, 100), // limit text length
+        };
+      }
+      postLog({
+        type: "click",
+        tgId: tg?.initDataUnsafe.user?.id,
+        target: targetInfo,
+      });
+    };
+    document.addEventListener("click", handleDocumentClick);
+
+    // Cleanup on unmount
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
