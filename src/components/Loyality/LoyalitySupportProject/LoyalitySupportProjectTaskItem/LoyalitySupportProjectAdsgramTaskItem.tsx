@@ -27,7 +27,8 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
   const dispatch = useAppDispatch();
   const taskRef = useRef<HTMLElement>(null);
   const isMobile = getPlatformType();
-  const [hidden, setHidden] = useState(true);
+  const [hidden, setHidden] = useState(false);
+  const [inited, setInited] = useState(false);
 
   // Check if the task should be hidden on mount
   useEffect(() => {
@@ -35,6 +36,7 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
       try {
         const hideUntil = await getLSItem(ELSProps.adsgramLastClickDate);
         setHidden(!!hideUntil && Date.now() < Number(hideUntil));
+        setInited(true);
       } catch (error) {}
     })();
   }, []);
@@ -71,7 +73,13 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
       style={TransitionStyleTypes.bottom}
       className={styles.loyalitySupportProjectTaskItem}
     >
-      <div className={styles.loyalitySupportProjectTaskItem__adsgramWrapper}>
+      <div
+        className={`${styles.loyalitySupportProjectTaskItem__adsgramWrapper} ${
+          inited
+            ? styles.loyalitySupportProjectTaskItem__adsgramWrapper_inited
+            : ""
+        }`}
+      >
         <adsgram-task
           data-block-id="task-12038"
           data-debug="false"

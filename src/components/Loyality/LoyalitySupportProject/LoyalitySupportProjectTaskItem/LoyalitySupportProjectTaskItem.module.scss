@@ -97,5 +97,13 @@
   &__adsgramWrapper {
     background: $color-darkBlueBg;
     padding: 7px;
+    pointer-events: none;
+    opacity: 0;
+    transition: $transition;
+
+    &_inited {
+      pointer-events: all;
+      opacity: 1;
+    }
   }
 }
