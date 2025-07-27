@@ -136,12 +136,14 @@ const LoyalitySupportProject = () => {
         />
 
         {/* button for barzha modal */}
-        <LoyalitySupportProjectAdditionalTaskItem
-          gameInited={gameInited}
-          language={language}
-          onOpen={onOpenBarzhaTasks}
-          index={1}
-        />
+        {window.bQuest && (
+          <LoyalitySupportProjectAdditionalTaskItem
+            gameInited={gameInited}
+            language={language}
+            onOpen={onOpenBarzhaTasks}
+            index={1}
+          />
+        )}
         {/* <LoyalitySupportProjectAdditionalTaskItem
           gameInited={gameInited}
           language={language}
