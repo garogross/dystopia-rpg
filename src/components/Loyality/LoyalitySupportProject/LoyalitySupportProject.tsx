@@ -132,7 +132,7 @@ const LoyalitySupportProject = () => {
           id={TADS_WIDGET_ID}
           type="static"
           debug={process.env.NODE_ENV === "development"}
-          onShowReward={onClaimTads}
+          onClickReward={onClaimTads}
         />
 
         {/* button for barzha modal */}
