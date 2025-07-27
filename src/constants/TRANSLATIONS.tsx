@@ -1146,6 +1146,11 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Task not completed",
         [ELanguages.ru]: "Задание не выполнено",
       },
+      failedToClaimRewardText: {
+        [ELanguages.en]: "Failed to claim reward",
+        [ELanguages.ru]: "Не удалось получить награду",
+      },
+
       taskCompletedText: {
         [ELanguages.en]: "Task completed successfully",
         [ELanguages.ru]: "Задание выполнено успешно",
