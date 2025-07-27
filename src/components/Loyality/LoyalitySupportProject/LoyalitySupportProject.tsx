@@ -27,6 +27,7 @@ import { useTooltip } from "../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { EAdTypes } from "../../../constants/EAdTypes";
+import { postLog } from "../../../api/logs";
 
 const { taskNotCompletedText, taskCompletedText, failedToClaimRewardText } =
   TRANSLATIONS.loyality.supportProject;
@@ -116,6 +117,7 @@ const LoyalitySupportProject = () => {
       await dispatch(claimTadsReward({ id })).unwrap();
       setTooltipText(taskCompletedText);
     } catch (error) {
+      postLog({ type: "onClaimTads", tgId, error });
       setTooltipText(failedToClaimRewardText);
     } finally {
       openTooltip();
@@ -130,7 +132,7 @@ const LoyalitySupportProject = () => {
           id={TADS_WIDGET_ID}
           type="static"
           debug={process.env.NODE_ENV === "development"}
-          onClickReward={onClaimTads}
+          onShowReward={onClaimTads}
         />
 
         {/* button for barzha modal */}
