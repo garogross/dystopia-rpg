@@ -1,0 +1,81 @@
+import { ELanguages } from "../constants/ELanguages";
+import { IIncluenceClan } from "../models/Influence/IIncluenceClan";
+
+import {
+  dummyClan1Image,
+  dummyClan2Image,
+  dummyClan3Image,
+  dummyClan4Image,
+  dummyClan5Image,
+  dummyClan6Image,
+} from "../assets/imageMaps";
+
+export const influenceClans: IIncluenceClan[] = [
+  {
+    id: "1",
+    image: dummyClan1Image,
+    name: "ГИЛДИЯ ОКУПАНТОВ",
+    level: 3,
+    members: 45,
+    maxMembers: 50,
+    language: ELanguages.ru,
+    type: "public",
+    description: "Элитный клан опытных бойцов в киберпанк мире",
+  },
+  {
+    id: "2",
+    image: dummyClan2Image,
+    name: "Тень Протокола",
+    level: 2,
+    members: 50,
+    maxMembers: 60,
+    language: ELanguages.ru,
+    type: "public",
+    description: "Дружелюбное сообщество для игроков всех уровней",
+  },
+  {
+    id: "3",
+    image: dummyClan3Image,
+    name: "Black Resonance",
+    level: 5,
+    members: 30,
+    maxMembers: 55,
+    language: ELanguages.en,
+    type: "private",
+    description: "Aggressive tactics, high rewards",
+  },
+  {
+    id: "4",
+    image: dummyClan4Image,
+    name: "Ash Syndicate",
+    level: 3,
+    members: 36,
+    maxMembers: 40,
+    language: ELanguages.en,
+    type: "private",
+    description: "Elite international organization",
+  },
+  {
+    id: "5",
+    image: dummyClan5Image,
+    name: "Звено 404",
+    level: 3,
+    members: 45,
+    maxMembers: 60,
+    language: ELanguages.ru,
+    type: "public",
+    description:
+      "Молодой клан с большими амбициями. Ищем активных игроков для роста и развития.",
+  },
+  {
+    id: "6",
+    image: dummyClan6Image,
+    name: "братство NOD",
+    level: 3,
+    members: 45,
+    maxMembers: 60,
+    language: ELanguages.ru,
+    type: "public",
+    description: "Ужасающий орден жрецов-воинов Братства",
+  },
+];

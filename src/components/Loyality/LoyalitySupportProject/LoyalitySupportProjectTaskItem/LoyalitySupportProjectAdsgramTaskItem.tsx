@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "../../../../hooks/redux";
 import { ELanguages } from "../../../../constants/ELanguages";
 import { getPlatformType } from "../../../../utils/getPlatformType";
@@ -27,7 +27,7 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
   const dispatch = useAppDispatch();
   const taskRef = useRef<HTMLElement>(null);
   const isMobile = getPlatformType();
-  const [hidden, setHidden] = React.useState(false);
+  const [hidden, setHidden] = useState(true);
 
   // Check if the task should be hidden on mount
   useEffect(() => {
