@@ -51,7 +51,7 @@
   &__progressBar {
     width: 100%;
     padding: 1px;
-    background: $color-primary-light-gradient;
+    background: linear-gradient(90deg, #2a1e54 0%, #5d42ba 100%);
     height: 17px;
   }
   &__progressBarContainer {
@@ -61,7 +61,7 @@
     height: 100%;
   }
   &__progressBarinner {
-    background: $color-primary-light-gradient;
+    background: linear-gradient(90deg, #2a1e54 0%, #5d42ba 100%);
     height: 100%;
     width: 100%;
   }
