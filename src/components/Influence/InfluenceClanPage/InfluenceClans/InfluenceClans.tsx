@@ -25,15 +25,28 @@ import styles from "./InfluenceClans.module.scss";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { TranslationItemType } from "../../../../types/TranslationItemType";
+import { useAppSelector } from "../../../../hooks/redux";
 
-const typeNames: Record<IIncluenceClan["type"], string> = {
-  public: "Публичный",
-  private: "Закрытый",
+const {
+  titleText,
+  filterstexts,
+  typeOptionsTexts,
+  levelText,
+  joinClanButtonText,
+  createClanButtonText,
+} = TRANSLATIONS.influence.clans;
+const { searchText } = TRANSLATIONS.common;
+
+const typeNames: Record<IIncluenceClan["type"], TranslationItemType> = {
+  public: typeOptionsTexts.public,
+  private: typeOptionsTexts.private,
 };
 
-const filtersData = [
+const getFiltersData = (language: ELanguages) => [
   {
-    name: "Уровень",
+    name: filterstexts.level,
     keyName: "level",
     options: [
       {
@@ -55,7 +68,7 @@ const filtersData = [
     ],
   },
   {
-    name: "Состав",
+    name: filterstexts.members,
     keyName: "members",
     options: [
       {
@@ -77,21 +90,21 @@ const filtersData = [
     ],
   },
   {
-    name: "тип",
+    name: filterstexts.type,
     keyName: "type",
     options: [
       {
         value: "public",
-        label: "Публичный",
+        label: typeOptionsTexts.public[language],
       },
       {
         value: "private",
-        label: "Закрытый",
+        label: typeOptionsTexts.private[language],
       },
     ],
   },
   {
-    name: "Язык",
+    name: filterstexts.language,
     keyName: "language",
     options: [
       {
@@ -176,12 +189,14 @@ const clans: IIncluenceClan[] = [
   },
 ];
 
-type SelectProps = (typeof filtersData)[0] & {
+type SelectProps = ReturnType<typeof getFiltersData>[0] & {
   value: string;
   onChange: (val: string) => void;
 };
 
 const Select: FC<SelectProps> = ({ name, options, value, onChange }) => {
+  const language = useAppSelector((state) => state.ui.language);
+
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
   const dropDownOpenedRef = useRef(dropdownOpened);
@@ -224,7 +239,7 @@ const Select: FC<SelectProps> = ({ name, options, value, onChange }) => {
         onClick={() => setDropdownOpened(true)}
       >
         <div className={styles.influenceClans__selectBtnInner}>
-          <span>{selectedItem?.label || name}</span>
+          <span>{selectedItem?.label || name[language]}</span>
           <ArrowIcon rotate={dropdownOpened} />
         </div>
       </button>
@@ -251,6 +266,10 @@ const Select: FC<SelectProps> = ({ name, options, value, onChange }) => {
 };
 
 const InfluenceClans = () => {
+  const language = useAppSelector((state) => state.ui.language);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const filtersData = getFiltersData(language);
+
   const [filters, setFilters] = useState(
     filtersData.reduce((acc, cur) => {
       acc[cur.keyName] = "";
@@ -262,12 +281,19 @@ const InfluenceClans = () => {
   return (
     <div className={`${styles.influenceClans} container`}>
       <TitleH3 wingsReverse={false} hideDotline>
-        клан
+        {titleText[language]}
       </TitleH3>
       <div className={styles.influenceClans__main}>
-        <MainInput placeholder="Поиск..." icon={<SearchLupeIcon />} />
+        <MainInput
+          placeholder={searchText[language]}
+          icon={<SearchLupeIcon />}
+        />
 
-        <div className={styles.influenceClans__filters}>
+        <TransitionProvider
+          inProp={gameInited}
+          style={TransitionStyleTypes.zoomIn}
+          className={styles.influenceClans__filters}
+        >
           {filtersData.map((filter) => (
             <Select
               key={filter.keyName}
@@ -281,8 +307,12 @@ const InfluenceClans = () => {
               }
             />
           ))}
-        </div>
-        <div className={styles.influenceClans__list}>
+        </TransitionProvider>
+        <TransitionProvider
+          inProp={gameInited}
+          style={TransitionStyleTypes.bottom}
+          className={styles.influenceClans__list}
+        >
           {clans.map((clan) => (
             <button
               key={clan.id}
@@ -304,7 +334,7 @@ const InfluenceClans = () => {
                     {clan.name}
                   </h4>
                   <span className={styles.influenceClans__levelText}>
-                    Уровень {clan.level}
+                    {levelText[language]} {clan.level}
                   </span>
                 </div>
                 <div className={styles.influenceClans__settings}>
@@ -320,7 +350,7 @@ const InfluenceClans = () => {
                   </div>
                   <div className={styles.influenceClans__settingsItem}>
                     <PrivateIcon />
-                    <span>{typeNames[clan.type]}</span>
+                    <span>{typeNames[clan.type][language]}</span>
                   </div>
                 </div>
                 <p className={styles.influenceClans__description}>
@@ -329,28 +359,32 @@ const InfluenceClans = () => {
               </div>
             </button>
           ))}
-        </div>
+        </TransitionProvider>
       </div>
-      <div className={styles.influenceClans__footer}>
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.zoomOut}
+        className={styles.influenceClans__footer}
+      >
         <button
           disabled={!selectedItemId}
           className={styles.influenceClans__footerBtn}
         >
           <div className={styles.influenceClans__footerBtnInner}>
             <JoinClanIcon />
-            <span>Вступать в клан</span>
+            <span>{joinClanButtonText[language]}</span>
           </div>
         </button>
         <button className={styles.influenceClans__footerBtn}>
           <div className={styles.influenceClans__footerBtnInner}>
             <CreateClanIcon />
-            <span>Создать клан</span>
+            <span>{createClanButtonText[language]}</span>
           </div>
         </button>
         <div className={styles.influenceClans__wings}>
           <HeaderWings reversed />
         </div>
-      </div>
+      </TransitionProvider>
     </div>
   );
 };

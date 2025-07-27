@@ -62,6 +62,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "min.",
       [ELanguages.ru]: "мин.",
     },
+    searchText: {
+      [ELanguages.en]: "Search...",
+      [ELanguages.ru]: "Поиск...",
+    },
   },
   tutorialPopup: {
     closeText: {
@@ -2120,6 +2124,53 @@ export const TRANSLATIONS = {
       agoText: {
         [ELanguages.en]: (minutes: number) => `[${minutes} min. ago]`,
         [ELanguages.ru]: (minutes: number) => `[${minutes} мин. назад]`,
+      },
+    },
+    clans: {
+      titleText: {
+        [ELanguages.en]: "Clan",
+        [ELanguages.ru]: "Клан",
+      },
+      filterstexts: {
+        level: {
+          [ELanguages.en]: "Level",
+          [ELanguages.ru]: "Уровень",
+        },
+        members: {
+          [ELanguages.en]: "Members",
+          [ELanguages.ru]: "Состав",
+        },
+        type: {
+          [ELanguages.en]: "Type",
+          [ELanguages.ru]: "Тип",
+        },
+        language: {
+          [ELanguages.en]: "Language",
+          [ELanguages.ru]: "Язык",
+        },
+      },
+      typeOptionsTexts: {
+        public: {
+          [ELanguages.en]: "Public",
+          [ELanguages.ru]: "Публичный",
+        },
+        private: {
+          [ELanguages.en]: "Private",
+          [ELanguages.ru]: "Закрытый",
+        },
+      },
+      levelText: {
+        [ELanguages.en]: "Level",
+        [ELanguages.ru]: "Уровень",
+      },
+
+      joinClanButtonText: {
+        [ELanguages.en]: "Join clan",
+        [ELanguages.ru]: "Вступать в клан",
+      },
+      createClanButtonText: {
+        [ELanguages.en]: "Create clan",
+        [ELanguages.ru]: "Создать клан",
       },
     },
   },
