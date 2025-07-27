@@ -5,18 +5,22 @@ import InfluenceBottomNavbar from "../InfluenceBottomNavbar/InfluenceBottomNavba
 
 import * as influenceImages from "../../../assets/imageMaps/influenceImages";
 import { ESplashTypes } from "../../../constants/ESplashTypes";
+import InfluenceRestoreApModal from "../InfluenceMapPage/InfluenceRestoreApModal/InfluenceRestoreApModal";
 
 const InfluenceWrapper = () => {
   return (
-    <GameWrapper
-      header={<InfluenceHeader />}
-      bottomNavbar={<InfluenceBottomNavbar />}
-      images={influenceImages}
-      gameInited={false}
-      splashType={ESplashTypes.INFLUENCE}
-      offsetSize={180}
-      mode={"influence"}
-    />
+    <>
+      <GameWrapper
+        header={<InfluenceHeader />}
+        bottomNavbar={<InfluenceBottomNavbar />}
+        images={influenceImages}
+        gameInited={false}
+        splashType={ESplashTypes.INFLUENCE}
+        offsetSize={180}
+        mode={"influence"}
+      />
+      <InfluenceRestoreApModal />
+    </>
   );
 };
 

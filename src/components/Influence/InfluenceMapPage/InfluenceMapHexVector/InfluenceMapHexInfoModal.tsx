@@ -31,6 +31,8 @@ import { useTooltip } from "../../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { attackHex } from "../../../../store/slices/influence/mapSlice";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
+import { FillupIcon } from "../../../layout/icons/Influence/Common";
+import { openRestoreModal } from "../../../../store/slices/influence/influenceSlice";
 
 interface Props {
   hex: IHex;
@@ -326,7 +328,11 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                 </div>
                 <button
                   onClick={() => {
-                    activeBtn?.onclick?.();
+                    if (actionPoints) {
+                      activeBtn?.onclick?.();
+                    } else {
+                      dispatch(openRestoreModal("restore"));
+                    }
                     onClose();
                   }}
                   className={`${styles.influenceMapHexInfoModal__actionBtn} ${styles.influenceMapHexInfoModal__confirmBtn}`}
@@ -334,8 +340,17 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                   <div
                     className={styles.influenceMapHexInfoModal__actionBtnInner}
                   >
-                    <ConfirmIcon />
-                    <span>Потвердить</span>
+                    {actionPoints ? (
+                      <>
+                        <ConfirmIcon />
+                        <span>Потвердить</span>
+                      </>
+                    ) : (
+                      <>
+                        <FillupIcon />
+                        <span>Пополнить</span>
+                      </>
+                    )}
                   </div>
                 </button>
               </TransitionProvider>

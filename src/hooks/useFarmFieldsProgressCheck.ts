@@ -1,12 +1,8 @@
-import { useEffect } from "react";
 import { IFarmField } from "../models/CyberFarm/IFarmField";
 import { getFarmFieldProgress } from "../utils/getFarmFieldProgress";
-import { useAppDispatch } from "./redux";
-import { setFreshDateUpdating } from "../store/slices/uiSlice";
+import { useFreshDateStateUpdate } from "./useFreshDateStateUpdate";
 
 export const useFarmFieldsProgressCheck = (filteredFields: IFarmField[]) => {
-  const dispatch = useAppDispatch();
-
   const hasInProgressItem = filteredFields.some(
     (item) =>
       item.process &&
@@ -14,11 +10,5 @@ export const useFarmFieldsProgressCheck = (filteredFields: IFarmField[]) => {
         .progress < 100
   );
 
-  useEffect(() => {
-    dispatch(setFreshDateUpdating(hasInProgressItem));
-    return () => {
-      dispatch(setFreshDateUpdating(false));
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasInProgressItem]);
+  useFreshDateStateUpdate(hasInProgressItem);
 };

@@ -1880,6 +1880,38 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Next step in SECONDS sec.",
         [ELanguages.ru]: "Следующий ход через SECONDS сек.",
       },
+      restoreApModal: {
+        titleText: {
+          [ELanguages.en]: "Restore Action Points",
+          [ELanguages.ru]: "Восстановление ОД",
+        },
+        subtitleText: {
+          [ELanguages.en]: "You are out of action points, recharge?",
+          [ELanguages.ru]: "Ваши ОД закончились, перезарядить?",
+        },
+        restoreApText: {
+          [ELanguages.en]: "Restore your AP",
+          [ELanguages.ru]: "Пополнить ваши ОД",
+        },
+        watchAdButtonText: {
+          [ELanguages.en]: "Watch ad",
+          [ELanguages.ru]: "Посмотреть рекламу",
+        },
+        restoreCpButtonText: {
+          [ELanguages.en]: "Restore for NUMBER CP",
+          [ELanguages.ru]: "Пополнить за NUMBER СР",
+        },
+        timerText: {
+          [ELanguages.en]: "AP restore over time (+AMOUNT in TIME)",
+          [ELanguages.ru]:
+            "ОД восстанавливаются со временем (+AMOUNT через TIME)",
+        },
+
+        apsRestoredSuccessText: {
+          [ELanguages.en]: "AP restored successfully",
+          [ELanguages.ru]: "ОД успешно восстановлены",
+        },
+      },
     },
     player: {
       titleText: {

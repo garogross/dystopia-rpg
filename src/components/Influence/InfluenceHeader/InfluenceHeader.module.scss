@@ -104,6 +104,8 @@
     top: 4px;
     @include flexCol();
     gap: 4px;
+    z-index: 6;
+    cursor: pointer;
   }
 
   &__energyImg {
