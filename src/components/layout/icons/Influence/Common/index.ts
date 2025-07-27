@@ -1,0 +1,1 @@
+export { FillupIcon } from "./FillupIcon";

@@ -29,21 +29,18 @@ import {
   influenceEnergyImageWebp,
 } from "../../../assets/imageMaps";
 import { formatNumber } from "../../../utils/formatNumber";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { formatTime } from "../../../utils/formatTime";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
-import { restoreActionPoints } from "../../../store/slices/influence/influenceSlice";
+import { openRestoreModal } from "../../../store/slices/influence/influenceSlice";
 import SettingsModal from "../../SettingsModal/SettingsModal";
+import { useInfluenceRestoretimer } from "../../../hooks/influence/useInfluenceRestoretimer";
 
 const { throughText } = TRANSLATIONS.influence.header;
 const { getPremiumText } = TRANSLATIONS.common;
 
 const ActionPointTimer = () => {
-  const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const lastRestoreActionPointsTs = useAppSelector(
-    (state) => state.influence.influence.lastRestoreActionPointsTs
-  );
   const actionPointMax = useAppSelector(
     (state) => state.influence.settings.actionPointMax
   );
@@ -53,47 +50,7 @@ const ActionPointTimer = () => {
   const actionPointRestore = useAppSelector(
     (state) => state.influence.settings.actionPointRestore
   );
-  const [timeLeft, setTimeLeft] = useState(0);
-  const timerRef = useRef<NodeJS.Timer>();
-
-  useEffect(() => {
-    if (!actionPointRestore?.intervalMinutes || !lastRestoreActionPointsTs)
-      return;
-
-    const intervalMs = actionPointRestore.intervalMinutes * 60 * 1000;
-    const getNextRestoreTs = (isInit?: boolean) => {
-      const now = Date.now();
-      let nextRestore = lastRestoreActionPointsTs + intervalMs;
-      if (now > nextRestore) {
-        if (!isInit) {
-          dispatch(restoreActionPoints());
-        }
-        const intervalsPassed = Math.floor(
-          (now - lastRestoreActionPointsTs) / intervalMs
-        );
-        nextRestore =
-          lastRestoreActionPointsTs + (intervalsPassed + 1) * intervalMs;
-      }
-      return nextRestore;
-    };
-
-    const update = (isInit?: boolean) => {
-      const now = Date.now();
-      const nextRestore = getNextRestoreTs(isInit);
-      setTimeLeft(Math.max(0, nextRestore - now));
-    };
-
-    update(true);
-    timerRef.current = setInterval(update, 1000);
-    return () => clearInterval(timerRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [actionPointRestore?.intervalMinutes, lastRestoreActionPointsTs]);
-
-  useEffect(() => {
-    if (actionPoints >= actionPointMax) {
-      clearInterval(timerRef.current);
-    }
-  }, [actionPointMax, actionPoints]);
+  const timeLeft = useInfluenceRestoretimer();
 
   return (
     <div className={styles.influenceHeader__timer}>
@@ -102,7 +59,7 @@ const ActionPointTimer = () => {
           <span>
             +{actionPointRestore.amount} {throughText[language]}
           </span>
-          <span>({formatTime(timeLeft / 1000)})</span>
+          <span>({formatTime(timeLeft)})</span>
         </>
       )}{" "}
     </div>
@@ -110,6 +67,7 @@ const ActionPointTimer = () => {
 };
 
 const InfluenceHeader = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const language = useAppSelector((state) => state.ui.language);
@@ -204,7 +162,10 @@ const InfluenceHeader = () => {
             <HeaderReferenceIcon />
           </NavLink>
         </div>
-        <div className={styles.influenceHeader__stat}>
+        <div
+          onClick={() => dispatch(openRestoreModal("fill"))}
+          className={styles.influenceHeader__stat}
+        >
           <ImageWebp
             src={influenceEnergyImage}
             srcSet={influenceEnergyImageWebp}

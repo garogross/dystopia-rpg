@@ -118,6 +118,7 @@
 
   &__description {
     @include setFont(10px, 400);
+    text-align: left;
   }
   &__footer {
     position: relative;

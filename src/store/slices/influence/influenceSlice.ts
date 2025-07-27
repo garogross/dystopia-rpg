@@ -1,18 +1,50 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "../../store";
+import { fetchRequest } from "../../tools/fetchTools";
+import { RestoreAPResponse } from "../../../models/api/Influence/Influence";
 import { attackHex } from "./mapSlice";
 
 export interface InfluenceState {
   actionPoints: number;
   influencePoints: number;
   lastRestoreActionPointsTs: number;
+  restoreModalOpened: boolean;
+  restoreModalOpenedType: "restore" | "fill";
 }
 
 const initialState: InfluenceState = {
   actionPoints: 0,
   influencePoints: 0,
   lastRestoreActionPointsTs: 0,
+  restoreModalOpened: false,
+  restoreModalOpenedType: "restore",
 };
+
+const restoreAPUrl = "/influence/buy_action_points/";
+export const restoreAP = createAsyncThunk<
+  RestoreAPResponse,
+  {
+    method: "buy" | "ad";
+    partner?: string;
+    amount?: number;
+  }
+>("influence/restoreAP", async (payload, { rejectWithValue, getState }) => {
+  try {
+    const resData = await fetchRequest<RestoreAPResponse>(
+      restoreAPUrl,
+      "POST",
+      {
+        method: payload.method,
+        partner: payload.partner,
+        amount: payload.amount,
+      }
+    );
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
 
 export const restoreActionPoints =
   () => (dispatch: AppDispatch, getState: () => RootState) => {
@@ -40,15 +72,26 @@ export const influenceSlice = createSlice({
       state.actionPoints = payload;
       state.lastRestoreActionPointsTs = Date.now();
     },
+    openRestoreModal: (state, { payload }) => {
+      state.restoreModalOpened = true;
+      state.restoreModalOpenedType = payload;
+    },
+    closeRestoreModal: (state) => {
+      state.restoreModalOpened = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(attackHex.fulfilled, (state, { payload }) => {
       state.actionPoints = payload.action_points_current;
       state.influencePoints = payload.victory_points;
     });
+    builder.addCase(restoreAP.fulfilled, (state, { payload }) => {
+      state.actionPoints = payload.action_points_current;
+    });
   },
 });
 
-export const { initInfluence } = influenceSlice.actions;
+export const { initInfluence, openRestoreModal, closeRestoreModal } =
+  influenceSlice.actions;
 
 export default influenceSlice.reducer;

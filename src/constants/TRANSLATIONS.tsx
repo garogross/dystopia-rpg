@@ -62,6 +62,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "min.",
       [ELanguages.ru]: "мин.",
     },
+    searchText: {
+      [ELanguages.en]: "Search...",
+      [ELanguages.ru]: "Поиск...",
+    },
   },
   tutorialPopup: {
     closeText: {
@@ -1142,6 +1146,11 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Task not completed",
         [ELanguages.ru]: "Задание не выполнено",
       },
+      failedToClaimRewardText: {
+        [ELanguages.en]: "Failed to claim reward",
+        [ELanguages.ru]: "Не удалось получить награду",
+      },
+
       taskCompletedText: {
         [ELanguages.en]: "Task completed successfully",
         [ELanguages.ru]: "Задание выполнено успешно",
@@ -1880,6 +1889,38 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Next step in SECONDS sec.",
         [ELanguages.ru]: "Следующий ход через SECONDS сек.",
       },
+      restoreApModal: {
+        titleText: {
+          [ELanguages.en]: "Restore Action Points",
+          [ELanguages.ru]: "Восстановление ОД",
+        },
+        subtitleText: {
+          [ELanguages.en]: "You are out of action points, recharge?",
+          [ELanguages.ru]: "Ваши ОД закончились, перезарядить?",
+        },
+        restoreApText: {
+          [ELanguages.en]: "Restore your AP",
+          [ELanguages.ru]: "Пополнить ваши ОД",
+        },
+        watchAdButtonText: {
+          [ELanguages.en]: "Watch ad",
+          [ELanguages.ru]: "Посмотреть рекламу",
+        },
+        restoreCpButtonText: {
+          [ELanguages.en]: "Restore for NUMBER CP",
+          [ELanguages.ru]: "Пополнить за NUMBER СР",
+        },
+        timerText: {
+          [ELanguages.en]: "AP restore over time (+AMOUNT in TIME)",
+          [ELanguages.ru]:
+            "ОД восстанавливаются со временем (+AMOUNT через TIME)",
+        },
+
+        apsRestoredSuccessText: {
+          [ELanguages.en]: "AP restored successfully",
+          [ELanguages.ru]: "ОД успешно восстановлены",
+        },
+      },
     },
     player: {
       titleText: {
@@ -2088,6 +2129,53 @@ export const TRANSLATIONS = {
       agoText: {
         [ELanguages.en]: (minutes: number) => `[${minutes} min. ago]`,
         [ELanguages.ru]: (minutes: number) => `[${minutes} мин. назад]`,
+      },
+    },
+    clans: {
+      titleText: {
+        [ELanguages.en]: "Clan",
+        [ELanguages.ru]: "Клан",
+      },
+      filterstexts: {
+        level: {
+          [ELanguages.en]: "Level",
+          [ELanguages.ru]: "Уровень",
+        },
+        members: {
+          [ELanguages.en]: "Members",
+          [ELanguages.ru]: "Состав",
+        },
+        type: {
+          [ELanguages.en]: "Type",
+          [ELanguages.ru]: "Тип",
+        },
+        language: {
+          [ELanguages.en]: "Language",
+          [ELanguages.ru]: "Язык",
+        },
+      },
+      typeOptionsTexts: {
+        public: {
+          [ELanguages.en]: "Public",
+          [ELanguages.ru]: "Публичный",
+        },
+        private: {
+          [ELanguages.en]: "Private",
+          [ELanguages.ru]: "Закрытый",
+        },
+      },
+      levelText: {
+        [ELanguages.en]: "Level",
+        [ELanguages.ru]: "Уровень",
+      },
+
+      joinClanButtonText: {
+        [ELanguages.en]: "Join clan",
+        [ELanguages.ru]: "Вступать в клан",
+      },
+      createClanButtonText: {
+        [ELanguages.en]: "Create clan",
+        [ELanguages.ru]: "Создать клан",
       },
     },
   },

@@ -35,7 +35,7 @@ import { initAchievments } from "./cyberFarm/achievmentsSlice";
 import { WithdrawTonResponse } from "../../models/api/WithdrawTonResponse";
 import { convertReferals } from "./refferencesSlice";
 import { finsihTutorial, initTutorial } from "./cyberFarm/tutorialSlice";
-import { initInfluence } from "./influence/influenceSlice";
+import { initInfluence, restoreAP } from "./influence/influenceSlice";
 import { initSettings } from "./influence/settingsSlice";
 import { initMap } from "./influence/mapSlice";
 // import {AppDispatch, RootState} from "../store";
@@ -438,6 +438,11 @@ export const profileSlice = createSlice({
       if (payload.success && payload.confirmationHash) {
         state.stats.cp += +payload.amount;
       }
+    });
+
+    // influence
+    builder.addCase(restoreAP.fulfilled, (state, { payload }) => {
+      if (payload.cash_point_left) state.stats.cp = payload.cash_point_left;
     });
   },
 });
