@@ -72,7 +72,7 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
       inProp={gameInited}
       style={TransitionStyleTypes.bottom}
       className={`${styles.loyalitySupportProjectTaskItem} ${
-        inited ? styles.loyalitySupportProjectTaskItem_inited : ""
+        inited ? styles.loyalitySupportProjectTaskItem__adsgramTask_inited : ""
       }`}
     >
       <div className={styles.loyalitySupportProjectTaskItem__adsgramWrapper}>

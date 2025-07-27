@@ -7,18 +7,10 @@
 
   background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
   transition: $transition;
-  pointer-events: none;
-  opacity: 0;
-  transition: $transition;
 
   &_completed {
     background: $color-primary;
     padding: 1px;
-  }
-
-  &_inited {
-    pointer-events: all;
-    opacity: 1;
   }
 
   &__inner {
@@ -105,5 +97,15 @@
   &__adsgramWrapper {
     background: $color-darkBlueBg;
     padding: 7px;
+  }
+  &__adsgramTask {
+    pointer-events: none;
+    opacity: 0;
+    transition: $transition;
+
+    &_inited {
+      pointer-events: all;
+      opacity: 1;
+    }
   }
 }
