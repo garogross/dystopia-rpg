@@ -1,2 +1,36 @@
 @import "../../../../styles/mixins";
 @import "../../../../styles/vars";
+
+.influenceMyClanTabs {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__bar {
+    @include flexCol();
+    gap: 7px;
+  }
+  &__tabBtn {
+    @include button(linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%));
+    flex: 1;
+    @include flexCol();
+    gap: 6px;
+    @include setFont(10px, 700);
+    transition: $transition;
+    fill: $color-text;
+    padding: 5px;
+
+    & svg {
+      fill: inherit;
+      transition: $transition;
+    }
+
+    &_active {
+      background: $color-active-btn-gradient;
+      color: $color-black;
+      fill: $color-black;
+    }
+  }
+}
