@@ -69,7 +69,7 @@ export const useGlobalAdController = (
         }
         case EAdTypes.TADDY_V: {
           const success = await window.Taddy.ads().interstitial({
-            onClosed: () => console.log("Объявление закрыто"),
+            onClosed: () => console.dir("Объявление закрыто"),
             onViewThrough: (id: string) => scsClb?.(id || "id"),
           });
           if (!success) errClb?.(true);

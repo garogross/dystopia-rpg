@@ -31,10 +31,20 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Достигнут почасовой лимит просмотров рекламы (10/час)",
     },
     adAvailableInSecondsText: {
-      [ELanguages.en]: (seconds: number) =>
-        `Ad will be available in ${seconds} sec.`,
-      [ELanguages.ru]: (seconds: number) =>
-        `Реклама будет доступна через ${seconds} сек.`,
+      [ELanguages.en]: (seconds: number) => {
+        if (seconds >= 60) {
+          const mins = Math.ceil(seconds / 60);
+          return `Ad will be available in ${mins} min.`;
+        }
+        return `Ad will be available in ${seconds} sec.`;
+      },
+      [ELanguages.ru]: (seconds: number) => {
+        if (seconds >= 60) {
+          const mins = Math.ceil(seconds / 60);
+          return `Реклама будет доступна через ${mins} мин.`;
+        }
+        return `Реклама будет доступна через ${seconds} сек.`;
+      },
     },
   },
   common: {

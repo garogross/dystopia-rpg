@@ -20,6 +20,10 @@ const LoyalitySupportProjectVideoTaskItem = ({
   index,
   onLoadingUpdate,
   disabled,
+  adId,
+  maxPerHourArg,
+  maxPerDayArg,
+  minPouseMsArg,
 }: {
   language: ELanguages;
   gameInited: boolean;
@@ -28,13 +32,27 @@ const LoyalitySupportProjectVideoTaskItem = ({
   index?: number;
   onLoadingUpdate: (loading: boolean) => void;
   disabled: boolean;
+  adId?: string;
+  maxPerHourArg?: number;
+  maxPerDayArg?: number;
+  minPouseMsArg?: number;
 }) => {
   const { onShowAd, showTooltip, tooltipText, maxPerDay, viewsInDay, loading } =
-    useVideoAd(scsClb, undefined, adType, index);
+    useVideoAd(
+      scsClb,
+      undefined,
+      adType,
+      index,
+      adId,
+      maxPerHourArg,
+      maxPerDayArg,
+      minPouseMsArg
+    );
 
   useEffect(() => {
     onLoadingUpdate(loading);
-  }, [loading, onLoadingUpdate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
   return (
     <>
@@ -50,7 +68,7 @@ const LoyalitySupportProjectVideoTaskItem = ({
                 {watchAdAndGetCpText[language]}
               </p>
               <p className={styles.loyalitySupportProjectTaskItem__description}>
-                {viewsInDay}/{maxPerDay} {perDayText[language]}
+                {viewsInDay}/{maxPerDayArg || maxPerDay} {perDayText[language]}
               </p>
             </div>
             <div className={styles.loyalitySupportProjectTaskItem__actions}>
