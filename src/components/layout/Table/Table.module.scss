@@ -8,12 +8,24 @@
   flex-direction: column;
   gap: 8px;
   background-color: $color-darkBlueBg;
-  border: 1px solid $color-primary;
   padding: 10px;
+  padding-top: 0;
+
+  &:not(&_withoutBorder) {
+    border: 1px solid $color-primary;
+  }
+
   &__col {
     display: grid;
     grid-template-columns: var(--table-grid-template-columns, 2fr 1fr 1fr 1fr);
     gap: 6px;
+
+    &_header {
+      position: sticky;
+      top: 0;
+      background-color: $color-darkBlueBg;
+      padding-top: 10px;
+    }
   }
   &__headerText {
     @include setFont(12px, 700);

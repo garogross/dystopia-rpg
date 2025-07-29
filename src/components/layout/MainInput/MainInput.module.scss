@@ -12,12 +12,11 @@
     transform: translateY(-50%);
   }
 
-  
   &__input {
     width: 100%;
     padding: 5px;
     border: 1px solid $color-primary;
-    background-color: #1d1340;
+    background-color: $color-input-bg;
     @include setFont(10px, 400);
     transition: $transition;
     outline: none;

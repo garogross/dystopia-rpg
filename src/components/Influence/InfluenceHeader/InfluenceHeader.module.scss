@@ -87,7 +87,7 @@
     }
 
     &_active {
-      background: linear-gradient(180deg, #5d42ba 0%, #2a1e54 100%);
+      background: $color-primary-to-dark-gradient;
 
       & svg {
         fill: $color-text;

@@ -5,7 +5,7 @@
   width: 100%;
   padding: 1px;
 
-  background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
+  background: $color-primary-to-dark-gradient;
   transition: $transition;
 
   &_completed {

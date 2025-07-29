@@ -60,7 +60,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    z-index: 2
+    z-index: 2;
   }
 
   &__navBtns {
@@ -87,7 +87,7 @@
     }
 
     &_active {
-      background: linear-gradient(180deg, #5D42BA 0%, #2A1E54 100%);
+      background: $color-primary-to-dark-gradient;
 
       & svg {
         fill: $color-text;
@@ -113,8 +113,6 @@
   &__cornerBlock_left &__stat {
     right: 0;
   }
-
-
 
   &__statText {
     @include setFont(12px, 500, $font-fam-montserrat, $color-white);

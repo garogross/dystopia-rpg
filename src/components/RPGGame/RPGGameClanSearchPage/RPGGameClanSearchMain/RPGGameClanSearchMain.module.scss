@@ -4,15 +4,15 @@
 .rpgGameClanSearchMain {
   height: 100%;
   overflow: hidden;
-  
+
   &__container {
-      padding: 12px;
-      background-color: $color-bg;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      height: 100%;
-      overflow: hidden;
+    padding: 12px;
+    background-color: $color-bg;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    overflow: hidden;
   }
   &__header {
     @include flexCol(space-between);
@@ -21,29 +21,28 @@
     position: relative;
     width: 100%;
 
-
     & svg {
-        position: absolute;
-        top: 50%;
-        right: 5px;
-        transform: translateY(-50%);
+      position: absolute;
+      top: 50%;
+      right: 5px;
+      transform: translateY(-50%);
     }
   }
   &__searchbarInput {
     width: 100%;
     padding: 5px;
     border: 1px solid $color-primary;
-    background-color: #1d1340;
+    background-color: $color-input-bg;
     @include setFont(10px, 400);
     transition: $transition;
     outline: none;
-    
+
     &::placeholder {
-        color: #7b59f8;
+      color: #7b59f8;
     }
-    
+
     &:focus {
-        outline: 1px solid $color-primary;
+      outline: 1px solid $color-primary;
     }
   }
 }

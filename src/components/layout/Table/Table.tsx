@@ -12,7 +12,8 @@ interface Props<T extends Record<string, TableColValue>> {
   headers: string[];
   data: T[];
   cols: ITableCol<T>[];
-  columnsTemplate?: string; // new prop for grid-template-columns
+  columnsTemplate?: string;
+  withoutBorder?: boolean;
 }
 
 const Table = <T extends Record<string, TableColValue>>({
@@ -20,17 +21,20 @@ const Table = <T extends Record<string, TableColValue>>({
   data,
   cols,
   columnsTemplate,
+  withoutBorder,
 }: Props<T>) => {
   return (
     <div
-      className={styles.table}
+      className={`${styles.table} ${
+        withoutBorder ? styles.table_withoutBorder : ""
+      }`}
       style={
         columnsTemplate
           ? { ["--table-grid-template-columns" as string]: columnsTemplate }
           : undefined
       }
     >
-      <div className={styles.table__col}>
+      <div className={`${styles.table__col} ${styles.table__col_header}`}>
         {headers.map((item, index) => (
           <div key={index} className={styles.table__headerText}>
             {item}

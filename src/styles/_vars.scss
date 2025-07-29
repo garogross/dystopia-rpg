@@ -19,6 +19,11 @@ $color-primary-light-gradient: linear-gradient(
   #4c3799 0%,
   #7f5cff 100%
 );
+$color-primary-to-dark-gradient: linear-gradient(
+  180deg,
+  #6a4cd7 0%,
+  #0d0623 100%
+);
 $color-primary-dark-gradient: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
 $color-primary-dark-radial-gradient: radial-gradient(
   88.89% 88.89% at 50% 50%,
@@ -32,6 +37,7 @@ $color-active-btn-gradient: radial-gradient(
 );
 
 $color-secondary: #2a1e54;
+$color-input-bg: #1d1340;
 $color-text: #c6b7ff;
 
 $font-fam-main: "Play", sans-serif;

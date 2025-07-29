@@ -1,2 +1,100 @@
 @import "../../../../styles/mixins";
 @import "../../../../styles/vars";
+
+.influenceMyClanTreasury {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+    overflow: auto;
+  }
+  &__header {
+    padding: 1px;
+    width: 100%;
+
+    background: $color-primary-to-dark-gradient;
+  }
+  &__headerInner {
+    width: 100%;
+    background: $color-darkBlueBg;
+    padding: 10px;
+    @include flexCol();
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__curBalance {
+    @include flexCol();
+    gap: 5px;
+  }
+  &__curBalance__text {
+    @include setFont(14px, 700);
+  }
+  &__curBalanceDotsLine {
+    flex: 1;
+
+    & svg {
+      width: 100%;
+    }
+  }
+  &__curBalanceCpImg {
+    width: 16px;
+  }
+  &__btn {
+    height: 20px;
+    @include button($color-primary);
+    padding: 1px;
+    width: fit-content;
+    margin-inline: auto;
+  }
+  &__btnInner {
+    height: 100%;
+    padding-inline: 16px;
+    background: $color-primary-dark-radial-gradient;
+    @include flexCol();
+    gap: 5px;
+    @include setFont(12px, 400);
+  }
+
+  &__btn,
+  &__btnInner {
+    clip-path: polygon(
+      2.2% 0%,
+      /* (3.12402/142.433, 0.5/20.5) */ 98.2% 0%,
+      /* (139.876/142.433, 0.5/20.5) */ 100% 33.8%,
+      /* (142.433/142.433, 6.92773/20.5) */ 93% 100%,
+      /* (132.531/142.433, 20.5/20.5) */ 7% 100%,
+      /* (10.4688/142.433, 20.5/20.5) */ 0% 33.8%
+        /* (0.566406/142.433, 6.92773/20.5) */
+    );
+  }
+
+  &__accordions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  &__statisticsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  &__storageContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  &__wings {
+    width: 100%;
+
+    & svg {
+      width: 100%;
+    }
+  }
+}
