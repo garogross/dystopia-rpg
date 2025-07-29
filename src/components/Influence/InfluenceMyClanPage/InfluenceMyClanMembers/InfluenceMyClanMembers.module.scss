@@ -8,43 +8,6 @@
   flex-direction: column;
   gap: 11px;
 
-  &__table {
-    flex: 1;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background-color: $color-darkBlueBg;
-    border: 1px solid $color-primary;
-    padding: 10px;
-  }
-  &__col {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 6px;
-  }
-  &__tableHeaderText {
-    @include setFont(12px, 700);
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  &__tableBodyItem {
-    @include setFont(12px, 400);
-    @include flexCol(flex-start);
-    gap: 3px;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    & span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
   &__status {
     width: 9px;
     height: 9px;

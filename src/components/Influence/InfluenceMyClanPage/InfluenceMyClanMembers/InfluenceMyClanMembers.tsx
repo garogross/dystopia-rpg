@@ -17,6 +17,7 @@ import {
   LeaveClanIcon,
   LeavePostIcon,
 } from "../../../layout/icons/Influence/InfluenceMyClanMembers";
+import Table from "../../../layout/Table/Table";
 
 const ranks = {
   [EInfluenceClanMemberRanks.LEADER]: {
@@ -78,50 +79,42 @@ const InfluenceMyClanMembers = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <div className={styles.influenceMyClanMembers}>
-      <div className={styles.influenceMyClanMembers__table}>
-        <div className={styles.influenceMyClanMembers__col}>
-          <div className={styles.influenceMyClanMembers__tableHeaderText}>
-            Участник
-          </div>
-          <div className={styles.influenceMyClanMembers__tableHeaderText}>
-            Звание
-          </div>
-          <div className={styles.influenceMyClanMembers__tableHeaderText}>
-            Статус
-          </div>
-          <div className={styles.influenceMyClanMembers__tableHeaderText}>
-            Потрачено ОД
-          </div>
-        </div>
-        {members.map((member) => (
-          <div
-            key={member.username}
-            className={styles.influenceMyClanMembers__col}
-          >
-            <div className={styles.influenceMyClanMembers__tableBodyItem}>
-              {member.username}
-            </div>
-            <div className={styles.influenceMyClanMembers__tableBodyItem}>
-              {ranks[member.rank].icon} <span>{ranks[member.rank].name}</span>
-            </div>
-
-            <div className={styles.influenceMyClanMembers__tableBodyItem}>
-              <div
-                className={`${styles.influenceMyClanMembers__status} ${
-                  member.online
-                    ? styles.influenceMyClanMembers__status_online
-                    : ""
-                }`}
-              ></div>
-              <span>{member.online ? "в сети" : "офлайн"}</span>
-            </div>
-            <div className={styles.influenceMyClanMembers__tableBodyItem}>
-              {member.spendAP}
-            </div>
-          </div>
-        ))}
-      </div>
-
+      <Table
+        headers={["Участник", "Звание", "Статус", "Потрачено ОД"]}
+        data={members}
+        cols={[
+          {
+            key: "username",
+          },
+          {
+            key: "rank",
+            render: (item) => (
+              <>
+                {" "}
+                {ranks[item.rank].icon} <span>{ranks[item.rank].name}</span>
+              </>
+            ),
+          },
+          {
+            key: "online",
+            render: (item) => (
+              <>
+                <div
+                  className={`${styles.influenceMyClanMembers__status} ${
+                    item.online
+                      ? styles.influenceMyClanMembers__status_online
+                      : ""
+                  }`}
+                ></div>
+                <span>{item.online ? "в сети" : "офлайн"}</span>
+              </>
+            ),
+          },
+          {
+            key: "spendAP",
+          },
+        ]}
+      />
       <TransitionProvider
         inProp={gameInited}
         style={TransitionStyleTypes.zoomOut}
