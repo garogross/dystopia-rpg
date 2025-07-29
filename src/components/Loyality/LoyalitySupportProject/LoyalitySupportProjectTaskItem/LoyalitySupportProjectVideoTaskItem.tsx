@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { EAdTypes } from "../../../../constants/EAdTypes";
 import { ELanguages } from "../../../../constants/ELanguages";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
@@ -17,15 +18,23 @@ const LoyalitySupportProjectVideoTaskItem = ({
   scsClb,
   adType,
   index,
+  onLoadingUpdate,
+  disabled,
 }: {
   language: ELanguages;
   gameInited: boolean;
   scsClb?: (id?: string) => void;
   adType?: EAdTypes;
   index?: number;
+  onLoadingUpdate: (loading: boolean) => void;
+  disabled: boolean;
 }) => {
   const { onShowAd, showTooltip, tooltipText, maxPerDay, viewsInDay, loading } =
     useVideoAd(scsClb, undefined, adType, index);
+
+  useEffect(() => {
+    onLoadingUpdate(loading);
+  }, [loading, onLoadingUpdate]);
 
   return (
     <>
@@ -47,7 +56,7 @@ const LoyalitySupportProjectVideoTaskItem = ({
             <div className={styles.loyalitySupportProjectTaskItem__actions}>
               <button
                 onClick={onShowAd}
-                disabled={loading}
+                disabled={loading || disabled}
                 className={styles.loyalitySupportProjectTaskItem__getBtn}
               >
                 <div

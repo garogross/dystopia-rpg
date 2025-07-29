@@ -57,6 +57,7 @@ export const useVideoAd = (
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(loadAdText[language]);
   const [viewsInDay, setViewsInDay] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const onReward = async (id?: string) => {
     try {
@@ -78,7 +79,7 @@ export const useVideoAd = (
     }
   };
 
-  const { onShowAd: onShowOnClickaAd, loading } = useGlobalAdController(
+  const onShowOnClickaAd = useGlobalAdController(
     adType || EAdTypes.GIGA_V,
     "",
     onReward,
@@ -125,14 +126,17 @@ export const useVideoAd = (
   }, []);
 
   const onShowAd = async () => {
+    setLoading(true);
     const showValidation = await canShowVideoAd();
 
     if (!showValidation) {
       openTooltip();
+      setLoading(false);
       return;
     }
     setTooltipText(loadAdText[language]);
     onShowOnClickaAd();
+    setLoading(false);
   };
 
   return {

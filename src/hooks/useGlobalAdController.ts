@@ -11,7 +11,6 @@ export const useGlobalAdController = (
   dependencies?: unknown[]
 ) => {
   const [onclickaAd, setOnclickaAd] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
 
   const tgId = useAppSelector((state) => state.profile.tgId);
 
@@ -41,7 +40,6 @@ export const useGlobalAdController = (
   );
 
   const onShowAd = async () => {
-    setLoading(true);
     try {
       switch (type) {
         case EAdTypes.ADSGRAM_V: {
@@ -83,10 +81,8 @@ export const useGlobalAdController = (
     } catch (e) {
       errClb?.();
       console.error(e);
-    } finally {
-      setLoading(false);
     }
   };
 
-  return { onShowAd, loading };
+  return onShowAd;
 };

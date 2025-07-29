@@ -42,6 +42,8 @@ const LoyalitySupportProject = () => {
   const language = useAppSelector((state) => state.ui.language);
   const promoTasks = useAppSelector((state) => state.tasks.promoTasks);
   const [tooltipText, setTooltipText] = useState(taskCompletedText);
+  const [videoAd1Loading, setVideoAd1Loading] = useState(false);
+  const [videoAd2Loading, setVideoAd2Loading] = useState(false);
   const { show, openTooltip } = useTooltip();
 
   useEffect(() => {
@@ -163,10 +165,14 @@ const LoyalitySupportProject = () => {
         <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
+          disabled={videoAd1Loading || videoAd2Loading}
+          onLoadingUpdate={(loading) => setVideoAd1Loading(loading)}
         />
         <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
+          disabled={videoAd1Loading || videoAd2Loading}
+          onLoadingUpdate={(loading) => setVideoAd2Loading(loading)}
           scsClb={(id) => {
             if (id) dispatch(claimTaddyReward({ id, task_type: "video" }));
           }}
