@@ -14,7 +14,7 @@
     padding: 1px;
     width: 100%;
 
-    background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
+    background: $color-primary-to-dark-gradient;
   }
   &__talkTextInner {
     width: 100%;

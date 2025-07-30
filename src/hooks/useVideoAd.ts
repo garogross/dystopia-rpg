@@ -24,11 +24,14 @@ const {
 const { rewardReceivedText } = TRANSLATIONS.loyality.tabs.supportProject;
 const { somethingWentWrong } = TRANSLATIONS.errors;
 
+const getVideoAdViewTimestampsKey = (index?: number) =>
+  index
+    ? (`videoAdViewTimestamps${index + 1}` as ELSProps)
+    : ELSProps.videoAdViewTimestamps;
+
 async function getVideoAdViewTimestamps(index?: number): Promise<number[]> {
   try {
-    const raw = await getLSItem(
-      index ? ELSProps.videoAdViewTimestamps2 : ELSProps.videoAdViewTimestamps
-    );
+    const raw = await getLSItem(getVideoAdViewTimestampsKey(index));
     if (!raw) return [];
     if (typeof raw === "string") return JSON.parse(raw);
     if (Array.isArray(raw)) return raw;
@@ -39,17 +42,18 @@ async function getVideoAdViewTimestamps(index?: number): Promise<number[]> {
 }
 
 function saveVideoAdViewTimestamps(timestamps: number[], index?: number) {
-  setLSItem(
-    index ? ELSProps.videoAdViewTimestamps2 : ELSProps.videoAdViewTimestamps,
-    timestamps
-  );
+  setLSItem(getVideoAdViewTimestampsKey(index), timestamps);
 }
 
 export const useVideoAd = (
   scsClb?: (id?: string) => void,
   speedUpCompleteText?: TranslationItemType,
   adType?: EAdTypes,
-  index?: number
+  index?: number,
+  adId?: string,
+  maxPerHourArg?: number, // -1 for avoid check
+  maxPerDayArg?: number, // -1 for avoid check
+  minPouseMsArg?: number // -1 for avoid check
 ) => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
@@ -57,17 +61,22 @@ export const useVideoAd = (
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(loadAdText[language]);
   const [viewsInDay, setViewsInDay] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const maxPerHour = maxPerHourArg || MAX_PER_HOUR;
+  const maxPerDay = maxPerDayArg || MAX_PER_DAY;
+  const minPouseMs = minPouseMsArg || MIN_PAUSE_MS;
 
   const onReward = async (id?: string) => {
     try {
       // Сохраняем новый просмотр
+      if (scsClb) await scsClb(id);
+      else await dispatch(claimVideoReward({ id: tgId?.toString() })).unwrap();
       const now = Date.now();
       let timestamps = await getVideoAdViewTimestamps(index);
       timestamps = timestamps?.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
       timestamps?.push(now);
       saveVideoAdViewTimestamps(timestamps, index);
-      if (scsClb) await scsClb(id);
-      else await dispatch(claimVideoReward({ id: tgId?.toString() })).unwrap();
       setViewsInDay(timestamps?.length);
 
       setTooltipText((speedUpCompleteText || rewardReceivedText)[language]);
@@ -78,9 +87,9 @@ export const useVideoAd = (
     }
   };
 
-  const { onShowAd: onShowOnClickaAd, loading } = useGlobalAdController(
+  const onShowOnClickaAd = useGlobalAdController(
     adType || EAdTypes.GIGA_V,
-    "",
+    adId || "",
     onReward,
     (noAd) => {
       if (noAd) setTooltipText(noAdText[language]);
@@ -101,16 +110,16 @@ export const useVideoAd = (
         setViewsInDay(last24h.length);
         return true;
       } // for update viewsInDay on mount
-      if (last24h.length >= MAX_PER_DAY) {
+      if (maxPerDay !== -1 && last24h.length >= maxPerDay) {
         setTooltipText(dailyLimitReachedText[language]);
         return false;
       }
-      if (lastHour.length >= MAX_PER_HOUR) {
+      if (maxPerHour !== -1 && lastHour.length >= maxPerHour) {
         setTooltipText(hourlyLimitReachedText[language]);
         return false;
       }
-      if (now - last < MIN_PAUSE_MS) {
-        const seconds = Math.ceil((MIN_PAUSE_MS - (now - last)) / 1000);
+      if (minPouseMs !== -1 && now - last < minPouseMs) {
+        const seconds = Math.ceil((minPouseMs - (now - last)) / 1000);
         setTooltipText(adAvailableInSecondsText[language](seconds));
         return false;
       }
@@ -125,14 +134,17 @@ export const useVideoAd = (
   }, []);
 
   const onShowAd = async () => {
+    setLoading(true);
     const showValidation = await canShowVideoAd();
 
     if (!showValidation) {
       openTooltip();
+      setLoading(false);
       return;
     }
     setTooltipText(loadAdText[language]);
-    onShowOnClickaAd();
+    await onShowOnClickaAd();
+    setLoading(false);
   };
 
   return {

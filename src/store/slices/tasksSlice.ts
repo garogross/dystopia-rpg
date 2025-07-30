@@ -11,6 +11,7 @@ import { ClaimTadsRewardResponse } from "../../models/api/tasks/tads";
 import { VerifyGigaHashResponse } from "../../models/api/tasks/giga";
 import { IPromoTask } from "../../models/IPromoTask";
 import { GetPromoTaskRewardResponse } from "../../models/api/tasks/promoTasks";
+import { ClaimOnclickaRewardResponse } from "../../models/api/tasks/onClicka";
 
 export interface TasksState {
   promoTasks: IPromoTask[];
@@ -165,6 +166,25 @@ export const claimAdsgramReward = createAsyncThunk<
       {
         identifier: payload.taskId,
       }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
+const claimOnclickaRewardUrl = "/reward/onclicka/";
+export const claimOnclickaReward = createAsyncThunk<
+  ClaimOnclickaRewardResponse,
+  undefined
+>("tasks/claimOnclickaReward", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<ClaimOnclickaRewardResponse>(
+      claimOnclickaRewardUrl,
+      "POST",
+      {}
     );
 
     return resData;

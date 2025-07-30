@@ -1,20 +1,21 @@
-import React, {FC, memo, ReactNode} from 'react';
+import React, { FC, memo, ReactNode } from "react";
 
-import styles from "./MainBtn.module.scss"
+import styles from "./MainBtn.module.scss";
 
 interface Props extends React.ButtonHTMLAttributes<any> {
-    className?: string,
-    children: ReactNode
-    negative?: boolean
+  className?: string;
+  children: ReactNode;
 }
 
-const MainBtn: FC<Props> = memo(({className, children,negative, ...properties}) => {
-    return (
-        <button
-            className={`${styles.mainBtn} ${negative ? styles.mainBtn_negative : ""} ${className ? className : ''}`}
-            {...properties}
-        >{children}</button>
-    );
-})
+const MainBtn: FC<Props> = memo(({ className, children, ...properties }) => {
+  return (
+    <button
+      className={`${styles.mainBtn} ${className ? className : ""}`}
+      {...properties}
+    >
+      <div className={styles.mainBtn__inner}>{children}</div>
+    </button>
+  );
+});
 
 export default MainBtn;

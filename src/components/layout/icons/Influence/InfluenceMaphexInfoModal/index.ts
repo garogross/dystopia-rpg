@@ -1,9 +1,7 @@
 export { BuildingIcon } from "./BuildingIcon";
 export { PersonIcon } from "./PersonIcon";
 export { AttackIcon } from "./AttackIcon";
-export { BuildIcon } from "./BuildIcon";
 export { CaptureIcon } from "./CaptureIcon";
 export { DemolishIcon } from "./DemolishIcon";
 export { SqoutIcon } from "./SqoutIcon";
-export { UpdateBuildingIcon } from "./UpdateBuildingIcon";
 export { RepairIcon } from "./RepairIcon";

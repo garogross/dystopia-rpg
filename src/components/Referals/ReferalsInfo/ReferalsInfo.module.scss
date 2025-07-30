@@ -14,7 +14,7 @@
   }
   &__item {
     padding: 1px;
-    background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
+    background: $color-primary-to-dark-gradient;
     display: flex;
     flex-direction: column;
     min-height: 44px;

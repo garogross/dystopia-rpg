@@ -22,6 +22,7 @@ import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
 import {
   claimAdsgramReward,
   claimBarzhaReward,
+  claimOnclickaReward,
   claimTaddyReward,
   claimTadsReward,
   claimTraffyReward,
@@ -420,6 +421,11 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(claimAdsgramReward.fulfilled, (state, { payload }) => {
+      if (+payload.reward) {
+        state.stats.cp += +payload.reward;
+      }
+    });
+    builder.addCase(claimOnclickaReward.fulfilled, (state, { payload }) => {
       if (+payload.reward) {
         state.stats.cp += +payload.reward;
       }

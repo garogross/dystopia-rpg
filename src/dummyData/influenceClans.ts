@@ -1,19 +1,10 @@
 import { ELanguages } from "../constants/ELanguages";
 import { IIncluenceClan } from "../models/Influence/IIncluenceClan";
 
-import {
-  dummyClan1Image,
-  dummyClan2Image,
-  dummyClan3Image,
-  dummyClan4Image,
-  dummyClan5Image,
-  dummyClan6Image,
-} from "../assets/imageMaps";
-
 export const influenceClans: IIncluenceClan[] = [
   {
     id: "1",
-    image: dummyClan1Image,
+    emblem: "clan1",
     name: "ГИЛДИЯ ОКУПАНТОВ",
     level: 3,
     members: 45,
@@ -24,7 +15,7 @@ export const influenceClans: IIncluenceClan[] = [
   },
   {
     id: "2",
-    image: dummyClan2Image,
+    emblem: "clan2",
     name: "Тень Протокола",
     level: 2,
     members: 50,
@@ -35,7 +26,7 @@ export const influenceClans: IIncluenceClan[] = [
   },
   {
     id: "3",
-    image: dummyClan3Image,
+    emblem: "clan3",
     name: "Black Resonance",
     level: 5,
     members: 30,
@@ -46,7 +37,7 @@ export const influenceClans: IIncluenceClan[] = [
   },
   {
     id: "4",
-    image: dummyClan4Image,
+    emblem: "clan4",
     name: "Ash Syndicate",
     level: 3,
     members: 36,
@@ -57,7 +48,7 @@ export const influenceClans: IIncluenceClan[] = [
   },
   {
     id: "5",
-    image: dummyClan5Image,
+    emblem: "clan5",
     name: "Звено 404",
     level: 3,
     members: 45,
@@ -69,7 +60,7 @@ export const influenceClans: IIncluenceClan[] = [
   },
   {
     id: "6",
-    image: dummyClan6Image,
+    emblem: "clan6",
     name: "братство NOD",
     level: 3,
     members: 45,

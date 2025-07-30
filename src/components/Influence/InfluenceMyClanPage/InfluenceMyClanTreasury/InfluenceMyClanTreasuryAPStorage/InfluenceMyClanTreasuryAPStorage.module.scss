@@ -1,0 +1,130 @@
+@import "../../../../../styles/mixins";
+@import "../../../../../styles/vars";
+
+.influenceMyClanTreasuryAPStorage {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__col {
+    @include flexCol(flex-start);
+    gap: 4px;
+    @include setFont(14px, 400);
+  }
+  &__apImage {
+    width: 13px;
+  }
+
+  &__getFormWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  &__getForm {
+    display: flex;
+    height: 22px;
+  }
+  &__getFormMain {
+    background: $color-primary;
+    padding: 1px;
+    flex: 1;
+    height: 100%;
+  }
+  &__getFormMainInner {
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    background: $color-input-bg;
+    display: flex;
+  }
+
+  &__getFormMain,
+  &__getFormMainInner {
+    clip-path: polygon(
+      1.9% 0%,
+      /* M5.68421 0 */ 98.5% 0%,
+      /* 300.5 0 */ 100% 13.6%,
+      /* 304.5 3 (3/22 ≈ 13.6%) */ 100% 86.4%,
+      /* 304.5 19 (19/22 ≈ 86.4%) */ 98.5% 100%,
+      /* 300.5 22 */ 1.9% 100%,
+      /* 5.68421 22 */ 0% 86.7%,
+      /* 0 19.0667 (19.0667/22 ≈ 86.7%) */ 0% 13.3%,
+      /* 0 2.93333 (2.93333/22 ≈ 13.3%) */ 1.9% 0% /* 5.68421 0 */
+    );
+  }
+
+  &__input {
+    border: none;
+    background: transparent;
+    @include setFont(12px, 400, $font-fam-main, $color-primary);
+    height: 100%;
+    flex: 1;
+    outline: none;
+    padding-inline: 8px;
+  }
+  &__getBtn {
+    @include button($color-primary);
+    padding: 1px;
+    height: 100%;
+  }
+  &__getBtnInner {
+    height: 100%;
+    @include flexCol();
+    gap: 5px;
+    background: $color-primary-to-dark-gradient;
+    @include setFont(12px, 400);
+    padding-inline: 12px;
+  }
+
+  &__getBtn,
+  &__getBtnInner {
+    clip-path: polygon(
+      8.1% 0%,
+      /* 7.51316/93 ≈ 8.1% */ 96.2% 0%,
+      /* 89.4868/93 ≈ 96.2% */ 100% 13.3%,
+      /* 2.93333/22 ≈ 13.3% */ 100% 86.7%,
+      /* 19.0667/22 ≈ 86.7% */ 96.2% 100%,
+      /* 89.4868/93 ≈ 96.2% */ 8.1% 100%,
+      /* 7.51316/93 ≈ 8.1% */ 4.3% 86.7%,
+      /* 4/93 ≈ 4.3%, 19.0667/22 ≈ 86.7% */ 4.3% 13.3%,
+      /* 4/93 ≈ 4.3%, 2.93333/22 ≈ 13.3% */ 8.1% 0% /* 7.51316/93 ≈ 8.1% */
+    );
+  }
+
+  &__openHistryBtn {
+    @include button($color-primary);
+    padding: 1px;
+    height: 100%;
+  }
+  &__openHistryBtnInner {
+    width: 26px;
+    height: 100%;
+    @include flexCol();
+    padding-left: 7px;
+
+    background: $color-primary-to-dark-gradient;
+  }
+
+  &__openHistryBtn,
+  &__openHistryBtnInner {
+    clip-path: path(
+      "M4 0H24.1611L30 2.93333V19.0667L24.1611 22H4L7.61355 19.0667V2.93333L4 0Z"
+    );
+  }
+
+  &__maxPerSessionText {
+    @include setFont(10px, 400);
+  }
+  &__footer {
+    @include flexCol();
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__dotsLine {
+    width: 100%;
+
+    & svg {
+      width: 100%;
+    }
+  }
+}

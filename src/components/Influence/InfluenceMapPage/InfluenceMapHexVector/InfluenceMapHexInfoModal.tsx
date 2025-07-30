@@ -18,12 +18,14 @@ import {
 import { DotsLine } from "../../../layout/icons/RPGGame/Common";
 import {
   AttackIcon,
-  BuildIcon,
   DemolishIcon,
   PersonIcon,
   RepairIcon,
-  UpdateBuildingIcon,
 } from "../../../layout/icons/Influence/InfluenceMaphexInfoModal";
+import {
+  BuildIcon,
+  UpdateBuildingIcon,
+} from "../../../layout/icons/Influence/Common";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { ConfirmIcon } from "../../../layout/icons/Common";
 import HeaderBtn from "../../../layout/HeaderBtn/HeaderBtn";
