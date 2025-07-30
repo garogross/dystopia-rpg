@@ -77,7 +77,9 @@ const ReferalsHistory: React.FC<Props> = ({ show, onClose }) => {
                 <p
                   className={`${styles.referalsHistory__mainText} ${styles.referalsHistory__mainTextDate}`}
                 >
-                  {formatDate(refference.first_login_ts)}
+                  {refference.first_login_ts
+                    ? formatDate(refference.first_login_ts)
+                    : "-"}
                 </p>
               </div>
             ))}
