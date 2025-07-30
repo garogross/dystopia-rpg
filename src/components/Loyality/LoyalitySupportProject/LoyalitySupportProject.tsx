@@ -196,59 +196,63 @@ const LoyalitySupportProject = () => {
           maxPerDayArg={15}
           minPouseMsArg={3 * 60 * 1000} // 3 min
         />
-        {taddyTasks?.map((task, index) => (
-          <LoyalitySupportProjectTaskItem
-            key={task?.id}
-            task={{ ...task, taddyTasktype: task?.type, link: task?.link }}
-            index={index}
-            gameInited={gameInited}
-            language={language}
-            isTaddyTask={true}
-            onSubscribe={onSubscribe}
-          />
-        ))}
-        {promoTasks?.map(
-          (
-            { name, id, description, reward, target_url, subscription },
-            index
-          ) => (
+        {Array.isArray(taddyTasks) &&
+          taddyTasks?.map((task, index) => (
             <LoyalitySupportProjectTaskItem
-              key={id}
-              task={{
-                id: id,
-                title: name,
-                description: description,
-                price: reward,
-                subscription: !!subscription,
-                byLink: target_url?.includes("t.me"),
-                link: target_url,
-              }}
+              key={task?.id}
+              task={{ ...task, taddyTasktype: task?.type, link: task?.link }}
               index={index}
               gameInited={gameInited}
               language={language}
-              onSubscribe={(item) => dispatch(setPromoTaskSubscribed(item.id))}
-              onGetReward={async (id) => {
-                try {
-                  setAdLoading(true);
-                  const res = await dispatch(
-                    getPromoTaskReward({ id })
-                  ).unwrap();
-                  if (res.status === "ok") {
-                    setTooltipText(taskCompletedText);
-                    openTooltip();
-                  } else {
-                    throw new Error("failed");
-                  }
-                } catch (error) {
-                  setTooltipText(taskNotCompletedText);
-                  openTooltip();
-                } finally {
-                  setAdLoading(false);
-                }
-              }}
+              isTaddyTask={true}
+              onSubscribe={onSubscribe}
             />
-          )
-        )}
+          ))}
+        {Array.isArray(promoTasks) &&
+          promoTasks?.map(
+            (
+              { name, id, description, reward, target_url, subscription },
+              index
+            ) => (
+              <LoyalitySupportProjectTaskItem
+                key={id}
+                task={{
+                  id: id,
+                  title: name,
+                  description: description,
+                  price: reward,
+                  subscription: !!subscription,
+                  byLink: target_url?.includes("t.me"),
+                  link: target_url,
+                }}
+                index={index}
+                gameInited={gameInited}
+                language={language}
+                onSubscribe={(item) =>
+                  dispatch(setPromoTaskSubscribed(item.id))
+                }
+                onGetReward={async (id) => {
+                  try {
+                    setAdLoading(true);
+                    const res = await dispatch(
+                      getPromoTaskReward({ id })
+                    ).unwrap();
+                    if (res.status === "ok") {
+                      setTooltipText(taskCompletedText);
+                      openTooltip();
+                    } else {
+                      throw new Error("failed");
+                    }
+                  } catch (error) {
+                    setTooltipText(taskNotCompletedText);
+                    openTooltip();
+                  } finally {
+                    setAdLoading(false);
+                  }
+                }}
+              />
+            )
+          )}
         {/* <div id="wallgram_showcase"></div> */}
         <LoadingOverlay loading={adLoading} />
       </div>
