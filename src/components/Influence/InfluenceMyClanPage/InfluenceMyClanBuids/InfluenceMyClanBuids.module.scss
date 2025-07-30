@@ -1,2 +1,86 @@
 @import "../../../../styles/mixins";
 @import "../../../../styles/vars";
+
+.influenceMyClanBuids {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    overflow: auto;
+  }
+  &__item {
+    width: 100%;
+    border: 1px solid $color-primary;
+    background: linear-gradient(90deg, #2e147f 0%, #090419 24.04%);
+    @include flexCol();
+    gap: 10px;
+    padding: 10px;
+  }
+  &__iconWrapper {
+    display: flex;
+  }
+  &__itemMain {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  &__col {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  &__texts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__header {
+    @include flexCol(flex-start);
+    gap: 5px;
+  }
+  &__nameText {
+    @include setFont(14px, 700);
+  }
+  &__levelText {
+    @include setFont(12px, 400, $font-fam-main, $color-primary);
+  }
+  &__infoText {
+    @include setFont(12px, 400);
+  }
+  &__action {
+    @include flexCol();
+    flex-direction: column;
+    gap: 6px;
+  }
+  &__actionBtn {
+    min-width: 92px;
+  }
+  &__actionPrice {
+    @include flexCol();
+    gap: 3px;
+    @include setFont(12px, 400, $font-fam-main, $color-primary);
+  }
+
+  &__priceCpImg {
+    width: 12px;
+  }
+  &__requiredLevelText {
+    @include setFont(12px, 400, $font-fam-main, $color-primary);
+  }
+
+  &__wings {
+    width: 100%;
+
+    & svg {
+      width: 100%;
+    }
+  }
+}
