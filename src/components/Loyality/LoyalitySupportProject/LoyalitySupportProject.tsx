@@ -9,6 +9,7 @@ import TransitionProvider, {
 import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
 import {
   claimBarzhaReward,
+  claimOnclickaReward,
   claimTaddyReward,
   claimTadsReward,
   getPromoTaskReward,
@@ -27,7 +28,7 @@ import { useTooltip } from "../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { EAdTypes } from "../../../constants/EAdTypes";
-import { postLog } from "../../../api/logs";
+import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 
 const { taskNotCompletedText, taskCompletedText, failedToClaimRewardText } =
   TRANSLATIONS.loyality.supportProject;
@@ -42,7 +43,7 @@ const LoyalitySupportProject = () => {
   const language = useAppSelector((state) => state.ui.language);
   const promoTasks = useAppSelector((state) => state.tasks.promoTasks);
   const [tooltipText, setTooltipText] = useState(taskCompletedText);
-  const [videoAdLoading, setVideoAdLoading] = useState(false);
+  const [adLoading, setAdLoading] = useState(false);
   const { show, openTooltip } = useTooltip();
 
   useEffect(() => {
@@ -115,12 +116,13 @@ const LoyalitySupportProject = () => {
 
   const onClaimTads = async (id: string) => {
     try {
+      setAdLoading(true);
       await dispatch(claimTadsReward({ id })).unwrap();
       setTooltipText(taskCompletedText);
     } catch (error) {
-      postLog({ type: "onClaimTads", tgId, error });
       setTooltipText(failedToClaimRewardText);
     } finally {
+      setAdLoading(false);
       openTooltip();
     }
   };
@@ -164,14 +166,14 @@ const LoyalitySupportProject = () => {
         <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
-          disabled={videoAdLoading}
-          onLoadingUpdate={(loading) => setVideoAdLoading(loading)}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
         />
         <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
-          disabled={videoAdLoading}
-          onLoadingUpdate={(loading) => setVideoAdLoading(loading)}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
           scsClb={async (id) => {
             if (id)
               await dispatch(claimTaddyReward({ id, task_type: "video" }));
@@ -179,13 +181,13 @@ const LoyalitySupportProject = () => {
           adType={EAdTypes.TADDY_V}
           index={1}
         />
-        {/* <LoyalitySupportProjectVideoTaskItem
+        <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
-          disabled={videoAdLoading}
-          onLoadingUpdate={(loading) => setVideoAdLoading(loading)}
-          scsClb={(id) => {
-            // if (id) dispatch(claimTaddyReward({ id, task_type: "video" }));
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
+          scsClb={() => {
+            dispatch(claimOnclickaReward());
           }}
           adType={EAdTypes.ONCLICKA_V}
           index={2}
@@ -193,7 +195,7 @@ const LoyalitySupportProject = () => {
           maxPerHourArg={-1}
           maxPerDayArg={15}
           minPouseMsArg={3 * 60 * 1000} // 3 min
-        /> */}
+        />
         {taddyTasks?.map((task, index) => (
           <LoyalitySupportProjectTaskItem
             key={task?.id}
@@ -227,6 +229,7 @@ const LoyalitySupportProject = () => {
               onSubscribe={(item) => dispatch(setPromoTaskSubscribed(item.id))}
               onGetReward={async (id) => {
                 try {
+                  setAdLoading(true);
                   const res = await dispatch(
                     getPromoTaskReward({ id })
                   ).unwrap();
@@ -239,12 +242,15 @@ const LoyalitySupportProject = () => {
                 } catch (error) {
                   setTooltipText(taskNotCompletedText);
                   openTooltip();
+                } finally {
+                  setAdLoading(false);
                 }
               }}
             />
           )
         )}
         {/* <div id="wallgram_showcase"></div> */}
+        <LoadingOverlay loading={adLoading} />
       </div>
       <TransitionProvider
         inProp={gameInited}
