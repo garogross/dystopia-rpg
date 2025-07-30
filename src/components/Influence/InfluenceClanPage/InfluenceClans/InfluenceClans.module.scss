@@ -22,50 +22,35 @@
     @include flexCol();
     gap: 5px;
   }
-  &__select {
-    flex: 1;
-    position: relative;
-  }
-  &__selectBtn {
-    width: 100%;
-    @include button($color-primary);
-    padding: 1px;
-  }
+
+  &__selectBtn,
   &__selectBtnInner {
-    width: 100%;
-    padding: 5px;
-    background: $color-primary-dark-radial-gradient;
-    @include flexCol();
-    gap: 5px;
-    @include setFont(10px, 700);
-    transition: $transition;
+    clip-path: unset;
   }
 
-  &__selectBtn:hover &__selectBtnInner,
-  &__selectBtn:active &__selectBtnInner,
-  &__selectBtn_active &__selectBtnInner {
-    background: $color-primary;
+  &__select:first-child &__selectBtn,
+  &__select:first-child &__selectBtnInner {
+    clip-path: polygon(
+      100% 0%,
+      100% 100%,
+      3.5% 100%,
+      0% 89.4%,
+      0% 10.6%,
+      3.5% 0%
+    );
+  }
+  &__select:last-child &__selectBtn,
+  &__select:last-child &__selectBtnInner {
+    clip-path: polygon(
+      100% 89.4%,
+      97.1% 100%,
+      0% 100%,
+      0% 0%,
+      97.1% 0%,
+      100% 10.6%
+    );
   }
 
-  &__selectDropdownContent {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    bottom: -8px;
-    border: 1px solid $color-primary;
-    display: flex;
-    flex-direction: column;
-    background: $color-primary-dark-radial-gradient;
-    transform: translateY(100%);
-  }
-  &__dropdonContentItem {
-    @include button();
-    width: 100%;
-    padding: 5px;
-    text-align: center;
-    border-bottom: 1px solid $color-secondary;
-    @include setFont(10px, 700);
-  }
   &__list {
     flex: 1;
     overflow: auto;
@@ -187,6 +172,7 @@
     left: 0;
     bottom: 0;
     width: 100%;
+    z-index: -1;
 
     & svg {
       width: 100%;

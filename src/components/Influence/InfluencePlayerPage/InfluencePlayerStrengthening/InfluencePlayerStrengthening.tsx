@@ -1,10 +1,10 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 
 import styles from "./InfluencePlayerStrengthening.module.scss";
-import { CheckBoxIcon } from "../../../layout/icons/Checkbox/CheckBoxIcon";
 import { BuyWalletIcon } from "../../../layout/icons/Common";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../../hooks/redux";
+import RadioList from "../../../layout/RadioList/RadioList";
 
 const {
   singleBuffsText,
@@ -126,46 +126,6 @@ const CheckBox = ({
     </label>
   </div>
 );
-
-interface RadiolistProps {
-  arr: { value: string; label: string }[];
-  onChange: (value: string) => void;
-  name: string;
-  checked: string;
-}
-
-const RadioList: FC<RadiolistProps> = ({ arr, onChange, name, checked }) => {
-  return (
-    <div className={styles.influencePlayerStrengthening__radioList}>
-      {arr.map((item, index) => {
-        const value = typeof item === "object" ? item.value : item;
-        return (
-          <div
-            key={index}
-            className={styles.influencePlayerStrengthening__radioListRadio}
-          >
-            <input
-              type="radio"
-              checked={checked === value}
-              onChange={(e) => onChange(e.target.value)}
-              name={name}
-              value={value}
-              id={value + name + "Radio"}
-              className={styles.influencePlayerStrengthening__radioListInput}
-            />
-            <CheckBoxIcon />
-            <label
-              htmlFor={value + name + "Radio"}
-              className={styles.influencePlayerStrengthening__radioListLabel}
-            >
-              {item.label}
-            </label>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
 
 const InfluencePlayerStrengthening = () => {
   const language = useAppSelector((state) => state.ui.language);

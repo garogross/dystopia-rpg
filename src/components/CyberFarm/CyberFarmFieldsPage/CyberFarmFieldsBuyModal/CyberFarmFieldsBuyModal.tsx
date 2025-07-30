@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import styles from "./CyberFarmFieldsBuyModal.module.scss";
 import ModalWithAdd from "../../../layout/ModalWithAdd/ModalWithAdd";
-import { CancelIcon } from "../../../layout/icons/CyberFarm/CyberFarmFieldsPage";
+import { CancelIcon } from "../../../layout/icons/Common";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { buySlot } from "../../../../store/slices/cyberFarm/slotsSlice";

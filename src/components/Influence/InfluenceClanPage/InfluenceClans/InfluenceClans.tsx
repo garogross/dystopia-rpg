@@ -1,7 +1,7 @@
-import React, { FC, useRef, useEffect, useState } from "react";
+import React, { useState } from "react";
 import TitleH3 from "../../../layout/TitleH3/TitleH3";
 import MainInput from "../../../layout/MainInput/MainInput";
-import { ArrowIcon, SearchLupeIcon } from "../../../layout/icons/Common";
+import { SearchLupeIcon } from "../../../layout/icons/Common";
 
 import { IIncluenceClan } from "../../../../models/Influence/IIncluenceClan";
 import { ELanguages } from "../../../../constants/ELanguages";
@@ -21,6 +21,14 @@ import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { TranslationItemType } from "../../../../types/TranslationItemType";
 import { useAppSelector } from "../../../../hooks/redux";
 import { influenceClans } from "../../../../dummyData/influenceClans";
+import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
+import { INFLUENCE_CLAN_EMBLEMS } from "../../../../constants/influence/influenceClanEmblems";
+import Select from "../../../layout/Select/Select";
+import { useNavigate } from "react-router-dom";
+import {
+  influenceCreateClanPagePath,
+  influencePagePath,
+} from "../../../../router/constants";
 
 const {
   titleText,
@@ -114,83 +122,8 @@ const getFiltersData = (language: ELanguages) => [
 
 const clans = influenceClans;
 
-type SelectProps = ReturnType<typeof getFiltersData>[0] & {
-  value: string;
-  onChange: (val: string) => void;
-};
-
-const Select: FC<SelectProps> = ({ name, options, value, onChange }) => {
-  const language = useAppSelector((state) => state.ui.language);
-
-  const [dropdownOpened, setDropdownOpened] = useState(false);
-  const selectRef = useRef<HTMLDivElement>(null);
-  const dropDownOpenedRef = useRef(dropdownOpened);
-
-  const selectedItem = options.find((item) => item.value === value);
-
-  const onCloseDropdown = () => {
-    setDropdownOpened(false);
-  };
-
-  useEffect(() => {
-    dropDownOpenedRef.current = dropdownOpened;
-  }, [dropdownOpened]);
-
-  useEffect(() => {
-    const ref = [selectRef];
-    const checkIfClickedOutside = (e: MouseEvent) => {
-      const el = e.target as HTMLElement;
-      const isRef = ref.every(
-        (value) => value.current && !value.current.contains(el)
-      );
-
-      if (dropDownOpenedRef.current && isRef) {
-        onCloseDropdown();
-      }
-    };
-    document.addEventListener("click", checkIfClickedOutside);
-
-    return () => {
-      document.removeEventListener("click", checkIfClickedOutside);
-    };
-  }, []);
-
-  return (
-    <div className={styles.influenceClans__select} ref={selectRef}>
-      <button
-        className={`${styles.influenceClans__selectBtn} ${
-          dropdownOpened ? styles.influenceClans__selectBtn_active : ""
-        }`}
-        onClick={() => setDropdownOpened(true)}
-      >
-        <div className={styles.influenceClans__selectBtnInner}>
-          <span>{selectedItem?.label || name[language]}</span>
-          <ArrowIcon rotate={dropdownOpened} />
-        </div>
-      </button>
-      <TransitionProvider
-        inProp={dropdownOpened}
-        style={TransitionStyleTypes.opacity}
-        className={styles.influenceClans__selectDropdownContent}
-      >
-        {options.map((option) => (
-          <button
-            className={styles.influenceClans__dropdonContentItem}
-            key={option.value}
-            onClick={() => {
-              onChange(option.value);
-              setDropdownOpened(false);
-            }}
-          >
-            {option.label}
-          </button>
-        ))}
-      </TransitionProvider>
-    </div>
-  );
-};
-
 const InfluenceClans = () => {
+  const navigate = useNavigate();
   const language = useAppSelector((state) => state.ui.language);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const filtersData = getFiltersData(language);
@@ -221,6 +154,9 @@ const InfluenceClans = () => {
         >
           {filtersData.map((filter) => (
             <Select
+              wrapperClass={styles.influenceClans__select}
+              btnClass={styles.influenceClans__selectBtn}
+              btnInnerClass={styles.influenceClans__selectBtnInner}
               key={filter.keyName}
               {...filter}
               value={filters[filter.keyName]}
@@ -248,8 +184,9 @@ const InfluenceClans = () => {
                   : ""
               }`}
             >
-              <img
-                src={clan.image}
+              <ImageWebp
+                src={INFLUENCE_CLAN_EMBLEMS[clan.emblem].src}
+                srcSet={INFLUENCE_CLAN_EMBLEMS[clan.emblem].srcSet}
                 alt={clan.name}
                 className={styles.influenceClans__listItemImg}
               />
@@ -300,7 +237,12 @@ const InfluenceClans = () => {
             <span>{joinClanButtonText[language]}</span>
           </div>
         </button>
-        <button className={styles.influenceClans__footerBtn}>
+        <button
+          onClick={() =>
+            navigate(`${influencePagePath}/${influenceCreateClanPagePath}`)
+          }
+          className={styles.influenceClans__footerBtn}
+        >
           <div className={styles.influenceClans__footerBtnInner}>
             <CreateClanIcon />
             <span>{createClanButtonText[language]}</span>

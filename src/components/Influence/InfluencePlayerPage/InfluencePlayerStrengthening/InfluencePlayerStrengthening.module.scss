@@ -45,33 +45,6 @@
     }
   }
 
-  &__radioList {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  &__radioListRadio {
-    @include flexCol(flex-start);
-
-    & svg {
-      transition: $transition;
-      fill: transparent;
-    }
-  }
-  &__radioListInput {
-    visibility: hidden;
-    width: 0;
-    height: 0;
-
-    &:checked + svg {
-      fill: $color-text;
-    }
-  }
-  &__radioListLabel {
-    @include setFont(10px, 400);
-    padding-left: 8px;
-    cursor: pointer;
-  }
   &__btn {
     padding: 1px;
     @include button($color-primary);

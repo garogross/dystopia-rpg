@@ -1,7 +1,8 @@
 import React from "react";
+import InfluenceCreateClan from "../../components/Influence/InfluenceCreateClanPage/InfluenceCreateClan/InfluenceCreateClan";
 
 const InfluenceCreateClanPage = () => {
-  return <div></div>;
+  return <InfluenceCreateClan />;
 };
 
 export default InfluenceCreateClanPage;

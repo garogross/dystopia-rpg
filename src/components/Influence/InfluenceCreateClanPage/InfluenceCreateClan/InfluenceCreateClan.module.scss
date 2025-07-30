@@ -1,0 +1,200 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.influenceCreateClan {
+  padding-block: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    overflow: hidden;
+  }
+  &__main {
+    flex: 1;
+    overflow: auto;
+    padding: 10px;
+    border: 1px solid $color-primary;
+    background: $color-darkBlueBg;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &__titleText {
+    text-align: center;
+    @include setFont(14px, 700);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  &__label {
+    width: 100%;
+    @include flexCol();
+    gap: 5px;
+    @include setFont(14px, 400);
+    margin-bottom: 8px;
+
+    & svg {
+      flex: 1;
+      width: 100%;
+    }
+  }
+  &__nameInput {
+    margin-bottom: 10px;
+  }
+  &__emblems {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    transition: $transition;
+    overflow: auto;
+    min-height: 10px;
+
+    &_opened {
+      min-height: calc(100% - 108px);
+    }
+  }
+  &__emblemBtn {
+    @include button();
+    position: relative;
+
+    & svg {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+  }
+  &__emblemImg {
+    width: 100%;
+    aspect-ratio: 46/51;
+    object-fit: contain;
+  }
+  &__togleEmblemsListBtn {
+    @include button();
+    width: 100%;
+    @include flexCol();
+    gap: 5px;
+    @include setFont(12px, 400);
+    margin-block: 10px;
+  }
+  &__toggleEmblemsBtnDotsLine {
+    flex: 1;
+
+    & svg {
+      width: 100%;
+    }
+  }
+
+  &__textArea textarea {
+    height: 61px;
+    margin-bottom: 10px;
+    resize: none;
+  }
+  &__languageSelect {
+    @include flexCol(flex-start, flex-start);
+    gap: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  &__languageSelectText {
+    flex: 2;
+    @include setFont(10px, 400, $font-fam-main, $color-primary);
+  }
+  &__typeSlect {
+    display: flex;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+  &__typeSlectCol {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  &__typeSlectDescriptiontext {
+    @include setFont(10px, 400, $font-fam-main, $color-primary);
+  }
+
+  &__priceText {
+    @include setFont(10px, 700);
+    width: 100%;
+  }
+
+  &__footer {
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+    @include flexCol();
+    gap: 10px;
+    padding-inline: 10%;
+  }
+  &__footerBtn {
+    @include button($color-primary);
+    padding: 1px;
+    flex: 1;
+    height: 22px;
+    transition: $transition;
+
+    &:disabled {
+      opacity: 0.7;
+    }
+  }
+  &__footerBtnInner {
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    @include flexCol();
+    gap: 5px;
+    @include setFont(12px, 400);
+    background: $color-primary-dark-radial-gradient;
+  }
+
+  &__footerBtn:nth-child(1),
+  &__footerBtn:nth-child(1) &__footerBtnInner {
+    clip-path: polygon(
+      100% 0%,
+      // right top
+      100% 100%,
+      // right bottom
+      8% 100%,
+      // left bottom inner
+      0% 34%,
+      // left notch
+      2.3% 0%,
+      // left top
+      100% 0% // right top (close)
+    );
+  }
+  &__footerBtn:nth-child(2),
+  &__footerBtn:nth-child(2) &__footerBtnInner {
+    clip-path: polygon(
+      0% 0%,
+      // left top
+      0% 100%,
+      // left bottom
+      92% 100%,
+      // right bottom inner
+      100% 34%,
+      // right notch
+      98% 0%,
+      // right top
+      0% 0% // left top (close)
+    );
+  }
+
+  &__wings {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: -1;
+
+    & svg {
+      width: 100%;
+      height: 8px;
+    }
+  }
+}
