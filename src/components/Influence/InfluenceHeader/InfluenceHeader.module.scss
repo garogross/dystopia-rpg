@@ -202,6 +202,14 @@
     &:last-child {
       clip-path: polygon(0% 0%, 83.5% 0%, 100% 100%, 0% 100%, 0% 0%);
     }
+
+    &_active {
+      background: $color-primary-to-dark-gradient;
+
+      & svg {
+        fill: $color-text;
+      }
+    }
   }
 }
 

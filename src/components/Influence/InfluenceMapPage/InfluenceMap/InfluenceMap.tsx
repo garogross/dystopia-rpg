@@ -17,6 +17,7 @@ import { findBonusAreaBorders } from "../../../../utils/influence/findBonusAreaB
 import InfluenceMapSteptimer from "../InfluenceMapSteptimer/InfluenceMapSteptimer";
 import InfluenceMapHexInfoModal from "../InfluenceMapHexVector/InfluenceMapHexInfoModal";
 import { makeHexKey } from "../../../../utils/influence/makeHexKey";
+import { useInfluencePlayerColors } from "../../../../hooks/influence/useInfluencePlayerColors";
 
 const COLOR_OPACITY = "70"; // in hex
 const BONUS_AREA_BORDER_COLOR = "#7f5cff";
@@ -28,9 +29,7 @@ const InfluenceMap = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const hexes = useAppSelector((state) => state.influence.map.hexes);
   const mapId = useAppSelector((state) => state.influence.map.mapId);
-  const playerColors = useAppSelector(
-    (state) => state.influence.map.playerColors
-  );
+  const getPlayerColor = useInfluencePlayerColors();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleHexes, setVisibleHexes] = useState<IHex[]>([]);
@@ -125,7 +124,7 @@ const InfluenceMap = () => {
                 <div
                   style={{
                     backgroundColor: owner_id
-                      ? playerColors[owner_id] + COLOR_OPACITY
+                      ? getPlayerColor(owner_id) + COLOR_OPACITY
                       : undefined,
                   }}
                   className={`${styles.influenceMap__hexInner} ${
@@ -146,7 +145,7 @@ const InfluenceMap = () => {
                   className={styles.influenceMap__ownerAreaStroke}
                   stroke={(isBorder) =>
                     isBorder && owner_id
-                      ? playerColors[owner_id]
+                      ? getPlayerColor(owner_id)
                       : "transparent"
                   }
                   strokeWidth={(isBorder) => (isBorder ? 5 : undefined)}
@@ -165,7 +164,7 @@ const InfluenceMap = () => {
           show={infoMoadlOpened}
           color={
             selectedHex.owner_id
-              ? playerColors[selectedHex.owner_id]
+              ? getPlayerColor(selectedHex.owner_id)
               : undefined
           }
           onClose={() => setInfoMoadlOpened(false)}

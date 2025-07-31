@@ -38,6 +38,7 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { openRestoreModal } from "../../../store/slices/influence/influenceSlice";
 import SettingsModal from "../../SettingsModal/SettingsModal";
 import { useInfluenceRestoretimer } from "../../../hooks/influence/useInfluenceRestoretimer";
+import { setMonoColorSchemeEnabled } from "../../../store/slices/influence/settingsSlice";
 
 const { throughText } = TRANSLATIONS.influence.header;
 const { getPremiumText } = TRANSLATIONS.common;
@@ -74,6 +75,9 @@ const InfluenceHeader = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const language = useAppSelector((state) => state.ui.language);
+  const monoColorSchemeEnabled = useAppSelector(
+    (state) => state.influence.settings.monoColorSchemeEnabled
+  );
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const actionPoints = useAppSelector(
     (state) => state.influence.influence.actionPoints
@@ -190,7 +194,16 @@ const InfluenceHeader = () => {
           <button className={styles.influenceHeader__bottomBtn}>
             <RadiusSwitcherIcon />
           </button>
-          <button className={styles.influenceHeader__bottomBtn}>
+          <button
+            onClick={() =>
+              dispatch(setMonoColorSchemeEnabled(!monoColorSchemeEnabled))
+            }
+            className={`${styles.influenceHeader__bottomBtn} ${
+              monoColorSchemeEnabled
+                ? styles.influenceHeader__bottomBtn_active
+                : ""
+            }`}
+          >
             <ColorSwitcherIcon />
           </button>
         </div>
