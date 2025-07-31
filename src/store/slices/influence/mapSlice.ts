@@ -7,8 +7,6 @@ import {
 import { fetchRequest } from "../../tools/fetchTools";
 import { RootState } from "../../store";
 
-const MY_COLOR = `#0f9e60`;
-
 export interface MapState {
   nextAttackTs: number;
   mapId: number | null;
@@ -80,14 +78,13 @@ export const getPlayerColors = createAsyncThunk<
   {
     id: string;
   }
->("map/getPlayerColors", async (payload, { rejectWithValue, getState }) => {
+>("map/getPlayerColors", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<Record<string, string>>(
       `${getPlayerColorsUrl}?map_id=${payload.id}`
     );
-    const tgId = (getState() as RootState).profile.tgId;
 
-    return { ...resData, [tgId.toString()]: MY_COLOR };
+    return resData;
   } catch (error: any) {
     console.error("error", error);
     return rejectWithValue(error);
