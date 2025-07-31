@@ -17,8 +17,20 @@ import { DotsLine } from "../../../layout/icons/RPGGame/Common";
 
 import styles from "./InfluenceMapControllModal.module.scss";
 import { useAppSelector } from "../../../../hooks/redux";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+
+const {
+  totalHexesText,
+  productionBuildingsText,
+  defenseBuildingsText,
+  capturedHexesText,
+  influencePointsText,
+  rewardForecastText,
+  clanControlTitleText,
+} = TRANSLATIONS.influence.map.controllModal;
 
 const InfluenceMapControllModal = () => {
+  const language = useAppSelector((state) => state.ui.language);
   const hexes = useAppSelector((state) => state.influence.map.hexes);
   const influencePoints = useAppSelector(
     (state) => state.influence.influence.influencePoints
@@ -45,7 +57,7 @@ const InfluenceMapControllModal = () => {
           </div>
         </button>
         <h6 className={styles.influenceMapControllModal__headerTitle}>
-          Контроль клана
+          {clanControlTitleText[language]}
         </h6>
       </div>
       <div className={styles.influenceMapControllModal__content}>
@@ -53,7 +65,9 @@ const InfluenceMapControllModal = () => {
           <DotsLine preserveAspectRatio />
         </div>
         <div className={styles.influenceMapControllModal__text}>
-          <span>Захвачено гексов: {ownedHexesCount}</span>
+          <span>
+            {capturedHexesText[language]}: {ownedHexesCount}
+          </span>
           <ImageWebp
             src={hexIconImage}
             srcSet={hexIconImageWebp}
@@ -62,7 +76,9 @@ const InfluenceMapControllModal = () => {
           />
         </div>
         <div className={styles.influenceMapControllModal__text}>
-          <span>Очки влияния: {influencePoints}</span>
+          <span>
+            {influencePointsText[language]}: {influencePoints}
+          </span>
           <ImageWebp
             src={influencePointIconImage}
             srcSet={influencePointIconImageWebp}
@@ -71,7 +87,7 @@ const InfluenceMapControllModal = () => {
           />
         </div>
         <div className={styles.influenceMapControllModal__text}>
-          <span>Прогноз награды: ≈ 0.182</span>
+          <span>{rewardForecastText[language]}: ≈ 0.182</span>
           <ImageWebp
             src={cpImage}
             srcSet={cpImageWebp}
@@ -86,15 +102,15 @@ const InfluenceMapControllModal = () => {
           className={`${styles.influenceMapControllModal__text} ${styles.influenceMapControllModal__text_head}`}
         >
           <BuildingIcon />
-          <strong>Всего построек(14)</strong>
+          <strong>{totalHexesText[language]} (14)</strong>
         </div>
         <div className={styles.influenceMapControllModal__text}>
           <BuildingIcon />
-          <span>Постройки производства: 8</span>
+          <span>{productionBuildingsText[language]}: 8</span>
         </div>
         <div className={styles.influenceMapControllModal__text}>
           <BuildingIcon />
-          <span>Постройки обороны: 4</span>
+          <span>{defenseBuildingsText[language]}: 4</span>
         </div>
       </div>
     </div>

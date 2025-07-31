@@ -27,6 +27,7 @@ const InfluenceMap = () => {
   const dispatch = useAppDispatch();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const hexes = useAppSelector((state) => state.influence.map.hexes);
+  const mapId = useAppSelector((state) => state.influence.map.mapId);
   const playerColors = useAppSelector(
     (state) => state.influence.map.playerColors
   );
@@ -49,12 +50,13 @@ const InfluenceMap = () => {
     visibleHexes.find(({ x, y, z }) => makeHexKey(x, y, z) === selectedHexId);
 
   useEffect(() => {
+    if (!mapId) return;
     (async () => {
-      await dispatch(getMap({ id: "1" }));
-      await dispatch(getPlayerColors({ id: "1" }));
+      await dispatch(getMap({ id: mapId.toString() }));
+      await dispatch(getPlayerColors({ id: mapId.toString() }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [mapId]);
 
   useEffect(() => {
     if (gameInited && containerRef.current) {

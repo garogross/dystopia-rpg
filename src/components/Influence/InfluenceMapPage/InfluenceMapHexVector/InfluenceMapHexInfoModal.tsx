@@ -18,14 +18,9 @@ import {
 import { DotsLine } from "../../../layout/icons/RPGGame/Common";
 import {
   AttackIcon,
-  DemolishIcon,
   PersonIcon,
-  RepairIcon,
 } from "../../../layout/icons/Influence/InfluenceMaphexInfoModal";
-import {
-  BuildIcon,
-  UpdateBuildingIcon,
-} from "../../../layout/icons/Influence/Common";
+import { BuildIcon } from "../../../layout/icons/Influence/Common";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { ConfirmIcon } from "../../../layout/icons/Common";
 import HeaderBtn from "../../../layout/HeaderBtn/HeaderBtn";
@@ -42,6 +37,21 @@ interface Props {
   color?: string;
   onClose: () => void;
 }
+
+const {
+  coordinatesText,
+  ownerTitleText,
+  ownerPlayerText,
+  neutralTerritoryText,
+  buildingTitleText,
+  defensiveBunkerText,
+  actionsTitleText,
+  buildButtonText,
+  attackButtonText,
+  confirmButtonText,
+  fillupButtonText,
+  apWillBeSpentText,
+} = TRANSLATIONS.influence.map.infoModal;
 
 const DEFAULT_COLOR = "#7f5cff";
 
@@ -143,27 +153,27 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
 
   const buttons = [
     {
-      text: "Строить",
+      text: buildButtonText,
       icon: <BuildIcon />,
       condition: hex.owner_id === tgId && !hex.bonus_area_id,
     },
+    // {
+    //   text: "Ремонт",
+    //   icon: <RepairIcon />,
+    //   condition: hex.owner_id === tgId && hex.bonus_area_id,
+    // },
+    // {
+    //   text: "Улутчшить",
+    //   icon: <UpdateBuildingIcon />,
+    //   condition: hex.owner_id === tgId && hex.bonus_area_id,
+    // },
+    // {
+    //   text: "Снести",
+    //   icon: <DemolishIcon />,
+    //   condition: hex.owner_id === tgId && hex.bonus_area_id,
+    // },
     {
-      text: "Ремонт",
-      icon: <RepairIcon />,
-      condition: hex.owner_id === tgId && hex.bonus_area_id,
-    },
-    {
-      text: "Улутчшить",
-      icon: <UpdateBuildingIcon />,
-      condition: hex.owner_id === tgId && hex.bonus_area_id,
-    },
-    {
-      text: "Снести",
-      icon: <DemolishIcon />,
-      condition: hex.owner_id === tgId && hex.bonus_area_id,
-    },
-    {
-      text: "Атака",
+      text: attackButtonText,
       icon: <AttackIcon />,
       condition: hex.owner_id !== tgId,
       onclick: onAttack,
@@ -175,7 +185,9 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
     // },
   ];
 
-  const activeBtn = buttons.find((btn) => btn.text === selectedAction);
+  const activeBtn = buttons.find(
+    (btn) => btn.text[language] === selectedAction
+  );
 
   return (
     <>
@@ -204,7 +216,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                     />
                   </div>
                   <h6 className={styles.influenceMapHexInfoModal__titleText}>
-                    Координаты: X{hex.x}-Y{hex.y}-Z{hex.z}
+                    {coordinatesText[language]}: X{hex.x}-Y{hex.y}-Z{hex.z}
                   </h6>
                 </div>
                 <HeaderBtn type={"close"} fill={color} onClick={onClose} />
@@ -213,7 +225,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                 {hex.owner_id ? (
                   <div className={styles.influenceMapHexInfoModal__infoBlock}>
                     <p className={styles.influenceMapHexInfoModal__titleText}>
-                      Владелец
+                      {ownerTitleText[language]}
                     </p>
                     <div
                       className={
@@ -225,7 +237,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                     >
                       <PersonIcon />
                       <p className={styles.influenceMapHexInfoModal__infoText}>
-                        Игрок:{" "}
+                        {ownerPlayerText[language]}:{" "}
                         <span
                           className={
                             styles.influenceMapHexInfoModal__infoTextValue
@@ -238,13 +250,13 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                   </div>
                 ) : (
                   <p className={styles.influenceMapHexInfoModal__neutralText}>
-                    Не захваченная нейтральная территория
+                    {neutralTerritoryText[language]}
                   </p>
                 )}
                 {hex.building_type && (
                   <div className={styles.influenceMapHexInfoModal__infoBlock}>
                     <p className={styles.influenceMapHexInfoModal__titleText}>
-                      Здание
+                      {buildingTitleText[language]}
                     </p>
                     <div
                       className={
@@ -256,7 +268,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                     >
                       <p className={styles.influenceMapHexInfoModal__infoText}>
                         {" "}
-                        Oборонительный бункер
+                        {defensiveBunkerText[language]}{" "}
                         <span
                           className={
                             styles.influenceMapHexInfoModal__infoTextValue
@@ -270,7 +282,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                 )}
                 <div className={styles.influenceMapHexInfoModal__infoBlock}>
                   <p className={styles.influenceMapHexInfoModal__titleText}>
-                    Действия
+                    {actionsTitleText[language]}
                   </p>
                   <div
                     className={
@@ -281,15 +293,15 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                       .filter((item) => item.condition)
                       .map((btn) => (
                         <button
-                          onClick={() => setSelectedAction(btn.text)}
+                          onClick={() => setSelectedAction(btn.text[language])}
                           className={`${
                             styles.influenceMapHexInfoModal__actionBtn
                           } ${
-                            selectedAction === btn.text
+                            selectedAction === btn.text[language]
                               ? styles.influenceMapHexInfoModal__actionBtn_active
                               : ""
                           }`}
-                          key={btn.text}
+                          key={btn.text[language]}
                         >
                           <div
                             className={
@@ -297,7 +309,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                             }
                           >
                             {btn.icon}
-                            <span>{btn.text}</span>
+                            <span>{btn.text[language]}</span>
                           </div>
                         </button>
                       ))}
@@ -319,7 +331,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                 </div>
                 <div className={styles.influenceMapHexInfoModal__spendingAP}>
                   <p className={styles.influenceMapHexInfoModal__titleText}>
-                    Будет потрачено ОД: {nextHarm}/{requiredPoints}
+                    {apWillBeSpentText[language]}: {nextHarm}/{requiredPoints}
                   </p>
                   <ImageWebp
                     src={influenceEnergyImage}
@@ -345,12 +357,12 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                     {actionPoints ? (
                       <>
                         <ConfirmIcon />
-                        <span>Потвердить</span>
+                        <span>{confirmButtonText[language]}</span>
                       </>
                     ) : (
                       <>
                         <FillupIcon />
-                        <span>Пополнить</span>
+                        <span>{fillupButtonText[language]}</span>
                       </>
                     )}
                   </div>

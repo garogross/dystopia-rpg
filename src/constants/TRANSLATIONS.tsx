@@ -2031,6 +2031,86 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "ОД успешно восстановлены",
         },
       },
+      controllModal: {
+        totalHexesText: {
+          [ELanguages.en]: "Total buildings",
+          [ELanguages.ru]: "Всего построек",
+        },
+        productionBuildingsText: {
+          [ELanguages.en]: "Production buildings",
+          [ELanguages.ru]: "Постройки производства",
+        },
+        defenseBuildingsText: {
+          [ELanguages.en]: "Defense buildings",
+          [ELanguages.ru]: "Постройки обороны",
+        },
+        capturedHexesText: {
+          [ELanguages.en]: "Hexes captured",
+          [ELanguages.ru]: "Захвачено гексов",
+        },
+        influencePointsText: {
+          [ELanguages.en]: "Influence points",
+          [ELanguages.ru]: "Очки влияния",
+        },
+        rewardForecastText: {
+          [ELanguages.en]: "Reward forecast",
+          [ELanguages.ru]: "Прогноз награды",
+        },
+        clanControlTitleText: {
+          [ELanguages.en]: "Clan control",
+          [ELanguages.ru]: "Контроль клана",
+        },
+      },
+      infoModal: {
+        coordinatesText: {
+          [ELanguages.en]: "Coordinates",
+          [ELanguages.ru]: "Координаты",
+        },
+        ownerTitleText: {
+          [ELanguages.en]: "Owner",
+          [ELanguages.ru]: "Владелец",
+        },
+        ownerPlayerText: {
+          [ELanguages.en]: "Player:",
+          [ELanguages.ru]: "Игрок:",
+        },
+        neutralTerritoryText: {
+          [ELanguages.en]: "Uncaptured neutral territory",
+          [ELanguages.ru]: "Не захваченная нейтральная территория",
+        },
+        buildingTitleText: {
+          [ELanguages.en]: "Building",
+          [ELanguages.ru]: "Здание",
+        },
+        defensiveBunkerText: {
+          [ELanguages.en]: "Defensive bunker",
+          [ELanguages.ru]: "Oборонительный бункер",
+        },
+        actionsTitleText: {
+          [ELanguages.en]: "Actions",
+          [ELanguages.ru]: "Действия",
+        },
+        buildButtonText: {
+          [ELanguages.en]: "Build",
+          [ELanguages.ru]: "Строить",
+        },
+        attackButtonText: {
+          [ELanguages.en]: "Attack",
+          [ELanguages.ru]: "Атака",
+        },
+        confirmButtonText: {
+          [ELanguages.en]: "Confirm",
+          [ELanguages.ru]: "Потвердить",
+        },
+        fillupButtonText: {
+          [ELanguages.en]: "Fill up",
+          [ELanguages.ru]: "Пополнить",
+        },
+        apWillBeSpentText: {
+          [ELanguages.en]: "AP to be spent",
+          [ELanguages.ru]: "Будет потрачено ОД",
+        },
+      },
     },
     player: {
       titleText: {

@@ -107,4 +107,9 @@ export interface GetAccountDetailsResponse {
     };
     max_action_points_per_turn: number;
   };
+  active_maps?: [
+    {
+      map_id: number;
+    }
+  ];
 }
