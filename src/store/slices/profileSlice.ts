@@ -255,7 +255,12 @@ export const getAccountDetails =
         })
       );
 
-      dispatch(initMap(resData.user?.next_attack_ts || 0));
+      dispatch(
+        initMap({
+          nextAttackTs: resData.user?.next_attack_ts || 0,
+          mapId: resData.active_maps?.[0]?.map_id || null,
+        })
+      );
     }
 
     // tasks

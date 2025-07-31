@@ -99,7 +99,8 @@ export const mapSlice = createSlice({
   initialState,
   reducers: {
     initMap(state, action) {
-      state.nextAttackTs = action.payload;
+      state.nextAttackTs = action.payload.nextAttackTs;
+      state.mapId = action.payload.mapId;
     },
   },
   extraReducers: (builder) => {

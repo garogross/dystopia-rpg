@@ -38,6 +38,7 @@
   }
   &__titleText {
     @include setFont(12px, 800);
+    white-space: nowrap;
   }
   &__closeBtn {
     @include button();
