@@ -13,6 +13,7 @@ import {
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import styles from "./InfluenceHeader.module.scss";
 import {
+  influenceMailPagePath,
   influencePagePath,
   influenceReferalsPagePath,
   onBoardingPagePath,
@@ -116,7 +117,7 @@ const InfluenceHeader = () => {
             <HeaderReferenceIcon />
           </NavLink>
           <NavLink
-            to={"/mail"}
+            to={`${influencePagePath}/${influenceMailPagePath}`}
             className={linkActiveClass(styles.influenceHeader__mailBtn)}
           >
             <HeaderMailIcon />

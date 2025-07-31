@@ -53,6 +53,7 @@ import {
   influenceReferalsPagePath,
   influenceCreateClanPagePath,
   influenceMyClanPagePath,
+  influenceMailPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -99,6 +100,7 @@ import InfluenceReferalsPage from "../pages/Influence/InfluenceReferalsPage";
 import InfluenceNotificatonsPage from "../pages/Influence/InfluenceNotificatonsPage";
 import InfluenceCreateClanPage from "../pages/Influence/InfluenceCreateClanPage";
 import InfluenceMyClanPage from "../pages/Influence/InfluenceMyClanPage";
+import InfluenceMailPage from "../pages/Influence/InfluenceMailPage";
 
 export const homePagePath = "/";
 
@@ -314,6 +316,10 @@ export const routes: IRoute[] = [
       {
         path: influenceReferalsPagePath,
         component: <InfluenceReferalsPage />,
+      },
+      {
+        path: influenceMailPagePath,
+        component: <InfluenceMailPage />,
       },
     ],
   },

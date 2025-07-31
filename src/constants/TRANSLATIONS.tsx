@@ -1273,6 +1273,40 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Прогресс",
     },
   },
+  mail: {
+    inboxTitleText: {
+      [ELanguages.en]: "Mail",
+      [ELanguages.ru]: "Почта",
+    },
+    totalText: {
+      [ELanguages.en]: "Total",
+      [ELanguages.ru]: "Всего",
+    },
+    unreadText: {
+      [ELanguages.en]: "Unread",
+      [ELanguages.ru]: "Непрочитанных",
+    },
+    fromText: {
+      [ELanguages.en]: "From",
+      [ELanguages.ru]: "От",
+    },
+    themeText: {
+      [ELanguages.en]: "Subject",
+      [ELanguages.ru]: "Тема",
+    },
+    receivedText: {
+      [ELanguages.en]: "Received",
+      [ELanguages.ru]: "Получено",
+    },
+    closeText: {
+      [ELanguages.en]: "Close",
+      [ELanguages.ru]: "Закрыть",
+    },
+    takeAllText: {
+      [ELanguages.en]: "Take all",
+      [ELanguages.ru]: "Забрать всё",
+    },
+  },
   miniGames: {
     catalog: {
       titleText: {
