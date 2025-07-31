@@ -22,6 +22,7 @@ import {
 import StatImg from "../../layout/StatImg/StatImg";
 import { EStats } from "../../../constants/EStats";
 import {
+  AchievmentsIcon,
   ColorSwitcherIcon,
   RadiusSwitcherIcon,
 } from "../../layout/icons/Influence/InfluenceHeader";
@@ -161,7 +162,7 @@ const InfluenceHeader = () => {
             to={`${influencePagePath}/${influenceReferalsPagePath}`}
             className={linkActiveClass()}
           >
-            <HeaderReferenceIcon />
+            <AchievmentsIcon />
           </NavLink>
         </div>
         <div
