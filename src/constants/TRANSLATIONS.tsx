@@ -2188,5 +2188,80 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Создать клан",
       },
     },
+    createClan: {
+      titleText: {
+        [ELanguages.en]: "Clan",
+        [ELanguages.ru]: "Клан",
+      },
+      subtitleText: {
+        [ELanguages.en]: "Create Clan",
+        [ELanguages.ru]: "Создание Клана",
+      },
+      namePlaceholder: {
+        [ELanguages.en]: "Clan name",
+        [ELanguages.ru]: "Название клана",
+      },
+      selectEmblemLabel: {
+        [ELanguages.en]: "Select emblem",
+        [ELanguages.ru]: "Выберите эмблему",
+      },
+      showMoreText: {
+        [ELanguages.en]: "Show more",
+        [ELanguages.ru]: "Показать еще",
+      },
+      collapseText: {
+        [ELanguages.en]: "Collapse",
+        [ELanguages.ru]: "Свернуть",
+      },
+      descriptionPlaceholder: {
+        [ELanguages.en]: "Clan description",
+        [ELanguages.ru]: "Описание клана",
+      },
+      selectLanguageLabel: {
+        [ELanguages.en]: "Select main clan language",
+        [ELanguages.ru]: "Выберите основной язык клана",
+      },
+      languageSelectName: {
+        [ELanguages.en]: "Language",
+        [ELanguages.ru]: "Язык",
+      },
+      languageSelectHint: {
+        [ELanguages.en]: "Players can filter clans by language when searching",
+        [ELanguages.ru]: "Игроки смогут фильтровать кланы по языку при поиске",
+      },
+      selectTypeLabel: {
+        [ELanguages.en]: "Clan type",
+        [ELanguages.ru]: "Тип клана",
+      },
+      typePublic: {
+        [ELanguages.en]: "Public",
+        [ELanguages.ru]: "Публичный",
+      },
+      typePrivate: {
+        [ELanguages.en]: "Private",
+        [ELanguages.ru]: "Закрытый",
+      },
+      typePublicDescription: {
+        [ELanguages.en]: "Any player can join without an application",
+        [ELanguages.ru]: "Любой игрок может присоединиться без заявки",
+      },
+      typePrivateDescription: {
+        [ELanguages.en]: "Players must apply to join",
+        [ELanguages.ru]: "Игроки должны подавать заявки для вступления",
+      },
+      creationFeeText: {
+        [ELanguages.en]: "! To create a clan you need to pay a fee: 1000",
+        [ELanguages.ru]:
+          "! Для создания клана необходимо заплатить взнос в размере: 1000",
+      },
+      cancelButtonText: {
+        [ELanguages.en]: "Cancel",
+        [ELanguages.ru]: "Отмена",
+      },
+      createButtonText: {
+        [ELanguages.en]: "Create clan",
+        [ELanguages.ru]: "Создать клан",
+      },
+    },
   },
 };
