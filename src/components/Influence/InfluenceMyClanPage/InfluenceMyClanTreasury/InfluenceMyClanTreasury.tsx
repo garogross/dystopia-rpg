@@ -13,18 +13,39 @@ import { FillupIcon } from "../../../layout/icons/Influence/Common";
 import { DotslineLong } from "../../../layout/icons/Common";
 
 import styles from "./InfluenceMyClanTreasury.module.scss";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../hooks/redux";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../../providers/TransitionProvider";
+
+const {
+  curBalanceText,
+  fillTreasuryButtonText,
+  statisticsAccordionTitle,
+  resetStatisticsButtonText,
+  apStorageAccordionTitle,
+  fillStorageButtonText,
+} = TRANSLATIONS.influence.myClan.tressury;
 
 const InfluenceMyClanTreasury = () => {
+  const language = useAppSelector((state) => state.ui.language);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+
   return (
     <div className={styles.influenceMyClanTreasury}>
-      <div className={styles.influenceMyClanTreasury__container}>
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.bottom}
+        className={styles.influenceMyClanTreasury__container}
+      >
         <div className={styles.influenceMyClanTreasury__header}>
           <div className={styles.influenceMyClanTreasury__headerInner}>
             <div className={styles.influenceMyClanTreasury__curBalance}>
               <span
                 className={styles.influenceMyClanTreasury__curBalance__text}
               >
-                Текущий баланс
+                {curBalanceText[language]}
               </span>
               <div
                 className={styles.influenceMyClanTreasury__curBalanceDotsLine}
@@ -46,13 +67,13 @@ const InfluenceMyClanTreasury = () => {
             <button className={styles.influenceMyClanTreasury__btn}>
               <div className={styles.influenceMyClanTreasury__btnInner}>
                 <FillUpStorageIcon />
-                <span>Пополнить казну</span>
+                <span>{fillTreasuryButtonText[language]}</span>
               </div>
             </button>
           </div>
         </div>
         <div className={styles.influenceMyClanTreasury__accordions}>
-          <Accordion title={"Статистика вложений"}>
+          <Accordion title={statisticsAccordionTitle[language]}>
             <div
               className={styles.influenceMyClanTreasury__statisticsContainer}
             >
@@ -60,27 +81,31 @@ const InfluenceMyClanTreasury = () => {
               <button className={styles.influenceMyClanTreasury__btn}>
                 <div className={styles.influenceMyClanTreasury__btnInner}>
                   <ResetStatisticsIcon />
-                  <span>Сбросить статистику</span>
+                  <span>{resetStatisticsButtonText[language]}</span>
                 </div>
               </button>
             </div>
           </Accordion>
-          <Accordion title={"Статистика вложений"}>
+          <Accordion title={apStorageAccordionTitle[language]}>
             <div className={styles.influenceMyClanTreasury__storageContainer}>
               <InfluenceMyClanTreasuryAPStorage />
               <button className={styles.influenceMyClanTreasury__btn}>
                 <div className={styles.influenceMyClanTreasury__btnInner}>
                   <FillupIcon />
-                  <span>Пополнить хранилище</span>
+                  <span>{fillStorageButtonText[language]}</span>
                 </div>
               </button>
             </div>
           </Accordion>
         </div>
-      </div>
-      <div className={styles.influenceMyClanTreasury__wings}>
+      </TransitionProvider>
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.zoomOut}
+        className={styles.influenceMyClanTreasury__wings}
+      >
         <HeaderWings reversed />
-      </div>
+      </TransitionProvider>
     </div>
   );
 };

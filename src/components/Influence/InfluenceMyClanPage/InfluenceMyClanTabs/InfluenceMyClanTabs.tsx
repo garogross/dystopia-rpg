@@ -9,30 +9,45 @@ import InfluenceMyClanTreasury from "../InfluenceMyClanTreasury/InfluenceMyClanT
 import InfluenceMyClanBuids from "../InfluenceMyClanBuids/InfluenceMyClanBuids";
 
 import styles from "./InfluenceMyClanTabs.module.scss";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../hooks/redux";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../../providers/TransitionProvider";
+
+const { membersText, treasuryText, buildsText } =
+  TRANSLATIONS.influence.myClan.tabs;
 const tabs = [
   {
-    name: "СОСТАВ",
+    name: membersText,
     icon: <MembersIcon />,
     component: <InfluenceMyClanMembers />,
   },
   {
-    name: "КАЗНА",
+    name: treasuryText,
     icon: <TressuryIcon />,
     component: <InfluenceMyClanTreasury />,
   },
   {
-    name: "СТРОЕНИЯ",
+    name: buildsText,
     icon: <BuildsIcon />,
     component: <InfluenceMyClanBuids />,
   },
 ];
 
 const InfluenceMyClanTabs = () => {
+  const language = useAppSelector((state) => state.ui.language);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const selectedTab = tabs[selectedTabIndex];
   return (
     <div className={styles.influenceMyClanTabs}>
-      <div className={styles.influenceMyClanTabs__bar}>
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.zoomIn}
+        className={styles.influenceMyClanTabs__bar}
+      >
         {tabs.map((tab, index) => (
           <button
             onClick={() => setSelectedTabIndex(index)}
@@ -44,10 +59,10 @@ const InfluenceMyClanTabs = () => {
             }`}
           >
             {tab.icon}
-            <span>{tab.name}</span>
+            <span>{tab.name[language]}</span>
           </button>
         ))}
-      </div>
+      </TransitionProvider>
       {selectedTab?.component}
     </div>
   );

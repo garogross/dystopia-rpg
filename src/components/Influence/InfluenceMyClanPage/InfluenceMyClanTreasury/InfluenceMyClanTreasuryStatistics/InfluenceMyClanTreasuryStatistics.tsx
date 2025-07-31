@@ -3,6 +3,13 @@ import Table from "../../../../layout/Table/Table";
 import ImageWebp from "../../../../layout/ImageWebp/ImageWebp";
 import { cpImage, cpImageWebp } from "../../../../../assets/imageMaps";
 import styles from "./InfluenceMyClanTreasuryStatistics.module.scss";
+import { TRANSLATIONS } from "../../../../../constants/TRANSLATIONS";
+import { getElapsedTime } from "../../../../../utils/getElapsedTime";
+import { useAppSelector } from "../../../../../hooks/redux";
+
+const headers = Object.values(
+  TRANSLATIONS.influence.myClan.tressury.statistics
+);
 const statisticsData = [
   ...Array.from({ length: 10 }, (_, i) => ({
     username: [
@@ -18,16 +25,17 @@ const statisticsData = [
       "SunWarrior",
     ][i],
     cp: Math.floor(Math.random() * 100) + 1,
-    date: `${Math.floor(Math.random() * 59) + 1} мин. назад`,
+    date: Date.now() - 5 * 24 * 60 * 60 * 1000,
   })),
 ];
 
 const InfluenceMyClanTreasuryStatistics = () => {
+  const language = useAppSelector((state) => state.ui.language);
   return (
     <Table
       withoutBorder
       columnsTemplate={"1fr 1fr 1fr"}
-      headers={["Участник", "Вложено[CP]", "Дата пополнений"]}
+      headers={headers}
       data={statisticsData}
       cols={[
         {
@@ -49,6 +57,7 @@ const InfluenceMyClanTreasuryStatistics = () => {
         },
         {
           key: "date",
+          render: (item) => getElapsedTime(item.date, language),
         },
       ]}
     />

@@ -11,4 +11,5 @@ export interface IIncluenceClan {
   language: ELanguages;
   type: "private" | "public";
   description: string;
+  founded: number;
 }

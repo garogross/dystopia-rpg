@@ -43,7 +43,8 @@
     gap: 10px;
   }
   &__header {
-    @include flexCol(flex-start);
+    display: flex;
+    flex-direction: column;
     gap: 5px;
   }
   &__nameText {
