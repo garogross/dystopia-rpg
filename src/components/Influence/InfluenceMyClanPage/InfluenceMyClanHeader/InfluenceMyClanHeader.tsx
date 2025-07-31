@@ -10,38 +10,62 @@ import {
 } from "../../../layout/icons/Influence/InfluenceMyClanHeader";
 
 import styles from "./InfluenceMyClanHeader.module.scss";
+import { INFLUENCE_CLAN_EMBLEMS } from "../../../../constants/influence/influenceClanEmblems";
+import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../hooks/redux";
+import { getElapsedTime } from "../../../../utils/getElapsedTime";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../../providers/TransitionProvider";
 
-const stats = [
-  {
-    icon: <MembersIcon />,
-    name: "Участники",
-    value: "45/50",
-  },
-  {
-    icon: <FoundedIcon />,
-    name: "Основан",
-    value: "15 д. назад",
-  },
-  {
-    icon: <LeaderIcon />,
-    name: "Глава",
-    value: "Ластман63",
-  },
-  {
-    icon: <IdIcon />,
-    name: "ID клана",
-    value: "GO0147CZ",
-  },
-];
+const {
+  levelLabelText,
+  progressLabelText,
+  membersText,
+  foundedText,
+  leaderText,
+  clanIdText,
+} = TRANSLATIONS.influence.myClan.header;
 
 const InfluenceMyClanHeader = () => {
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
+
   const clan = influenceClans[0];
+  const stats = [
+    {
+      icon: <MembersIcon />,
+      name: membersText,
+      value: `${clan.members}/${clan.maxMembers}`,
+    },
+    {
+      icon: <FoundedIcon />,
+      name: foundedText,
+      value: getElapsedTime(clan.founded, language),
+    },
+    {
+      icon: <LeaderIcon />,
+      name: leaderText,
+      value: clan.name,
+    },
+    {
+      icon: <IdIcon />,
+      name: clanIdText,
+      value: clan.id,
+    },
+  ];
 
   return (
     <header className={styles.influenceMyClanHeader}>
-      <div className={styles.influenceMyClanHeader__main}>
-        <img
-          src={clan.image}
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.top}
+        className={styles.influenceMyClanHeader__main}
+      >
+        <ImageWebp
+          src={INFLUENCE_CLAN_EMBLEMS[clan.emblem].src}
+          srcSet={INFLUENCE_CLAN_EMBLEMS[clan.emblem].src}
           alt="clan"
           className={styles.influenceMyClanHeader__img}
         />
@@ -51,7 +75,7 @@ const InfluenceMyClanHeader = () => {
               {clan.name}
             </h4>
             <h5 className={styles.influenceMyClanHeader__levelText}>
-              Уровень {clan.level}
+              {levelLabelText[language]} {clan.level}
             </h5>
             <button className={styles.influenceMyClanHeader__editBtn}>
               <EditIcon />
@@ -61,7 +85,7 @@ const InfluenceMyClanHeader = () => {
             {clan.description}
           </p>
           <p className={styles.influenceMyClanHeader__progressText}>
-            Прогресс повышения [9863/10000]
+            {progressLabelText[language]} [9863/10000]
           </p>
           <div className={styles.influenceMyClanHeader__progressBar}>
             <div className={styles.influenceMyClanHeader__progressBarContainer}>
@@ -71,18 +95,28 @@ const InfluenceMyClanHeader = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className={styles.influenceMyClanHeader__dotsLine}>
+      </TransitionProvider>
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.zoomOut}
+        className={styles.influenceMyClanHeader__dotsLine}
+      >
         <DotsLineFullscreen preserveAspectRatio />
-      </div>
+      </TransitionProvider>
       <div className={styles.influenceMyClanHeader__stats}>
         {stats.map((item, index) => (
-          <div key={index} className={styles.influenceMyClanHeader__statItem}>
+          <TransitionProvider
+            inProp={gameInited}
+            style={TransitionStyleTypes.bottom}
+            delay={index * 100}
+            key={index}
+            className={styles.influenceMyClanHeader__statItem}
+          >
             {item.icon}
             <span>
-              <strong>{item.name}</strong> {item.value}
+              <strong>{item.name[language]}</strong> {item.value}
             </span>
-          </div>
+          </TransitionProvider>
         ))}
       </div>
     </header>

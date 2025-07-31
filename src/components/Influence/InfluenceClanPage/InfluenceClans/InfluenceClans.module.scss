@@ -22,12 +22,10 @@
     @include flexCol();
     gap: 5px;
   }
-
-  &__selectBtn,
-  &__selectBtnInner {
+  &__select:not(&:first-child):not(&:last-child) &__selectBtn,
+  &__select:not(&:first-child):not(&:last-child) &__selectBtnInner {
     clip-path: unset;
   }
-
   &__select:first-child &__selectBtn,
   &__select:first-child &__selectBtnInner {
     clip-path: polygon(
@@ -37,7 +35,7 @@
       0% 89.4%,
       0% 10.6%,
       3.5% 0%
-    );
+    ) !important;
   }
   &__select:last-child &__selectBtn,
   &__select:last-child &__selectBtnInner {
@@ -48,7 +46,7 @@
       0% 0%,
       97.1% 0%,
       100% 10.6%
-    );
+    ) !important;
   }
 
   &__list {

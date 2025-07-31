@@ -12,6 +12,7 @@ export const influenceClans: IIncluenceClan[] = [
     language: ELanguages.ru,
     type: "public",
     description: "Элитный клан опытных бойцов в киберпанк мире",
+    founded: Date.now() - 5 * 60 * 1000,
   },
   {
     id: "2",
@@ -23,6 +24,7 @@ export const influenceClans: IIncluenceClan[] = [
     language: ELanguages.ru,
     type: "public",
     description: "Дружелюбное сообщество для игроков всех уровней",
+    founded: Date.now() - 5 * 24 * 60 * 60 * 1000,
   },
   {
     id: "3",
@@ -34,6 +36,7 @@ export const influenceClans: IIncluenceClan[] = [
     language: ELanguages.en,
     type: "private",
     description: "Aggressive tactics, high rewards",
+    founded: Date.now() - 5 * 1000,
   },
   {
     id: "4",
@@ -45,6 +48,7 @@ export const influenceClans: IIncluenceClan[] = [
     language: ELanguages.en,
     type: "private",
     description: "Elite international organization",
+    founded: Date.now() - 5 * 60 * 60 * 1000,
   },
   {
     id: "5",
@@ -57,6 +61,7 @@ export const influenceClans: IIncluenceClan[] = [
     type: "public",
     description:
       "Молодой клан с большими амбициями. Ищем активных игроков для роста и развития.",
+    founded: Date.now() - 5 * 60 * 1000,
   },
   {
     id: "6",
@@ -68,5 +73,6 @@ export const influenceClans: IIncluenceClan[] = [
     language: ELanguages.ru,
     type: "public",
     description: "Ужасающий орден жрецов-воинов Братства",
+    founded: Date.now() - 5 * 60 * 1000,
   },
 ];

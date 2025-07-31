@@ -6,9 +6,9 @@ export const Dotsline = () => (
       <path
         d="M335 5H0"
         stroke="url(#paint0_linear_1756_15817)"
-        stroke-width="9"
-        stroke-miterlimit="10"
-        stroke-dasharray="1 4"
+        strokeWidth="9"
+        strokeMiterlimit="10"
+        strokeDasharray="1 4"
       />
     </g>
     <defs>
@@ -24,7 +24,7 @@ export const Dotsline = () => (
         <stop offset="0.273861" stopColor="#545AE9" />
         <stop offset="0.447081" stopColor="#C161C9" />
         <stop offset="0.541673" stopColor="#4959EC" />
-        <stop offset="1" stopColor="#4959EC" stop-opacity="0" />
+        <stop offset="1" stopColor="#4959EC" stopOpacity="0" />
       </linearGradient>
     </defs>
   </svg>

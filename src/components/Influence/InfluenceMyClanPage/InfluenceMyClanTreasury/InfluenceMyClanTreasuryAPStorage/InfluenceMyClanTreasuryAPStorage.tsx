@@ -10,15 +10,28 @@ import { DotsLineFullscreen } from "../../../../layout/icons/Common/DotsLineFull
 
 import styles from "./InfluenceMyClanTreasuryAPStorage.module.scss";
 import InfluenceMyClanTreasuryHistory from "../InfluenceMyClanTreasuryHistory/InfluenceMyClanTreasuryHistory";
+import { TRANSLATIONS } from "../../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../../hooks/redux";
+
+const {
+  clanStorageLabel,
+  yourAPLabel,
+  withdrawAPLabel,
+  withdrawButtonText,
+  maxPerSessionText,
+  restorePerHourLabel,
+} = TRANSLATIONS.influence.myClan.tressury.apStorage;
 
 const InfluenceMyClanTreasuryAPStorage = () => {
+  const language = useAppSelector((state) => state.ui.language);
+
   const [histotyOpened, setHistotyOpened] = useState(false);
   return (
     <>
       <div className={styles.influenceMyClanTreasuryAPStorage}>
         <div className={styles.influenceMyClanTreasuryAPStorage__col}>
           <span>
-            <strong>Хранилище клана:</strong> 850/1000
+            <strong>{clanStorageLabel[language]}:</strong> 850/1000
           </span>
           <ImageWebp
             src={influenceEnergyImage}
@@ -29,7 +42,7 @@ const InfluenceMyClanTreasuryAPStorage = () => {
         </div>
         <div className={styles.influenceMyClanTreasuryAPStorage__col}>
           <span>
-            <strong>Ваши ОД:</strong> 15/25
+            <strong>{yourAPLabel[language]}:</strong> 15/25
           </span>
           <ImageWebp
             src={influenceEnergyImage}
@@ -39,7 +52,7 @@ const InfluenceMyClanTreasuryAPStorage = () => {
           />
         </div>
         <div className={styles.influenceMyClanTreasuryAPStorage__col}>
-          Забрать ОД из склада
+          {withdrawAPLabel[language]}
         </div>
         <div
           className={styles.influenceMyClanTreasuryAPStorage__getFormWrapper}
@@ -66,7 +79,7 @@ const InfluenceMyClanTreasuryAPStorage = () => {
                     }
                   >
                     <BuyWalletIcon />
-                    <span>Забрать</span>
+                    <span>{withdrawButtonText[language]}</span>
                   </div>
                 </button>
               </div>
@@ -89,7 +102,7 @@ const InfluenceMyClanTreasuryAPStorage = () => {
               styles.influenceMyClanTreasuryAPStorage__maxPerSessionText
             }
           >
-            За каждую сессию можно забрать максимум 25 ОД
+            {maxPerSessionText[language]}
           </p>
         </div>
         <div className={styles.influenceMyClanTreasuryAPStorage__footer}>
@@ -98,7 +111,7 @@ const InfluenceMyClanTreasuryAPStorage = () => {
           </div>
           <div className={styles.influenceMyClanTreasuryAPStorage__col}>
             <span>
-              <strong>Восстановление/час: </strong> +20
+              <strong>{restorePerHourLabel[language]}: </strong> +20
             </span>
             <ImageWebp
               src={influenceEnergyImage}

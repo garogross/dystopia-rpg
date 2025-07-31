@@ -23,33 +23,67 @@ import TransitionProvider, {
 import { useAppSelector } from "../../../../hooks/redux";
 import { CreateClanIcon } from "../../../layout/icons/Influence/InfluenceClans";
 import { HeaderWings } from "../../../layout/icons/RPGGame/Common";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 
-const Label = ({ children }: { children: ReactNode }) => (
-  <p className={styles.influenceCreateClan__label}>
-    <span>{children}</span>
-    <DotslineLong preserveAspectRatio />
-  </p>
-);
+const {
+  titleText,
+  subtitleText,
+  namePlaceholder,
+  selectEmblemLabel,
+  showMoreText,
+  collapseText,
+  descriptionPlaceholder,
+  selectLanguageLabel,
+  languageSelectName,
+  languageSelectHint,
+  selectTypeLabel,
+  typePublic,
+  typePrivate,
+  typePublicDescription,
+  typePrivateDescription,
+  creationFeeText,
+  cancelButtonText,
+  createButtonText,
+} = TRANSLATIONS.influence.createClan;
+
+const Label = ({ children }: { children: ReactNode }) => {
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+
+  return (
+    <TransitionProvider
+      inProp={gameInited}
+      style={TransitionStyleTypes.zoomIn}
+      className={styles.influenceCreateClan__label}
+    >
+      <span>{children}</span>
+      <DotslineLong preserveAspectRatio />
+    </TransitionProvider>
+  );
+};
 
 const InfluenceCreateClan = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
   const [emblemsListOpened, setEmblemsListOpened] = useState(false);
+
   return (
     <section className={`container ${styles.influenceCreateClan}`}>
       <TitleH3 wingsReverse={false} hideDotline>
-        клан
+        {titleText[language]}
       </TitleH3>
       <form className={styles.influenceCreateClan__form}>
         <div className={styles.influenceCreateClan__main}>
           <h3 className={styles.influenceCreateClan__titleText}>
-            Создание Клана
+            {subtitleText[language]}
           </h3>
           <MainInput
-            placeholder="Название клана"
+            placeholder={namePlaceholder[language]}
             className={styles.influenceCreateClan__nameInput}
           />
-          <Label>Выберите эмблему</Label>
-          <div
+          <Label>{selectEmblemLabel[language]}</Label>
+          <TransitionProvider
+            inProp={gameInited}
+            style={TransitionStyleTypes.bottom}
             className={`${styles.influenceCreateClan__emblems} ${
               emblemsListOpened
                 ? styles.influenceCreateClan__emblems_opened
@@ -71,7 +105,7 @@ const InfluenceCreateClan = () => {
                 {value?.premium && <PremiumEmblemicon />}
               </button>
             ))}
-          </div>
+          </TransitionProvider>
           <button
             type="button"
             className={styles.influenceCreateClan__togleEmblemsListBtn}
@@ -82,7 +116,9 @@ const InfluenceCreateClan = () => {
             >
               <DotslineLong preserveAspectRatio />
             </div>
-            <span>Показать еще</span>
+            <span>
+              {(emblemsListOpened ? collapseText : showMoreText)[language]}
+            </span>
             <ArrowIcon rotate={emblemsListOpened} />
             <div
               className={styles.influenceCreateClan__toggleEmblemsBtnDotsLine}
@@ -92,13 +128,17 @@ const InfluenceCreateClan = () => {
           </button>
           <MainInput
             asTextarea
-            placeholder="Описание клана"
+            placeholder={descriptionPlaceholder[language]}
             className={styles.influenceCreateClan__textArea}
           />
-          <Label>Выберите основной язык клана</Label>
-          <div className={styles.influenceCreateClan__languageSelect}>
+          <Label>{selectLanguageLabel[language]}</Label>
+          <TransitionProvider
+            inProp={gameInited}
+            style={TransitionStyleTypes.bottom}
+            className={styles.influenceCreateClan__languageSelect}
+          >
             <Select
-              name={{ en: "Язык", ru: "Язык" }}
+              name={languageSelectName}
               keyName={"language"}
               options={[
                 {
@@ -107,18 +147,22 @@ const InfluenceCreateClan = () => {
                 },
                 {
                   value: ELanguages.ru,
-                  label: "Английский",
+                  label: "English",
                 },
               ]}
               value={"Русский"}
               onChange={() => {}}
             />
             <p className={styles.influenceCreateClan__languageSelectText}>
-              Игроки смогут фильтровать кланы по языку при поиске
+              {languageSelectHint[language]}
             </p>
-          </div>
-          <Label>Тип клана</Label>
-          <div className={styles.influenceCreateClan__typeSlect}>
+          </TransitionProvider>
+          <Label>{selectTypeLabel[language]}</Label>
+          <TransitionProvider
+            inProp={gameInited}
+            style={TransitionStyleTypes.bottom}
+            className={styles.influenceCreateClan__typeSlect}
+          >
             <div className={styles.influenceCreateClan__typeSlectCol}>
               <RadioList
                 arr={[
@@ -126,7 +170,7 @@ const InfluenceCreateClan = () => {
                     value: "public",
                     label: (
                       <>
-                        <span>Публичный</span>
+                        <span>{typePublic[language]}</span>
                         <PublicIcon />
                       </>
                     ),
@@ -139,7 +183,7 @@ const InfluenceCreateClan = () => {
               <p
                 className={styles.influenceCreateClan__typeSlectDescriptiontext}
               >
-                Любой игрок может присоединиться без заявки
+                {typePublicDescription[language]}
               </p>
             </div>
             <div className={styles.influenceCreateClan__typeSlectCol}>
@@ -149,7 +193,7 @@ const InfluenceCreateClan = () => {
                     value: "public",
                     label: (
                       <>
-                        <span>Закрытый</span>
+                        <span>{typePrivate[language]}</span>
                         <PrivateIcon />
                       </>
                     ),
@@ -162,13 +206,17 @@ const InfluenceCreateClan = () => {
               <p
                 className={styles.influenceCreateClan__typeSlectDescriptiontext}
               >
-                Игроки должны подавать заявки для вступления
+                {typePrivateDescription[language]}
               </p>
             </div>
-          </div>
-          <p className={styles.influenceCreateClan__priceText}>
-            ! Для создания клана необходимо заплатить взнос в размере: 1000
-          </p>
+          </TransitionProvider>
+          <TransitionProvider
+            inProp={gameInited}
+            style={TransitionStyleTypes.zoomIn}
+            className={styles.influenceCreateClan__priceText}
+          >
+            {creationFeeText[language]}
+          </TransitionProvider>
         </div>
         <TransitionProvider
           inProp={gameInited}
@@ -178,13 +226,13 @@ const InfluenceCreateClan = () => {
           <button className={styles.influenceCreateClan__footerBtn}>
             <div className={styles.influenceCreateClan__footerBtnInner}>
               <CancelIcon />
-              <span>Отмена</span>
+              <span>{cancelButtonText[language]}</span>
             </div>
           </button>
           <button className={styles.influenceCreateClan__footerBtn}>
             <div className={styles.influenceCreateClan__footerBtnInner}>
               <CreateClanIcon />
-              <span>Создать клан</span>
+              <span>{createButtonText[language]}</span>
             </div>
           </button>
           <div className={styles.influenceCreateClan__wings}>

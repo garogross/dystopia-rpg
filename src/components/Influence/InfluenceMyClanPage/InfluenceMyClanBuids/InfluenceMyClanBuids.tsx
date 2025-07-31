@@ -15,38 +15,55 @@ import { cpImage, cpImageWebp } from "../../../../assets/imageMaps";
 import styles from "./InfluenceMyClanBuids.module.scss";
 import { HeaderWings } from "../../../layout/icons/RPGGame/Common";
 import { formatNumber } from "../../../../utils/formatNumber";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../hooks/redux";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../../providers/TransitionProvider";
+
+const {
+  nameTexts,
+  infoTexts,
+  levelText,
+  buildButtonText,
+  upgradeButtonText,
+  pricePrefixText,
+  requiredLevelText,
+} = TRANSLATIONS.influence.myClan.builds;
 
 const builds = [
   {
-    name: "ШТАБ КЛАНА",
+    name: nameTexts.headquarters,
     level: 0,
     maxLevel: 5,
     icon: <ClanHeadQuatersIcon />,
-    info: ["+ Макс. игроков в клане", "+ Макс. уровень других зданий"],
+    info: infoTexts.headquarters,
     requiredLevel: 3,
     price: 120,
   },
   {
-    name: "ХРАНИЛИЩЕ",
+    name: nameTexts.storage,
     level: 1,
     maxLevel: 5,
     icon: <StorageIcon />,
-    info: ["+ Макс. запас ОД за игру для восстановления"],
+    info: infoTexts.storageText,
     requiredLevel: 2,
     price: 145,
   },
   {
-    name: "ЦЕТР СНАБЖЕНИЯ",
+    name: nameTexts.supplyCenter,
     level: 1,
     maxLevel: 5,
     icon: <SupplyCenterIcon />,
-    info: ["Добавляет ОД в хранилище"],
+    info: infoTexts.supplyCenterText,
     requiredLevel: 3,
     price: 100,
   },
 ];
 
 const InfluenceMyClanBuids = () => {
+  const language = useAppSelector((state) => state.ui.language);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
     <div className={styles.influenceMyClanBuids}>
       <div className={styles.influenceMyClanBuids__list}>
@@ -55,7 +72,13 @@ const InfluenceMyClanBuids = () => {
             { name, level, maxLevel, icon, info, requiredLevel, price },
             index
           ) => (
-            <div key={index} className={styles.influenceMyClanBuids__item}>
+            <TransitionProvider
+              inProp={gameInited}
+              style={TransitionStyleTypes.bottom}
+              delay={index * 100}
+              key={index}
+              className={styles.influenceMyClanBuids__item}
+            >
               <div className={styles.influenceMyClanBuids__iconWrapper}>
                 {icon}
               </div>
@@ -64,13 +87,13 @@ const InfluenceMyClanBuids = () => {
                   <div className={styles.influenceMyClanBuids__texts}>
                     <div className={styles.influenceMyClanBuids__header}>
                       <h3 className={styles.influenceMyClanBuids__nameText}>
-                        {name}
+                        {name[language]}
                       </h3>
                       <span className={styles.influenceMyClanBuids__levelText}>
-                        Ур. {level}/{maxLevel}
+                        {levelText[language]} {level}/{maxLevel}
                       </span>
                     </div>
-                    {info.map((text, index) => (
+                    {info[language].map((text, index) => (
                       <p
                         className={styles.influenceMyClanBuids__infoText}
                         key={index}
@@ -82,10 +105,18 @@ const InfluenceMyClanBuids = () => {
                   <div className={styles.influenceMyClanBuids__action}>
                     <MainBtn className={styles.influenceMyClanBuids__actionBtn}>
                       {level ? <UpdateBuildingIcon /> : <BuildIcon />}
-                      <span>{level ? "Строить" : "Улучшить"}</span>
+                      <span>
+                        {
+                          (level ? buildButtonText : upgradeButtonText)[
+                            language
+                          ]
+                        }
+                      </span>
                     </MainBtn>
                     <div className={styles.influenceMyClanBuids__actionPrice}>
-                      <span>за {formatNumber(price)}</span>
+                      <span>
+                        {pricePrefixText[language]} {formatNumber(price)}
+                      </span>
                       <ImageWebp
                         src={cpImage}
                         srcSet={cpImageWebp}
@@ -96,17 +127,20 @@ const InfluenceMyClanBuids = () => {
                   </div>
                 </div>
                 <p className={styles.influenceMyClanBuids__requiredLevelText}>
-                  Для постройки требуется {requiredLevel}-
-                  {requiredLevel === 2 ? "ой" : "ий"} ур. клана
+                  {requiredLevelText[language](requiredLevel)}
                 </p>
               </div>
-            </div>
+            </TransitionProvider>
           )
         )}
       </div>
-      <div className={styles.influenceMyClanBuids__wings}>
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.zoomOut}
+        className={styles.influenceMyClanBuids__wings}
+      >
         <HeaderWings reversed />
-      </div>
+      </TransitionProvider>
     </div>
   );
 };

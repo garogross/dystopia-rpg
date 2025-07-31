@@ -15,6 +15,12 @@ import {
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../../providers/TransitionProvider";
+import { TRANSLATIONS } from "../../../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../../../hooks/redux";
+import { getElapsedTime } from "../../../../../utils/getElapsedTime";
+
+const { titleText, headersText, actionsText } =
+  TRANSLATIONS.influence.myClan.tressury.apStorage.history;
 
 interface Props {
   show: boolean;
@@ -26,125 +32,126 @@ const historyData = [
     username: "Игрок1",
     actionType: "fillUp",
     count: 15,
-    date: "1 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок2",
     actionType: "fillDown",
     count: 5,
-    date: "2 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок3",
     actionType: "fillUp",
     count: 20,
-    date: "3 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок4",
     actionType: "fillDown",
     count: 8,
-    date: "4 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок5",
     actionType: "fillUp",
     count: 12,
-    date: "5 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок6",
     actionType: "fillDown",
     count: 7,
-    date: "6 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок7",
     actionType: "fillUp",
     count: 18,
-    date: "7 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок8",
     actionType: "fillDown",
     count: 6,
-    date: "8 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок9",
     actionType: "fillUp",
     count: 14,
-    date: "9 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок10",
     actionType: "fillDown",
     count: 9,
-    date: "10 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок11",
     actionType: "fillUp",
     count: 11,
-    date: "11 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок12",
     actionType: "fillDown",
     count: 4,
-    date: "12 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок13",
     actionType: "fillUp",
     count: 17,
-    date: "13 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок14",
     actionType: "fillDown",
     count: 10,
-    date: "14 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок15",
     actionType: "fillUp",
     count: 13,
-    date: "15 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок16",
     actionType: "fillDown",
     count: 3,
-    date: "16 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок17",
     actionType: "fillUp",
     count: 16,
-    date: "17 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок18",
     actionType: "fillDown",
     count: 12,
-    date: "18 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок19",
     actionType: "fillUp",
     count: 19,
-    date: "19 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
   {
     username: "Игрок20",
     actionType: "fillDown",
     count: 2,
-    date: "20 мин. назад",
+    date: Date.now() - Math.floor(Math.random() * 20 * 60 * 1000),
   },
 ];
 
 const InfluenceMyClanTreasuryHistory: React.FC<Props> = ({ onClose, show }) => {
+  const language = useAppSelector((state) => state.ui.language);
   return (
     <TransitionProvider
       inProp={show}
@@ -154,14 +161,15 @@ const InfluenceMyClanTreasuryHistory: React.FC<Props> = ({ onClose, show }) => {
       <div className={styles.influenceMyClanTreasuryHistory__inner}>
         <div className={styles.influenceMyClanTreasuryHistory__header}>
           <h3 className={styles.influenceMyClanTreasuryHistory__titleText}>
-            Журнал вложений/получений ОД
+            {titleText[language]}
           </h3>
           <HeaderBtn type={"close"} onClick={onClose} />
         </div>
         <Table
           withoutBorder
-          headers={["Участник", "Действие", "Количество", "Дата"]}
+          headers={Object.values(headersText)}
           data={historyData}
+          columnsTemplate="1.5fr 1fr 1fr 1fr"
           cols={[
             {
               key: "username",
@@ -173,12 +181,12 @@ const InfluenceMyClanTreasuryHistory: React.FC<Props> = ({ onClose, show }) => {
                   {item.actionType === "fillDown" ? (
                     <>
                       <HistoryFillDownIcon />
-                      <span>Забрал</span>
+                      <span>{actionsText.withdraw[language]}</span>
                     </>
                   ) : (
                     <>
                       <HistoryFillUpIcon />
-                      <span>Попoлнил</span>
+                      <span>{actionsText.deposit[language]}</span>
                     </>
                   )}
                 </>
@@ -200,6 +208,7 @@ const InfluenceMyClanTreasuryHistory: React.FC<Props> = ({ onClose, show }) => {
             },
             {
               key: "date",
+              render: (item) => getElapsedTime(item.date, language),
             },
           ]}
         />

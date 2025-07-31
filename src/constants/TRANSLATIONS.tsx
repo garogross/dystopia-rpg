@@ -76,6 +76,22 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Search...",
       [ELanguages.ru]: "Поиск...",
     },
+    minAgoText: {
+      [ELanguages.en]: "min. ago",
+      [ELanguages.ru]: "мин. назад",
+    },
+    hourAgoText: {
+      [ELanguages.en]: "hr. ago",
+      [ELanguages.ru]: "ч. назад",
+    },
+    secondAgoText: {
+      [ELanguages.en]: "sec. ago",
+      [ELanguages.ru]: "сек. назад",
+    },
+    dayAgoText: {
+      [ELanguages.en]: "d. ago",
+      [ELanguages.ru]: "дн. назад",
+    },
   },
   tutorialPopup: {
     closeText: {
@@ -669,7 +685,7 @@ export const TRANSLATIONS = {
       },
       confirmButtonText: {
         [ELanguages.en]: "Confirm",
-        [ELanguages.ru]: "Потвердить",
+        [ELanguages.ru]: "подтвердить",
       },
       productionText: {
         [ELanguages.en]: "Production",
@@ -1255,6 +1271,90 @@ export const TRANSLATIONS = {
     progressText: {
       [ELanguages.en]: "Progress",
       [ELanguages.ru]: "Прогресс",
+    },
+  },
+  mail: {
+    inboxTitleText: {
+      [ELanguages.en]: "Mail",
+      [ELanguages.ru]: "Почта",
+    },
+    totalText: {
+      [ELanguages.en]: "Total",
+      [ELanguages.ru]: "Всего",
+    },
+    unreadText: {
+      [ELanguages.en]: "Unread",
+      [ELanguages.ru]: "Непрочитанных",
+    },
+    fromText: {
+      [ELanguages.en]: "From",
+      [ELanguages.ru]: "От",
+    },
+    themeText: {
+      [ELanguages.en]: "Subject",
+      [ELanguages.ru]: "Тема",
+    },
+    receivedText: {
+      [ELanguages.en]: "Received",
+      [ELanguages.ru]: "Получено",
+    },
+    closeText: {
+      [ELanguages.en]: "Close",
+      [ELanguages.ru]: "Закрыть",
+    },
+    takeAllText: {
+      [ELanguages.en]: "Take all",
+      [ELanguages.ru]: "Забрать всё",
+    },
+  },
+  rating: {
+    titleText: {
+      [ELanguages.en]: "Ratings",
+      [ELanguages.ru]: "Рейтинги",
+    },
+    playerTabText: {
+      [ELanguages.en]: "Players",
+      [ELanguages.ru]: "Игроки",
+    },
+    clanTabText: {
+      [ELanguages.en]: "Clans",
+      [ELanguages.ru]: "Кланы",
+    },
+    sortTexts: {
+      level: {
+        [ELanguages.en]: "Total level",
+        [ELanguages.ru]: "Общий уровень",
+      },
+      params: {
+        [ELanguages.en]: "By parameters",
+        [ELanguages.ru]: "По параметрам",
+      },
+      winrate: {
+        [ELanguages.en]: "By winrate",
+        [ELanguages.ru]: "По винрейту",
+      },
+      activity: {
+        [ELanguages.en]: "By activity",
+        [ELanguages.ru]: "По активности",
+      },
+    },
+    searchPlaceholder: {
+      [ELanguages.en]: "Search by player/clan name",
+      [ELanguages.ru]: "Поиск по имени игрока / клана",
+    },
+    tableHeaderTexts: {
+      number: {
+        [ELanguages.en]: "No.",
+        [ELanguages.ru]: "No.",
+      },
+      nickname: {
+        [ELanguages.en]: "Nickname",
+        [ELanguages.ru]: "Никнейм",
+      },
+      ratingValue: {
+        [ELanguages.en]: "Rating value",
+        [ELanguages.ru]: "Значение рейтинга",
+      },
     },
   },
   miniGames: {
@@ -2186,6 +2286,350 @@ export const TRANSLATIONS = {
       createClanButtonText: {
         [ELanguages.en]: "Create clan",
         [ELanguages.ru]: "Создать клан",
+      },
+    },
+    createClan: {
+      titleText: {
+        [ELanguages.en]: "Clan",
+        [ELanguages.ru]: "Клан",
+      },
+      subtitleText: {
+        [ELanguages.en]: "Create Clan",
+        [ELanguages.ru]: "Создание Клана",
+      },
+      namePlaceholder: {
+        [ELanguages.en]: "Clan name",
+        [ELanguages.ru]: "Название клана",
+      },
+      selectEmblemLabel: {
+        [ELanguages.en]: "Select emblem",
+        [ELanguages.ru]: "Выберите эмблему",
+      },
+      showMoreText: {
+        [ELanguages.en]: "Show more",
+        [ELanguages.ru]: "Показать еще",
+      },
+      collapseText: {
+        [ELanguages.en]: "Collapse",
+        [ELanguages.ru]: "Свернуть",
+      },
+      descriptionPlaceholder: {
+        [ELanguages.en]: "Clan description",
+        [ELanguages.ru]: "Описание клана",
+      },
+      selectLanguageLabel: {
+        [ELanguages.en]: "Select main clan language",
+        [ELanguages.ru]: "Выберите основной язык клана",
+      },
+      languageSelectName: {
+        [ELanguages.en]: "Language",
+        [ELanguages.ru]: "Язык",
+      },
+      languageSelectHint: {
+        [ELanguages.en]: "Players can filter clans by language when searching",
+        [ELanguages.ru]: "Игроки смогут фильтровать кланы по языку при поиске",
+      },
+      selectTypeLabel: {
+        [ELanguages.en]: "Clan type",
+        [ELanguages.ru]: "Тип клана",
+      },
+      typePublic: {
+        [ELanguages.en]: "Public",
+        [ELanguages.ru]: "Публичный",
+      },
+      typePrivate: {
+        [ELanguages.en]: "Private",
+        [ELanguages.ru]: "Закрытый",
+      },
+      typePublicDescription: {
+        [ELanguages.en]: "Any player can join without an application",
+        [ELanguages.ru]: "Любой игрок может присоединиться без заявки",
+      },
+      typePrivateDescription: {
+        [ELanguages.en]: "Players must apply to join",
+        [ELanguages.ru]: "Игроки должны подавать заявки для вступления",
+      },
+      creationFeeText: {
+        [ELanguages.en]: "! To create a clan you need to pay a fee: 1000",
+        [ELanguages.ru]:
+          "! Для создания клана необходимо заплатить взнос в размере: 1000",
+      },
+      cancelButtonText: {
+        [ELanguages.en]: "Cancel",
+        [ELanguages.ru]: "Отмена",
+      },
+      createButtonText: {
+        [ELanguages.en]: "Create clan",
+        [ELanguages.ru]: "Создать клан",
+      },
+    },
+    myClan: {
+      titleText: {
+        [ELanguages.en]: "Clan",
+        [ELanguages.ru]: "Клан",
+      },
+
+      header: {
+        levelLabelText: {
+          [ELanguages.en]: "Level",
+          [ELanguages.ru]: "Уровень",
+        },
+
+        progressLabelText: {
+          [ELanguages.en]: "Promotion progress",
+          [ELanguages.ru]: "Прогресс повышения",
+        },
+        membersText: {
+          [ELanguages.en]: "Members",
+          [ELanguages.ru]: "Участники",
+        },
+        foundedText: {
+          [ELanguages.en]: "Founded",
+          [ELanguages.ru]: "Основан",
+        },
+        leaderText: {
+          [ELanguages.en]: "Leader",
+          [ELanguages.ru]: "Глава",
+        },
+        clanIdText: {
+          [ELanguages.en]: "Clan ID",
+          [ELanguages.ru]: "ID клана",
+        },
+      },
+
+      tabs: {
+        membersText: {
+          [ELanguages.en]: "Members",
+          [ELanguages.ru]: "СОСТАВ",
+        },
+        treasuryText: {
+          [ELanguages.en]: "Treasury",
+          [ELanguages.ru]: "КАЗНА",
+        },
+        buildsText: {
+          [ELanguages.en]: "Builds",
+          [ELanguages.ru]: "СТРОЕНИЯ",
+        },
+      },
+      members: {
+        tableHeadersText: {
+          member: {
+            [ELanguages.en]: "Member",
+            [ELanguages.ru]: "Участник",
+          },
+          rank: {
+            [ELanguages.en]: "Rank",
+            [ELanguages.ru]: "Звание",
+          },
+          status: {
+            [ELanguages.en]: "Status",
+            [ELanguages.ru]: "Статус",
+          },
+          apSpent: {
+            [ELanguages.en]: "AP Spent",
+            [ELanguages.ru]: "Потрачено ОД",
+          },
+        },
+        ranksText: {
+          leader: {
+            [ELanguages.en]: "Leader",
+            [ELanguages.ru]: "Глава",
+          },
+          advisor: {
+            [ELanguages.en]: "Advisor",
+            [ELanguages.ru]: "Советник",
+          },
+          officer: {
+            [ELanguages.en]: "Officer",
+            [ELanguages.ru]: "Офицер",
+          },
+          member: {
+            [ELanguages.en]: "Fighter",
+            [ELanguages.ru]: "Боец",
+          },
+        },
+        statusText: {
+          online: {
+            [ELanguages.en]: "online",
+            [ELanguages.ru]: "в сети",
+          },
+          offline: {
+            [ELanguages.en]: "offline",
+            [ELanguages.ru]: "офлайн",
+          },
+        },
+        leavePostText: {
+          [ELanguages.en]: "Leave post",
+          [ELanguages.ru]: "Покинуть пост",
+        },
+        leaveClanText: {
+          [ELanguages.en]: "Leave clan",
+          [ELanguages.ru]: "Покинуть клан",
+        },
+      },
+      tressury: {
+        curBalanceText: {
+          [ELanguages.en]: "Current balance",
+          [ELanguages.ru]: "Текущий баланс",
+        },
+        fillTreasuryButtonText: {
+          [ELanguages.en]: "Fill up treasury",
+          [ELanguages.ru]: "Пополнить казну",
+        },
+        statisticsAccordionTitle: {
+          [ELanguages.en]: "Investment statistics",
+          [ELanguages.ru]: "Статистика вложений",
+        },
+        resetStatisticsButtonText: {
+          [ELanguages.en]: "Reset statistics",
+          [ELanguages.ru]: "Сбросить статистику",
+        },
+        apStorageAccordionTitle: {
+          [ELanguages.en]: "AP Storage",
+          [ELanguages.ru]: "Хранилище ОД",
+        },
+        fillStorageButtonText: {
+          [ELanguages.en]: "Fill up storage",
+          [ELanguages.ru]: "Пополнить хранилище",
+        },
+
+        statistics: {
+          memberHeader: {
+            [ELanguages.en]: "Member",
+            [ELanguages.ru]: "Участник",
+          },
+          investedCpHeader: {
+            [ELanguages.en]: "Invested [CP]",
+            [ELanguages.ru]: "Вложено[CP]",
+          },
+          investmentDateHeader: {
+            [ELanguages.en]: "Investment date",
+            [ELanguages.ru]: "Дата пополнений",
+          },
+        },
+        apStorage: {
+          clanStorageLabel: {
+            [ELanguages.en]: "Clan storage:",
+            [ELanguages.ru]: "Хранилище клана:",
+          },
+          yourAPLabel: {
+            [ELanguages.en]: "Your AP:",
+            [ELanguages.ru]: "Ваши ОД:",
+          },
+          withdrawAPLabel: {
+            [ELanguages.en]: "Withdraw AP from storage",
+            [ELanguages.ru]: "Забрать ОД из склада",
+          },
+          withdrawButtonText: {
+            [ELanguages.en]: "Withdraw",
+            [ELanguages.ru]: "Забрать",
+          },
+          maxPerSessionText: {
+            [ELanguages.en]: "You can withdraw a maximum of 25 AP per session",
+            [ELanguages.ru]: "За каждую сессию можно забрать максимум 25 ОД",
+          },
+          restorePerHourLabel: {
+            [ELanguages.en]: "Restoration/hour:",
+            [ELanguages.ru]: "Восстановление/час:",
+          },
+
+          history: {
+            titleText: {
+              [ELanguages.en]: "AP Withdrawal/Deposit Log",
+              [ELanguages.ru]: "Журнал вложений/получений ОД",
+            },
+            headersText: {
+              member: {
+                [ELanguages.en]: "Member",
+                [ELanguages.ru]: "Участник",
+              },
+              action: {
+                [ELanguages.en]: "Action",
+                [ELanguages.ru]: "Действие",
+              },
+              amount: {
+                [ELanguages.en]: "Amount",
+                [ELanguages.ru]: "Количество",
+              },
+              date: {
+                [ELanguages.en]: "Date",
+                [ELanguages.ru]: "Дата",
+              },
+            },
+            actionsText: {
+              withdraw: {
+                [ELanguages.en]: "Withdrawn",
+                [ELanguages.ru]: "Забрал",
+              },
+              deposit: {
+                [ELanguages.en]: "Deposited",
+                [ELanguages.ru]: "Попoлнил",
+              },
+            },
+          },
+        },
+      },
+      builds: {
+        nameTexts: {
+          headquarters: {
+            [ELanguages.en]: "CLAN HEADQUARTERS",
+            [ELanguages.ru]: "ШТАБ КЛАНА",
+          },
+          storage: {
+            [ELanguages.en]: "STORAGE",
+            [ELanguages.ru]: "ХРАНИЛИЩЕ",
+          },
+          supplyCenter: {
+            [ELanguages.en]: "SUPPLY CENTER",
+            [ELanguages.ru]: "ЦЕТР СНАБЖЕНИЯ",
+          },
+        },
+        infoTexts: {
+          headquarters: {
+            [ELanguages.en]: [
+              "+ Max. clan members",
+              "+ Max. level of other buildings",
+            ],
+            [ELanguages.ru]: [
+              "+ Макс. игроков в клане",
+              "+ Макс. уровень других зданий",
+            ],
+          },
+          storageText: {
+            [ELanguages.en]: ["+ Max. AP reserve per game for restoration"],
+            [ELanguages.ru]: ["+ Макс. запас ОД за игру для восстановления"],
+          },
+          supplyCenterText: {
+            [ELanguages.en]: ["Adds AP to storage"],
+            [ELanguages.ru]: ["Добавляет ОД в хранилище"],
+          },
+        },
+        levelText: {
+          [ELanguages.en]: "Lvl.",
+          [ELanguages.ru]: "Ур.",
+        },
+        buildButtonText: {
+          [ELanguages.en]: "Build",
+          [ELanguages.ru]: "Строить",
+        },
+        upgradeButtonText: {
+          [ELanguages.en]: "Upgrade",
+          [ELanguages.ru]: "Улучшить",
+        },
+        pricePrefixText: {
+          [ELanguages.en]: "for",
+          [ELanguages.ru]: "за",
+        },
+        requiredLevelText: {
+          [ELanguages.en]: (requiredLevel: number) =>
+            `Requires clan level ${requiredLevel}${
+              requiredLevel === 2 ? "nd" : "th"
+            } to build`,
+          [ELanguages.ru]: (requiredLevel: number) =>
+            `Для постройки требуется ${requiredLevel}-${
+              requiredLevel === 2 ? "ой" : "ий"
+            } ур. клана`,
+        },
       },
     },
   },

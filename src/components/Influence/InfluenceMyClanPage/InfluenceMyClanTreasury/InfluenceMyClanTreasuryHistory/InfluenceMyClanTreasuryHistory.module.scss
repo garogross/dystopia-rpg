@@ -5,9 +5,10 @@
   padding: 1px;
   background: $color-primary-to-dark-gradient;
   position: absolute;
-  left: 0;
+  left: 50%;
   top: 10px;
-  width: 100%;
+  transform: translateX(-50%);
+  width: calc(100% - 20px);
   height: calc(100% - 30px);
   overflow: hidden;
   z-index: 9;

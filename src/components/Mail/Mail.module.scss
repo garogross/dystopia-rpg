@@ -1,0 +1,122 @@
+@import "../../styles/mixins";
+@import "../../styles/vars";
+
+.mail {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-block: 10px;
+
+  &__info {
+    @include flexCol();
+    width: 100%;
+  }
+  &__infoText {
+    flex: 1;
+    text-align: center;
+    @include setFont(12px, 400);
+    @include flexCol();
+    flex-direction: column;
+    gap: 10px;
+
+    & svg {
+      max-width: 90px;
+    }
+  }
+  &__list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+  }
+  &__listItem {
+    width: 100%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    @include button(
+      linear-gradient(90deg, #2e147f 0%, #090419 25.96%),
+      1px solid $color-primary
+    );
+  }
+  &__itemMain {
+    padding-bottom: 10px;
+    display: flex;
+    gap: 16px;
+  }
+  &__itemMainTexts {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    flex: 1;
+  }
+  &__itemHeader {
+    @include flexCol(space-between);
+    width: 100%;
+  }
+  &__itemCol {
+    @include setFont(14px, 400);
+    text-align: left;
+    flex: 1;
+  }
+  &__itemActions {
+    @include flexCol();
+    gap: 8px;
+  }
+  &__actionBtn {
+    @include button();
+  }
+
+  &__listItemDescription {
+    @include flexCol();
+    flex-direction: column;
+    gap: 12px;
+  }
+  &__listItemDescriptionText {
+    @include setFont(14px, 400);
+    text-align: left;
+  }
+  &__btn {
+    @include button($color-primary);
+    padding: 1px;
+  }
+  &__btnInner {
+    @include flexCol();
+    gap: 6px;
+    padding: 5px 20px;
+    background: $color-primary-dark-radial-gradient;
+    @include setFont(12px, 400);
+  }
+
+  &__btn,
+  &__btnInner {
+    clip-path: polygon(
+      0% 20.8%,
+      /* (0,5) */ 4.7% 0%,
+      /* (6.05,0) */ 94.5% 0%,
+      /* (121.8,0) */ 100% 20.8%,
+      /* (129,5) */ 94.5% 100%,
+      /* (121.8,24) */ 4.7% 100%,
+      /* (6.05,24) */ 0% 20.8% /* (0,5) */
+    );
+  }
+  &__footer {
+    position: relative;
+    @include flexCol();
+    flex-direction: column;
+  }
+  &__wings {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+    & svg {
+      width: 100%;
+    }
+  }
+}

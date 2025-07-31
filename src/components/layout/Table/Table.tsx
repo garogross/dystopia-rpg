@@ -1,6 +1,11 @@
 import React, { ReactNode } from "react";
 
 import styles from "./Table.module.scss";
+import { TranslationItemType } from "../../../types/TranslationItemType";
+import { useAppSelector } from "../../../hooks/redux";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../providers/TransitionProvider";
 
 interface ITableCol<T extends Record<string, TableColValue>> {
   key: keyof T;
@@ -9,11 +14,12 @@ interface ITableCol<T extends Record<string, TableColValue>> {
 
 type TableColValue = string | number | boolean;
 interface Props<T extends Record<string, TableColValue>> {
-  headers: string[];
+  headers: (TranslationItemType | string)[];
   data: T[];
   cols: ITableCol<T>[];
   columnsTemplate?: string;
   withoutBorder?: boolean;
+  className?: string;
 }
 
 const Table = <T extends Record<string, TableColValue>>({
@@ -22,31 +28,45 @@ const Table = <T extends Record<string, TableColValue>>({
   cols,
   columnsTemplate,
   withoutBorder,
+  className,
 }: Props<T>) => {
+  const language = useAppSelector((state) => state.ui.language);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+
   return (
     <div
       className={`${styles.table} ${
         withoutBorder ? styles.table_withoutBorder : ""
-      }`}
+      } ${className || ""}`}
       style={
         columnsTemplate
           ? { ["--table-grid-template-columns" as string]: columnsTemplate }
           : undefined
       }
     >
-      <div className={`${styles.table__col} ${styles.table__col_header}`}>
+      <TransitionProvider
+        inProp={gameInited}
+        style={TransitionStyleTypes.zoomIn}
+        className={`${styles.table__col} ${styles.table__col_header}`}
+      >
         {headers.map((item, index) => (
           <div key={index} className={styles.table__headerText}>
-            {item}
+            {typeof item === "string" ? item : item[language]}
           </div>
         ))}
-      </div>
+      </TransitionProvider>
       {data.map((item, index) => (
         <div key={index} className={styles.table__col}>
-          {cols.map((col) => (
-            <div key={col.key.toString()} className={styles.table__bodyItem}>
+          {cols.map((col, index) => (
+            <TransitionProvider
+              inProp={gameInited}
+              style={TransitionStyleTypes.bottom}
+              delay={index * 100}
+              key={col.key.toString()}
+              className={styles.table__bodyItem}
+            >
               {col.render ? col.render(item) : item[col.key]}
-            </div>
+            </TransitionProvider>
           ))}
         </div>
       ))}

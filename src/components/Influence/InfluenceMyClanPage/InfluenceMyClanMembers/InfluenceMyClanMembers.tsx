@@ -18,25 +18,15 @@ import {
   LeavePostIcon,
 } from "../../../layout/icons/Influence/InfluenceMyClanMembers";
 import Table from "../../../layout/Table/Table";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 
-const ranks = {
-  [EInfluenceClanMemberRanks.LEADER]: {
-    name: "Глава",
-    icon: <LeaderIcon />,
-  },
-  [EInfluenceClanMemberRanks.ADVISOR]: {
-    name: "Советник",
-    icon: <AdvicorIcon />,
-  },
-  [EInfluenceClanMemberRanks.OFFICER]: {
-    name: "Офицер",
-    icon: <OficerIcon />,
-  },
-  [EInfluenceClanMemberRanks.MEMBER]: {
-    name: "Боец",
-    icon: <FightIcon />,
-  },
-};
+const {
+  tableHeadersText,
+  ranksText,
+  statusText,
+  leavePostText,
+  leaveClanText,
+} = TRANSLATIONS.influence.myClan.members;
 
 const usernames = [
   "ShadowWolf",
@@ -61,6 +51,25 @@ const usernames = [
   "VenomStrike",
 ];
 
+const ranks = {
+  [EInfluenceClanMemberRanks.LEADER]: {
+    name: ranksText.leader,
+    icon: <LeaderIcon />,
+  },
+  [EInfluenceClanMemberRanks.ADVISOR]: {
+    name: ranksText.advisor,
+    icon: <AdvicorIcon />,
+  },
+  [EInfluenceClanMemberRanks.OFFICER]: {
+    name: ranksText.officer,
+    icon: <OficerIcon />,
+  },
+  [EInfluenceClanMemberRanks.MEMBER]: {
+    name: ranksText.member,
+    icon: <FightIcon />,
+  },
+};
+
 const ranksArr = [
   EInfluenceClanMemberRanks.LEADER,
   EInfluenceClanMemberRanks.ADVISOR,
@@ -77,10 +86,11 @@ const members = Array.from({ length: 20 }, (_, i) => ({
 
 const InfluenceMyClanMembers = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
   return (
     <div className={styles.influenceMyClanMembers}>
       <Table
-        headers={["Участник", "Звание", "Статус", "Потрачено ОД"]}
+        headers={Object.values(tableHeadersText)}
         data={members}
         cols={[
           {
@@ -91,7 +101,8 @@ const InfluenceMyClanMembers = () => {
             render: (item) => (
               <>
                 {" "}
-                {ranks[item.rank].icon} <span>{ranks[item.rank].name}</span>
+                {ranks[item.rank].icon}{" "}
+                <span>{ranks[item.rank].name[language]}</span>
               </>
             ),
           },
@@ -106,7 +117,13 @@ const InfluenceMyClanMembers = () => {
                       : ""
                   }`}
                 ></div>
-                <span>{item.online ? "в сети" : "офлайн"}</span>
+                <span>
+                  {
+                    (item.online ? statusText.online : statusText.offline)[
+                      language
+                    ]
+                  }
+                </span>
               </>
             ),
           },
@@ -123,13 +140,13 @@ const InfluenceMyClanMembers = () => {
         <button className={styles.influenceMyClanMembers__footerBtn}>
           <div className={styles.influenceMyClanMembers__footerBtnInner}>
             <LeavePostIcon />
-            <span>Покинуть пост</span>
+            <span>{leavePostText[language]}</span>
           </div>
         </button>
         <button className={styles.influenceMyClanMembers__footerBtn}>
           <div className={styles.influenceMyClanMembers__footerBtnInner}>
             <LeaveClanIcon />
-            <span>Покинуть клан</span>
+            <span>{leaveClanText[language]}</span>
           </div>
         </button>
         <div className={styles.influenceMyClanMembers__wings}>

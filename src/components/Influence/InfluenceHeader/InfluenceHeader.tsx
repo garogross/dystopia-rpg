@@ -13,13 +13,16 @@ import {
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import styles from "./InfluenceHeader.module.scss";
 import {
+  influenceMailPagePath,
   influencePagePath,
+  influenceRatingsPagePath,
   influenceReferalsPagePath,
   onBoardingPagePath,
 } from "../../../router/constants";
 import StatImg from "../../layout/StatImg/StatImg";
 import { EStats } from "../../../constants/EStats";
 import {
+  AchievmentsIcon,
   ColorSwitcherIcon,
   RadiusSwitcherIcon,
 } from "../../layout/icons/Influence/InfluenceHeader";
@@ -116,7 +119,7 @@ const InfluenceHeader = () => {
             <HeaderReferenceIcon />
           </NavLink>
           <NavLink
-            to={"/mail"}
+            to={`${influencePagePath}/${influenceMailPagePath}`}
             className={linkActiveClass(styles.influenceHeader__mailBtn)}
           >
             <HeaderMailIcon />
@@ -150,7 +153,7 @@ const InfluenceHeader = () => {
         </button>
         <div className={styles.influenceHeader__navBtns}>
           <NavLink
-            to={"/rating"}
+            to={`${influencePagePath}/${influenceRatingsPagePath}`}
             className={linkActiveClass(styles.influenceHeader__ratingBtn)}
           >
             <HeaderRatingIcon />
@@ -159,7 +162,7 @@ const InfluenceHeader = () => {
             to={`${influencePagePath}/${influenceReferalsPagePath}`}
             className={linkActiveClass()}
           >
-            <HeaderReferenceIcon />
+            <AchievmentsIcon />
           </NavLink>
         </div>
         <div

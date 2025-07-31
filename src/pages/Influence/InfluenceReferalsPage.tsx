@@ -1,7 +1,8 @@
 import React from "react";
+import Referals from "../../components/Referals/Referals";
 
 const InfluenceReferalsPage = () => {
-  return <div></div>;
+  return <Referals />;
 };
 
 export default InfluenceReferalsPage;
