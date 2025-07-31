@@ -14,11 +14,12 @@ interface ITableCol<T extends Record<string, TableColValue>> {
 
 type TableColValue = string | number | boolean;
 interface Props<T extends Record<string, TableColValue>> {
-  headers: TranslationItemType[];
+  headers: (TranslationItemType | string)[];
   data: T[];
   cols: ITableCol<T>[];
   columnsTemplate?: string;
   withoutBorder?: boolean;
+  className?: string;
 }
 
 const Table = <T extends Record<string, TableColValue>>({
@@ -27,6 +28,7 @@ const Table = <T extends Record<string, TableColValue>>({
   cols,
   columnsTemplate,
   withoutBorder,
+  className,
 }: Props<T>) => {
   const language = useAppSelector((state) => state.ui.language);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
@@ -35,7 +37,7 @@ const Table = <T extends Record<string, TableColValue>>({
     <div
       className={`${styles.table} ${
         withoutBorder ? styles.table_withoutBorder : ""
-      }`}
+      } ${className || ""}`}
       style={
         columnsTemplate
           ? { ["--table-grid-template-columns" as string]: columnsTemplate }
@@ -49,7 +51,7 @@ const Table = <T extends Record<string, TableColValue>>({
       >
         {headers.map((item, index) => (
           <div key={index} className={styles.table__headerText}>
-            {item[language]}
+            {typeof item === "string" ? item : item[language]}
           </div>
         ))}
       </TransitionProvider>

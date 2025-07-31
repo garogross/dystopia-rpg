@@ -119,7 +119,7 @@
     width: 20px;
     height: 20px;
     @include flexCol();
-    background: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
+    background: $color-primary-dark-gradient;
     clip-path: polygon(
       25% 0%,
       75% 0%,

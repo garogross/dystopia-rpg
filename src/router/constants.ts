@@ -49,4 +49,5 @@ export const influenceLoyalityPagePath = "loyality";
 export const influencePlayerPagePath = "player";
 export const influenceNotificationsPagePath = "notifications";
 export const influenceReferalsPagePath = "referals";
+export const influenceRatingsPagePath = "ratings";
 export const influenceMailPagePath = "mail";

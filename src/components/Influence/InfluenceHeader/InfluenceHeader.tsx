@@ -15,6 +15,7 @@ import styles from "./InfluenceHeader.module.scss";
 import {
   influenceMailPagePath,
   influencePagePath,
+  influenceRatingsPagePath,
   influenceReferalsPagePath,
   onBoardingPagePath,
 } from "../../../router/constants";
@@ -151,7 +152,7 @@ const InfluenceHeader = () => {
         </button>
         <div className={styles.influenceHeader__navBtns}>
           <NavLink
-            to={"/rating"}
+            to={`${influencePagePath}/${influenceRatingsPagePath}`}
             className={linkActiveClass(styles.influenceHeader__ratingBtn)}
           >
             <HeaderRatingIcon />

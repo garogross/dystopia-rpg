@@ -51,7 +51,7 @@
   }
 
   &__backBtn &__btnInner {
-    background: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
+    background: $color-primary-dark-gradient;
     color: $color-black;
   }
 

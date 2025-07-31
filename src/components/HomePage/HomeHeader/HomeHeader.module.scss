@@ -41,7 +41,7 @@
     height: 48px;
     @include setFont(18px, 600);
     border: 1px solid $color-primary;
-    background: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
+    background: $color-primary-dark-gradient;
     white-space: nowrap;
     min-width: fit-content;
 
@@ -121,7 +121,7 @@
   }
   &__langDropdown {
     width: 100%;
-    background: linear-gradient(180deg, #2a1e54 0%, #5d42ba 100%);
+    background: $color-primary-dark-gradient;
     border: 1px solid $color-primary;
     display: flex;
     flex-direction: column;

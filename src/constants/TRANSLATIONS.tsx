@@ -1307,6 +1307,56 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Забрать всё",
     },
   },
+  rating: {
+    titleText: {
+      [ELanguages.en]: "Ratings",
+      [ELanguages.ru]: "Рейтинги",
+    },
+    playerTabText: {
+      [ELanguages.en]: "Players",
+      [ELanguages.ru]: "Игроки",
+    },
+    clanTabText: {
+      [ELanguages.en]: "Clans",
+      [ELanguages.ru]: "Кланы",
+    },
+    sortTexts: {
+      level: {
+        [ELanguages.en]: "Total level",
+        [ELanguages.ru]: "Общий уровень",
+      },
+      params: {
+        [ELanguages.en]: "By parameters",
+        [ELanguages.ru]: "По параметрам",
+      },
+      winrate: {
+        [ELanguages.en]: "By winrate",
+        [ELanguages.ru]: "По винрейту",
+      },
+      activity: {
+        [ELanguages.en]: "By activity",
+        [ELanguages.ru]: "По активности",
+      },
+    },
+    searchPlaceholder: {
+      [ELanguages.en]: "Search by player/clan name",
+      [ELanguages.ru]: "Поиск по имени игрока / клана",
+    },
+    tableHeaderTexts: {
+      number: {
+        [ELanguages.en]: "No.",
+        [ELanguages.ru]: "No.",
+      },
+      nickname: {
+        [ELanguages.en]: "Nickname",
+        [ELanguages.ru]: "Никнейм",
+      },
+      ratingValue: {
+        [ELanguages.en]: "Rating value",
+        [ELanguages.ru]: "Значение рейтинга",
+      },
+    },
+  },
   miniGames: {
     catalog: {
       titleText: {
