@@ -1,6 +1,7 @@
 import { useAppSelector } from "../redux";
 
 const RIVAL_COLOR = "#e6194b";
+const MY_COLOR = `#0f9e60`;
 
 export const useInfluencePlayerColors = () => {
   const tgId = useAppSelector((state) => state.profile.tgId);
@@ -12,8 +13,11 @@ export const useInfluencePlayerColors = () => {
   );
 
   const getPlayerColors = (ownerId: number) => {
-    if (monoColorSchemeEnabled && ownerId !== tgId) return RIVAL_COLOR;
-    else return playerColors[ownerId];
+    if (monoColorSchemeEnabled) {
+      if (ownerId !== tgId) {
+        return RIVAL_COLOR;
+      } else return MY_COLOR;
+    } else return playerColors[ownerId];
   };
 
   return getPlayerColors;
