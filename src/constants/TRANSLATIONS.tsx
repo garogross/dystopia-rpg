@@ -2057,8 +2057,8 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Прогноз награды",
         },
         clanControlTitleText: {
-          [ELanguages.en]: "Clan control",
-          [ELanguages.ru]: "Контроль клана",
+          [ELanguages.en]: "Statistics",
+          [ELanguages.ru]: "Статистика",
         },
       },
       infoModal: {

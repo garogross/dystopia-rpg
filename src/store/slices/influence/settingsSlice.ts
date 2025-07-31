@@ -15,6 +15,7 @@ export interface SettingsState {
   };
   actionPointMax: number;
   actionPointMaxPerTurn: number;
+  monoColorSchemeEnabled: boolean;
 }
 
 const initialState: SettingsState = {
@@ -32,6 +33,7 @@ const initialState: SettingsState = {
   },
   actionPointMax: 0,
   actionPointMaxPerTurn: 0,
+  monoColorSchemeEnabled: false,
 };
 
 export const settingsSlice = createSlice({
@@ -41,10 +43,14 @@ export const settingsSlice = createSlice({
     initSettings: (state, action) => {
       return { ...state, ...action.payload };
     },
+    setMonoColorSchemeEnabled: (state, action) => {
+      state.monoColorSchemeEnabled = action.payload;
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { initSettings } = settingsSlice.actions;
+export const { initSettings, setMonoColorSchemeEnabled } =
+  settingsSlice.actions;
 
 export default settingsSlice.reducer;
