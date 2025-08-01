@@ -7,6 +7,7 @@ import { FarmAchievmentsType } from "../../types/Achievments/FarmAchievmentsType
 import { FarmResourceDeficitType } from "../../types/FarmResourceDeficitType";
 import { FarmSlotCostsType } from "../../types/FarmSlotCostsType";
 import { SocialShopType } from "../../types/SocialShopType";
+import { IMailMessage } from "../IMailMessage";
 
 export interface GetAccountDetailsResponse {
   mode: AppGameMode;
@@ -29,6 +30,7 @@ export interface GetAccountDetailsResponse {
     timers: {
       last_restore_action_points_ts: number;
     };
+    mail: IMailMessage[];
   };
   // cyberfarm
   ton_cyber_farm?: {

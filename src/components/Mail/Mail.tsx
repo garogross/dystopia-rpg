@@ -30,102 +30,13 @@ const {
   takeAllText,
 } = TRANSLATIONS.mail;
 
-const messages = [
-  {
-    id: 1,
-    from: "Командование Сектора 9",
-    theme: "Уважение заслужено",
-    received: Date.now() - 2 * 24 * 60 * 60 * 1000,
-    status: "new",
-    description:
-      "Поздравляем! Ваши действия были отмечены командованием. Продолжайте в том же духе для дальнейшего продвижения.",
-  },
-  {
-    id: 2,
-    from: "Агентство Связи",
-    theme: "Важное обновление",
-    received: Date.now() - 1 * 24 * 60 * 60 * 1000,
-    status: "read",
-    description:
-      "Появились новые правила использования коммуникационных каналов. Ознакомьтесь с изменениями в приложении.",
-  },
-  {
-    id: 3,
-    from: "Система Безопасности",
-    theme: "Подтверждение входа",
-    received: Date.now() - 3 * 24 * 60 * 60 * 1000,
-    status: "new",
-    description:
-      "Вход в систему был выполнен с нового устройства. Если это были не вы, обратитесь в службу поддержки.",
-  },
-  {
-    id: 4,
-    from: "Техническая Поддержка",
-    theme: "Ответ на ваш запрос",
-    received: Date.now() - 5 * 24 * 60 * 60 * 1000,
-    status: "read",
-    description:
-      "Ваш запрос был обработан. Если проблема сохраняется, пожалуйста, создайте новый тикет.",
-  },
-  {
-    id: 5,
-    from: "Командование Сектора 7",
-    theme: "Приглашение на собрание",
-    received: Date.now() - 4 * 24 * 60 * 60 * 1000,
-    status: "new",
-    description:
-      "Вы приглашены на еженедельное собрание сектора. Подтвердите своё участие в календаре.",
-  },
-  {
-    id: 6,
-    from: "Снабжение",
-    theme: "Поставка ресурсов",
-    received: Date.now() - 6 * 24 * 60 * 60 * 1000,
-    status: "read",
-    description:
-      "Поставка ресурсов успешно завершена. Проверьте склад для подтверждения получения.",
-  },
-  {
-    id: 7,
-    from: "Центр Обучения",
-    theme: "Новые инструкции",
-    received: Date.now() - 7 * 24 * 60 * 60 * 1000,
-    status: "new",
-    description:
-      "Доступны новые обучающие материалы. Рекомендуем ознакомиться для повышения квалификации.",
-  },
-  {
-    id: 8,
-    from: "Служба Поддержки",
-    theme: "Ваш тикет закрыт",
-    received: Date.now() - 8 * 24 * 60 * 60 * 1000,
-    status: "read",
-    description:
-      "Ваш тикет был успешно закрыт. Спасибо за обращение в службу поддержки.",
-  },
-  {
-    id: 9,
-    from: "Командование Сектора 3",
-    theme: "Изменения в расписании",
-    received: Date.now() - 9 * 24 * 60 * 60 * 1000,
-    status: "new",
-    description:
-      "В расписание внесены изменения. Проверьте актуальное время проведения мероприятий.",
-  },
-  {
-    id: 10,
-    from: "Система Оповещений",
-    theme: "Системное сообщение",
-    received: Date.now() - 10 * 24 * 60 * 60 * 1000,
-    status: "read",
-    description: "Это автоматическое системное сообщение. Не требует ответа.",
-  },
-];
-
 const Mail = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const language = useAppSelector((state) => state.ui.language);
-  const [openedMessageId, setOpenedMessageId] = useState<null | number>(null);
+  const mails = useAppSelector((state) => state.influence.mail.mails);
+  const [openedMessageId, setOpenedMessageId] = useState<null | string>(null);
+
+  const unreadMessagesLength = mails.filter((mail) => !mail.read).length;
   return (
     <section className={`container ${styles.mail}`}>
       <TitleH3 wingsReverse={false} hideDotline>
@@ -138,11 +49,15 @@ const Mail = () => {
       >
         <p className={styles.mail__infoText}>
           <Dotsline />
-          <span>{totalText[language]}: 50</span>
+          <span>
+            {totalText[language]}: {mails.length}
+          </span>
         </p>
         <p className={styles.mail__infoText}>
           <Dotsline />
-          <span>{unreadText[language]}: 0</span>
+          <span>
+            {unreadText[language]}: {unreadMessagesLength}
+          </span>
         </p>
       </TransitionProvider>
       <TransitionProvider
@@ -150,22 +65,22 @@ const Mail = () => {
         style={TransitionStyleTypes.bottom}
         className={styles.mail__list}
       >
-        {messages.map((msg) => (
+        {mails.map((msg) => (
           <div
             onClick={() => setOpenedMessageId(msg.id)}
             key={msg.id}
             className={styles.mail__listItem}
           >
             <div className={styles.mail__itemMain}>
-              {msg.status === "read" ? <ReadMessageIcon /> : <NewMessageIcon />}
+              {msg.read ? <ReadMessageIcon /> : <NewMessageIcon />}
               <div className={styles.mail__itemMainTexts}>
                 <div className={styles.mail__itemHeader}>
                   <div className={styles.mail__itemCol}>
                     <strong>{fromText[language]}: </strong>
-                    <span>{msg.from}</span>
+                    <span>{msg.from || "Admin"}</span>
                   </div>
                   <div className={styles.mail__itemActions}>
-                    {msg.status === "new" && (
+                    {!msg.read && (
                       <button className={styles.mail__actionBtn}>
                         <SetAsReadIcon />
                       </button>
@@ -177,12 +92,16 @@ const Mail = () => {
                 </div>
                 <p className={styles.mail__itemCol}>
                   <strong>{themeText[language]}: </strong>
-                  <span>{msg.theme}</span>
+                  <span>{msg.subject}</span>
                 </p>
-                <p className={styles.mail__itemCol}>
-                  <strong>{receivedText[language]}: </strong>
-                  <span>{getElapsedTime(msg.received, language)}</span>
-                </p>
+                {msg.created_at && (
+                  <p className={styles.mail__itemCol}>
+                    <strong>{receivedText[language]}: </strong>
+                    <span>
+                      {getElapsedTime(new Date(msg.created_at), language)}
+                    </span>
+                  </p>
+                )}
               </div>
             </div>
             <TransitionProvider
@@ -191,10 +110,14 @@ const Mail = () => {
               height={500}
               className={styles.mail__listItemDescription}
             >
-              <p className={styles.mail__listItemDescriptionText}>
-                {msg.description}
-              </p>
-              <button className={styles.mail__btn}>
+              <p className={styles.mail__listItemDescriptionText}>{msg.body}</p>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenedMessageId(null);
+                }}
+                className={styles.mail__btn}
+              >
                 <div className={styles.mail__btnInner}>
                   <span>{closeText[language]}</span>
                   <CancelIcon />

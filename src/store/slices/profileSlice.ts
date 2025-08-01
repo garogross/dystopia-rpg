@@ -39,6 +39,7 @@ import { finsihTutorial, initTutorial } from "./cyberFarm/tutorialSlice";
 import { initInfluence, restoreAP } from "./influence/influenceSlice";
 import { initSettings } from "./influence/settingsSlice";
 import { initMap } from "./influence/mapSlice";
+import { initMail } from "./influence/mailSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -179,7 +180,7 @@ export const getAccountDetails =
             resources: resData.ton_cyber_farm.resources,
             productCosts: resData.game_settings.base_costs,
             productionChains: resData.game_settings.production_chains,
-            resourceTonValue: resData.ton_cyber_farm.resource_ton_value,
+            resourceTonmailValue: resData.ton_cyber_farm.resource_ton_value,
             resourceDeficit: resData?.resource_deficit,
           })
         );
@@ -261,6 +262,11 @@ export const getAccountDetails =
           nextAttackTs: resData.user?.next_attack_ts || 0,
           mapId,
           hexesCaptured: mapId ? resData.hexes_captured?.[mapId] || 0 : 0,
+        })
+      );
+      dispatch(
+        initMail({
+          mails: resData.user?.mail || [],
         })
       );
     }
