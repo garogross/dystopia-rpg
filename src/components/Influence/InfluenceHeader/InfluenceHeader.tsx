@@ -39,9 +39,11 @@ import { openRestoreModal } from "../../../store/slices/influence/influenceSlice
 import SettingsModal from "../../SettingsModal/SettingsModal";
 import { useInfluenceRestoretimer } from "../../../hooks/influence/useInfluenceRestoretimer";
 import { setMonoColorSchemeEnabled } from "../../../store/slices/influence/settingsSlice";
+import { useTooltip } from "../../../hooks/useTooltip";
+import Tooltip from "../../layout/Tooltip/Tooltip";
 
 const { throughText } = TRANSLATIONS.influence.header;
-const { getPremiumText } = TRANSLATIONS.common;
+const { getPremiumText, inDevelopmentText } = TRANSLATIONS.common;
 
 const ActionPointTimer = () => {
   const language = useAppSelector((state) => state.ui.language);
@@ -55,7 +57,6 @@ const ActionPointTimer = () => {
     (state) => state.influence.settings.actionPointRestore
   );
   const timeLeft = useInfluenceRestoretimer();
-
   return (
     <div className={styles.influenceHeader__timer}>
       {actionPoints < actionPointMax && (
@@ -85,6 +86,7 @@ const InfluenceHeader = () => {
   const actionPointMax = useAppSelector(
     (state) => state.influence.settings.actionPointMax
   );
+  const { show, openTooltip } = useTooltip();
   const [settingsOpened, setSettingsOpened] = useState(false);
 
   const linkActiveClass =
@@ -119,7 +121,10 @@ const InfluenceHeader = () => {
           <HeaderSwitcherIcon />
         </button>
         <div className={styles.influenceHeader__navBtns}>
-          <NavLink to={"/mingames"} className={linkActiveClass()}>
+          <NavLink
+            to={`${influencePagePath}/${influenceReferalsPagePath}`}
+            className={linkActiveClass()}
+          >
             <HeaderReferenceIcon />
           </NavLink>
           <NavLink
@@ -157,12 +162,20 @@ const InfluenceHeader = () => {
         </button>
         <div className={styles.influenceHeader__navBtns}>
           <NavLink
+            onClick={(e) => {
+              e.preventDefault();
+              openTooltip();
+            }}
             to={`${influencePagePath}/${influenceRatingsPagePath}`}
             className={linkActiveClass(styles.influenceHeader__ratingBtn)}
           >
             <HeaderRatingIcon />
           </NavLink>
           <NavLink
+            onClick={(e) => {
+              e.preventDefault();
+              openTooltip();
+            }}
             to={`${influencePagePath}/${influenceReferalsPagePath}`}
             className={linkActiveClass()}
           >
@@ -212,6 +225,7 @@ const InfluenceHeader = () => {
         show={settingsOpened}
         onClose={() => setSettingsOpened(false)}
       />
+      <Tooltip show={show} text={inDevelopmentText[language]} />
     </header>
   );
 };

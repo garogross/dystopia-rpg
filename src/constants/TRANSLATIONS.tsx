@@ -92,6 +92,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "d. ago",
       [ELanguages.ru]: "дн. назад",
     },
+    inDevelopmentText: {
+      [ELanguages.en]: "In development",
+      [ELanguages.ru]: "В разработке",
+    },
   },
   tutorialPopup: {
     closeText: {
@@ -1989,7 +1993,7 @@ export const TRANSLATIONS = {
       },
       hexOccupiedText: {
         [ELanguages.en]: "Hex is occupied",
-        [ELanguages.ru]: "Гекс Захвачено",
+        [ELanguages.ru]: "Гекс Захвачен",
       },
       hexAttackedText: {
         [ELanguages.en]: "Hex is attacked",

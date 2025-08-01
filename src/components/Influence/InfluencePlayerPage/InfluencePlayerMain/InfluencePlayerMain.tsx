@@ -16,9 +16,9 @@ const {
   actionPointsText,
   apRecoverySpeedText,
   apSpendPerTurnText,
-  sectorAttackText,
-  constructionText,
-  buildingRepairText,
+  // sectorAttackText,
+  // constructionText,
+  // buildingRepairText,
 } = TRANSLATIONS.influence.player.main;
 const { minText } = TRANSLATIONS.common;
 
@@ -152,7 +152,7 @@ const InfluencePlayerMain = () => {
             {actionPointMaxPerTurn}
           </span>
         </div>
-        <div className={styles.influencePlayerMain__dropdownContentCol}>
+        {/* <div className={styles.influencePlayerMain__dropdownContentCol}>
           <span className={styles.influencePlayerMain__boldText}>
             - {sectorAttackText[language]}:{" "}
           </span>
@@ -169,7 +169,7 @@ const InfluencePlayerMain = () => {
             - {buildingRepairText[language]}:
           </span>
           <span className={styles.influencePlayerMain__valueText}>−20%</span>
-        </div>
+        </div> */}
       </TransitionProvider>
     </TransitionProvider>
   );

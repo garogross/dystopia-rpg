@@ -13,6 +13,7 @@ export interface MapState {
   radius: number;
   hexes: IHex[];
   playerColors: Record<string, string>;
+  hexesCaptured: number;
 }
 
 const initialState: MapState = {
@@ -21,6 +22,7 @@ const initialState: MapState = {
   radius: 0,
   hexes: [],
   playerColors: {},
+  hexesCaptured: 0,
 };
 
 const getMapUrl = "/influence/map/";
@@ -98,6 +100,7 @@ export const mapSlice = createSlice({
     initMap(state, action) {
       state.nextAttackTs = action.payload.nextAttackTs;
       state.mapId = action.payload.mapId;
+      state.hexesCaptured = action.payload.hexesCaptured;
     },
   },
   extraReducers: (builder) => {
@@ -124,6 +127,9 @@ export const mapSlice = createSlice({
       }
 
       state.nextAttackTs = payload.next_attack_ts;
+      if (payload.captured) {
+        state.hexesCaptured += 1;
+      }
     });
   },
 });
