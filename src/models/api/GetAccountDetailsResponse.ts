@@ -112,4 +112,7 @@ export interface GetAccountDetailsResponse {
       map_id: number;
     }
   ];
+  hexes_captured?: {
+    [key in string]: number;
+  };
 }

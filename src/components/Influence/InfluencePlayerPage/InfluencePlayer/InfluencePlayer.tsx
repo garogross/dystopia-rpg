@@ -4,19 +4,17 @@ import TitleH3 from "../../../layout/TitleH3/TitleH3";
 import styles from "./InfluencePlayer.module.scss";
 
 import InfluencePlayerMain from "../InfluencePlayerMain/InfluencePlayerMain";
-import InfluencePlayerStrengthening from "../InfluencePlayerStrengthening/InfluencePlayerStrengthening";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../../hooks/redux";
-import Accordion from "../../../layout/Accordion/Accordion";
 
 const {
   titleText,
-  sessionBuffsTitle,
-  achievementsBonusesTitle,
-  clanBonusesTitle,
+  // sessionBuffsTitle,
+  // achievementsBonusesTitle,
+  // clanBonusesTitle,
 
-  achievementBonusesList,
-  clanBonusesList,
+  // achievementBonusesList,
+  // clanBonusesList,
 } = TRANSLATIONS.influence.player;
 
 const InfluencePlayer = () => {
@@ -29,7 +27,7 @@ const InfluencePlayer = () => {
       </TitleH3>
       <div className={styles.influencePlayer__container}>
         <InfluencePlayerMain />
-        <Accordion title={sessionBuffsTitle[language]}>
+        {/* <Accordion title={sessionBuffsTitle[language]}>
           <InfluencePlayerStrengthening />
         </Accordion>
         <Accordion title={achievementsBonusesTitle[language]}>
@@ -45,7 +43,7 @@ const InfluencePlayer = () => {
               {item}
             </p>
           ))}
-        </Accordion>
+        </Accordion> */}
       </div>
     </section>
   );

@@ -25,6 +25,7 @@ const items = [
   {
     icon: <ClanIcon />,
     link: influenceClanPagePath,
+    indev: true,
   },
 
   {
@@ -35,6 +36,7 @@ const items = [
   {
     icon: <NotificatonsIcon />,
     link: influenceNotificationsPagePath,
+    indev: true,
   },
 
   {

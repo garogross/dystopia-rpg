@@ -255,10 +255,12 @@ export const getAccountDetails =
         })
       );
 
+      const mapId = resData.active_maps?.[0]?.map_id || null;
       dispatch(
         initMap({
           nextAttackTs: resData.user?.next_attack_ts || 0,
-          mapId: resData.active_maps?.[0]?.map_id || null,
+          mapId,
+          hexesCaptured: mapId ? resData.hexes_captured?.[mapId] || 0 : 0,
         })
       );
     }

@@ -26,7 +26,10 @@ import { ConfirmIcon } from "../../../layout/icons/Common";
 import HeaderBtn from "../../../layout/HeaderBtn/HeaderBtn";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
-import { attackHex } from "../../../../store/slices/influence/mapSlice";
+import {
+  attackHex,
+  getPlayerColors,
+} from "../../../../store/slices/influence/mapSlice";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import { FillupIcon } from "../../../layout/icons/Influence/Common";
 import { openRestoreModal } from "../../../../store/slices/influence/influenceSlice";
@@ -78,6 +81,9 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
   );
   const actionPoints = useAppSelector(
     (state) => state.influence.influence.actionPoints
+  );
+  const hexesCaptured = useAppSelector(
+    (state) => state.influence.map.hexesCaptured
   );
   const actionPointMax = useAppSelector(
     (state) => state.influence.settings.actionPointMaxPerTurn
@@ -137,7 +143,9 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
       const res = await dispatch(
         attackHex({ x: hex.x, y: hex.y, z: hex.z, mapId: mapId })
       ).unwrap();
-
+      if (hexesCaptured === 1) {
+        await dispatch(getPlayerColors({ id: mapId.toString() }));
+      }
       setTooltipText(
         (res.captured ? hexOccupiedText : hexAttackedText)[language]
       );

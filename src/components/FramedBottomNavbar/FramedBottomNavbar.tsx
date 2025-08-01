@@ -10,16 +10,23 @@ import {
 import styles from "./FramedBottomNavbar.module.scss";
 
 import { useAppSelector } from "../../hooks/redux";
+import { useTooltip } from "../../hooks/useTooltip";
+import Tooltip from "../layout/Tooltip/Tooltip";
+import { TRANSLATIONS } from "../../constants/TRANSLATIONS";
 
+const { inDevelopmentText } = TRANSLATIONS.common;
 interface Props {
   items: {
     icon: ReactNode;
     link: string;
+    indev?: boolean;
   }[];
 }
 
 const FramedBottomNavbar: FC<Props> = ({ items }) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const language = useAppSelector((state) => state.ui.language);
+  const { show, openTooltip } = useTooltip();
 
   const linkActiveClass = ({ isActive }: { isActive: boolean }) =>
     isActive
@@ -35,8 +42,19 @@ const FramedBottomNavbar: FC<Props> = ({ items }) => {
         <FramedBottomNavbarTopBg />
       </div>
       <nav className={styles.framedBottomNavbar__nav}>
-        {items.map(({ link, icon }, index) => (
-          <NavLink key={index} to={link} end={true} className={linkActiveClass}>
+        {items.map(({ link, icon, indev }, index) => (
+          <NavLink
+            onClick={(e) => {
+              if (indev) {
+                e.preventDefault();
+                openTooltip();
+              }
+            }}
+            key={index}
+            to={link}
+            end={true}
+            className={linkActiveClass}
+          >
             <div className={styles.framedBottomNavbar__itemFrame}>
               <FramedBottomNavbarItemFrame />
             </div>
@@ -54,6 +72,7 @@ const FramedBottomNavbar: FC<Props> = ({ items }) => {
       <div className={styles.framedBottomNavbar__bottomBlock}>
         <FramedBottomNavbarBottomBg />
       </div>
+      <Tooltip show={show} text={inDevelopmentText[language]} />
     </div>
   );
 };

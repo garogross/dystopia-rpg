@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   ToggleIcon,
-  BuildingIcon,
+  // BuildingIcon,
   ControllIcon,
 } from "../../../layout/icons/Influence/InfluenceMap";
 import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
@@ -20,9 +20,9 @@ import { useAppSelector } from "../../../../hooks/redux";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 
 const {
-  totalHexesText,
-  productionBuildingsText,
-  defenseBuildingsText,
+  // totalHexesText,
+  // productionBuildingsText,
+  // defenseBuildingsText,
   capturedHexesText,
   influencePointsText,
   rewardForecastText,
@@ -31,14 +31,13 @@ const {
 
 const InfluenceMapControllModal = () => {
   const language = useAppSelector((state) => state.ui.language);
-  const hexes = useAppSelector((state) => state.influence.map.hexes);
+  const hexesCaptured = useAppSelector(
+    (state) => state.influence.map.hexesCaptured
+  );
   const influencePoints = useAppSelector(
     (state) => state.influence.influence.influencePoints
   );
-  const tgId = useAppSelector((state) => state.profile.tgId);
   const [open, setOpen] = useState(true);
-
-  const ownedHexesCount = hexes.filter((item) => item.owner_id === tgId).length;
 
   return (
     <div
@@ -66,7 +65,7 @@ const InfluenceMapControllModal = () => {
         </div>
         <div className={styles.influenceMapControllModal__text}>
           <span>
-            {capturedHexesText[language]}: {ownedHexesCount}
+            {capturedHexesText[language]}: {hexesCaptured}
           </span>
           <ImageWebp
             src={hexIconImage}
@@ -95,7 +94,7 @@ const InfluenceMapControllModal = () => {
             className={styles.influenceMapControllModal__img}
           />
         </div>
-        <div className={styles.influenceMapControllModal__dotline}>
+        {/* <div className={styles.influenceMapControllModal__dotline}>
           <DotsLine preserveAspectRatio />
         </div>
         <div
@@ -111,7 +110,7 @@ const InfluenceMapControllModal = () => {
         <div className={styles.influenceMapControllModal__text}>
           <BuildingIcon />
           <span>{defenseBuildingsText[language]}: 4</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );
