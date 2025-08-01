@@ -77,7 +77,9 @@ const Mail = () => {
                 <div className={styles.mail__itemHeader}>
                   <div className={styles.mail__itemCol}>
                     <strong>{fromText[language]}: </strong>
-                    <span>{msg.from || "Admin"}</span>
+                    <span>
+                      {msg.from ? msg.from.replaceAll("_", " ") : "Admin"}
+                    </span>
                   </div>
                   <div className={styles.mail__itemActions}>
                     {!msg.read && (
