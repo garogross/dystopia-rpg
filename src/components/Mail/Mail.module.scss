@@ -79,6 +79,7 @@
   &__listItemDescriptionText {
     @include setFont(14px, 400);
     text-align: left;
+    width: 100%;
   }
   &__btn {
     @include button($color-primary);
