@@ -1,0 +1,82 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.bubbleFrontHeader {
+  background: linear-gradient(180deg, #0c0620 26.6%, #362670 100%);
+  padding-inline: 10px;
+  @include flexCol();
+
+  &__sideCol {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+
+    &:nth-child(3) {
+      align-items: flex-end;
+    }
+  }
+  &__sideColMain {
+    @include flexCol();
+    width: calc(100% + 15px);
+    justify-content: flex-start;
+
+    &:not(&_right) {
+      padding-left: 12px;
+    }
+    &_right {
+      padding-right: 12px;
+      justify-content: flex-end;
+    }
+  }
+  &__colBtn {
+    @include button();
+    width: 47px;
+    height: 22px;
+    @include flexCol();
+    fill: $color-black;
+    position: relative;
+
+    & svg {
+      z-index: 1;
+    }
+  }
+
+  &__colBtnBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  &__dotsline {
+    & svg {
+      width: 100%;
+    }
+  }
+  &__centerCol {
+    @include flexCol(space-between);
+    padding-top: 9px;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+  &__cp {
+    @include flexCol();
+    gap: 6px;
+    @include setFont(12px, 500);
+  }
+  &__cpImage {
+    width: 15px;
+    height: 15px;
+  }
+  &__premiumBtn {
+    @include button($color-primary-light-gradient);
+    height: 11px;
+    @include flexCol();
+    @include setFont(8px, 400);
+    margin-inline: -6px;
+    width: 100%;
+    gap: 3px;
+
+    clip-path: polygon(8.7% 0%, 91% 0%, 100% 100%, 0% 100%, 8.7% 0%);
+  }
+}

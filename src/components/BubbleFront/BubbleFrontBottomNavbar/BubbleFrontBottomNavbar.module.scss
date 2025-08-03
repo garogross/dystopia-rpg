@@ -1,0 +1,81 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.bubbleFrontBottomNavbar {
+  display: flex;
+  align-items: center;
+  padding-bottom: 12px;
+  flex-direction: column;
+  gap: 5px;
+
+  &__main {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+  }
+  &__col {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+  }
+  &__btn {
+    @include button();
+    height: 47px;
+    width: 100%;
+    @include flexCol();
+    flex-direction: column;
+    gap: 2px;
+    @include setFont(12px, 400);
+    fill: $color-text;
+    position: relative;
+    transition: $transition;
+    text-decoration: none;
+
+    &_active {
+      color: $color-black;
+      fill: $color-black;
+    }
+
+    & svg {
+      fill: inherit;
+      transition: $transition;
+    }
+  }
+  &__btnBg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__gun {
+    width: 90px;
+    position: relative;
+    height: 100%;
+  }
+  &__gunImg {
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+  }
+
+  &__bottowmWings {
+    width: 100%;
+    padding: 12px;
+
+    & svg {
+      width: 100%;
+    }
+  }
+}
