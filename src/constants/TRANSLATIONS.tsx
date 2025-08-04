@@ -1318,6 +1318,11 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Failed to claim reward",
       [ELanguages.ru]: "Не удалось забрать награду",
     },
+    messageDeletedSuccessText: {
+      [ELanguages.en]: "Message deleted successfully",
+      [ELanguages.ru]: "Сообщение успешно удалено",
+    },
+
     claimRewardSuccessText: {
       [ELanguages.en]: "Reward claimed successfully",
       [ELanguages.ru]: "Награда успешно получена",

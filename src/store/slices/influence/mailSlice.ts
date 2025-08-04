@@ -14,14 +14,15 @@ const initialState: MailState = {
 const receiveMailRewardUrl = "/influence/mail/reward/";
 export const receiveMailReward = createAsyncThunk<
   ReceiveMailRewardResponse,
-  { id: string }
+  { id: string; action: "read" | "delete" } | { action: "read_all" }
 >("mail/receiveMailReward", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<ReceiveMailRewardResponse>(
       receiveMailRewardUrl,
       "POST",
       {
-        mail_id: payload.id,
+        mail_id: "id" in payload ? payload.id : undefined,
+        action: payload.action,
       }
     );
 
@@ -42,14 +43,21 @@ export const mailSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(receiveMailReward.fulfilled, (state, { payload }) => {
-      const updatedItemIndex = state.mails.findIndex(
-        (item) => item.id === payload.mail_id
-      );
-      if (updatedItemIndex === -1) return;
-      state.mails = state.mails.with(updatedItemIndex, {
-        ...state.mails[updatedItemIndex],
-        read: true,
-      });
+      if (payload.read_all) {
+        state.mails = state.mails.map((item) => ({ ...item, read: true }));
+      } else if (payload.deleted) {
+        state.mails = state.mails.filter((item) => item.id !== payload.mail_id);
+      } else {
+        const updatedItemIndex = state.mails.findIndex(
+          (item) => item.id === payload.mail_id
+        );
+        if (updatedItemIndex === -1) return;
+
+        state.mails = state.mails.with(updatedItemIndex, {
+          ...state.mails[updatedItemIndex],
+          read: true,
+        });
+      }
     });
   },
 });

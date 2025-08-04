@@ -34,6 +34,7 @@ const {
   closeText,
   takeAllText,
   claimRewardFailedText,
+  messageDeletedSuccessText,
   claimRewardSuccessText,
 } = TRANSLATIONS.mail;
 
@@ -48,11 +49,24 @@ const Mail = () => {
   const { show: showTooltip, openTooltip } = useTooltip();
   const unreadMessagesLength = mails.filter((mail) => !mail.read).length;
 
-  const onReward = async (id: string) => {
+  const hasUnreadMessages = mails.some((mail) => !mail.read);
+
+  const onReward = async (
+    id: string | undefined,
+    action: "read" | "delete" | "read_all"
+  ) => {
     try {
       setLoading(true);
-      await dispatch(receiveMailReward({ id })).unwrap();
-      setTooltipText(claimRewardSuccessText);
+      if (action === "read_all") {
+        await dispatch(receiveMailReward({ action })).unwrap();
+      } else {
+        await dispatch(
+          receiveMailReward({ id: id as string, action })
+        ).unwrap();
+      }
+      setTooltipText(
+        action === "delete" ? messageDeletedSuccessText : claimRewardSuccessText
+      );
     } catch (error) {
       setTooltipText(claimRewardFailedText);
     } finally {
@@ -116,14 +130,20 @@ const Mail = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            onReward(msg.id);
+                            onReward(msg.id, "read");
                           }}
                           className={styles.mail__actionBtn}
                         >
                           <SetAsReadIcon />
                         </button>
                       )}
-                      <button className={styles.mail__actionBtn}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onReward(msg.id, "delete");
+                        }}
+                        className={styles.mail__actionBtn}
+                      >
                         <DeleteIcon />
                       </button>
                     </div>
@@ -155,7 +175,7 @@ const Mail = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      onReward(msg.id);
+                      onReward(msg.id, "read");
                     }}
                     className={styles.mail__btn}
                   >
@@ -189,12 +209,23 @@ const Mail = () => {
         <div className={styles.mail__wings}>
           <HeaderWings reversed />
         </div>
-        <button className={styles.mail__btn}>
-          <div className={styles.mail__btnInner}>
-            <span>{takeAllText[language]}</span>
-            <TakeAllIcon />
-          </div>
-        </button>
+        <TransitionProvider
+          inProp={hasUnreadMessages}
+          style={TransitionStyleTypes.opacity}
+        >
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onReward(undefined, "read_all");
+            }}
+            className={styles.mail__btn}
+          >
+            <div className={styles.mail__btnInner}>
+              <span>{takeAllText[language]}</span>
+              <TakeAllIcon />
+            </div>
+          </button>
+        </TransitionProvider>
       </TransitionProvider>
       <LoadingOverlay loading={loading} />
       <Tooltip show={showTooltip} text={tooltipText[language]} />
