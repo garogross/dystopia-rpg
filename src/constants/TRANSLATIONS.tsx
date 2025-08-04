@@ -2127,9 +2127,22 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Fill up",
           [ELanguages.ru]: "Пополнить",
         },
-        apWillBeSpentText: {
-          [ELanguages.en]: "AP to be spent",
-          [ELanguages.ru]: "Будет потрачено ОД",
+
+        enemyDefenseText: {
+          [ELanguages.en]: "Enemy Defense",
+          [ELanguages.ru]: "Оборона противника",
+        },
+        damagePerTurnText: {
+          [ELanguages.en]: "Damage per turn",
+          [ELanguages.ru]: "Урон за ход",
+        },
+        apSpentText: {
+          [ELanguages.en]: "AP will be spent",
+          [ELanguages.ru]: "ОД будет потрачено",
+        },
+        defenseRemainingText: {
+          [ELanguages.en]: "Defense remaining",
+          [ELanguages.ru]: "Осталось обороны",
         },
       },
     },

@@ -19,6 +19,9 @@ import { DotsLine } from "../../../layout/icons/RPGGame/Common";
 import {
   AttackIcon,
   PersonIcon,
+  DefenseRemainingIcon,
+  DamagePerTurnIcon,
+  EnemyDefenseIcon,
 } from "../../../layout/icons/Influence/InfluenceMaphexInfoModal";
 import { BuildIcon } from "../../../layout/icons/Influence/Common";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
@@ -53,7 +56,10 @@ const {
   attackButtonText,
   confirmButtonText,
   fillupButtonText,
-  apWillBeSpentText,
+  enemyDefenseText,
+  damagePerTurnText,
+  apSpentText,
+  defenseRemainingText,
 } = TRANSLATIONS.influence.map.infoModal;
 
 const DEFAULT_COLOR = "#7f5cff";
@@ -101,9 +107,10 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
 
   if (!color) color = DEFAULT_COLOR;
 
-  let requiredPoints = hex.owner_id
+  const actionPointsCost = hex.owner_id
     ? attackEnemyHexWithoutBuilding.actionPointsCost
     : attackNeutralHex.actionPointsCost;
+  let requiredPoints = actionPointsCost;
   if (hex?.harmedPoints) requiredPoints -= hex.harmedPoints;
   let nextHarm = actionPointMax;
   if (nextHarm > requiredPoints) nextHarm = requiredPoints;
@@ -333,9 +340,22 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                 >
                   <DotsLine preserveAspectRatio />
                 </div>
+
                 <div className={styles.influenceMapHexInfoModal__spendingAP}>
                   <p className={styles.influenceMapHexInfoModal__titleText}>
-                    {apWillBeSpentText[language]}: {nextHarm}/{requiredPoints}
+                    {enemyDefenseText[language]}: {actionPointsCost}
+                  </p>
+                  <EnemyDefenseIcon />
+                </div>
+                <div className={styles.influenceMapHexInfoModal__spendingAP}>
+                  <p className={styles.influenceMapHexInfoModal__titleText}>
+                    {damagePerTurnText[language]}: {actionPointMax}
+                  </p>
+                  <DamagePerTurnIcon />
+                </div>
+                <div className={styles.influenceMapHexInfoModal__spendingAP}>
+                  <p className={styles.influenceMapHexInfoModal__titleText}>
+                    {apSpentText[language]}: {actionPointMax}
                   </p>
                   <ImageWebp
                     src={influenceEnergyImage}
@@ -343,6 +363,13 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                     alt="action point"
                     className={styles.influenceMapHexInfoModal__actionPointsImg}
                   />
+                </div>
+                <div className={styles.influenceMapHexInfoModal__spendingAP}>
+                  <p className={styles.influenceMapHexInfoModal__titleText}>
+                    {defenseRemainingText[language]}:{" "}
+                    {actionPointsCost - (hex?.harmedPoints || 0)}
+                  </p>
+                  <DefenseRemainingIcon />
                 </div>
                 <button
                   onClick={() => {

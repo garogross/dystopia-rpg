@@ -5,3 +5,7 @@ export { CaptureIcon } from "./CaptureIcon";
 export { DemolishIcon } from "./DemolishIcon";
 export { SqoutIcon } from "./SqoutIcon";
 export { RepairIcon } from "./RepairIcon";
+export { APSpentIcon } from "./APSpentIcon";
+export { DamagePerTurnIcon } from "./DamagePerTurnIcon";
+export { EnemyDefenseIcon } from "./EnemyDefenseIcon";
+export { DefenseRemainingIcon } from "./DefenseRemainingIcon";
