@@ -130,11 +130,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
     }
 
     // check enough AP
-    if (
-      (hex.owner_id &&
-        actionPoints < attackEnemyHexWithoutBuilding.actionPointsCost) ||
-      (!hex.owner_id && actionPoints < attackNeutralHex.actionPointsCost)
-    ) {
+    if (actionPoints < attackNeutralHex.actionPointsCost) {
       setTooltipText(notEnoughActionPointsText[language]);
       openTooltip();
       return;
