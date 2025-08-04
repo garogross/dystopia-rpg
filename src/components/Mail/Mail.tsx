@@ -8,7 +8,7 @@ import {
   TakeAllIcon,
 } from "../layout/icons/Mail";
 import { getElapsedTime } from "../../utils/getElapsedTime";
-import { useAppSelector } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { CancelIcon } from "../layout/icons/Common";
 import { HeaderWings } from "../layout/icons/RPGGame/Common";
 
@@ -18,6 +18,10 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../providers/TransitionProvider";
 import { TRANSLATIONS } from "../../constants/TRANSLATIONS";
+import { receiveMailReward } from "../../store/slices/influence/mailSlice";
+import { useTooltip } from "../../hooks/useTooltip";
+import LoadingOverlay from "../layout/LoadingOverlay/LoadingOverlay";
+import Tooltip from "../layout/Tooltip/Tooltip";
 
 const {
   inboxTitleText,
@@ -26,17 +30,37 @@ const {
   themeText,
   receivedText,
   unreadText,
+  claimText,
   closeText,
   takeAllText,
+  claimRewardFailedText,
+  claimRewardSuccessText,
 } = TRANSLATIONS.mail;
 
 const Mail = () => {
+  const dispatch = useAppDispatch();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const language = useAppSelector((state) => state.ui.language);
   const mails = useAppSelector((state) => state.influence.mail.mails);
   const [openedMessageId, setOpenedMessageId] = useState<null | string>(null);
-
+  const [loading, setLoading] = useState(false);
+  const [tooltipText, setTooltipText] = useState(claimRewardSuccessText);
+  const { show: showTooltip, openTooltip } = useTooltip();
   const unreadMessagesLength = mails.filter((mail) => !mail.read).length;
+
+  const onReward = async (id: string) => {
+    try {
+      setLoading(true);
+      await dispatch(receiveMailReward({ id })).unwrap();
+      setTooltipText(claimRewardSuccessText);
+    } catch (error) {
+      setTooltipText(claimRewardFailedText);
+    } finally {
+      setLoading(false);
+      openTooltip();
+    }
+  };
+
   return (
     <section className={`container ${styles.mail}`}>
       <TitleH3 wingsReverse={false} hideDotline>
@@ -89,7 +113,13 @@ const Mail = () => {
                     </div>
                     <div className={styles.mail__itemActions}>
                       {!msg.read && (
-                        <button className={styles.mail__actionBtn}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onReward(msg.id);
+                          }}
+                          className={styles.mail__actionBtn}
+                        >
                           <SetAsReadIcon />
                         </button>
                       )}
@@ -121,6 +151,20 @@ const Mail = () => {
                 <p className={styles.mail__listItemDescriptionText}>
                   {msg.body}
                 </p>
+                {!msg?.read && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onReward(msg.id);
+                    }}
+                    className={styles.mail__btn}
+                  >
+                    <div className={styles.mail__btnInner}>
+                      <span>{claimText[language]}</span>
+                      <TakeAllIcon />
+                    </div>
+                  </button>
+                )}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -152,6 +196,8 @@ const Mail = () => {
           </div>
         </button>
       </TransitionProvider>
+      <LoadingOverlay loading={loading} />
+      <Tooltip show={showTooltip} text={tooltipText[language]} />
     </section>
   );
 };

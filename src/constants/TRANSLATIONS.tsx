@@ -1160,7 +1160,7 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Open",
         [ELanguages.ru]: "Перейти",
       },
-      claimAdText: {
+      claimText: {
         [ELanguages.en]: "Claim",
         [ELanguages.ru]: "Забрать",
       },
@@ -1302,6 +1302,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Received",
       [ELanguages.ru]: "Получено",
     },
+    claimText: {
+      [ELanguages.en]: "Claim",
+      [ELanguages.ru]: "Забрать",
+    },
     closeText: {
       [ELanguages.en]: "Close",
       [ELanguages.ru]: "Закрыть",
@@ -1309,6 +1313,14 @@ export const TRANSLATIONS = {
     takeAllText: {
       [ELanguages.en]: "Take all",
       [ELanguages.ru]: "Забрать всё",
+    },
+    claimRewardFailedText: {
+      [ELanguages.en]: "Failed to claim reward",
+      [ELanguages.ru]: "Не удалось забрать награду",
+    },
+    claimRewardSuccessText: {
+      [ELanguages.en]: "Reward claimed successfully",
+      [ELanguages.ru]: "Награда успешно получена",
     },
   },
   rating: {

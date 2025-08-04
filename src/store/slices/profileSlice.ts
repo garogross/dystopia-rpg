@@ -39,7 +39,7 @@ import { finsihTutorial, initTutorial } from "./cyberFarm/tutorialSlice";
 import { initInfluence, restoreAP } from "./influence/influenceSlice";
 import { initSettings } from "./influence/settingsSlice";
 import { initMap } from "./influence/mapSlice";
-import { initMail } from "./influence/mailSlice";
+import { initMail, receiveMailReward } from "./influence/mailSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -462,6 +462,9 @@ export const profileSlice = createSlice({
     // influence
     builder.addCase(restoreAP.fulfilled, (state, { payload }) => {
       if (payload.cash_point_left) state.stats.cp = payload.cash_point_left;
+    });
+    builder.addCase(receiveMailReward.fulfilled, (state, { payload }) => {
+      if (payload.reward_given?.cp) state.stats.cp += payload.reward_given.cp;
     });
   },
 });
