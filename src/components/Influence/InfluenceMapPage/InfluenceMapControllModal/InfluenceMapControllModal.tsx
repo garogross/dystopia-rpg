@@ -37,7 +37,13 @@ const InfluenceMapControllModal = () => {
   const influencePoints = useAppSelector(
     (state) => state.influence.influence.influencePoints
   );
+  const mapRewardsInfo = useAppSelector(
+    (state) => state.influence.map.mapRewardsInfo
+  );
+  const mapId = useAppSelector((state) => state.influence.map.mapId);
   const [open, setOpen] = useState(true);
+
+  const curMapRewardsInfo = mapId ? mapRewardsInfo[mapId] : null;
 
   return (
     <div
@@ -86,7 +92,12 @@ const InfluenceMapControllModal = () => {
           />
         </div>
         <div className={styles.influenceMapControllModal__text}>
-          <span>{rewardForecastText[language]}: ≈ 0.182</span>
+          <span>
+            {rewardForecastText[language]}: ≈{" "}
+            {curMapRewardsInfo?.user_reward
+              ? +(curMapRewardsInfo?.user_reward).toFixed(2)
+              : 0}
+          </span>
           <ImageWebp
             src={cpImage}
             srcSet={cpImageWebp}

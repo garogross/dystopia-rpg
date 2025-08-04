@@ -262,6 +262,7 @@ export const getAccountDetails =
           nextAttackTs: resData.user?.next_attack_ts || 0,
           mapId,
           hexesCaptured: mapId ? resData.hexes_captured?.[mapId] || 0 : 0,
+          mapRewardsInfo: resData.map_rewards_info || {},
         })
       );
       dispatch(
