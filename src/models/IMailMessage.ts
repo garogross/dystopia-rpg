@@ -3,8 +3,8 @@ export interface IMailMessage {
   body: string;
   read: boolean;
   from?: string;
-  reward: {
-    cp: number;
+  reward?: {
+    cp?: number;
   };
   subject: string;
   created_at?: Date;

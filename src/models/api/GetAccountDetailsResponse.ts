@@ -117,4 +117,11 @@ export interface GetAccountDetailsResponse {
   hexes_captured?: {
     [key in string]: number;
   };
+  map_rewards_info?: {
+    [key in string]: {
+      map_pool_size: number;
+      user_influence_points: number;
+      user_reward: number;
+    };
+  };
 }

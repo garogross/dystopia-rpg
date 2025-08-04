@@ -1160,7 +1160,7 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Open",
         [ELanguages.ru]: "Перейти",
       },
-      claimAdText: {
+      claimText: {
         [ELanguages.en]: "Claim",
         [ELanguages.ru]: "Забрать",
       },
@@ -1302,6 +1302,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Received",
       [ELanguages.ru]: "Получено",
     },
+    claimText: {
+      [ELanguages.en]: "Claim",
+      [ELanguages.ru]: "Забрать",
+    },
     closeText: {
       [ELanguages.en]: "Close",
       [ELanguages.ru]: "Закрыть",
@@ -1309,6 +1313,19 @@ export const TRANSLATIONS = {
     takeAllText: {
       [ELanguages.en]: "Take all",
       [ELanguages.ru]: "Забрать всё",
+    },
+    claimRewardFailedText: {
+      [ELanguages.en]: "Failed to claim reward",
+      [ELanguages.ru]: "Не удалось забрать награду",
+    },
+    messageDeletedSuccessText: {
+      [ELanguages.en]: "Message deleted successfully",
+      [ELanguages.ru]: "Сообщение успешно удалено",
+    },
+
+    claimRewardSuccessText: {
+      [ELanguages.en]: "Reward claimed successfully",
+      [ELanguages.ru]: "Награда успешно получена",
     },
   },
   rating: {
@@ -2110,9 +2127,22 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Fill up",
           [ELanguages.ru]: "Пополнить",
         },
-        apWillBeSpentText: {
-          [ELanguages.en]: "AP to be spent",
-          [ELanguages.ru]: "Будет потрачено ОД",
+
+        enemyDefenseText: {
+          [ELanguages.en]: "Enemy Defense",
+          [ELanguages.ru]: "Оборона противника",
+        },
+        damagePerTurnText: {
+          [ELanguages.en]: "Damage per turn",
+          [ELanguages.ru]: "Урон за ход",
+        },
+        apSpentText: {
+          [ELanguages.en]: "AP will be spent",
+          [ELanguages.ru]: "ОД будет потрачено",
+        },
+        defenseRemainingText: {
+          [ELanguages.en]: "Defense remaining",
+          [ELanguages.ru]: "Осталось обороны",
         },
       },
     },

@@ -168,6 +168,8 @@ const LoyalitySupportProject = () => {
           gameInited={gameInited}
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
+          maxPerDayArg={150}
+          maxPerHourArg={15}
         />
         <LoyalitySupportProjectVideoTaskItem
           language={language}
@@ -180,6 +182,7 @@ const LoyalitySupportProject = () => {
           }}
           adType={EAdTypes.TADDY_V}
           index={1}
+          maxPerDayArg={5}
         />
         <LoyalitySupportProjectVideoTaskItem
           language={language}
