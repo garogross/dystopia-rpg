@@ -21,6 +21,8 @@ export interface MapState {
       user_reward: number;
     };
   };
+  durationHours: number;
+  startDatetime: Date | null;
 }
 
 const initialState: MapState = {
@@ -31,6 +33,8 @@ const initialState: MapState = {
   playerColors: {},
   hexesCaptured: 0,
   mapRewardsInfo: {},
+  durationHours: 0,
+  startDatetime: null,
 };
 
 const getMapUrl = "/influence/map/";
@@ -110,6 +114,8 @@ export const mapSlice = createSlice({
       state.mapId = action.payload.mapId;
       state.hexesCaptured = action.payload.hexesCaptured;
       state.mapRewardsInfo = action.payload.mapRewardsInfo;
+      state.durationHours = action.payload.durationHours;
+      state.startDatetime = action.payload.startDatetime;
     },
   },
   extraReducers: (builder) => {

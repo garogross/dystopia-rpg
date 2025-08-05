@@ -2069,6 +2069,14 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Defense buildings",
           [ELanguages.ru]: "Постройки обороны",
         },
+        sessionTimeLeftText: {
+          [ELanguages.en]: "Time left in session",
+          [ELanguages.ru]: "Время до окончания игровой сессии",
+        },
+        sessionPrizePoolText: {
+          [ELanguages.en]: "Total session prize pool",
+          [ELanguages.ru]: "Общий призовой пул игровой сессии",
+        },
         capturedHexesText: {
           [ELanguages.en]: "Hexes captured",
           [ELanguages.ru]: "Захвачено гексов",

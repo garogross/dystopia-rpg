@@ -76,23 +76,12 @@ const loadScripts = (tg: WebApp) => {
   script.src = "https://cdn.giga.pub/script/offer/loader/loader.js";
   script.async = true;
   document.head.appendChild(script);
-  // load adsgram script
-  const adsgramScript = document.createElement("script");
-  adsgramScript.src = "https://sad.adsgram.ai/js/sad.min.js";
-  adsgramScript.async = true;
-  document.body.appendChild(adsgramScript);
 
   // load onclicka script
   const onclickaScript2 = document.createElement("script");
   onclickaScript2.src = "https://js.onclckvd.com/in-stream-ad-admanager/tma.js";
   onclickaScript2.async = true;
   document.body.appendChild(onclickaScript2);
-
-  // load taddy script
-  const taddyScript = document.createElement("script");
-  taddyScript.src = "https://sdk.taddy.pro/web/taddy.min.js";
-  taddyScript.async = true;
-  document.body.appendChild(taddyScript);
 };
 
 const getLanguage = async (language_code: string | undefined) => {

@@ -108,6 +108,12 @@ export interface GetAccountDetailsResponse {
       influence_points_reward: number;
     };
     max_action_points_per_turn: number;
+    map_session?: {
+      pause_minutes: number;
+      duration_hours: number;
+      start_datetime: Date; // "2025-07-28T12:00:00Z",
+      hexes_per_player: number;
+    };
   };
   active_maps?: [
     {

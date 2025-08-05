@@ -171,7 +171,7 @@ const LoyalitySupportProject = () => {
           maxPerDayArg={150}
           maxPerHourArg={15}
         />
-        <LoyalitySupportProjectVideoTaskItem
+        {/* <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
           disabled={adLoading}
@@ -183,7 +183,7 @@ const LoyalitySupportProject = () => {
           adType={EAdTypes.TADDY_V}
           index={1}
           maxPerDayArg={5}
-        />
+        /> */}
         <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
