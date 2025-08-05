@@ -74,6 +74,8 @@ const InfluenceRestoreApModal = () => {
     adType: EAdTypes.GIGA_V,
     index: 4,
     maxPerHourArg: -1,
+    maxPerDayArg: -1,
+    minPouseMsArg: -1,
   });
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(
