@@ -29,6 +29,7 @@ import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
 import { EAdTypes } from "../../../../constants/EAdTypes";
+import { EAdPartners } from "../../../../constants/EAdPartners";
 
 const COST_CP = 1;
 
@@ -67,7 +68,7 @@ const InfluenceRestoreApModal = () => {
     tooltipText: adTooltipText,
     loading: adLoading,
   } = useVideoAd(
-    () => dispatch(restoreAP({ method: "ad", partner: "Adsgram" })),
+    () => dispatch(restoreAP({ method: "ad", partner: EAdPartners.Giga })),
     apsRestoredSuccessText,
     EAdTypes.GIGA_V,
     4,
