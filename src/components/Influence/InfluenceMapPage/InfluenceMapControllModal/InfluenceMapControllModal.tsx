@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   ToggleIcon,
   // BuildingIcon,
@@ -19,6 +19,7 @@ import styles from "./InfluenceMapControllModal.module.scss";
 import { useAppSelector } from "../../../../hooks/redux";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { formatTime } from "../../../../utils/formatTime";
+import { useFreshDateStateUpdate } from "../../../../hooks/useFreshDateStateUpdate";
 
 const {
   // totalHexesText,
@@ -41,14 +42,17 @@ const SessionTimeLefTimer = () => {
   );
   const freshDate = useAppSelector((state) => state.ui.freshDate);
 
-  if (!startDatetime) return 0;
-  const startDate = new Date(startDatetime);
-  const endDate = new Date(startDate);
+  let remainingTimeMs: ReactNode = 0;
+  if (startDatetime) {
+    const startDate = new Date(startDatetime);
+    const endDate = new Date(startDate);
+    endDate.setHours(endDate.getHours() + durationHours);
+    if (endDate.getTime() > freshDate)
+      remainingTimeMs = (endDate.getTime() - freshDate) / 1000;
+  }
 
-  if (endDate.getTime() < freshDate) return 0;
-  const remainingTimeMs = endDate.getTime() - freshDate;
+  useFreshDateStateUpdate(!!remainingTimeMs);
 
-  endDate.setHours(endDate.getHours() + durationHours);
   return <>{formatTime(remainingTimeMs)}</>;
 };
 
