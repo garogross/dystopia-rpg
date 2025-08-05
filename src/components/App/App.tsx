@@ -82,12 +82,6 @@ const loadScripts = (tg: WebApp) => {
   onclickaScript2.src = "https://js.onclckvd.com/in-stream-ad-admanager/tma.js";
   onclickaScript2.async = true;
   document.body.appendChild(onclickaScript2);
-
-  // load taddy script
-  const taddyScript = document.createElement("script");
-  taddyScript.src = "https://sdk.taddy.pro/web/taddy.min.js";
-  taddyScript.async = true;
-  document.body.appendChild(taddyScript);
 };
 
 const getLanguage = async (language_code: string | undefined) => {
