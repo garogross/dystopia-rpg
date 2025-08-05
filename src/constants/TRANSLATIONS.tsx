@@ -1135,6 +1135,10 @@ export const TRANSLATIONS = {
         [ELanguages.ru]:
           "Все доступные задания будут обновляться через: 6д 12ч",
       },
+      claimAdText: {
+        [ELanguages.en]: "Claim",
+        [ELanguages.ru]: "Забрать",
+      },
       subscribeText: {
         [ELanguages.en]: "Subscribe",
         [ELanguages.ru]: "Подписаться",
