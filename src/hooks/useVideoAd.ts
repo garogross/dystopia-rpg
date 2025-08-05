@@ -9,10 +9,9 @@ import { useGlobalAdController } from "./useGlobalAdController";
 import { useTooltip } from "./useTooltip";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
 import { TranslationItemType } from "../types/TranslationItemType";
+import { AD_LIMITS } from "../constants/adLimits";
 
-const MAX_PER_HOUR = 10;
-const MAX_PER_DAY = 100;
-const MIN_PAUSE_MS = 60 * 1000; // 60 секунд
+const { MAX_PER_HOUR, MAX_PER_DAY, MIN_PAUSE_MS } = AD_LIMITS[EAdTypes.GIGA_V];
 
 const {
   loadAdText,
@@ -45,16 +44,25 @@ function saveVideoAdViewTimestamps(timestamps: number[], index?: number) {
   setLSItem(getVideoAdViewTimestampsKey(index), timestamps);
 }
 
-export const useVideoAd = (
-  scsClb?: (id?: string) => void,
-  speedUpCompleteText?: TranslationItemType,
-  adType?: EAdTypes,
-  index?: number,
-  adId?: string,
-  maxPerHourArg?: number, // -1 for avoid check
-  maxPerDayArg?: number, // -1 for avoid check
-  minPouseMsArg?: number // -1 for avoid check
-) => {
+export const useVideoAd = ({
+  scsClb,
+  speedUpCompleteText,
+  adType,
+  index,
+  adId,
+  maxPerHourArg,
+  maxPerDayArg,
+  minPouseMsArg,
+}: {
+  scsClb?: (id?: string) => void;
+  speedUpCompleteText?: TranslationItemType;
+  adType?: EAdTypes;
+  index?: number;
+  adId?: string;
+  maxPerHourArg?: number; // -1 for avoid check
+  maxPerDayArg?: number; // -1 for avoid check
+  minPouseMsArg?: number; // -1 for avoid check
+}) => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
   const language = useAppSelector((state) => state.ui.language);

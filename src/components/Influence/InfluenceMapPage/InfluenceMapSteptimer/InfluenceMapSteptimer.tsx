@@ -16,8 +16,10 @@ const InfluenceMapSteptimer = () => {
     (state) => state.influence.map.nextAttackTs
   );
   const freshDate = useAppSelector((state) => state.ui.freshDate);
-  const isAvailable = freshDate > nextAttackTs;
-  const availableInSecs = Math.ceil((nextAttackTs - freshDate) / 1000);
+  const availableInSecs = Math.floor((nextAttackTs - Date.now()) / 1000);
+  const isAvailable = availableInSecs <= 0;
+  console.log(nextAttackTs - freshDate, availableInSecs);
+
   useFreshDateStateUpdate(!isAvailable);
   return (
     <TransitionProvider

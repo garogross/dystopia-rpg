@@ -3,6 +3,7 @@ import { AppDispatch, RootState } from "../../store";
 import { fetchRequest } from "../../tools/fetchTools";
 import { RestoreAPResponse } from "../../../models/api/Influence/Influence";
 import { attackHex } from "./mapSlice";
+import { EAdPartners } from "../../../constants/EAdPartners";
 
 export interface InfluenceState {
   actionPoints: number;
@@ -25,7 +26,7 @@ export const restoreAP = createAsyncThunk<
   RestoreAPResponse,
   {
     method: "buy" | "ad";
-    partner?: string;
+    partner?: EAdPartners;
     amount?: number;
   }
 >("influence/restoreAP", async (payload, { rejectWithValue, getState }) => {

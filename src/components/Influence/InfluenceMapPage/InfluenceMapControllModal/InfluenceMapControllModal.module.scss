@@ -12,7 +12,7 @@
   flex-direction: column;
   z-index: 9;
   max-height: 28px;
-  transform: translateX(130px);
+  transform: translateX(calc(100% - 60px));
   transition: $transition;
 
   &_open {

@@ -115,7 +115,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
     onShowAd,
     showTooltip: showAdTooltip,
     tooltipText: addTooltipText,
-  } = useVideoAd();
+  } = useVideoAd({});
   const { show: showTooltip, openTooltip } = useTooltip();
   const {
     onChange,

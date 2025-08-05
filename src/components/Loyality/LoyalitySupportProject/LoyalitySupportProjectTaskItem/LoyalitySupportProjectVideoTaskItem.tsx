@@ -38,16 +38,15 @@ const LoyalitySupportProjectVideoTaskItem = ({
   minPouseMsArg?: number;
 }) => {
   const { onShowAd, showTooltip, tooltipText, maxPerDay, viewsInDay, loading } =
-    useVideoAd(
+    useVideoAd({
       scsClb,
-      undefined,
       adType,
       index,
       adId,
       maxPerHourArg,
       maxPerDayArg,
-      minPouseMsArg
-    );
+      minPouseMsArg,
+    });
 
   useEffect(() => {
     onLoadingUpdate(loading);

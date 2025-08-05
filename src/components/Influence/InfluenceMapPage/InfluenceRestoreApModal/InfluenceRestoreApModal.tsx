@@ -29,6 +29,7 @@ import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
 import { EAdTypes } from "../../../../constants/EAdTypes";
+import { EAdPartners } from "../../../../constants/EAdPartners";
 
 const COST_CP = 1;
 
@@ -66,14 +67,14 @@ const InfluenceRestoreApModal = () => {
     showTooltip: adShowTooltip,
     tooltipText: adTooltipText,
     loading: adLoading,
-  } = useVideoAd(
-    () => dispatch(restoreAP({ method: "ad", partner: "Adsgram" })),
-    apsRestoredSuccessText,
-    EAdTypes.GIGA_V,
-    4,
-    undefined,
-    -1
-  );
+  } = useVideoAd({
+    scsClb: () =>
+      dispatch(restoreAP({ method: "ad", partner: EAdPartners.Giga })),
+    speedUpCompleteText: apsRestoredSuccessText,
+    adType: EAdTypes.GIGA_V,
+    index: 4,
+    maxPerHourArg: -1,
+  });
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(
     apsRestoredSuccessText[language]
