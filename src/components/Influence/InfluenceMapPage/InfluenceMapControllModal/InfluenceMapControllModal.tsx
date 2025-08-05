@@ -79,9 +79,9 @@ const InfluenceMapControllModal = () => {
         ? +(curMapRewardsInfo?.map_pool_size).toFixed(2)
         : 0,
       icon: {
-        src: influencePointIconImage,
-        srcSet: influencePointIconImageWebp,
-        alt: "influence point",
+        src: cpImage,
+        srcSet: cpImageWebp,
+        alt: "cash point",
       },
     },
     {
