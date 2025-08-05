@@ -18,16 +18,39 @@ import { DotsLine } from "../../../layout/icons/RPGGame/Common";
 import styles from "./InfluenceMapControllModal.module.scss";
 import { useAppSelector } from "../../../../hooks/redux";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { formatTime } from "../../../../utils/formatTime";
 
 const {
   // totalHexesText,
   // productionBuildingsText,
   // defenseBuildingsText,
+  sessionTimeLeftText,
+  sessionPrizePoolText,
   capturedHexesText,
   influencePointsText,
   rewardForecastText,
   clanControlTitleText,
 } = TRANSLATIONS.influence.map.controllModal;
+
+const SessionTimeLefTimer = () => {
+  const durationHours = useAppSelector(
+    (state) => state.influence.map.durationHours
+  );
+  const startDatetime = useAppSelector(
+    (state) => state.influence.map.startDatetime
+  );
+  const freshDate = useAppSelector((state) => state.ui.freshDate);
+
+  if (!startDatetime) return 0;
+  const startDate = new Date(startDatetime);
+  const endDate = new Date(startDate);
+
+  if (endDate.getTime() < freshDate) return 0;
+  const remainingTimeMs = endDate.getTime() - freshDate;
+
+  endDate.setHours(endDate.getHours() + durationHours);
+  return <>{formatTime(remainingTimeMs)}</>;
+};
 
 const InfluenceMapControllModal = () => {
   const language = useAppSelector((state) => state.ui.language);
@@ -45,6 +68,57 @@ const InfluenceMapControllModal = () => {
 
   const curMapRewardsInfo = mapId ? mapRewardsInfo[mapId] : null;
 
+  const controllModalStats = [
+    {
+      label: sessionTimeLeftText[language],
+      value: <SessionTimeLefTimer />,
+      icon: {
+        src: hexIconImage,
+        srcSet: hexIconImageWebp,
+        alt: "hex",
+      },
+    },
+    {
+      label: sessionPrizePoolText[language],
+      value: curMapRewardsInfo?.map_pool_size
+        ? +(curMapRewardsInfo?.map_pool_size).toFixed(2)
+        : 0,
+      icon: {
+        src: hexIconImage,
+        srcSet: hexIconImageWebp,
+        alt: "hex",
+      },
+    },
+    {
+      label: capturedHexesText[language],
+      value: hexesCaptured,
+      icon: {
+        src: hexIconImage,
+        srcSet: hexIconImageWebp,
+        alt: "hex",
+      },
+    },
+    {
+      label: influencePointsText[language],
+      value: influencePoints,
+      icon: {
+        src: influencePointIconImage,
+        srcSet: influencePointIconImageWebp,
+        alt: "influence point",
+      },
+    },
+    {
+      label: rewardForecastText[language],
+      value: curMapRewardsInfo?.user_reward
+        ? +(curMapRewardsInfo?.user_reward).toFixed(2)
+        : 0,
+      icon: {
+        src: cpImage,
+        srcSet: cpImageWebp,
+        alt: "cash point",
+      },
+    },
+  ];
   return (
     <div
       className={`${styles.influenceMapControllModal} ${
@@ -69,42 +143,19 @@ const InfluenceMapControllModal = () => {
         <div className={styles.influenceMapControllModal__dotline}>
           <DotsLine preserveAspectRatio />
         </div>
-        <div className={styles.influenceMapControllModal__text}>
-          <span>
-            {capturedHexesText[language]}: {hexesCaptured}
-          </span>
-          <ImageWebp
-            src={hexIconImage}
-            srcSet={hexIconImageWebp}
-            alt="hex"
-            className={styles.influenceMapControllModal__img}
-          />
-        </div>
-        <div className={styles.influenceMapControllModal__text}>
-          <span>
-            {influencePointsText[language]}: {influencePoints}
-          </span>
-          <ImageWebp
-            src={influencePointIconImage}
-            srcSet={influencePointIconImageWebp}
-            alt="influence point"
-            className={styles.influenceMapControllModal__img}
-          />
-        </div>
-        <div className={styles.influenceMapControllModal__text}>
-          <span>
-            {rewardForecastText[language]}: ≈{" "}
-            {curMapRewardsInfo?.user_reward
-              ? +(curMapRewardsInfo?.user_reward).toFixed(2)
-              : 0}
-          </span>
-          <ImageWebp
-            src={cpImage}
-            srcSet={cpImageWebp}
-            alt="cash point"
-            className={styles.influenceMapControllModal__img}
-          />
-        </div>
+        {controllModalStats.map((stat, idx) => (
+          <div className={styles.influenceMapControllModal__text} key={idx}>
+            <span>
+              {stat.label}: {stat.value}
+            </span>
+            <ImageWebp
+              src={stat.icon.src}
+              srcSet={stat.icon.srcSet}
+              alt={stat.icon.alt}
+              className={styles.influenceMapControllModal__img}
+            />
+          </div>
+        ))}
         {/* <div className={styles.influenceMapControllModal__dotline}>
           <DotsLine preserveAspectRatio />
         </div>
