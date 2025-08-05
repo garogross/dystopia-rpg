@@ -76,11 +76,6 @@ const loadScripts = (tg: WebApp) => {
   script.src = "https://cdn.giga.pub/script/offer/loader/loader.js";
   script.async = true;
   document.head.appendChild(script);
-  // load adsgram script
-  const adsgramScript = document.createElement("script");
-  adsgramScript.src = "https://sad.adsgram.ai/js/sad.min.js";
-  adsgramScript.async = true;
-  document.body.appendChild(adsgramScript);
 
   // load onclicka script
   const onclickaScript2 = document.createElement("script");
