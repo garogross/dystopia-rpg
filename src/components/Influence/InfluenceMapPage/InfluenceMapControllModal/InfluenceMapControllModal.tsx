@@ -34,26 +34,22 @@ const {
 } = TRANSLATIONS.influence.map.controllModal;
 
 const SessionTimeLefTimer = () => {
-  const durationHours = useAppSelector(
-    (state) => state.influence.map.durationHours
+  const sessionFinishDate = useAppSelector(
+    (state) => state.influence.map.sessionFinishDate
   );
-  const startDatetime = useAppSelector(
-    (state) => state.influence.map.startDatetime
-  );
+
   const freshDate = useAppSelector((state) => state.ui.freshDate);
 
   let remainingTimeMs: ReactNode = 0;
-  if (startDatetime) {
-    const startDate = new Date(startDatetime);
-    const endDate = new Date(startDate);
-    endDate.setHours(endDate.getHours() + durationHours);
+  if (sessionFinishDate) {
+    const endDate = new Date(sessionFinishDate);
     if (endDate.getTime() > freshDate)
       remainingTimeMs = (endDate.getTime() - freshDate) / 1000;
   }
 
   useFreshDateStateUpdate(!!remainingTimeMs);
 
-  return <>{formatTime(remainingTimeMs)}</>;
+  return <>{formatTime(remainingTimeMs < 0 ? 0 : remainingTimeMs)}</>;
 };
 
 const InfluenceMapControllModal = () => {
@@ -76,11 +72,6 @@ const InfluenceMapControllModal = () => {
     {
       label: sessionTimeLeftText[language],
       value: <SessionTimeLefTimer />,
-      icon: {
-        src: hexIconImage,
-        srcSet: hexIconImageWebp,
-        alt: "hex",
-      },
     },
     {
       label: sessionPrizePoolText[language],
@@ -88,9 +79,9 @@ const InfluenceMapControllModal = () => {
         ? +(curMapRewardsInfo?.map_pool_size).toFixed(2)
         : 0,
       icon: {
-        src: hexIconImage,
-        srcSet: hexIconImageWebp,
-        alt: "hex",
+        src: influencePointIconImage,
+        srcSet: influencePointIconImageWebp,
+        alt: "influence point",
       },
     },
     {
@@ -123,6 +114,7 @@ const InfluenceMapControllModal = () => {
       },
     },
   ];
+
   return (
     <div
       className={`${styles.influenceMapControllModal} ${
@@ -152,12 +144,14 @@ const InfluenceMapControllModal = () => {
             <span>
               {stat.label}: {stat.value}
             </span>
-            <ImageWebp
-              src={stat.icon.src}
-              srcSet={stat.icon.srcSet}
-              alt={stat.icon.alt}
-              className={styles.influenceMapControllModal__img}
-            />
+            {stat.icon && (
+              <ImageWebp
+                src={stat.icon.src}
+                srcSet={stat.icon.srcSet}
+                alt={stat.icon.alt}
+                className={styles.influenceMapControllModal__img}
+              />
+            )}
           </div>
         ))}
         {/* <div className={styles.influenceMapControllModal__dotline}>

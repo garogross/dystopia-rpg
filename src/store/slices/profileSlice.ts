@@ -263,8 +263,7 @@ export const getAccountDetails =
           mapId,
           hexesCaptured: mapId ? resData.hexes_captured?.[mapId] || 0 : 0,
           mapRewardsInfo: resData.map_rewards_info || {},
-          durationHours: resData.settings?.map_session?.duration_hours,
-          startDatetime: resData.settings?.map_session?.start_datetime,
+          sessionFinishDate: resData.active_maps?.[0]?.finished_at,
         })
       );
       dispatch(

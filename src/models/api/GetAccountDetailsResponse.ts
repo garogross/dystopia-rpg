@@ -118,6 +118,9 @@ export interface GetAccountDetailsResponse {
   active_maps?: [
     {
       map_id: number;
+      created_at: Date;
+      start_at: Date;
+      finished_at: Date;
     }
   ];
   hexes_captured?: {
