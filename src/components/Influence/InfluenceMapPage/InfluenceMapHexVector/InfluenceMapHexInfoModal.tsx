@@ -59,7 +59,7 @@ const {
   enemyDefenseText,
   damagePerTurnText,
   apSpentText,
-  defenseRemainingText,
+  armorRemainingText,
 } = TRANSLATIONS.influence.map.infoModal;
 
 const DEFAULT_COLOR = "#7f5cff";
@@ -366,7 +366,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                 </div>
                 <div className={styles.influenceMapHexInfoModal__spendingAP}>
                   <p className={styles.influenceMapHexInfoModal__titleText}>
-                    {defenseRemainingText[language]}:{" "}
+                    {armorRemainingText[language]}:{" "}
                     {actionPointsCost - (hex?.harmedPoints || 0)}
                   </p>
                   <DefenseRemainingIcon />

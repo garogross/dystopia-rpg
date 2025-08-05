@@ -2141,8 +2141,8 @@ export const TRANSLATIONS = {
         },
 
         enemyDefenseText: {
-          [ELanguages.en]: "Enemy Defense",
-          [ELanguages.ru]: "Оборона противника",
+          [ELanguages.en]: "Enemy armor",
+          [ELanguages.ru]: "Броня противника",
         },
         damagePerTurnText: {
           [ELanguages.en]: "Damage per turn",
@@ -2152,9 +2152,9 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "AP will be spent",
           [ELanguages.ru]: "ОД будет потрачено",
         },
-        defenseRemainingText: {
-          [ELanguages.en]: "Defense remaining",
-          [ELanguages.ru]: "Осталось обороны",
+        armorRemainingText: {
+          [ELanguages.en]: "Armor remaining",
+          [ELanguages.ru]: "Осталось брони",
         },
       },
     },
