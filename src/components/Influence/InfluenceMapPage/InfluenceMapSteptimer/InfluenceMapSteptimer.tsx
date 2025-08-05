@@ -6,6 +6,7 @@ import styles from "./InfluenceMapSteptimer.module.scss";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
+import { useFreshDateStateUpdate } from "../../../../hooks/useFreshDateStateUpdate";
 
 const { nextStepInText } = TRANSLATIONS.influence.map;
 
@@ -17,7 +18,7 @@ const InfluenceMapSteptimer = () => {
   const freshDate = useAppSelector((state) => state.ui.freshDate);
   const isAvailable = freshDate > nextAttackTs;
   const availableInSecs = Math.ceil((nextAttackTs - freshDate) / 1000);
-
+  useFreshDateStateUpdate(!isAvailable);
   return (
     <TransitionProvider
       className={styles.influenceMapSteptimer}
