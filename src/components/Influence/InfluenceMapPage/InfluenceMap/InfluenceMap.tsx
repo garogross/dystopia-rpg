@@ -25,35 +25,28 @@ import InfluenceMapSteptimer from "../InfluenceMapSteptimer/InfluenceMapSteptime
 import InfluenceMapHexInfoModal from "../InfluenceMapHexVector/InfluenceMapHexInfoModal";
 import { makeHexKey } from "../../../../utils/influence/makeHexKey";
 import { useInfluencePlayerColors } from "../../../../hooks/influence/useInfluencePlayerColors";
-import { Application, Container, Graphics, Sprite } from "pixi.js";
+import {
+  Application,
+  Assets,
+  Container,
+  Sprite,
+  ColorMatrixFilter,
+} from "pixi.js";
 import InfluenceMapBonusAreas from "../InfluenceMapBonusAreas/InfluenceMapBonusAreas";
+import { influenceHexImage } from "../../../../assets/imageMaps";
 
 const COLOR_OPACITY = "70"; // in hex
 const BONUS_AREA_BORDER_COLOR = "#7f5cff";
 
 const HEX_SIZE = 24;
 
-// Draws a flat-topped hexagon (horizontal sides are flat, vertical sides are angled)
-function drawHex(graphics: Graphics, color: number) {
-  const r = HEX_SIZE;
-  const points = [
-    [r, 0], // top
-    [2 * r, r * 0.5], // top-right
-    [2 * r, r * 1.5], // bottom-right
-    [r, 2 * r], // bottom
-    [0, r * 1.5], // bottom-left
-    [0, r * 0.5], // top-left
-  ];
-
-  // Start the path
-  graphics.moveTo(points[0][0], points[0][1]);
-  for (let i = 1; i < points.length; i++) {
-    graphics.lineTo(points[i][0], points[i][1]);
+// Load the hex texture once
+let hexTexture: any = null;
+async function getHexTexture(app: Application) {
+  if (!hexTexture) {
+    hexTexture = await Assets.load(influenceHexImage);
   }
-  graphics.lineTo(points[0][0], points[0][1]);
-
-  // Fill and stroke using the modern API
-  graphics.fill(color).stroke(0x333333);
+  return hexTexture;
 }
 
 const Hex = memo(
@@ -176,7 +169,7 @@ const InfluenceMap = () => {
       const app = new Application();
       await app.init({
         resizeTo: window,
-        backgroundColor: 0x061639,
+        backgroundAlpha: 0,
         // antialias: true,
       });
 
@@ -190,34 +183,42 @@ const InfluenceMap = () => {
       app.stage.addChild(hexLayer);
 
       // Draw only visible or initial chunk
-      // For each visible hex, create a hex with a different fill (e.g. by owner_id color)
+      // For each visible hex, create a hex with the influenceHexImage
       console.log({ visibleHexes: visibleHexes.length });
+
+      // Load the hex texture
+      const hexTexture = await getHexTexture(app);
 
       visibleHexes.forEach((hex) => {
         const { x, z, owner_id } = hex;
         const { left, top } = getHexPixelPositions({ x, z }, HEX_SIZE);
 
-        // Determine fill color for this hex
-        let fillColor = 0x55aa55; // default
-        if (owner_id) {
-          // Use the same color logic as in the React Hex component
-          // getPlayerColor returns a hex string, so parse it to number
-          let colorStr = getPlayerColor(owner_id);
-          // Remove '#' if present and append opacity
-          if (colorStr.startsWith("#")) colorStr = colorStr.slice(1);
-          // Use only RGB, ignore opacity for Pixi
-          fillColor = parseInt(colorStr.slice(0, 6), 16);
-        }
-
-        const graphics = new Graphics();
-        drawHex(graphics, fillColor);
-
-        const hexTexture = app.renderer.generateTexture(graphics);
-
+        // Create sprite with the hex image
         const sprite = new Sprite(hexTexture);
         sprite.x = left;
         sprite.y = top;
-        sprite.anchor.set(0.5);
+        // sprite.anchor.set(0.5);
+
+        // Apply tint based on owner_id if present
+        if (owner_id) {
+          // Use the same color logic as in the React Hex component
+          let colorStr = getPlayerColor(owner_id);
+          // Remove '#' if present
+          if (colorStr.startsWith("#")) colorStr = colorStr.slice(1);
+          // Convert to number for Pixi tint
+          const tintColor = parseInt(colorStr, 16);
+          sprite.tint = tintColor;
+
+          // Add highlight effect using ColorMatrixFilter
+          const brightnessFilter = new ColorMatrixFilter();
+          brightnessFilter.brightness(1.5, false); // Make it 50% brighter for more dramatic effect
+          brightnessFilter.contrast(1.2, false); // Increase contrast for better definition
+          sprite.filters = [brightnessFilter];
+        } else {
+          // For unowned hexes, make them more muted
+          sprite.alpha = 0.6;
+        }
+
         hexLayer.addChild(sprite);
       });
 
