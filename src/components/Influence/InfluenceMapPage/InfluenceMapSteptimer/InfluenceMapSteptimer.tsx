@@ -15,6 +15,8 @@ const InfluenceMapSteptimer = () => {
   const nextAttackTs = useAppSelector(
     (state) => state.influence.map.nextAttackTs
   );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const freshDate = useAppSelector((state) => state.ui.freshDate);
   const availableInSecs = Math.floor((nextAttackTs - Date.now()) / 1000);
   const isAvailable = availableInSecs <= 0;
