@@ -184,7 +184,7 @@ const LoyalitySupportProject = () => {
             }}
             adType={EAdTypes.TADDY_V}
             index={1}
-            maxPerDayArg={15}
+            maxPerDayArg={10}
           />
         )}
         <LoyalitySupportProjectVideoTaskItem
