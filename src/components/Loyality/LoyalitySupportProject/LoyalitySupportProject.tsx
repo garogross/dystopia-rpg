@@ -29,6 +29,7 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { EAdTypes } from "../../../constants/EAdTypes";
 import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
+import { getPlatformType } from "../../../utils/getPlatformType";
 
 const { taskNotCompletedText, taskCompletedText, failedToClaimRewardText } =
   TRANSLATIONS.loyality.supportProject;
@@ -45,7 +46,7 @@ const LoyalitySupportProject = () => {
   const [tooltipText, setTooltipText] = useState(taskCompletedText);
   const [adLoading, setAdLoading] = useState(false);
   const { show, openTooltip } = useTooltip();
-
+  const isMobile = getPlatformType();
   useEffect(() => {
     dispatch(getPromoTasks());
 
@@ -171,19 +172,21 @@ const LoyalitySupportProject = () => {
           maxPerDayArg={150}
           maxPerHourArg={15}
         />
-        {/* <LoyalitySupportProjectVideoTaskItem
-          language={language}
-          gameInited={gameInited}
-          disabled={adLoading}
-          onLoadingUpdate={(loading) => setAdLoading(loading)}
-          scsClb={async (id) => {
-            if (id)
-              await dispatch(claimTaddyReward({ id, task_type: "video" }));
-          }}
-          adType={EAdTypes.TADDY_V}
-          index={1}
-          maxPerDayArg={5}
-        /> */}
+        {isMobile && (
+          <LoyalitySupportProjectVideoTaskItem
+            language={language}
+            gameInited={gameInited}
+            disabled={adLoading}
+            onLoadingUpdate={(loading) => setAdLoading(loading)}
+            scsClb={async (id) => {
+              if (id)
+                await dispatch(claimTaddyReward({ id, task_type: "video" }));
+            }}
+            adType={EAdTypes.TADDY_V}
+            index={1}
+            maxPerDayArg={5}
+          />
+        )}
         <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
