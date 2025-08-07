@@ -38,6 +38,8 @@ import {
   influenceHexImage,
   influenceHexReversedImage,
 } from "../../../../assets/imageMaps";
+import { EHexDirections } from "../../../../constants/influence/EHexDirections";
+import { EsimProfilePage } from "twilio/lib/rest/supersim/v1/esimProfile";
 
 const COLOR_OPACITY = "70"; // in hex
 const BONUS_AREA_BORDER_COLOR = "#7f5cff";
@@ -195,14 +197,13 @@ const InfluenceMap = () => {
 
       // Draw only visible or initial chunk
       // For each visible hex, create a hex with the influenceHexImage
-      console.log({ visibleHexes: visibleHexes.length });
 
       // Load the hex texture
       const hexTexture = await getHexTexture();
       const hexTextureReversed = await getReversedHexTexture();
 
-      visibleHexes.forEach((hex) => {
-        const { x, z, owner_id } = hex;
+      hexesWithBorders.forEach((hex) => {
+        const { x, z, owner_id, ownerBorders } = hex;
         const { left, top } = getHexPixelPositions({ x, z }, HEX_SIZE);
 
         // Create sprite with the hex image
@@ -226,7 +227,7 @@ const InfluenceMap = () => {
 
           // Add highlight effect using ColorMatrixFilter
           const brightnessFilter = new ColorMatrixFilter();
-          brightnessFilter.brightness(1.5, false); // Make it 50% brighter for more dramatic effect
+          brightnessFilter.brightness(2, false); // Make it 50% brighter for more dramatic effect
           sprite.filters = [brightnessFilter];
         } else {
           // For unowned hexes, make them more muted
@@ -234,34 +235,76 @@ const InfluenceMap = () => {
         }
 
         // Create stroke/border for the hex
-        const stroke = new Graphics();
-        // stroke.stroke(0xffffff);
-        // stroke.setStrokeStyle(1);
-        // // Draw hex border - approximate hex shape
+        // Draw each edge separately to allow per-segment coloring
+        // const hexDirections = [
+        //   EHexDirections.TopRight,
+        //   EHexDirections.Right,
+        //   EHexDirections.BottomRight,
+        //   EHexDirections.BottomLeft,
+        //   EHexDirections.Left,
+        //   EHexDirections.TopLeft,
+        // ];
         const getHexPoints = (size: number) => {
           const r = size / 2;
+          const borderWidth = 0;
           return [
-            [r, 0], // top
-            [size, size * 0.25], // top-right
-            [size, size * 0.75], // bottom-right
-            [r, size], // bottom
-            [0, size * 0.75], // bottom-left
-            [0, size * 0.25], // top-left
+            [r, borderWidth], // top
+            [size - borderWidth, size * 0.25], // top-right
+            [size - borderWidth, size * 0.75], // bottom-right
+            [r, size - borderWidth], // bottom
+            [borderWidth, size * 0.75], // bottom-left
+            [borderWidth, size * 0.25], // top-left
           ];
         };
-        const points = getHexPoints(HEX_SIZE * 2);
-        stroke.moveTo(points[0][0], points[0][1]);
-        for (let i = 1; i < points.length; i++) {
-          stroke.lineTo(points[i][0], points[i][1]);
-        }
-        stroke.lineTo(points[0][0], points[0][1]); // Close the shape
 
-        stroke.x = left;
-        stroke.y = top;
-        stroke.stroke(0x0f0e10);
+        const directionToLine = {
+          [EHexDirections.TopRight]: [0, 1],
+          [EHexDirections.Right]: [1, 2],
+          [EHexDirections.BottomRight]: [2, 3],
+          [EHexDirections.BottomLeft]: [3, 4],
+          [EHexDirections.Left]: [4, 5],
+          [EHexDirections.TopLeft]: [5, 0],
+        };
 
-        hexLayer.addChild(sprite);
-        hexLayer.addChild(stroke);
+        const getSvg = () => {
+          const points = getHexPoints(HEX_SIZE * 2);
+
+          const lines = points.map((_, idx) => {
+            const startIdx = idx;
+            const endIdx = (idx + 1) % points.length;
+            const [x1, y1] = points[startIdx];
+            const [x2, y2] = points[endIdx];
+
+            let strokeColor = "#0f0e10";
+            if (
+              owner_id &&
+              ownerBorders?.some((dir) => {
+                const [dStart, dEnd] = directionToLine[dir];
+                return (
+                  (dStart === startIdx && dEnd === endIdx) ||
+                  (dStart === endIdx && dEnd === startIdx)
+                );
+              })
+            ) {
+              strokeColor = getPlayerColor(owner_id);
+            }
+
+            return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" />`;
+          });
+
+          const width = HEX_SIZE * 2;
+          const height = HEX_SIZE * 2;
+
+          return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">${lines.join(
+            ""
+          )}</svg>`;
+        };
+        const graphics = new Graphics();
+        graphics.svg(getSvg());
+        graphics.x = left;
+        graphics.y = top;
+        // hexLayer.addChild(sprite);
+        hexLayer.addChild(graphics);
       });
 
       // Enable panning & zooming
@@ -285,7 +328,7 @@ const InfluenceMap = () => {
 
       app.canvas.addEventListener("wheel", (e) => {
         const scale = e.deltaY < 0 ? 1.1 : 0.9;
-        const minScale = 0.7;
+        const minScale = 0.3;
         const maxScale = 1.3;
         let newScaleX = hexLayer.scale.x * scale;
         let newScaleY = hexLayer.scale.y * scale;
