@@ -75,7 +75,7 @@ const InfluenceRestoreApModal = () => {
     index: 4,
     maxPerHourArg: -1,
     maxPerDayArg: -1,
-    minPouseMsArg: -1,
+    minPouseMsArg: 30 * 1000,
   });
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(

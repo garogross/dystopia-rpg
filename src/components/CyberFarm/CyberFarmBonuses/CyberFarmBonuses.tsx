@@ -2,11 +2,6 @@ import React, { ReactNode, useEffect, useState } from "react";
 
 import styles from "./CyberFarmBonuses.module.scss";
 import ModalWithAdd from "../../layout/ModalWithAdd/ModalWithAdd";
-import ImageWebp from "../../layout/ImageWebp/ImageWebp";
-import {
-  cyberFarmBonusCpImage,
-  cyberFarmBonusCpImageWebp,
-} from "../../../assets/imageMaps";
 import {
   FormFieldWind,
   WithdrawIcon,
@@ -15,7 +10,6 @@ import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import Tooltip from "../../layout/Tooltip/Tooltip";
-import { useVideoAd } from "../../../hooks/useVideoAd";
 import { useFormValue } from "../../../hooks/useFormValue";
 import { withdrawTon } from "../../../store/slices/profileSlice";
 import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
@@ -41,7 +35,6 @@ const {
   commissionText,
   totalToReceiveText,
   totalToReceivePlaceholder,
-  watchAdText,
   withdrawText,
   withdrawCompletedText,
   withdrawFailedText,
@@ -111,11 +104,11 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
     (state) => state.profile.tonWithdrawCommission
   );
   const ton = useAppSelector((state) => state.profile.stats.ton);
-  const {
-    onShowAd,
-    showTooltip: showAdTooltip,
-    tooltipText: addTooltipText,
-  } = useVideoAd({});
+  // const {
+  //   onShowAd,
+  //   showTooltip: showAdTooltip,
+  //   tooltipText: addTooltipText,
+  // } = useVideoAd({});
   const { show: showTooltip, openTooltip } = useTooltip();
   const {
     onChange,
@@ -186,7 +179,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
       fullHeught
     >
       <div className={styles.cyberFarmBonuses}>
-        <button
+        {/* <button
           className={styles.cyberFarmBonuses__getByAddBtn}
           onClick={onShowAd}
         >
@@ -200,7 +193,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             />
             <span>{watchAdText[language]}</span>
           </div>
-        </button>
+        </button> */}
 
         <h3 className={styles.cyberFarmBonuses__title}>TON</h3>
         <form onSubmit={onSubmit} className={styles.cyberFarmBonuses__form}>
@@ -242,7 +235,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
           </FormBtn>
         </form>
       </div>
-      <Tooltip show={showAdTooltip} text={addTooltipText} />
+      {/* <Tooltip show={showAdTooltip} text={addTooltipText} /> */}
       <Tooltip show={showTooltip} text={tooltipText[language]} />
       <LoadingOverlay loading={loading} />
     </ModalWithAdd>
