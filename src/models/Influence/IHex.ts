@@ -14,4 +14,6 @@ export interface IHex {
   bonus_area_id: null | string;
   bonusAreaBorders?: EHexDirections[];
   ownerBorders?: EHexDirections[];
+  hold_reward?: number;
+  seconds_to_next_hold_reward?: number;
 }

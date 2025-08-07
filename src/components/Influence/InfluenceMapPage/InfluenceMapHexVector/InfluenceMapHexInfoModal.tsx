@@ -36,6 +36,7 @@ import {
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import { FillupIcon } from "../../../layout/icons/Influence/Common";
 import { openRestoreModal } from "../../../../store/slices/influence/influenceSlice";
+import { formatTime } from "../../../../utils/formatTime";
 
 interface Props {
   hex: IHex;
@@ -69,8 +70,35 @@ const {
   actionWillEnableInText,
   hexOccupiedText,
   hexAttackedText,
+  inText,
 } = TRANSLATIONS.influence.map;
 const { somethingWentWrong } = TRANSLATIONS.errors;
+
+const BonusTimer = ({ timer, bonus }: { timer: number; bonus: number }) => {
+  const language = useAppSelector((state) => state.ui.language);
+  const [bonusTimer, setBonusTimer] = useState(timer);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBonusTimer((prev) => {
+        if (prev < 2) clearInterval(interval);
+        return prev < 2 ? 0 : prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return (
+    <p className={styles.influenceMapHexInfoModal__infoText}>
+      <span className={styles.influenceMapHexInfoModal__infoTextValue}>
+        + {bonus}IP {inText[language]} {formatTime(bonusTimer)}
+      </span>
+    </p>
+  );
+};
 
 const InfluenceMapHexInfoModal: React.FC<Props> = ({
   hex,
@@ -286,6 +314,12 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                       </p>
                     </div>
                   </div>
+                )}
+                {!!(hex.seconds_to_next_hold_reward && hex.hold_reward) && (
+                  <BonusTimer
+                    timer={hex.seconds_to_next_hold_reward}
+                    bonus={hex.hold_reward}
+                  />
                 )}
                 <div className={styles.influenceMapHexInfoModal__infoBlock}>
                   <p className={styles.influenceMapHexInfoModal__titleText}>

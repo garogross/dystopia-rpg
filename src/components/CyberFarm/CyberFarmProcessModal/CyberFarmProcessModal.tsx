@@ -53,6 +53,9 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   } = useVideoAd({
     scsClb: () => onSpeedUp(true),
     speedUpCompleteText: speedUpCompleteText,
+    maxPerHourArg: -1,
+    maxPerDayArg: -1,
+    minPouseMsArg: 30 * 1000,
   });
 
   const [loading, setLoading] = useState(false);
