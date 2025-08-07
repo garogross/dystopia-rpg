@@ -260,7 +260,7 @@ const LoyalitySupportProject = () => {
             )
           )}
         {/* <div id="wallgram_showcase"></div> */}
-        <LoadingOverlay loading={adLoading} />
+        <LoadingOverlay loading={adLoading} withoutTransition />
       </div>
       <TransitionProvider
         inProp={gameInited}
