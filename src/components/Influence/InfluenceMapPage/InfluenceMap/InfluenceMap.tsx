@@ -8,6 +8,7 @@ import { IHex } from "../../../../models/Influence/IHex";
 import {
   getMap,
   getPlayerColors,
+  updateHex,
 } from "../../../../store/slices/influence/mapSlice";
 import InfluenceMapControllModal from "../InfluenceMapControllModal/InfluenceMapControllModal";
 import { getHexPixelPositions } from "../../../../utils/influence/getHexPixelPositions";
@@ -18,6 +19,7 @@ import InfluenceMapSteptimer from "../InfluenceMapSteptimer/InfluenceMapSteptime
 import InfluenceMapHexInfoModal from "../InfluenceMapHexVector/InfluenceMapHexInfoModal";
 import { makeHexKey } from "../../../../utils/influence/makeHexKey";
 import { useInfluencePlayerColors } from "../../../../hooks/influence/useInfluencePlayerColors";
+import { useSocket } from "../../../../hooks/useSocket";
 
 const COLOR_OPACITY = "70"; // in hex
 const BONUS_AREA_BORDER_COLOR = "#7f5cff";
@@ -48,6 +50,17 @@ const InfluenceMap = () => {
     selectedHexId &&
     visibleHexes.find(({ x, y, z }) => makeHexKey(x, y, z) === selectedHexId);
 
+  useSocket(
+    `/influence_map/${mapId}`,
+    (res) => {
+      const data = res as { type?: "hex_update"; hex?: IHex };
+
+      if (data && data.type === "hex_update" && data.hex) {
+        dispatch(updateHex(data.hex));
+      }
+    },
+    [mapId]
+  );
   useEffect(() => {
     if (!mapId) return;
     (async () => {
