@@ -119,11 +119,21 @@ export const useVideoAd = ({
         return true;
       } // for update viewsInDay on mount
       if (maxPerDay !== -1 && last24h.length >= maxPerDay) {
-        setTooltipText(dailyLimitReachedText[language]);
+        setTooltipText(
+          dailyLimitReachedText[language].replace(
+            "NUMBER",
+            maxPerDay.toString()
+          )
+        );
         return false;
       }
       if (maxPerHour !== -1 && lastHour.length >= maxPerHour) {
-        setTooltipText(hourlyLimitReachedText[language]);
+        setTooltipText(
+          hourlyLimitReachedText[language].replace(
+            "NUMBER",
+            maxPerHour.toString()
+          )
+        );
         return false;
       }
       if (minPouseMs !== -1 && now - last < minPouseMs) {

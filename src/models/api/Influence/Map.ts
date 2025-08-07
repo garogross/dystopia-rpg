@@ -12,6 +12,7 @@ export interface AttackHexResponse {
   ap_left: number;
   captured: boolean;
   victory_points: number;
+  defense_left: number;
   action_points_current: number;
   next_attack_ts: number;
 }

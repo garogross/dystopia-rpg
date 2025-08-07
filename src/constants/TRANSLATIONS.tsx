@@ -23,12 +23,14 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Будет доступно через NUMBER минуту",
     },
     dailyLimitReachedText: {
-      [ELanguages.en]: "Daily ad view limit reached (100/day)",
-      [ELanguages.ru]: "Достигнут дневной лимит просмотров рекламы (100/сутки)",
+      [ELanguages.en]: "Daily ad view limit reached (NUMBER/day)",
+      [ELanguages.ru]:
+        "Достигнут дневной лимит просмотров рекламы (NUMBER/сутки)",
     },
     hourlyLimitReachedText: {
-      [ELanguages.en]: "Hourly ad view limit reached (10/hour)",
-      [ELanguages.ru]: "Достигнут почасовой лимит просмотров рекламы (10/час)",
+      [ELanguages.en]: "Hourly ad view limit reached (NUMBER/hour)",
+      [ELanguages.ru]:
+        "Достигнут почасовой лимит просмотров рекламы (NUMBER/час)",
     },
     adAvailableInSecondsText: {
       [ELanguages.en]: (seconds: number) => {

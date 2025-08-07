@@ -110,10 +110,6 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
   const actionPointsCost = hex.owner_id
     ? attackEnemyHexWithoutBuilding.actionPointsCost
     : attackNeutralHex.actionPointsCost;
-  let requiredPoints = actionPointsCost;
-  if (hex?.harmedPoints) requiredPoints -= hex.harmedPoints;
-  let nextHarm = actionPointMax;
-  if (nextHarm > requiredPoints) nextHarm = requiredPoints;
 
   useEffect(() => {
     if (!show) {
@@ -343,7 +339,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
 
                 <div className={styles.influenceMapHexInfoModal__spendingAP}>
                   <p className={styles.influenceMapHexInfoModal__titleText}>
-                    {enemyDefenseText[language]}: {actionPointsCost}
+                    {enemyDefenseText[language]}: {hex.defense_max}
                   </p>
                   <EnemyDefenseIcon />
                 </div>
@@ -367,7 +363,8 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                 <div className={styles.influenceMapHexInfoModal__spendingAP}>
                   <p className={styles.influenceMapHexInfoModal__titleText}>
                     {armorRemainingText[language]}:{" "}
-                    {actionPointsCost - (hex?.harmedPoints || 0)}
+                    {actionPointsCost -
+                      (hex?.defense_max - hex.defense_current || 0)}
                   </p>
                   <DefenseRemainingIcon />
                 </div>
