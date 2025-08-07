@@ -2022,6 +2022,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Hex is attacked",
         [ELanguages.ru]: "Гекс атакован",
       },
+      inText: {
+        [ELanguages.en]: "in",
+        [ELanguages.ru]: "через",
+      },
       nextStepInText: {
         [ELanguages.en]: "Next step in SECONDS sec.",
         [ELanguages.ru]: "Следующий ход через SECONDS сек.",
@@ -2106,8 +2110,8 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Владелец",
         },
         ownerPlayerText: {
-          [ELanguages.en]: "Player:",
-          [ELanguages.ru]: "Игрок:",
+          [ELanguages.en]: "Player",
+          [ELanguages.ru]: "Игрок",
         },
         neutralTerritoryText: {
           [ELanguages.en]: "Uncaptured neutral territory",
