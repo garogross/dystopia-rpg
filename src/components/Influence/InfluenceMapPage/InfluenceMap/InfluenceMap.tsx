@@ -53,7 +53,7 @@ const InfluenceMap = () => {
   useSocket(
     `/influence_map/${mapId}`,
     (res) => {
-      const data = res as { type?: "hex_update"; hex?: IHex };
+      const data = res as { type?: string; hex?: IHex };
 
       if (data && data.type === "hex_update" && data.hex) {
         dispatch(updateHex(data.hex));
