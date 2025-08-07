@@ -21,7 +21,6 @@ export const useSocket = (
   useEffect(() => {
     if (token && deps.every((item) => item)) {
       const wsUrl = `${process.env.REACT_APP_SOCKET_URL}${endpoint}?token=${token}`;
-      console.log({ wsUrl });
 
       const socket = new WebSocket(wsUrl);
 
