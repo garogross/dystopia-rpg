@@ -20,6 +20,7 @@ import InfluenceMapHexInfoModal from "../InfluenceMapHexVector/InfluenceMapHexIn
 import { makeHexKey } from "../../../../utils/influence/makeHexKey";
 import { useInfluencePlayerColors } from "../../../../hooks/influence/useInfluencePlayerColors";
 import { useSocket } from "../../../../hooks/useSocket";
+import eruda from "eruda";
 
 const COLOR_OPACITY = "70"; // in hex
 const BONUS_AREA_BORDER_COLOR = "#7f5cff";
@@ -62,6 +63,7 @@ const InfluenceMap = () => {
     [mapId]
   );
   useEffect(() => {
+    eruda.init();
     if (!mapId) return;
     (async () => {
       await dispatch(getMap({ id: mapId.toString() }));
