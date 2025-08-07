@@ -134,7 +134,11 @@ export const mapSlice = createSlice({
           ...state.hexes[updatedHexIndex],
           ...(payload.captured
             ? { owner_id: +payload.tgId }
-            : { harmedPoints: payload.ap_spent }),
+            : {
+                defense_current:
+                  state.hexes[updatedHexIndex].defense_current -
+                  payload.defense_left,
+              }),
         });
       }
 
