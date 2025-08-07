@@ -114,6 +114,13 @@ export const mapSlice = createSlice({
       state.mapRewardsInfo = action.payload.mapRewardsInfo;
       state.sessionFinishDate = action.payload.sessionFinishDate;
     },
+    updateHex(state, { payload }) {
+      const updatingItemIndex = state.hexes.findIndex(
+        (hex) =>
+          hex.x === payload.x && hex.y === payload.y && hex.z === payload.z
+      );
+      state.hexes[updatingItemIndex] = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getMap.fulfilled, (state, action) => {
@@ -125,31 +132,11 @@ export const mapSlice = createSlice({
       state.playerColors = action.payload;
     });
     builder.addCase(attackHex.fulfilled, (state, { payload }) => {
-      const updatedHexIndex = state.hexes.findIndex(
-        (hex) =>
-          hex.x === payload.x && hex.y === payload.y && hex.z === payload.z
-      );
-      if (updatedHexIndex !== -1) {
-        state.hexes = state.hexes.with(updatedHexIndex, {
-          ...state.hexes[updatedHexIndex],
-          ...(payload.captured
-            ? { owner_id: +payload.tgId }
-            : {
-                defense_current:
-                  state.hexes[updatedHexIndex].defense_current -
-                  payload.defense_left,
-              }),
-        });
-      }
-
       state.nextAttackTs = payload.next_attack_ts;
-      if (payload.captured) {
-        state.hexesCaptured += 1;
-      }
     });
   },
 });
 
-export const { initMap } = mapSlice.actions;
+export const { initMap, updateHex } = mapSlice.actions;
 
 export default mapSlice.reducer;
