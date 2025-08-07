@@ -31,9 +31,13 @@ import {
   Container,
   Sprite,
   ColorMatrixFilter,
+  Graphics,
 } from "pixi.js";
 import InfluenceMapBonusAreas from "../InfluenceMapBonusAreas/InfluenceMapBonusAreas";
-import { influenceHexImage } from "../../../../assets/imageMaps";
+import {
+  influenceHexImage,
+  influenceHexReversedImage,
+} from "../../../../assets/imageMaps";
 
 const COLOR_OPACITY = "70"; // in hex
 const BONUS_AREA_BORDER_COLOR = "#7f5cff";
@@ -42,11 +46,18 @@ const HEX_SIZE = 24;
 
 // Load the hex texture once
 let hexTexture: any = null;
-async function getHexTexture(app: Application) {
+let hexTextureReversed: any = null;
+async function getHexTexture() {
   if (!hexTexture) {
     hexTexture = await Assets.load(influenceHexImage);
   }
   return hexTexture;
+}
+async function getReversedHexTexture() {
+  if (!hexTextureReversed) {
+    hexTextureReversed = await Assets.load(influenceHexReversedImage);
+  }
+  return hexTextureReversed;
 }
 
 const Hex = memo(
@@ -187,16 +198,20 @@ const InfluenceMap = () => {
       console.log({ visibleHexes: visibleHexes.length });
 
       // Load the hex texture
-      const hexTexture = await getHexTexture(app);
+      const hexTexture = await getHexTexture();
+      const hexTextureReversed = await getReversedHexTexture();
 
       visibleHexes.forEach((hex) => {
         const { x, z, owner_id } = hex;
         const { left, top } = getHexPixelPositions({ x, z }, HEX_SIZE);
 
         // Create sprite with the hex image
-        const sprite = new Sprite(hexTexture);
+        const sprite = new Sprite(x % 2 ? hexTexture : hexTextureReversed);
         sprite.x = left;
         sprite.y = top;
+        // Set the width and height of the sprite
+        sprite.width = HEX_SIZE * 2; // Set width to match hex size
+        sprite.height = HEX_SIZE * 2; // Set height to match hex size
         // sprite.anchor.set(0.5);
 
         // Apply tint based on owner_id if present
@@ -212,27 +227,55 @@ const InfluenceMap = () => {
           // Add highlight effect using ColorMatrixFilter
           const brightnessFilter = new ColorMatrixFilter();
           brightnessFilter.brightness(1.5, false); // Make it 50% brighter for more dramatic effect
-          brightnessFilter.contrast(1.2, false); // Increase contrast for better definition
           sprite.filters = [brightnessFilter];
         } else {
           // For unowned hexes, make them more muted
           sprite.alpha = 0.6;
         }
 
+        // Create stroke/border for the hex
+        const stroke = new Graphics();
+        // stroke.stroke(0xffffff);
+        // stroke.setStrokeStyle(1);
+        // // Draw hex border - approximate hex shape
+        const getHexPoints = (size: number) => {
+          const r = size / 2;
+          return [
+            [r, 0], // top
+            [size, size * 0.25], // top-right
+            [size, size * 0.75], // bottom-right
+            [r, size], // bottom
+            [0, size * 0.75], // bottom-left
+            [0, size * 0.25], // top-left
+          ];
+        };
+        const points = getHexPoints(HEX_SIZE * 2);
+        stroke.moveTo(points[0][0], points[0][1]);
+        for (let i = 1; i < points.length; i++) {
+          stroke.lineTo(points[i][0], points[i][1]);
+        }
+        stroke.lineTo(points[0][0], points[0][1]); // Close the shape
+
+        stroke.x = left;
+        stroke.y = top;
+        stroke.stroke(0x0f0e10);
+
         hexLayer.addChild(sprite);
+        hexLayer.addChild(stroke);
       });
 
       // Enable panning & zooming
       let dragging = false,
         lastX = 0,
         lastY = 0;
-      app.view.addEventListener("mousedown", (e) => {
+      app.canvas.addEventListener("mousedown", (e) => {
         dragging = true;
         lastX = e.clientX;
         lastY = e.clientY;
       });
-      app.view.addEventListener("mouseup", () => (dragging = false));
-      app.view.addEventListener("mousemove", (e) => {
+      app.canvas.addEventListener("mouseup", () => (dragging = false));
+      app.canvas.addEventListener("mouseleave", () => (dragging = false));
+      app.canvas.addEventListener("mousemove", (e) => {
         if (!dragging) return;
         hexLayer.x += e.clientX - lastX;
         hexLayer.y += e.clientY - lastY;
@@ -240,10 +283,17 @@ const InfluenceMap = () => {
         lastY = e.clientY;
       });
 
-      app.view.addEventListener("wheel", (e) => {
+      app.canvas.addEventListener("wheel", (e) => {
         const scale = e.deltaY < 0 ? 1.1 : 0.9;
-        hexLayer.scale.x *= scale;
-        hexLayer.scale.y *= scale;
+        const minScale = 0.7;
+        const maxScale = 1.3;
+        let newScaleX = hexLayer.scale.x * scale;
+        let newScaleY = hexLayer.scale.y * scale;
+        // Clamp the scale values
+        newScaleX = Math.max(minScale, Math.min(maxScale, newScaleX));
+        newScaleY = Math.max(minScale, Math.min(maxScale, newScaleY));
+        hexLayer.scale.x = newScaleX;
+        hexLayer.scale.y = newScaleY;
       });
     })();
 

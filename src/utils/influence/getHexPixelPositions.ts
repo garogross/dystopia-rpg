@@ -2,7 +2,7 @@ export const getHexPixelPositions = (
   { x, z }: { x: number; z: number },
   size: number
 ) => {
-  const width = Math.sqrt(3) * size; // ~1.732 * size
+  const width = Math.sqrt(4) * size; // ~1.732 * size
   // size * (SQRT_3 * x + (SQRT_3 / 2) * z);
 
   const xOffset = width * (x + z / 2); // staggered columns
