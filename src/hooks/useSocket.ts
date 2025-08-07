@@ -1,12 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "./redux";
+import { ELSProps } from "../constants/ELSProps";
+import { getLSItem } from "../helpers/localStorage";
 
 export const useSocket = (
   endpoint: string,
   onMessage: <T extends any>(data: T) => void,
   deps: any[] = []
 ) => {
-  const token = useAppSelector((state) => state.profile.token);
+  const storeToken = useAppSelector((state) => state.profile.token);
+  const [token, setToken] = useState(storeToken);
+
+  useEffect(() => {
+    (async () => {
+      const token = await getLSItem(ELSProps.token);
+      if (token) setToken(token);
+    })();
+  });
+
   useEffect(() => {
     if (token && deps.every((item) => item)) {
       const wsUrl = `${process.env.REACT_APP_SOCKET_URL}${endpoint}?token=${token}`;
