@@ -9,7 +9,10 @@ import { useTelegram } from "../../../hooks/useTelegram";
 import eruda from "eruda";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { authorizeUser } from "../../../store/slices/profileSlice";
-import { cyberFarmPagePath } from "../../../router/constants";
+import {
+  cyberFarmPagePath,
+  influencePagePath,
+} from "../../../router/constants";
 
 const OnBoarding = () => {
   const navigate = useNavigate();
@@ -25,7 +28,16 @@ const OnBoarding = () => {
     const fetchData = async (initData: string) => {
       try {
         const res = await dispatch(authorizeUser(initData));
-        if (res === "ton_cyber_farm") navigate(cyberFarmPagePath);
+        switch (res) {
+          case "ton_cyber_farm": {
+            navigate(cyberFarmPagePath);
+            break;
+          }
+          case "influence": {
+            navigate(influencePagePath);
+            break;
+          }
+        }
       } catch (error) {
         console.error(error);
       } finally {
