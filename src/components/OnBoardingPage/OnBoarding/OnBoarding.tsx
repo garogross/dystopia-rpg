@@ -31,6 +31,7 @@ const OnBoarding = () => {
         switch (res) {
           case "ton_cyber_farm": {
             navigate(cyberFarmPagePath);
+            // navigate(cyberFarmPagePath);
             break;
           }
           case "influence": {
