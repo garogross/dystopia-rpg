@@ -75,7 +75,7 @@ const OnBoarding = () => {
         setRememberSelect={setRememberSelect}
       />
 
-      {/* frames */}
+      {/* frames  */}
       <div
         className={`${styles.onBoarding__sideFrame} ${styles.onBoarding__sideFrame_left}`}
       ></div>
