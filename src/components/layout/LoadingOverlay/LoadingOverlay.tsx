@@ -8,9 +8,14 @@ import TransitionProvider, {
 interface Props {
   loading: boolean;
   withoutTransition?: boolean;
+  text?: string;
 }
 
-const LoadingOverlay: React.FC<Props> = ({ loading, withoutTransition }) => {
+const LoadingOverlay: React.FC<Props> = ({
+  loading,
+  withoutTransition,
+  text,
+}) => {
   return (
     <>
       {withoutTransition ? (
@@ -27,7 +32,7 @@ const LoadingOverlay: React.FC<Props> = ({ loading, withoutTransition }) => {
           style={TransitionStyleTypes.opacity}
           className={styles.loadingOverlay}
         >
-          <span>Loading...</span>
+          <span>{text || "Loading..."}</span>
         </TransitionProvider>
       )}
     </>

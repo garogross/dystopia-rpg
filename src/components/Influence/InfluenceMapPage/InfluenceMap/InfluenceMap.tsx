@@ -20,6 +20,7 @@ import InfluenceMapHexInfoModal from "../InfluenceMapHexVector/InfluenceMapHexIn
 import { makeHexKey } from "../../../../utils/influence/makeHexKey";
 import { useInfluencePlayerColors } from "../../../../hooks/influence/useInfluencePlayerColors";
 import { useSocket } from "../../../../hooks/useSocket";
+import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
 
 const COLOR_OPACITY = "70"; // in hex
 const BONUS_AREA_BORDER_COLOR = "#7f5cff";
@@ -183,6 +184,10 @@ const InfluenceMap = () => {
           onClose={() => setInfoMoadlOpened(false)}
         />
       )}
+      <LoadingOverlay
+        loading={!mapId}
+        text={!gameInited ? "loading Map" : "No Active map Right now"}
+      />
     </div>
   );
 };
