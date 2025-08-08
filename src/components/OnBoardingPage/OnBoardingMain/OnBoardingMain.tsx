@@ -74,6 +74,7 @@ const options: Option[] = [
     icon: <InfluenceIcon />,
     titleKey: "titleInfluence",
     smallText: comingSoonText,
+    gameModeKey: "influence",
     link: influencePagePath,
     // gameModeKey: "mini_games",
   },
