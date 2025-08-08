@@ -234,16 +234,6 @@ const InfluenceMap = () => {
           sprite.alpha = 0.6;
         }
 
-        // Create stroke/border for the hex
-        // Draw each edge separately to allow per-segment coloring
-        // const hexDirections = [
-        //   EHexDirections.TopRight,
-        //   EHexDirections.Right,
-        //   EHexDirections.BottomRight,
-        //   EHexDirections.BottomLeft,
-        //   EHexDirections.Left,
-        //   EHexDirections.TopLeft,
-        // ];
         const getHexPoints = (size: number) => {
           const r = size / 2;
           const borderWidth = 0;
@@ -265,9 +255,10 @@ const InfluenceMap = () => {
           [EHexDirections.Left]: [4, 5],
           [EHexDirections.TopLeft]: [5, 0],
         };
+        const offset = 3;
 
         const getSvg = () => {
-          const points = getHexPoints(HEX_SIZE * 2);
+          const points = getHexPoints(HEX_SIZE * 2 - offset);
 
           const lines = points.map((_, idx) => {
             const startIdx = idx;
@@ -292,8 +283,8 @@ const InfluenceMap = () => {
             return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" />`;
           });
 
-          const width = HEX_SIZE * 2;
-          const height = HEX_SIZE * 2;
+          const width = HEX_SIZE * 2 - 30;
+          const height = HEX_SIZE * 2 - 30;
 
           return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">${lines.join(
             ""
@@ -328,7 +319,7 @@ const InfluenceMap = () => {
 
       app.canvas.addEventListener("wheel", (e) => {
         const scale = e.deltaY < 0 ? 1.1 : 0.9;
-        const minScale = 0.3;
+        const minScale = 0.1;
         const maxScale = 1.3;
         let newScaleX = hexLayer.scale.x * scale;
         let newScaleY = hexLayer.scale.y * scale;
