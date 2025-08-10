@@ -42,6 +42,12 @@
     @include setFont(12px, 400);
     text-align: center;
   }
+
+  &__btnsWrapper {
+    @include flexCol();
+    flex-direction: column;
+    gap: 5px;
+  }
   &__btn {
     @include button($color-primary);
     padding: 1px;

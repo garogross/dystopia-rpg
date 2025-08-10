@@ -42,6 +42,7 @@ const {
   timerText,
   apsRestoredSuccessText,
 } = TRANSLATIONS.influence.map.restoreApModal;
+const { orText } = TRANSLATIONS.common;
 const { somethingWentWrong } = TRANSLATIONS.errors;
 const InfluenceRestoreApModal = () => {
   const dispatch = useAppDispatch();
@@ -135,33 +136,38 @@ const InfluenceRestoreApModal = () => {
                 ? subtitleText[language]
                 : restoreApText[language]}
             </h6>
-            <button
-              onClick={onShowAd}
-              className={styles.influenceRestoreApModal__btn}
-            >
-              <div className={styles.influenceRestoreApModal__btnInner}>
-                <span>{watchAdButtonText[language]}</span>
-                <img src={adImage} alt={"watch ad"} />
-              </div>
-            </button>
-            <button
-              onClick={onRetore}
-              className={styles.influenceRestoreApModal__btn}
-            >
-              <div className={styles.influenceRestoreApModal__btnInner}>
-                <span>
-                  {restoreCpButtonText[language].replace(
-                    "NUMBER",
-                    COST_CP.toString()
-                  )}
-                </span>
-                <ImageWebp
-                  srcSet={cpImageWebp}
-                  src={cpImage}
-                  alt={"cash point"}
-                />
-              </div>
-            </button>
+            <div className={styles.influenceRestoreApModal__btnsWrapper}>
+              <button
+                onClick={onShowAd}
+                className={styles.influenceRestoreApModal__btn}
+              >
+                <div className={styles.influenceRestoreApModal__btnInner}>
+                  <span>{watchAdButtonText[language]}</span>
+                  <img src={adImage} alt={"watch ad"} />
+                </div>
+              </button>
+              <h6 className={styles.influenceRestoreApModal__subtitleText}>
+                {orText[language]}
+              </h6>
+              <button
+                onClick={onRetore}
+                className={styles.influenceRestoreApModal__btn}
+              >
+                <div className={styles.influenceRestoreApModal__btnInner}>
+                  <span>
+                    {restoreCpButtonText[language].replace(
+                      "NUMBER",
+                      COST_CP.toString()
+                    )}
+                  </span>
+                  <ImageWebp
+                    srcSet={cpImageWebp}
+                    src={cpImage}
+                    alt={"cash point"}
+                  />
+                </div>
+              </button>
+            </div>
           </div>
           {actionPoints < actionPointMax && (
             <p className={styles.influenceRestoreApModal__timerText}>
