@@ -18,6 +18,7 @@ const CyberFarmWrapper = () => {
         images={cyberfarmImages}
         gameInited={cyberFarmInited}
         offsetSize={265}
+        mode={"ton_cyber_farm"}
       />
 
       <TutorialPopup />
