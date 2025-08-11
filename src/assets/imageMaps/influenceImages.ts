@@ -1,6 +1,7 @@
 import influenceEnergyImage from "../images/Influence/energy.png";
 import influenceEnergyImageWebp from "../images/Influence/energy.webp";
 import influenceHexImage from "../images/Influence/Map/influenceHex.png";
+import influenceHexReversedImage from "../images/Influence/Map/influenceHexReversed.png";
 import influenceHexImageWebp from "../images/Influence/Map/influenceHex.webp";
 
 import hexIconImage from "../images/Influence/hexIcon.png";
@@ -109,6 +110,7 @@ export {
   influenceEnergyImageWebp,
   influenceHexImage,
   influenceHexImageWebp,
+  influenceHexReversedImage,
   hexIconImage,
   hexIconImageWebp,
   influencePointIconImage,

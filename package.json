@@ -20,6 +20,8 @@
     "i": "^0.3.7",
     "lottie-react": "^2.4.0",
     "npm": "^11.4.2",
+    "pixi-dashed-line": "^1.4.2",
+    "pixi.js": "^8.12.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^9.1.2",
