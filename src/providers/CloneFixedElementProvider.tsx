@@ -41,7 +41,7 @@ const CloneFixedElementProvider: React.FC<Props> = ({
 
   const show =
     tutorialInProgress &&
-    curProgress.action === id &&
+    curProgress?.action === id &&
     (!!clone || !!linkProps) &&
     gameInited;
 

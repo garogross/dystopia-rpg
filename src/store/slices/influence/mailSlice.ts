@@ -22,7 +22,7 @@ export const receiveMailReward = createAsyncThunk<
       "POST",
       {
         mail_id: "id" in payload ? payload.id : undefined,
-        action: payload.action,
+        action: payload?.action,
       }
     );
 
