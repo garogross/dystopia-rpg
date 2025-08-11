@@ -1,11 +1,9 @@
-const DEFAULT_COLOR = "#7f5cff";
-
 export const generateAreaSVGs = (
   areas: Record<
     string,
     {
       borderLines: { start: [number, number]; end: [number, number] }[];
-      color?: string;
+      color: string;
     }
   >
 ) => {
@@ -124,7 +122,7 @@ export const generateAreaSVGs = (
     }
 
     if (paths.length > 0) {
-      svgPaths.push({ id, paths, color: color || DEFAULT_COLOR });
+      svgPaths.push({ id, paths, color: color });
     }
   }
 

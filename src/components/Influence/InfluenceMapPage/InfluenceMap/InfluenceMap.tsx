@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./InfluenceMap.module.scss";
 
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
@@ -22,28 +16,25 @@ import InfluenceMapHexInfoModal from "../InfluenceMapHexVector/InfluenceMapHexIn
 import { makeHexKey } from "../../../../utils/influence/makeHexKey";
 import { useInfluencePlayerColors } from "../../../../hooks/influence/useInfluencePlayerColors";
 import {
-  Application,
   Assets,
-  Container,
   Sprite,
   ColorMatrixFilter,
   Graphics,
+  BitmapText,
+  Rectangle, // Add for filterArea and hitArea
 } from "pixi.js";
 import {
   influenceHexImage,
   influenceHexReversedImage,
 } from "../../../../assets/imageMaps";
-import { EHexDirections } from "../../../../constants/influence/EHexDirections";
 import { generateAreas } from "../../../../utils/influence/generateAreas";
 import { generateAreaSVGs } from "../../../../utils/influence/generateAreaSVGs";
 import { generateAndAddAreaGraphics } from "../../../../utils/influence/generateAreaGraphics";
+import { getHexSvg } from "../../../../utils/influence/getHexSvg";
+import { getBonusAreas } from "../../../../utils/influence/getBonusAreas";
+import { usePixiTs } from "../../../../hooks/influence/usePixi";
 
-type OffsetType = {
-  x: number;
-  y: number;
-};
-
-const BONUS_AREA_BORDER_COLOR = "#7f5cff";
+const DEFAULT_COLOR = "#7f5cff";
 
 const HEX_SIZE = 24;
 
@@ -63,46 +54,15 @@ async function getReversedHexTexture() {
   return hexTextureReversed;
 }
 
-const getHexPoints = (size: number): [number, number][] => {
-  const r = size / 2;
-  const borderWidth = 1;
-  return [
-    [r, borderWidth] as [number, number], // top
-    [size - borderWidth, size * 0.25] as [number, number], // top-right
-    [size - borderWidth, size * 0.75] as [number, number], // bottom-right
-    [r, size - borderWidth] as [number, number], // bottom
-    [borderWidth, size * 0.75] as [number, number], // bottom-left
-    [borderWidth, size * 0.25] as [number, number], // top-left
-  ];
-};
-
-const directionToLine = {
-  [EHexDirections.TopRight]: [0, 1],
-  [EHexDirections.Right]: [1, 2],
-  [EHexDirections.BottomRight]: [2, 3],
-  [EHexDirections.BottomLeft]: [3, 4],
-  [EHexDirections.Left]: [4, 5],
-  [EHexDirections.TopLeft]: [5, 0],
-};
-
 const InfluenceMap = () => {
   const dispatch = useAppDispatch();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const hexes = useAppSelector((state) => state.influence.map.hexes);
   const mapId = useAppSelector((state) => state.influence.map.mapId);
   const getPlayerColor = useInfluencePlayerColors();
-  const pixiContainer = useRef<HTMLDivElement>(null);
-  const appRef = useRef<Application>();
-  const hexLayerRef = useRef<Container>();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleHexes, setVisibleHexes] = useState<IHex[]>([]);
-  const [offset, setOffset] = useState<OffsetType>({
-    x: 0,
-    y: 0,
-  });
-  const [scale, setScale] = useState(1);
-  const [isInitialized, setIsInitialized] = useState(false);
 
   const hexesWithBorders = useMemo(
     () => findBonusAreaBorders(visibleHexes),
@@ -110,11 +70,19 @@ const InfluenceMap = () => {
   );
   const [selectedHexId, setSelectedHexId] = useState<string | null>(null);
   const [infoMoadlOpened, setInfoMoadlOpened] = useState(Boolean);
-
+  const bonusAreaTexts = getBonusAreas(hexesWithBorders, HEX_SIZE);
   const selectedHex =
     selectedHexId &&
     visibleHexes.find(({ x, y, z }) => makeHexKey(x, y, z) === selectedHexId);
-
+  const {
+    isInitialized,
+    offset,
+    scale,
+    pixiContainer,
+    appRef,
+    hexLayerRef,
+    isDraggingRef,
+  } = usePixiTs();
   useEffect(() => {
     if (!mapId) return;
     (async () => {
@@ -124,88 +92,21 @@ const InfluenceMap = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapId]);
 
-  useEffect(() => {
-    if (!gameInited || !pixiContainer.current) return;
-    const initPixiMap = async () => {
-      const app = new Application();
-      await app.init({
-        resizeTo: pixiContainer.current as HTMLElement,
-        backgroundAlpha: 0,
-        antialias: true, // Enable antialiasing for better quality
-        resolution: window.devicePixelRatio || 1, // Use device pixel ratio for crisp rendering
-      });
-
-      // Wait for the next tick to ensure canvas is created
-      if (app?.canvas && pixiContainer.current) {
-        pixiContainer.current.appendChild(app.canvas);
-      }
-      appRef.current = app;
-
-      const hexLayer = new Container();
-      app.stage.addChild(hexLayer);
-      hexLayerRef.current = hexLayer;
-
-      hexLayer.x = app.screen.width / 2;
-      hexLayer.y = app.screen.height / 2;
-
-      // Set initial offset to 0 since we're already centered
-      setOffset({ x: 0, y: 0 });
-      setIsInitialized(true);
-
-      // Enable panning & zooming
-      let dragging = false,
-        lastX = 0,
-        lastY = 0;
-      app.canvas.addEventListener("mousedown", (e) => {
-        dragging = true;
-        lastX = e.clientX;
-        lastY = e.clientY;
-      });
-      const onMouseUp = () => {
-        setOffset({
-          x: hexLayer.x - app.screen.width / 2,
-          y: hexLayer.y - app.screen.height / 2,
-        });
-        setScale(hexLayer.scale.y);
-        dragging = false;
-      };
-      app.canvas.addEventListener("mouseup", onMouseUp);
-      app.canvas.addEventListener("mouseleave", onMouseUp);
-      app.canvas.addEventListener("mousemove", (e) => {
-        if (!dragging) return;
-        hexLayer.x += e.clientX - lastX;
-        hexLayer.y += e.clientY - lastY;
-        lastX = e.clientX;
-        lastY = e.clientY;
-      });
-
-      app.canvas.addEventListener("wheel", (e) => {
-        const scale = e.deltaY < 0 ? 1.1 : 0.9;
-        const minScale = 0.1;
-        const maxScale = 1.3;
-        let newScaleX = hexLayer.scale.x * scale;
-        let newScaleY = hexLayer.scale.y * scale;
-        // Clamp the scale values
-        newScaleX = Math.max(minScale, Math.min(maxScale, newScaleX));
-        newScaleY = Math.max(minScale, Math.min(maxScale, newScaleY));
-        hexLayer.scale.x = newScaleX;
-        hexLayer.scale.y = newScaleY;
-      });
-    };
-
-    initPixiMap();
-
-    // return () => app.destroy(true, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameInited]);
-
   const ownedAreas = generateAreas(
     hexesWithBorders,
     "ownerBorders",
     HEX_SIZE,
     getPlayerColor
   );
+  const bonusAreas = generateAreas(
+    hexesWithBorders,
+    "bonusAreaBorders",
+    HEX_SIZE,
+    undefined,
+    DEFAULT_COLOR
+  );
   const ownedAreaSVGs = generateAreaSVGs(ownedAreas);
+  const bonusAreaSVGs = generateAreaSVGs(bonusAreas);
 
   const updateCanvas = async () => {
     if (!hexLayerRef.current) return;
@@ -215,80 +116,89 @@ const InfluenceMap = () => {
     const hexTexture = await getHexTexture();
     const hexTextureReversed = await getReversedHexTexture();
 
+    // Perf: batch sprites by type, then graphics, to minimize draw calls
+    const spriteBatch: Sprite[] = [];
+    const graphicsBatch: Graphics[] = [];
+
     hexesWithBorders.forEach((hex) => {
-      const { x, z, owner_id } = hex;
+      const { x, z, y, owner_id } = hex;
       const { left, top } = getHexPixelPositions({ x, z }, HEX_SIZE);
 
       // Create sprite with the hex image
       const sprite = new Sprite(x % 2 ? hexTexture : hexTextureReversed);
-      // Position relative to the center (0,0) hex - no need to adjust since the layer is already centered
       sprite.x = left;
       sprite.y = top;
-      // Set the width and height of the sprite
-      sprite.width = HEX_SIZE * 2; // Set width to match hex size
-      sprite.height = HEX_SIZE * 2; // Set height to match hex size
-      // sprite.anchor.set(0.5);
+      sprite.width = HEX_SIZE * 2;
+      sprite.height = HEX_SIZE * 2;
+
+      // Perf: set hitArea to avoid event crawling
+      sprite.hitArea = new Rectangle(0, 0, sprite.width, sprite.height);
 
       // Apply tint based on owner_id if present
       if (owner_id) {
-        // Use the same color logic as in the React Hex component
         let colorStr = getPlayerColor(owner_id);
-        // Remove '#' if present
         if (colorStr.startsWith("#")) colorStr = colorStr.slice(1);
-        // Convert to number for Pixi tint
         const tintColor = parseInt(colorStr, 16);
         sprite.tint = tintColor;
 
-        // Add highlight effect using ColorMatrixFilter
-        const brightnessFilter = new ColorMatrixFilter();
-        brightnessFilter.brightness(2, false); // Make it 50% brighter for more dramatic effect
-        sprite.filters = [brightnessFilter];
+        // Perf: only use filter on desktop
+        if (!/Mobi|Android/i.test(navigator.userAgent)) {
+          const brightnessFilter = new ColorMatrixFilter();
+          brightnessFilter.brightness(2, false);
+          sprite.filters = [brightnessFilter];
+        }
       } else {
-        // For unowned hexes, make them more muted
-        sprite.alpha = 0.6;
       }
+      sprite.alpha = 0.6;
 
-      const getHexPoints = (size: number) => {
-        const r = size / 2;
-        const borderWidth = 0;
-        return [
-          [r, borderWidth], // top
-          [size - borderWidth, size * 0.25], // top-right
-          [size - borderWidth, size * 0.75], // bottom-right
-          [r, size - borderWidth], // bottom
-          [borderWidth, size * 0.75], // bottom-left
-          [borderWidth, size * 0.25], // top-left
-        ];
-      };
+      sprite.eventMode = "static";
+      sprite.cursor = "pointer";
+      sprite.on("pointertap", (event) => {
+        if (!isDraggingRef.current) {
+          // Prevent event from bubbling to React/modal backdrop
+          event.stopPropagation();
+          setTimeout(() => {
+            select(x, y, z);
+          }, 30);
+        }
+      });
+      spriteBatch.push(sprite);
 
-      const getSvg = () => {
-        const points = getHexPoints(HEX_SIZE * 2);
-
-        const lines = points.map((_, idx) => {
-          const startIdx = idx;
-          const endIdx = (idx + 1) % points.length;
-          const [x1, y1] = points[startIdx];
-          const [x2, y2] = points[endIdx];
-
-          return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black" stroke-width="2" stroke-linecap="round" />`;
-        });
-
-        const width = HEX_SIZE * 2 - 30;
-        const height = HEX_SIZE * 2 - 30;
-
-        return `<svg xmlns="http://www.w3.org/2000/svg"    width="${width}" height="${height}">${lines.join(
-          ""
-        )}</svg>`;
-      };
+      // Graphics for hex border
       const graphics = new Graphics();
-      graphics.svg(getSvg());
+      graphics.svg(getHexSvg(HEX_SIZE));
       graphics.x = left;
       graphics.y = top;
-      hexLayerRef.current?.addChild(sprite);
-      hexLayerRef.current?.addChild(graphics);
+      graphicsBatch.push(graphics);
     });
 
+    // Add all sprites, then all graphics (draw order optimization)
+    spriteBatch.forEach((sprite) => hexLayerRef.current?.addChild(sprite));
+    graphicsBatch.forEach((graphics) =>
+      hexLayerRef.current?.addChild(graphics)
+    );
+
     generateAndAddAreaGraphics(hexLayerRef.current, ownedAreaSVGs, 2);
+    generateAndAddAreaGraphics(hexLayerRef.current, bonusAreaSVGs, 1.5, true);
+    await document.fonts.load("18px DS_Army");
+
+    // Perf: BitmapText - lower resolution on mobile
+    bonusAreaTexts.forEach((area) => {
+      const text = new BitmapText({
+        text: area.id.toUpperCase(),
+        style: {
+          fontFamily: "DS_Army",
+          fontSize: 20,
+          fill: "white",
+          stroke: DEFAULT_COLOR,
+          // resolution: isMobile ? 1 : 2, // Lower res on mobile
+        },
+      });
+      text.x = area.left - text.width / 2;
+      text.y = area.top - text.height / 2;
+      text.zIndex = 10;
+      hexLayerRef.current?.addChild(text);
+    });
   };
 
   useEffect(() => {
@@ -299,7 +209,13 @@ const InfluenceMap = () => {
   }, [visibleHexes, isInitialized]);
 
   useEffect(() => {
-    if (gameInited && containerRef.current && appRef.current && isInitialized) {
+    if (
+      gameInited &&
+      containerRef.current &&
+      appRef.current &&
+      isInitialized &&
+      scale
+    ) {
       const containerRect = containerRef.current.getBoundingClientRect();
       const containerWidth = containerRect.width;
       const containerHeight = containerRect.height;
@@ -328,6 +244,7 @@ const InfluenceMap = () => {
       });
       setVisibleHexes(visibleHexes);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     gameInited,
     containerRef,
@@ -337,10 +254,11 @@ const InfluenceMap = () => {
     offset.y,
     isInitialized,
   ]);
-  const select = useCallback((x: number, y: number, z: number) => {
+
+  const select = (x: number, y: number, z: number) => {
     setSelectedHexId(makeHexKey(x, y, z));
     setInfoMoadlOpened(true);
-  }, []);
+  };
   return (
     <div ref={containerRef} className={styles.influenceMap}>
       <InfluenceMapSteptimer />

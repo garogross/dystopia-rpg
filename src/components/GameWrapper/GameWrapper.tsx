@@ -55,8 +55,6 @@ const GameWrapper: FC<Props> = ({
       username?: string
     ) => {
       try {
-        console.log({ mode });
-
         await dispatch(authorizeUser(initData, avatar, username, mode));
       } catch (error) {
         console.error(error);
