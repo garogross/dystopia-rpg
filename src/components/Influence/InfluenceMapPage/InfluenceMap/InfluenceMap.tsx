@@ -21,7 +21,6 @@ import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
 import {
   Assets,
   Sprite,
-  ColorMatrixFilter,
   Graphics,
   BitmapText,
   Rectangle, // Add for filterArea and hitArea
@@ -136,7 +135,7 @@ const InfluenceMap = () => {
     const graphicsBatch: Graphics[] = [];
 
     hexesWithBorders.forEach((hex) => {
-      const { x, z, y, owner_id } = hex;
+      const { x, z, y } = hex;
       const { left, top } = getHexPixelPositions({ x, z }, HEX_SIZE);
 
       // Create sprite with the hex image
@@ -150,20 +149,7 @@ const InfluenceMap = () => {
       sprite.hitArea = new Rectangle(0, 0, sprite.width, sprite.height);
 
       // Apply tint based on owner_id if present
-      if (owner_id) {
-        let colorStr = getPlayerColor(owner_id);
-        if (colorStr.startsWith("#")) colorStr = colorStr.slice(1);
-        const tintColor = parseInt(colorStr, 16);
-        sprite.tint = tintColor;
 
-        // Perf: only use filter on desktop
-        if (!/Mobi|Android/i.test(navigator.userAgent)) {
-          const brightnessFilter = new ColorMatrixFilter();
-          brightnessFilter.brightness(2, false);
-          sprite.filters = [brightnessFilter];
-        }
-      } else {
-      }
       sprite.alpha = 0.6;
 
       sprite.eventMode = "static";
