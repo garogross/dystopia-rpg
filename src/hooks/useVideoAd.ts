@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { EAdTypes } from "../constants/EAdTypes";
 import { ELSProps } from "../constants/ELSProps";
 import { getLSItem, setLSItem } from "../helpers/localStorage";
-import { claimVideoReward } from "../store/slices/tasksSlice";
+import { claimAdReward } from "../store/slices/tasksSlice";
 // import { getPlatformType } from "../utils/getPlatformType";
 import { useAppDispatch, useAppSelector } from "./redux";
 import { useGlobalAdController } from "./useGlobalAdController";
@@ -10,6 +10,8 @@ import { useTooltip } from "./useTooltip";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
 import { TranslationItemType } from "../types/TranslationItemType";
 import { AD_LIMITS } from "../constants/adLimits";
+import { EAdActionTypes } from "../constants/EadActionTypes";
+import { EadProviders } from "../constants/EadProviders";
 
 const { MAX_PER_HOUR, MAX_PER_DAY, MIN_PAUSE_MS } = AD_LIMITS[EAdTypes.GIGA_V];
 
@@ -79,7 +81,13 @@ export const useVideoAd = ({
     try {
       // Сохраняем новый просмотр
       if (scsClb) await scsClb(id);
-      else await dispatch(claimVideoReward({ id: tgId?.toString() })).unwrap();
+      else
+        await dispatch(
+          claimAdReward({
+            ad_type: EAdActionTypes.Video,
+            provider: EadProviders.Gigapub,
+          })
+        ).unwrap();
       const now = Date.now();
       let timestamps = await getVideoAdViewTimestamps(index);
       timestamps = timestamps?.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
