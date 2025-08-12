@@ -181,7 +181,12 @@ const InfluenceMap = () => {
 
       // Graphics for hex border
       const graphics = new Graphics();
-      graphics.svg(getHexSvg(HEX_SIZE));
+      graphics.svg(
+        getHexSvg(
+          HEX_SIZE,
+          hex.owner_id ? getPlayerColor(hex.owner_id) : undefined
+        )
+      );
       graphics.x = left;
       graphics.y = top;
       graphicsBatch.push(graphics);
