@@ -29,12 +29,13 @@ import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import { getPlatformType } from "../../../utils/getPlatformType";
 import { EadProviders } from "../../../constants/EadProviders";
 import { EAdActionTypes } from "../../../constants/EadActionTypes";
+import { postLog } from "../../../api/logs";
 
 const { taskNotCompletedText, taskCompletedText, failedToClaimRewardText } =
   TRANSLATIONS.loyality.supportProject;
 
 const TADS_WIDGET_ID = "543";
-
+const BARZHA_WIDGET_ID = 70;
 const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
@@ -48,7 +49,7 @@ const LoyalitySupportProject = () => {
   const isMobile = getPlatformType();
   useEffect(() => {
     //@ts-ignore
-    let widgetInstance = new AdMaster(70, {
+    let widgetInstance = new AdMaster(BARZHA_WIDGET_ID, {
       onAdsNotFound: () => console.log("onAdsNotFound"),
     });
     widgetInstance.initWidget();
@@ -56,7 +57,10 @@ const LoyalitySupportProject = () => {
     //@ts-ignore
     var taskWidget = new TaskWidget(60, {
       //@ts-ignore
-      receiveTaskWidgetCallback: (data) => console.log({ data }),
+      receiveTaskWidgetCallback: (data) => {
+        console.log({ data });
+        postLog({ type: "TaskWidget", data });
+      },
       //@ts-ignore
       receiveTaskWidgetErrorCallback: (err) => console.log({ err }),
     });
@@ -306,6 +310,7 @@ const LoyalitySupportProject = () => {
             )
           )}
         {/* <div id="wallgram_showcase"></div> */}
+        <div id={`widget-id-${BARZHA_WIDGET_ID}`} />
         <LoadingOverlay loading={adLoading} withoutTransition />
       </div>
       <TransitionProvider
