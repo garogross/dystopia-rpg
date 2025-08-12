@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { claimTraffyReward } from "../../../../store/slices/tasksSlice";
+import { claimAdReward } from "../../../../store/slices/tasksSlice";
 import { initTraffyTasks } from "../../../../utils/initTraffyTasks";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { useTooltip } from "../../../../hooks/useTooltip";
@@ -9,6 +9,8 @@ import { getLSItem, setLSItem } from "../../../../helpers/localStorage";
 
 import styles from "./LoyalitySupportProjectTraffyContainer.module.scss";
 import { ELSProps } from "../../../../constants/ELSProps";
+import { EAdActionTypes } from "../../../../constants/EadActionTypes";
+import { EadProviders } from "../../../../constants/EadProviders";
 
 const { taskNotCompletedText } = TRANSLATIONS.loyality.supportProject;
 
@@ -45,8 +47,14 @@ const LoyalitySupportProjectTraffyContainer = () => {
     if (!hidden) {
       initTraffyTasks(
         traffyTasks.current,
-        (signedToken, id) => {
-          dispatch(claimTraffyReward({ signedToken, id }));
+        (signedToken, _id) => {
+          dispatch(
+            claimAdReward({
+              ad_type: EAdActionTypes.Task,
+              provider: EadProviders.Traffy,
+              identifier: signedToken,
+            })
+          );
           // hide tasks for 1 hour
           const hideUntil = Date.now() + 60 * 60 * 1000;
           setLSItem(ELSProps.hideTraffyContainerUntil, hideUntil);

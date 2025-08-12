@@ -5,12 +5,14 @@ import { getPlatformType } from "../../../../utils/getPlatformType";
 import React from "react";
 import { getLSItem, setLSItem } from "../../../../helpers/localStorage";
 import { ELSProps } from "../../../../constants/ELSProps";
-import { claimAdsgramReward } from "../../../../store/slices/tasksSlice";
+import { claimAdReward } from "../../../../store/slices/tasksSlice";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import styles from "./LoyalitySupportProjectTaskItem.module.scss";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { EAdActionTypes } from "../../../../constants/EadActionTypes";
+import { EadProviders } from "../../../../constants/EadProviders";
 
 const HIDE_DURATION_MS = 60 * 60 * 1000; // 1 hour
 
@@ -45,7 +47,13 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
     if (!isMobile) return;
 
     const handler = (event: any) => {
-      dispatch(claimAdsgramReward({ taskId: event.detail }));
+      dispatch(
+        claimAdReward({
+          ad_type: EAdActionTypes.Task,
+          provider: EadProviders.Adsgram,
+          identifier: event.detail,
+        })
+      );
       // Hide the task for 1 hour
       const hideUntil = Date.now() + HIDE_DURATION_MS;
       setLSItem(ELSProps.adsgramLastClickDate, hideUntil?.toString());

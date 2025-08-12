@@ -20,14 +20,7 @@ import {
 import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
 import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
 import {
-  claimAdsgramReward,
-  claimBarzhaReward,
-  claimOnclickaReward,
-  claimTaddyReward,
-  claimTadsReward,
-  claimTraffyReward,
-  claimVideoReward,
-  claimWallgramReward,
+  claimAdReward,
   getPromoTaskReward,
   getRewardTaddy,
   verifyGigaHash,
@@ -410,51 +403,17 @@ export const profileSlice = createSlice({
     });
 
     // tasks
+    builder.addCase(claimAdReward.fulfilled, (state, { payload }) => {
+      if (+payload.reward && payload.status === "ok") {
+        state.stats.cp += +payload.reward;
+      }
+    });
     builder.addCase(getPromoTaskReward.fulfilled, (state, { payload }) => {
       if (+payload.reward && payload.status === "ok") {
         state.stats.cp += +payload.reward;
       }
     });
-    builder.addCase(claimBarzhaReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimTraffyReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimWallgramReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimTaddyReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimAdsgramReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimOnclickaReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimTadsReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimVideoReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
+
     builder.addCase(verifyGigaHash.fulfilled, (state, { payload }) => {
       if (payload.success && payload.confirmationHash) {
         state.stats.cp += +payload.amount;
