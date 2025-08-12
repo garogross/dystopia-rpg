@@ -66,7 +66,6 @@ export const useVideoAd = ({
   minPouseMsArg?: number; // -1 for avoid check
 }) => {
   const dispatch = useAppDispatch();
-  const tgId = useAppSelector((state) => state.profile.tgId);
   const language = useAppSelector((state) => state.ui.language);
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(loadAdText[language]);
