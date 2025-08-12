@@ -48,6 +48,17 @@ const LoyalitySupportProject = () => {
   const { show, openTooltip } = useTooltip();
   const isMobile = getPlatformType();
   useEffect(() => {
+    let widgetInstance = new AdMaster(70, {
+      onAdsNotFound: () => console.log("onAdsNotFound"),
+    });
+    widgetInstance.initWidget();
+
+    var taskWidget = new TaskWidget(60, {
+      receiveTaskWidgetCallback: (data) => console.log({ data }),
+      receiveTaskWidgetErrorCallback: (err) => console.log({ err }),
+    });
+
+    taskWidget.initWidget();
     dispatch(getPromoTasks());
 
     // init wallgram

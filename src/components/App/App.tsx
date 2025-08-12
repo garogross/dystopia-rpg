@@ -19,7 +19,11 @@ const loadScripts = (tg: WebApp) => {
   barzhaScript.src = `https://app.barzha.com/bQuest.js?token=${process.env.REACT_APP_BARZHA_TOKEN}`;
   barzhaScript.async = true;
   document.body.appendChild(barzhaScript);
-
+  // load barzha task-widget script
+  // const barzhaTaskWidgetScript = document.createElement("script");
+  // barzhaTaskWidgetScript.src = "https://app.barzha.com/task-widget.js";
+  // barzhaTaskWidgetScript.async = true;
+  // document.body.appendChild(barzhaTaskWidgetScript);
   // load traffy script
   const traffyToken = process.env.REACT_APP_TRAFFY_TOKEN;
   if (traffyToken) {
