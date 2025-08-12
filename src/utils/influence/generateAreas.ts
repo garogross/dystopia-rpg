@@ -41,7 +41,7 @@ export function generateAreas(
   defaultColor?: string
 ): AreaResult {
   return hexesWithBorders.reduce((acc, cur) => {
-    const points = getHexPoints(size * 2, 1);
+    const points = getHexPoints(size * 2, areaType === "ownerBorders" ? 2 : 1);
     const id = areaType === "ownerBorders" ? "owner_id" : "bonus_area_id";
 
     if (cur[areaType] && cur[id]) {
