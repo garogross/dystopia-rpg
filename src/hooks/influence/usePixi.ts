@@ -36,7 +36,7 @@ export const usePixiTs = () => {
         backgroundAlpha: 0,
         antialias: !isMobile, // Disable antialias on mobile for perf
         // useContextAlpha: false, // Perf: disables alpha channel if not needed
-        resolution: isMobile ? 2 : Math.min(window.devicePixelRatio, 2), // Lower res on mobile
+        resolution: isMobile ? 2 : window.devicePixelRatio,
         autoStart: true, // Auto-starts the render loop
         sharedTicker: true, // Use shared ticker for better performance
 
