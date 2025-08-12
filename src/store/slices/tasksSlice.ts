@@ -8,7 +8,6 @@ import { GetPromoTaskRewardResponse } from "../../models/api/tasks/promoTasks";
 import { ClaimAdRewardResponse } from "../../models/api/tasks/tasks";
 import { EadProviders } from "../../constants/EadProviders";
 import { EAdActionTypes } from "../../constants/EadActionTypes";
-import { BquestCallbackDataType } from "../../types/BquestCallbackDataType";
 
 export interface TasksState {
   promoTasks: IPromoTask[];
