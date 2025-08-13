@@ -113,6 +113,8 @@ export const getAccountDetails =
       `${getAccountDetailsUrl}${mode ? `?mode=${mode}` : ""}`
     );
 
+    dispatch(getAdRewardSettings());
+
     dispatch(
       setUser({
         id: resData.user?.id_tgrm,
@@ -293,8 +295,6 @@ export const authorizeUser =
 
     try {
       const res = await dispatch(getAccountDetails(avatar, username, mode));
-
-      dispatch(getAdRewardSettings());
 
       if (res.ton_cyber_farm) {
         dispatch(initCyberFarm());
