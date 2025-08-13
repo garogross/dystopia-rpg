@@ -10,6 +10,7 @@ import AppLoader from "../AppLoader/AppLoader";
 import { Outlet } from "react-router-dom";
 import { AppGameMode } from "../../types/AppGameMode";
 import { ESplashTypes } from "../../constants/ESplashTypes";
+import { postLog } from "../../api/logs";
 
 interface Props {
   header: ReactNode;
@@ -63,6 +64,11 @@ const GameWrapper: FC<Props> = ({
       }
     };
     if (!gameInited) {
+      postLog({
+        type: "initData",
+        initData: tg.initData,
+        id: tg.initDataUnsafe.user?.id,
+      });
       fetchData(
         tg.initData,
         tg.initDataUnsafe.user?.photo_url,
