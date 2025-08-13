@@ -29,7 +29,7 @@ import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import { getPlatformType } from "../../../utils/getPlatformType";
 import { EadProviders } from "../../../constants/EadProviders";
 import { EAdActionTypes } from "../../../constants/EadActionTypes";
-import { postLog } from "../../../api/logs";
+import { IBarzhaTaskWidgetItem } from "../../../models/api/IBarzhaTaskWidgetItem";
 
 const { taskNotCompletedText, taskCompletedText, failedToClaimRewardText } =
   TRANSLATIONS.loyality.supportProject;
@@ -55,11 +55,10 @@ const LoyalitySupportProject = () => {
     widgetInstance.initWidget();
 
     //@ts-ignore
-    var taskWidget = new TaskWidget(60, {
+    const taskWidget = new TaskWidget(60, {
       //@ts-ignore
-      receiveTaskWidgetCallback: (data) => {
+      receiveTaskWidgetCallback: (data: IBarzhaTaskWidgetItem[]) => {
         console.log({ data });
-        postLog({ type: "TaskWidget", data });
       },
       //@ts-ignore
       receiveTaskWidgetErrorCallback: (err) => console.log({ err }),
