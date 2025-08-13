@@ -1,3 +1,4 @@
+import { IBarzhaTaskWidgetItem } from "../models/api/IBarzhaTaskWidgetItem";
 import { AdsgramController } from "../types/AdsgramController";
 
 export {};
@@ -57,6 +58,32 @@ interface OfferWallSDK {
 }
 
 declare global {
+  class TaskWidget {
+    constructor(
+      widgetId: number,
+      options: {
+        receiveTaskWidgetCallback?: (data: IBarzhaTaskWidgetItem[]) => void;
+        receiveTaskWidgetErrorCallback?: (error: any) => void;
+        receiveTaskWidgetWebSocket?: (data: {
+          notification_uuid: string;
+          telegram_id: number;
+          task_type: "subscribe" | "subscribe-72hours" | "subscribe-168hours";
+        }) => void;
+      }
+    );
+    initWidget(): void;
+  }
+
+  class AdMaster {
+    constructor(
+      widgetId: number,
+      options?: {
+        onAdsNotFound?: (error?: any) => void;
+      }
+    );
+    initWidget(): void;
+  }
+
   interface Window {
     bQuest?: any;
     bQuestInstance?: any;
@@ -71,5 +98,7 @@ declare global {
       projectId: string | number;
     }) => Promise<OfferWallSDK>;
     gigaOfferWallSDK?: OfferWallSDK;
+    TaskWidget?: typeof TaskWidget;
+    AdMaster?: typeof AdMaster;
   }
 }
