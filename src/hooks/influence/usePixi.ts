@@ -191,7 +191,10 @@ export const usePixiTs = () => {
 
     return () => {
       if (appRef.current) {
-        appRef.current.destroy();
+        appRef.current.destroy(true, {
+          children: true,
+          texture: true,
+        });
         appRef.current = undefined;
       }
       if (canvas && canvas.parentNode) {
