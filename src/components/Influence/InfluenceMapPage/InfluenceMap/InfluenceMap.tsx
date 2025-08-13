@@ -35,8 +35,7 @@ import { generateAndAddAreaGraphics } from "../../../../utils/influence/generate
 import { getHexSvg } from "../../../../utils/influence/getHexSvg";
 import { getBonusAreas } from "../../../../utils/influence/getBonusAreas";
 import { usePixiTs } from "../../../../hooks/influence/usePixi";
-
-const DEFAULT_COLOR = "#7f5cff";
+import { HEX_DEFAULT_COLOR } from "../../../../constants/influence/hexDefauktColor";
 
 const HEX_SIZE = 24;
 
@@ -117,7 +116,7 @@ const InfluenceMap = () => {
     "bonusAreaBorders",
     HEX_SIZE,
     undefined,
-    DEFAULT_COLOR
+    HEX_DEFAULT_COLOR
   );
   const ownedAreaSVGs = generateAreaSVGs(ownedAreas);
   const bonusAreaSVGs = generateAreaSVGs(bonusAreas);
@@ -196,7 +195,7 @@ const InfluenceMap = () => {
           fontFamily: "DS_Army",
           fontSize: 20,
           fill: "white",
-          stroke: DEFAULT_COLOR,
+          stroke: HEX_DEFAULT_COLOR,
           // resolution: isMobile ? 1 : 2, // Lower res on mobile
         },
       });

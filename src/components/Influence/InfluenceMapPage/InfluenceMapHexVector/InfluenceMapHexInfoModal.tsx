@@ -37,6 +37,7 @@ import Tooltip from "../../../layout/Tooltip/Tooltip";
 import { FillupIcon } from "../../../layout/icons/Influence/Common";
 import { openRestoreModal } from "../../../../store/slices/influence/influenceSlice";
 import { formatTime } from "../../../../utils/formatTime";
+import { HEX_DEFAULT_COLOR } from "../../../../constants/influence/hexDefauktColor";
 
 interface Props {
   hex: IHex;
@@ -62,8 +63,6 @@ const {
   apSpentText,
   armorRemainingText,
 } = TRANSLATIONS.influence.map.infoModal;
-
-const DEFAULT_COLOR = "#7f5cff";
 
 const {
   notEnoughActionPointsText,
@@ -133,7 +132,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
   const [tooltipText, setTooltipText] = useState(hexOccupiedText[language]);
   const { show: showTooltip, openTooltip } = useTooltip();
 
-  if (!color) color = DEFAULT_COLOR;
+  if (!color) color = HEX_DEFAULT_COLOR;
 
   const actionPointsCost = hex.owner_id
     ? attackEnemyHexWithoutBuilding.actionPointsCost

@@ -1,5 +1,6 @@
 import { Container, ContainerChild, Graphics } from "pixi.js";
 import { generateAreaSVGs } from "./generateAreaSVGs";
+import { HEX_DEFAULT_COLOR } from "../../constants/influence/hexDefauktColor";
 
 export const generateAndAddAreaGraphics = (
   hexLayer: Container<ContainerChild>,
@@ -15,7 +16,7 @@ export const generateAndAddAreaGraphics = (
         const graphics = new Graphics();
 
         // Convert hex color to number for PIXI.js
-        let colorStr = color;
+        let colorStr = color || HEX_DEFAULT_COLOR;
         if (colorStr.startsWith("#")) colorStr = colorStr.slice(1);
         const colorNumber = parseInt(colorStr, 16);
 
