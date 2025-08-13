@@ -3,5 +3,6 @@ export enum EAdActionTypes {
   Exchange = "exchange",
   Task = "task",
   Boost = "boost",
+  Click = "click",
   Subscription = "subscription",
 }

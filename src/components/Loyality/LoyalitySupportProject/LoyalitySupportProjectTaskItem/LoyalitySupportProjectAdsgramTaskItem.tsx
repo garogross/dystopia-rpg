@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useAppDispatch } from "../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { ELanguages } from "../../../../constants/ELanguages";
 import { getPlatformType } from "../../../../utils/getPlatformType";
 import React from "react";
@@ -31,16 +31,22 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
   const isMobile = getPlatformType();
   const [hidden, setHidden] = useState(false);
   const [inited, setInited] = useState(false);
-
+  const settings = useAppSelector((state) => state.tasks.adRewardSettings);
+  const adsgramTaskSettings = settings?.adsgram.task;
+  const reward = adsgramTaskSettings?.amount || 5;
+  const hideDurationMs = adsgramTaskSettings?.cooldown_sec || HIDE_DURATION_MS;
   // Check if the task should be hidden on mount
   useEffect(() => {
     (async () => {
       try {
-        const hideUntil = await getLSItem(ELSProps.adsgramLastClickDate);
-        setHidden(!!hideUntil && Date.now() < Number(hideUntil));
+        const lastClickDate = await getLSItem(ELSProps.adsgramLastClickDate);
+        setHidden(
+          !!lastClickDate && Date.now() < Number(lastClickDate) + hideDurationMs
+        );
         setInited(true);
       } catch (error) {}
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -55,8 +61,8 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
         })
       );
       // Hide the task for 1 hour
-      const hideUntil = Date.now() + HIDE_DURATION_MS;
-      setLSItem(ELSProps.adsgramLastClickDate, hideUntil?.toString());
+      const lastClickDate = Date.now();
+      setLSItem(ELSProps.adsgramLastClickDate, lastClickDate?.toString());
       setHidden(true);
     };
     const task = taskRef.current;
@@ -94,7 +100,10 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
             slot="reward"
           >
             <p className={styles.loyalitySupportProjectTaskItem__name}>
-              {supportProjectText[language]}
+              {supportProjectText[language].replace(
+                "NUMBER",
+                reward.toString()
+              )}
             </p>
           </div>
           <div slot="button">

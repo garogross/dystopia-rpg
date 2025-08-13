@@ -24,18 +24,17 @@ import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraff
 import { useTooltip } from "../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import Tooltip from "../../layout/Tooltip/Tooltip";
-import { EAdTypes } from "../../../constants/EAdTypes";
 import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import { getPlatformType } from "../../../utils/getPlatformType";
 import { EadProviders } from "../../../constants/EadProviders";
 import { EAdActionTypes } from "../../../constants/EadActionTypes";
-import { postLog } from "../../../api/logs";
+// import LoyalitySupportProjectAdMasterWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdMasterWidget";
+// import LoyalitySupportProjectBarzhaTaskWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectBarzhaTaskWidget";
 
 const { taskNotCompletedText, taskCompletedText, failedToClaimRewardText } =
   TRANSLATIONS.loyality.supportProject;
 
 const TADS_WIDGET_ID = "543";
-const BARZHA_WIDGET_ID = 70;
 const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
@@ -48,24 +47,6 @@ const LoyalitySupportProject = () => {
   const { show, openTooltip } = useTooltip();
   const isMobile = getPlatformType();
   useEffect(() => {
-    //@ts-ignore
-    let widgetInstance = new AdMaster(BARZHA_WIDGET_ID, {
-      onAdsNotFound: () => console.log("onAdsNotFound"),
-    });
-    widgetInstance.initWidget();
-
-    //@ts-ignore
-    var taskWidget = new TaskWidget(60, {
-      //@ts-ignore
-      receiveTaskWidgetCallback: (data) => {
-        console.log({ data });
-        postLog({ type: "TaskWidget", data });
-      },
-      //@ts-ignore
-      receiveTaskWidgetErrorCallback: (err) => console.log({ err }),
-    });
-
-    taskWidget.initWidget();
     dispatch(getPromoTasks());
 
     // init wallgram
@@ -138,7 +119,7 @@ const LoyalitySupportProject = () => {
     exchange?.open(item).then(() => {
       dispatch(
         claimAdReward({
-          ad_type: EAdActionTypes.Task,
+          ad_type: EAdActionTypes.Exchange,
           provider: EadProviders.Taddy,
           identifier: item?.id?.toString(),
         })
@@ -208,9 +189,7 @@ const LoyalitySupportProject = () => {
           gameInited={gameInited}
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
-          maxPerDayArg={40}
-          maxPerHourArg={20}
-          minPouseMsArg={60 * 1000}
+          provider={EadProviders.Gigapub}
         />
         {isMobile && (
           <LoyalitySupportProjectVideoTaskItem
@@ -228,9 +207,8 @@ const LoyalitySupportProject = () => {
                   })
                 );
             }}
-            adType={EAdTypes.TADDY_V}
+            provider={EadProviders.Taddy}
             index={1}
-            maxPerDayArg={10}
           />
         )}
         <LoyalitySupportProjectVideoTaskItem
@@ -246,12 +224,9 @@ const LoyalitySupportProject = () => {
               })
             );
           }}
-          adType={EAdTypes.ONCLICKA_V}
+          provider={EadProviders.Onclicka}
           index={2}
           adId="6079126"
-          maxPerHourArg={-1}
-          maxPerDayArg={15}
-          minPouseMsArg={3 * 60 * 1000} // 3 min
         />
         {Array.isArray(taddyTasks) &&
           taddyTasks?.map((task, index) => (
@@ -311,7 +286,8 @@ const LoyalitySupportProject = () => {
             )
           )}
         {/* <div id="wallgram_showcase"></div> */}
-        <div id={`widget-id-${BARZHA_WIDGET_ID}`} />
+        {/* <LoyalitySupportProjectBarzhaTaskWidget />
+        <LoyalitySupportProjectAdMasterWidget /> */}
         <LoadingOverlay loading={adLoading} withoutTransition />
       </div>
       <TransitionProvider

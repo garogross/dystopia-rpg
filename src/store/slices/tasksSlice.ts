@@ -5,18 +5,22 @@ import { ClaimWallgramRewardResponse } from "../../models/api/tasks/wallgram";
 import { VerifyGigaHashResponse } from "../../models/api/tasks/giga";
 import { IPromoTask } from "../../models/IPromoTask";
 import { GetPromoTaskRewardResponse } from "../../models/api/tasks/promoTasks";
-import { ClaimAdRewardResponse } from "../../models/api/tasks/tasks";
-import { EadProviders } from "../../constants/EadProviders";
-import { EAdActionTypes } from "../../constants/EadActionTypes";
+import {
+  ClaimAdRewardResponse,
+  GetAdRewardSettingsResponse,
+} from "../../models/api/tasks/tasks";
+import { AdRewardSettingsType } from "../../types/tasks/AdRewardSettingsType";
 
 export interface TasksState {
   promoTasks: IPromoTask[];
   rewardTaddy: number;
+  adRewardSettings: AdRewardSettingsType | null;
 }
 
 const initialState: TasksState = {
   promoTasks: [],
   rewardTaddy: 0,
+  adRewardSettings: null,
 };
 
 const getPromoTasksUrl = "/promo_tasks/";
@@ -57,12 +61,17 @@ export const getPromoTaskReward = createAsyncThunk<
   }
 });
 
+type AdRewardValidPairs = {
+  [P in keyof AdRewardSettingsType]: {
+    provider: P;
+    ad_type: keyof AdRewardSettingsType[P];
+  };
+}[keyof AdRewardSettingsType];
+
 const claimAdRewardUrl = "/reward/ad/";
 export const claimAdReward = createAsyncThunk<
   ClaimAdRewardResponse,
-  {
-    provider: EadProviders;
-    ad_type: EAdActionTypes;
+  AdRewardValidPairs & {
     identifier?: string;
     value?: number;
   }
@@ -77,6 +86,23 @@ export const claimAdReward = createAsyncThunk<
         identifier: payload.identifier,
         value: payload.value,
       }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
+const getAdRewardSettingsUrl = "/reward_ad/settings/";
+export const getAdRewardSettings = createAsyncThunk<
+  GetAdRewardSettingsResponse,
+  undefined
+>("tasks/getAdRewardSettings", async (_, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<GetAdRewardSettingsResponse>(
+      getAdRewardSettingsUrl
     );
 
     return resData;
@@ -189,6 +215,9 @@ export const tasksSlice = createSlice({
       state.promoTasks = state.promoTasks.filter(
         (item) => item.id !== payload.task_id
       );
+    });
+    builder.addCase(getAdRewardSettings.fulfilled, (state, { payload }) => {
+      state.adRewardSettings = payload.reward_ad;
     });
     builder.addCase(getPromoTaskReward.rejected, (state, { payload }) => {
       const task = state.promoTasks.find((task) => task.id === payload?.id);

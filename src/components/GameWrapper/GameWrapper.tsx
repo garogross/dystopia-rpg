@@ -11,6 +11,7 @@ import { Outlet } from "react-router-dom";
 import { AppGameMode } from "../../types/AppGameMode";
 import { ESplashTypes } from "../../constants/ESplashTypes";
 import { postLog } from "../../api/logs";
+import { getAdRewardSettings } from "../../store/slices/tasksSlice";
 
 interface Props {
   header: ReactNode;
@@ -57,6 +58,7 @@ const GameWrapper: FC<Props> = ({
     ) => {
       try {
         await dispatch(authorizeUser(initData, avatar, username, mode));
+        dispatch(getAdRewardSettings());
       } catch (error) {
         console.error(error);
       } finally {

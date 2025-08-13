@@ -28,8 +28,8 @@ import { useVideoAd } from "../../../../hooks/useVideoAd";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
-import { EAdTypes } from "../../../../constants/EAdTypes";
 import { EAdPartners } from "../../../../constants/EAdPartners";
+import { EadProviders } from "../../../../constants/EadProviders";
 
 const COST_CP = 1;
 
@@ -72,11 +72,11 @@ const InfluenceRestoreApModal = () => {
     scsClb: () =>
       dispatch(restoreAP({ method: "ad", partner: EAdPartners.Giga })),
     speedUpCompleteText: apsRestoredSuccessText,
-    adType: EAdTypes.GIGA_V,
+    provider: EadProviders.Gigapub,
     index: 4,
     maxPerHourArg: -1,
     maxPerDayArg: -1,
-    minPouseMsArg: 30 * 1000,
+    minPouseMsArg: 30,
   });
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(

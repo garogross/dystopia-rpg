@@ -55,7 +55,6 @@ export const useSocket = (
 
         socket.onclose = function (event) {
           console.info("Соединение прервано");
-          postLog({ tgId, type: "socket connect close", error: event });
           // Try to reconnect if needed
           if (shouldReconnect && !reconnectTimeout) {
             reconnectTimeout = setTimeout(() => {
