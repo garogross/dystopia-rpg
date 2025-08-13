@@ -50,7 +50,7 @@ const LoyalitySupportProjectTraffyContainer = () => {
         (signedToken, _id) => {
           dispatch(
             claimAdReward({
-              ad_type: EAdActionTypes.Task,
+              ad_type: EAdActionTypes.Subscription,
               provider: EadProviders.Traffy,
               identifier: signedToken,
             })
