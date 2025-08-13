@@ -1,5 +1,6 @@
 import { EAdActionTypes } from "../../../constants/EadActionTypes";
 import { EadProviders } from "../../../constants/EadProviders";
+import { AdRewardSettingsType } from "../../../types/tasks/AdRewardSettingsType";
 
 export interface ClaimAdRewardResponse {
   status: string;
@@ -7,4 +8,8 @@ export interface ClaimAdRewardResponse {
   ad_type: EAdActionTypes;
   identifier: null | string;
   reward: number;
+}
+
+export interface GetAdRewardSettingsResponse {
+  reward_ad: AdRewardSettingsType;
 }

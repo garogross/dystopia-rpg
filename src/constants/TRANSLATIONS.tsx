@@ -59,8 +59,8 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "cp",
     },
     watchAdAndGetCpText: {
-      [ELanguages.en]: "Watch an ad and get 1 CP",
-      [ELanguages.ru]: "Посмотри рекламу и получи 1 CP",
+      [ELanguages.en]: "Watch an ad and get NUMBER CP",
+      [ELanguages.ru]: "Посмотри рекламу и получи NUMBER CP",
     },
     watchAdText: {
       [ELanguages.en]: "Watch",
@@ -1192,8 +1192,8 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Задание выполнено успешно",
       },
       supportProjectText: {
-        [ELanguages.en]: "Support the sponsor's project and get 5 CP",
-        [ELanguages.ru]: "Поддержите проект спонсора и получите 5 CP",
+        [ELanguages.en]: "Support the sponsor's project and get NUMBER CP",
+        [ELanguages.ru]: "Поддержите проект спонсора и получите NUMBER CP",
       },
       perDayText: {
         [ELanguages.en]: "per day",

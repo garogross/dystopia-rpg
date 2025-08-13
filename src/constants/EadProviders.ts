@@ -4,7 +4,7 @@ export enum EadProviders {
   Tads = "tads",
   Traffy = "traffy",
   Barzha = "barzha", // not working
-  Wallgram = "wallgram",
+  //   Wallgram = "wallgram",
   Gigapub = "gigapub",
   Adsgram = "adsgram",
 }
