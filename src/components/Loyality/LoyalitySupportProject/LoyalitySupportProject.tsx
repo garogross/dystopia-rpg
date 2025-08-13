@@ -208,7 +208,7 @@ const LoyalitySupportProject = () => {
           gameInited={gameInited}
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
-          maxPerDayArg={60}
+          maxPerDayArg={40}
           maxPerHourArg={20}
           minPouseMsArg={60 * 1000}
         />
