@@ -21,6 +21,7 @@ import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
 import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
 import {
   claimAdReward,
+  getAdRewardSettings,
   getPromoTaskReward,
   getRewardTaddy,
   verifyGigaHash,
@@ -292,6 +293,8 @@ export const authorizeUser =
 
     try {
       const res = await dispatch(getAccountDetails(avatar, username, mode));
+
+      dispatch(getAdRewardSettings());
 
       if (res.ton_cyber_farm) {
         dispatch(initCyberFarm());
