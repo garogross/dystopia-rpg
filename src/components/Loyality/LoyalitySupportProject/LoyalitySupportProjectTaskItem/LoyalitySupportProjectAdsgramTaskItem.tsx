@@ -14,7 +14,7 @@ import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { EAdActionTypes } from "../../../../constants/EadActionTypes";
 import { EadProviders } from "../../../../constants/EadProviders";
 
-const HIDE_DURATION_MS = 60 * 60 * 1000; // 1 hour
+const HIDE_DURATION_MS = 60 * 60; // 1 hour
 
 const { openText, claimAdText, doneText, supportProjectText } =
   TRANSLATIONS.loyality.supportProject;
@@ -34,7 +34,8 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
   const settings = useAppSelector((state) => state.tasks.adRewardSettings);
   const adsgramTaskSettings = settings?.adsgram.task;
   const reward = adsgramTaskSettings?.amount || 5;
-  const hideDurationMs = adsgramTaskSettings?.cooldown_sec || HIDE_DURATION_MS;
+  const hideDurationSec = adsgramTaskSettings?.cooldown_sec || HIDE_DURATION_MS;
+  const hideDurationMs = hideDurationSec * 1000;
   // Check if the task should be hidden on mount
   useEffect(() => {
     (async () => {
