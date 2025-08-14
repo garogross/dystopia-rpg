@@ -8,6 +8,7 @@ import TransitionProvider, {
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import styles from "./LoyalitySupportProjectTaskItem.module.scss";
 import { EadProviders } from "../../../../constants/EadProviders";
+import { EAdActionTypes } from "../../../../constants/EadActionTypes";
 
 const { watchAdAndGetCpText, watchAdText } = TRANSLATIONS.common;
 const { perDayText } = TRANSLATIONS.loyality.supportProject;
@@ -21,6 +22,7 @@ const LoyalitySupportProjectVideoTaskItem = ({
   onLoadingUpdate,
   disabled,
   adId,
+  adType,
 }: {
   language: ELanguages;
   gameInited: boolean;
@@ -30,6 +32,7 @@ const LoyalitySupportProjectVideoTaskItem = ({
   onLoadingUpdate: (loading: boolean) => void;
   disabled: boolean;
   adId?: string;
+  adType?: EAdActionTypes;
 }) => {
   const {
     onShowAd,

@@ -33,6 +33,8 @@ export type AdRewardSettingsType = {
   };
   [EadProviders.Adsgram]: {
     [EAdActionTypes.Task]: AmountCooldown;
+    [EAdActionTypes.Video]: VideoSettings;
+    [EAdActionTypes.Interstitial]: VideoSettings;
   };
   [EadProviders.Gigapub]: {
     [EAdActionTypes.Video]: VideoSettings;
