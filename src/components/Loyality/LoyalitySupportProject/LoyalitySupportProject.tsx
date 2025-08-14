@@ -261,7 +261,7 @@ const LoyalitySupportProject = () => {
           provider={EadProviders.Adsgram}
           adType={EAdActionTypes.Interstitial}
           index={6}
-          adId="13832"
+          adId="int-13832"
         />
         {Array.isArray(taddyTasks) &&
           taddyTasks?.map((task, index) => (
