@@ -51,6 +51,7 @@ export const useVideoAd = ({
   maxPerHourArg,
   maxPerDayArg,
   minPouseMsArg,
+  adType,
 }: {
   scsClb?: (id?: string) => void;
   speedUpCompleteText?: TranslationItemType;
@@ -60,6 +61,7 @@ export const useVideoAd = ({
   maxPerHourArg?: number;
   maxPerDayArg?: number;
   minPouseMsArg?: number;
+  adType?: EAdActionTypes;
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
@@ -104,7 +106,7 @@ export const useVideoAd = ({
   };
 
   const onShowOnClickaAd = useGlobalAdController(
-    EAdActionTypes.Video,
+    adType || EAdActionTypes.Video,
     provider,
     adId || "",
     onReward,

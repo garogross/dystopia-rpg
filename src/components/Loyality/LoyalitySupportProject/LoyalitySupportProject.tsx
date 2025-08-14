@@ -228,6 +228,41 @@ const LoyalitySupportProject = () => {
           index={2}
           adId="6079126"
         />
+        <LoyalitySupportProjectVideoTaskItem
+          language={language}
+          gameInited={gameInited}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
+          scsClb={() => {
+            dispatch(
+              claimAdReward({
+                ad_type: EAdActionTypes.Video,
+                provider: EadProviders.Adsgram,
+              })
+            );
+          }}
+          provider={EadProviders.Adsgram}
+          index={5}
+          adId="11778"
+        />
+        <LoyalitySupportProjectVideoTaskItem
+          language={language}
+          gameInited={gameInited}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
+          scsClb={() => {
+            dispatch(
+              claimAdReward({
+                ad_type: EAdActionTypes.Interstitial,
+                provider: EadProviders.Adsgram,
+              })
+            );
+          }}
+          provider={EadProviders.Adsgram}
+          adType={EAdActionTypes.Interstitial}
+          index={6}
+          adId="13832"
+        />
         {Array.isArray(taddyTasks) &&
           taddyTasks?.map((task, index) => (
             <LoyalitySupportProjectTaskItem
