@@ -61,6 +61,7 @@ export const useGlobalAdController = (
               errClb?.();
               return;
             }
+
             await window.showGiga();
             onSuccess();
           }

@@ -28,8 +28,8 @@ import { useVideoAd } from "../../../../hooks/useVideoAd";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
-import { EAdPartners } from "../../../../constants/EAdPartners";
 import { EadProviders } from "../../../../constants/EadProviders";
+import { EAdActionTypes } from "../../../../constants/EadActionTypes";
 
 const COST_CP = 1;
 
@@ -70,7 +70,13 @@ const InfluenceRestoreApModal = () => {
     loading: adLoading,
   } = useVideoAd({
     scsClb: () =>
-      dispatch(restoreAP({ method: "ad", partner: EAdPartners.Giga })),
+      dispatch(
+        restoreAP({
+          method: "ad",
+          provider: EadProviders.Gigapub,
+          ad_type: EAdActionTypes.Video,
+        })
+      ),
     speedUpCompleteText: apsRestoredSuccessText,
     provider: EadProviders.Gigapub,
   });
