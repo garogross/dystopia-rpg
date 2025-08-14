@@ -55,9 +55,6 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
     scsClb: () => onSpeedUp(true),
     speedUpCompleteText: speedUpCompleteText,
     provider: EadProviders.Gigapub,
-    maxPerHourArg: -1,
-    maxPerDayArg: -1,
-    minPouseMsArg: 30,
   });
 
   const [loading, setLoading] = useState(false);

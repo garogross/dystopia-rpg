@@ -73,10 +73,6 @@ const InfluenceRestoreApModal = () => {
       dispatch(restoreAP({ method: "ad", partner: EAdPartners.Giga })),
     speedUpCompleteText: apsRestoredSuccessText,
     provider: EadProviders.Gigapub,
-    index: 4,
-    maxPerHourArg: -1,
-    maxPerDayArg: -1,
-    minPouseMsArg: 30,
   });
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(
