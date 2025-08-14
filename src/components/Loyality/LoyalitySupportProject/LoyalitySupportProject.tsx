@@ -323,7 +323,7 @@ const LoyalitySupportProject = () => {
         {/* <div id="wallgram_showcase"></div> */}
         {/* <LoyalitySupportProjectBarzhaTaskWidget />
         <LoyalitySupportProjectAdMasterWidget /> */}
-        <LoadingOverlay loading={adLoading} withoutTransition />
+        {/* <LoadingOverlay loading={adLoading} withoutTransition /> */}
       </div>
       <TransitionProvider
         inProp={gameInited}

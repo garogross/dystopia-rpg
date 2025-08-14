@@ -3,7 +3,8 @@ import { AppDispatch, RootState } from "../../store";
 import { fetchRequest } from "../../tools/fetchTools";
 import { RestoreAPResponse } from "../../../models/api/Influence/Influence";
 import { attackHex } from "./mapSlice";
-import { EAdPartners } from "../../../constants/EAdPartners";
+import { EadProviders } from "../../../constants/EadProviders";
+import { EAdActionTypes } from "../../../constants/EadActionTypes";
 
 export interface InfluenceState {
   actionPoints: number;
@@ -26,8 +27,8 @@ export const restoreAP = createAsyncThunk<
   RestoreAPResponse,
   {
     method: "buy" | "ad";
-    partner?: EAdPartners;
-    amount?: number;
+    provider?: EadProviders;
+    ad_type?: EAdActionTypes;
   }
 >("influence/restoreAP", async (payload, { rejectWithValue, getState }) => {
   try {
@@ -36,8 +37,8 @@ export const restoreAP = createAsyncThunk<
       "POST",
       {
         method: payload.method,
-        partner: payload.partner,
-        amount: payload.amount,
+        provider: payload.provider,
+        ad_type: payload.ad_type,
       }
     );
     return resData;
