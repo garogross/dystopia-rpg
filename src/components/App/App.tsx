@@ -8,8 +8,8 @@ import { ELSProps } from "../../constants/ELSProps";
 import { ELanguages } from "../../constants/ELanguages";
 import { useAppDispatch } from "../../hooks/redux";
 import { setLanguage } from "../../store/slices/uiSlice";
-import { useFreshDate } from "../../hooks/useFreshDate";
 import { postLog } from "../../api/logs";
+import { useStoreFreshDate } from "../../hooks/useStoreFreshDate";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -109,7 +109,7 @@ export const App = () => {
   const isMobile = getPlatformType();
 
   // update freshDate in store for use in timers if needed
-  useFreshDate();
+  useStoreFreshDate();
 
   useEffect(() => {
     if (!tg) return;

@@ -19,7 +19,7 @@ import styles from "./InfluenceMapControllModal.module.scss";
 import { useAppSelector } from "../../../../hooks/redux";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { formatTime } from "../../../../utils/formatTime";
-import { useFreshDateStateUpdate } from "../../../../hooks/useFreshDateStateUpdate";
+import { useFreshDate } from "../../../../hooks/useFreshDate";
 
 const {
   // totalHexesText,
@@ -38,16 +38,13 @@ const SessionTimeLefTimer = () => {
     (state) => state.influence.map.sessionFinishDate
   );
 
-  const freshDate = useAppSelector((state) => state.ui.freshDate);
-
   let remainingTimeMs: ReactNode = 0;
   if (sessionFinishDate) {
     const endDate = new Date(sessionFinishDate);
-    if (endDate.getTime() > freshDate)
-      remainingTimeMs = (endDate.getTime() - freshDate) / 1000;
+    if (endDate.getTime() > Date.now())
+      remainingTimeMs = (endDate.getTime() - Date.now()) / 1000;
   }
-
-  useFreshDateStateUpdate(!!remainingTimeMs);
+  useFreshDate(!!remainingTimeMs);
 
   return <>{formatTime(remainingTimeMs < 0 ? 0 : remainingTimeMs)}</>;
 };
