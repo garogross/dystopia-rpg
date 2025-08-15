@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../../hooks/redux";
 
@@ -6,7 +6,7 @@ import styles from "./InfluenceMapSteptimer.module.scss";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
-import { useFreshDateStateUpdate } from "../../../../hooks/useFreshDateStateUpdate";
+import { useFreshDate } from "../../../../hooks/useFreshDate";
 
 const { nextStepInText } = TRANSLATIONS.influence.map;
 
@@ -17,11 +17,10 @@ const InfluenceMapSteptimer = () => {
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const freshDate = useAppSelector((state) => state.ui.freshDate);
   const availableInSecs = Math.floor((nextAttackTs - Date.now()) / 1000);
   const isAvailable = availableInSecs <= 0;
+  useFreshDate(!isAvailable);
 
-  useFreshDateStateUpdate(!isAvailable);
   return (
     <TransitionProvider
       className={styles.influenceMapSteptimer}
@@ -38,4 +37,4 @@ const InfluenceMapSteptimer = () => {
   );
 };
 
-export default InfluenceMapSteptimer;
+export default memo(InfluenceMapSteptimer);
