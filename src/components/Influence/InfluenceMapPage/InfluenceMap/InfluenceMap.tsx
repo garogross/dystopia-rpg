@@ -183,8 +183,14 @@ const InfluenceMap = () => {
       hexLayerRef.current?.addChild(graphics)
     );
 
-    generateAndAddAreaGraphics(hexLayerRef.current, ownedAreaSVGs, 2);
-    generateAndAddAreaGraphics(hexLayerRef.current, bonusAreaSVGs, 1.5, true);
+    generateAndAddAreaGraphics(hexLayerRef.current, ownedAreaSVGs, 2, false, 1);
+    generateAndAddAreaGraphics(
+      hexLayerRef.current,
+      bonusAreaSVGs,
+      1.5,
+      true,
+      1
+    );
     await document.fonts.load("18px DS_Army");
 
     // Perf: BitmapText - lower resolution on mobile

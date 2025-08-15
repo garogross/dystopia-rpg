@@ -6,7 +6,8 @@ export const generateAndAddAreaGraphics = (
   hexLayer: Container<ContainerChild>,
   areaSVGs: ReturnType<typeof generateAreaSVGs>,
   width: number,
-  dashed?: boolean
+  dashed?: boolean,
+  alignment?: number
 ) => {
   const lineMethod = dashed ? "dashLineTo" : "lineTo";
 
@@ -45,6 +46,7 @@ export const generateAndAddAreaGraphics = (
           width: width || 1,
           color: colorNumber,
           alpha: 1,
+          alignment: alignment || 1.5,
           cap: "round", // Round line caps for smoother appearance
           join: "round", // Round line joins for smoother corners
         });
