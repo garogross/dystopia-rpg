@@ -9,7 +9,9 @@ export function getVideoAdSettings<P extends keyof AdRewardSettingsType>(
   settings: AdRewardSettingsType | null,
   provider: P
 ) {
-  return settings && EAdActionTypes.Video in settings[provider]
+  return settings &&
+    settings[provider] &&
+    EAdActionTypes.Video in settings[provider]
     ? settings[provider][EAdActionTypes.Video]
     : {
         amount: 0,

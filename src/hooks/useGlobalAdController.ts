@@ -15,6 +15,7 @@ export const useGlobalAdController = (
   const [onclickaAd, setOnclickaAd] = useState<any>(null);
 
   const tgId = useAppSelector((state) => state.profile.tgId);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
 
   let AdController: AdsgramController | null = null;
   if (
@@ -31,7 +32,7 @@ export const useGlobalAdController = (
 
   useEffect(
     () => {
-      if (!tgId) return;
+      if (!tgId || !gameInited) return;
       if (type === EAdActionTypes.Video && provider === EadProviders.Onclicka) {
         window
           .initCdTma?.({ id })
@@ -40,9 +41,34 @@ export const useGlobalAdController = (
           })
           .catch((e) => console.error(e));
       }
+      console.log(
+        "type === EAdActionTypes.Vide",
+        (type === EAdActionTypes.Video ||
+          type === EAdActionTypes.Interstitial) &&
+          provider === EadProviders.AdsController
+      );
+
+      if (
+        (type === EAdActionTypes.Video ||
+          type === EAdActionTypes.Interstitial) &&
+        provider === EadProviders.AdsController
+      ) {
+        try {
+          console.log("TelegramAdsController init");
+
+          window.TelegramAdsController = new TelegramAdsController();
+          window.TelegramAdsController?.initialize({
+            pubId: "983111",
+            appId: "3212",
+            debug: true,
+          });
+        } catch (error) {
+          console.log("TelegramAdsController init error", error);
+        }
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    dependencies ? [...dependencies, tgId] : [tgId]
+    dependencies ? [...dependencies, gameInited, tgId] : [tgId]
   );
 
   const onShowAd = async () => {
@@ -85,6 +111,32 @@ export const useGlobalAdController = (
               onViewThrough: (id: string) => scsClb?.(id || "id"),
             });
             if (!success) errClb?.(true);
+          }
+          break;
+        }
+        case EadProviders.AdsController: {
+          if (type === EAdActionTypes.Video) {
+            console.log("triggerNativeNotification");
+
+            // window.TelegramAdsController.triggerNativeNotification()
+            //   .then((result) => {
+            //     console.log({ result });
+            //   })
+            //   .catch((result) => {
+            //     errClb?.(true);
+
+            //     console.log("err", { result });
+            //   });
+          }
+          if (type === EAdActionTypes.Interstitial) {
+            // window.TelegramAdsController.triggerInterstitialBanner()
+            //   .then((result) => {
+            //     console.log({ result });
+            //   })
+            //   .catch((result) => {
+            //     errClb?.(true);
+            //     console.log("err", { result });
+            //   });
           }
           break;
         }
