@@ -73,7 +73,11 @@ export const useVideoAd = ({
   const [viewsInDay, setViewsInDay] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const curSettings = getVideoAdSettings(adRewardSettings, provider);
+  const curSettings = getVideoAdSettings(
+    adRewardSettings,
+    provider,
+    adType === EAdActionTypes.Interstitial
+  );
 
   const maxPerHour = maxPerHourArg || curSettings.per_hour;
   const maxPerDay = maxPerDayArg || curSettings.per_day;
