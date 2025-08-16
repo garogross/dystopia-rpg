@@ -7,15 +7,22 @@ const MIN_PAUSE_MS = 60;
 
 export function getVideoAdSettings<P extends keyof AdRewardSettingsType>(
   settings: AdRewardSettingsType | null,
-  provider: P
+  provider: P,
+  isIntersetial?: boolean
 ) {
-  return settings && EAdActionTypes.Video in settings[provider]
-    ? settings[provider][EAdActionTypes.Video]
-    : {
-        amount: 0,
-        per_day: MAX_PER_DAY,
-        per_hour: MAX_PER_HOUR,
-        pause_sec: MIN_PAUSE_MS,
-        cooldown_sec: 0,
-      };
+  const type = isIntersetial
+    ? EAdActionTypes.Interstitial
+    : EAdActionTypes.Video;
+
+  if (settings && settings[provider] && type in settings[provider]) {
+    return settings[provider][type as keyof (typeof settings)[P]];
+  }
+
+  return {
+    amount: 0,
+    per_day: MAX_PER_DAY,
+    per_hour: MAX_PER_HOUR,
+    pause_sec: MIN_PAUSE_MS,
+    cooldown_sec: 0,
+  };
 }
