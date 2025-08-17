@@ -1,58 +1,51 @@
-import { Container, ContainerChild, Graphics } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 import { generateAreaSVGs } from "./generateAreaSVGs";
 import { HEX_DEFAULT_COLOR } from "../../constants/influence/hexDefauktColor";
 
 export const generateAndAddAreaGraphics = (
-  hexLayer: Container<ContainerChild>,
+  hexLayer: Container,
   areaSVGs: ReturnType<typeof generateAreaSVGs>,
   width: number,
-  dashed?: boolean,
+  dashed?: boolean, // still unused (needs custom dash implementation)
   alignment?: number
 ) => {
-  const lineMethod = dashed ? "dashLineTo" : "lineTo";
+  // Pixi alignment is 0..1 (0 = inside, 0.5 = centered, 1 = outside)
+  const align = alignment;
 
   areaSVGs.forEach(({ paths, color }) => {
     paths.forEach((pathString) => {
-      if (pathString) {
-        const graphics = new Graphics();
+      if (!pathString) return;
 
-        // Convert hex color to number for PIXI.js
-        let colorStr = color || HEX_DEFAULT_COLOR;
-        if (colorStr.startsWith("#")) colorStr = colorStr.slice(1);
-        const colorNumber = parseInt(colorStr, 16);
+      const g = new Graphics();
 
-        // Parse the SVG path and draw it using PIXI Graphics
-        const pathCommands = pathString.split(/(?=[ML])/);
-        let firstPoint = true;
+      const colorNumber = parseInt(
+        (color || HEX_DEFAULT_COLOR).replace(/^#/, ""),
+        16
+      );
 
-        pathCommands.forEach((command) => {
-          const type = command[0];
-          const coords = command.slice(1).trim().split(" ").map(Number);
+      // Set stroke style BEFORE drawing
+      g.lineStyle(width || 1, colorNumber, 1, align);
 
-          if (type === "M" && coords.length >= 2) {
-            if (firstPoint) {
-              graphics.moveTo(coords[0], coords[1]);
-              firstPoint = false;
-            } else {
-              graphics[lineMethod](coords[0], coords[1]);
-            }
-          } else if (type === "L" && coords.length >= 2) {
-            graphics[lineMethod](coords[0], coords[1]);
+      // Split into command segments: "M...", "L...", "Z"
+      const segments = pathString.match(/[MLZ][^MLZ]*/gi) || [];
+
+      for (const seg of segments) {
+        const cmd = seg[0].toUpperCase();
+        const nums = seg.slice(1).trim().split(/[ ,]+/).map(Number);
+
+        if (cmd === "M" && nums.length >= 2) {
+          g.moveTo(nums[0], nums[1]);
+        } else if (cmd === "L") {
+          for (let i = 0; i + 1 < nums.length; i += 2) {
+            g[dashed ? "dashLineTo" : "lineTo"](nums[i], nums[i + 1]);
           }
-        });
-
-        // Apply stroke with better quality settings - increased width and better color handling
-        graphics.stroke({
-          width: width || 1,
-          color: colorNumber,
-          alpha: 1,
-          alignment: alignment || 1.5,
-          cap: "round", // Round line caps for smoother appearance
-          join: "round", // Round line joins for smoother corners
-        });
-
-        hexLayer.addChild(graphics);
+        } else if (cmd === "Z") {
+          g.closePath(); // optional; closes the current subpath
+        }
       }
+
+      // No stroke() call needed in v7 — drawing happens with the current lineStyle.
+      hexLayer.addChild(g);
     });
   });
 };

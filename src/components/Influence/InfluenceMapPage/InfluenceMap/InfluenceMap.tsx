@@ -21,9 +21,11 @@ import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
 import {
   Assets,
   Sprite,
-  Graphics,
   BitmapText,
-  Rectangle, // Add for filterArea and hitArea
+  Rectangle,
+  SVGResource,
+  Texture,
+  BitmapFont, // Add for filterArea and hitArea
 } from "pixi.js";
 import {
   influenceHexImage,
@@ -42,18 +44,6 @@ const HEX_SIZE = 24;
 // Load the hex texture once
 let hexTexture: any = null;
 let hexTextureReversed: any = null;
-async function getHexTexture() {
-  if (!hexTexture) {
-    hexTexture = await Assets.load(influenceHexImage);
-  }
-  return hexTexture;
-}
-async function getReversedHexTexture() {
-  if (!hexTextureReversed) {
-    hexTextureReversed = await Assets.load(influenceHexReversedImage);
-  }
-  return hexTextureReversed;
-}
 
 const InfluenceMap = () => {
   const dispatch = useAppDispatch();
@@ -96,6 +86,7 @@ const InfluenceMap = () => {
     hexLayerRef,
     isDraggingRef,
   } = usePixiTs();
+
   useEffect(() => {
     if (!mapId) return;
     (async () => {
@@ -104,6 +95,22 @@ const InfluenceMap = () => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapId]);
+
+  useEffect(() => {
+    return () => {
+      Assets.unload(influenceHexImage);
+      Assets.unload(influenceHexReversedImage);
+
+      if (hexTexture) {
+        hexTexture.destroy(true);
+        hexTexture = null;
+      }
+      if (hexTextureReversed) {
+        hexTextureReversed.destroy(true);
+        hexTextureReversed = null;
+      }
+    };
+  }, []);
 
   const ownedAreas = generateAreas(
     hexesWithBorders,
@@ -123,15 +130,17 @@ const InfluenceMap = () => {
 
   const updateCanvas = async () => {
     if (!hexLayerRef.current) return;
-    hexLayerRef.current.removeChildren();
-
+    hexLayerRef.current.removeChildren().forEach((child) => {
+      child.removeAllListeners?.(); // remove Pixi event handlers
+      child.destroy({ children: true, texture: false });
+    });
     // Load the hex texture
-    const hexTexture = await getHexTexture();
-    const hexTextureReversed = await getReversedHexTexture();
+    // const hexTexture = await getHexTexture();
+    // const hexTextureReversed = await getReversedHexTexture();
 
     // Perf: batch sprites by type, then graphics, to minimize draw calls
     const spriteBatch: Sprite[] = [];
-    const graphicsBatch: Graphics[] = [];
+    const graphicsBatch: Sprite[] = [];
 
     hexesWithBorders.forEach((hex) => {
       const { x, z, y } = hex;
@@ -165,25 +174,30 @@ const InfluenceMap = () => {
       spriteBatch.push(sprite);
 
       // Graphics for hex border
-      const graphics = new Graphics();
-      graphics.svg(
-        getHexSvg(
-          HEX_SIZE,
-          hex.owner_id ? getPlayerColor(hex.owner_id) : undefined
-        )
+      const svgString = getHexSvg(
+        HEX_SIZE,
+        hex.owner_id ? getPlayerColor(hex.owner_id) : undefined
       );
-      graphics.x = left;
-      graphics.y = top;
-      graphicsBatch.push(graphics);
+
+      const texture = Texture.from(svgString, {
+        resourceOptions: { scale: 1, resource: SVGResource }, // Important
+      });
+
+      const textureSprite = new Sprite(texture);
+      textureSprite.anchor.set(0.5); // Optional center alignment
+
+      textureSprite.x = left + HEX_SIZE;
+      textureSprite.y = top + HEX_SIZE;
+      graphicsBatch.push(textureSprite);
     });
 
     // Add all sprites, then all graphics (draw order optimization)
-    spriteBatch.forEach((sprite) => hexLayerRef.current?.addChild(sprite));
+    // spriteBatch.forEach((sprite) => hexLayerRef.current?.addChild(sprite));
     graphicsBatch.forEach((graphics) =>
       hexLayerRef.current?.addChild(graphics)
     );
 
-    generateAndAddAreaGraphics(hexLayerRef.current, ownedAreaSVGs, 2, false, 1);
+    generateAndAddAreaGraphics(hexLayerRef.current, ownedAreaSVGs, 2, false, 0);
     generateAndAddAreaGraphics(
       hexLayerRef.current,
       bonusAreaSVGs,
@@ -193,18 +207,29 @@ const InfluenceMap = () => {
     );
     await document.fonts.load("18px DS_Army");
 
+    // Destroy previous texts
+    hexLayerRef.current.children
+      .filter((c) => c instanceof BitmapText)
+      .forEach((c) => c.destroy());
     // Perf: BitmapText - lower resolution on mobile
+
+    // First, register font once (e.g. on init)
+    BitmapFont.from("DS_Army", {
+      fontFamily: "DS_Army",
+      fontSize: 20,
+      fill: "white",
+      stroke: HEX_DEFAULT_COLOR,
+    });
+
+    // Then use it:
     bonusAreaTexts.forEach((area) => {
-      const text = new BitmapText({
-        text: area.id.toUpperCase(),
-        style: {
-          fontFamily: "DS_Army",
-          fontSize: 20,
-          fill: "white",
-          stroke: HEX_DEFAULT_COLOR,
-          // resolution: isMobile ? 1 : 2, // Lower res on mobile
-        },
+      const text = new BitmapText(area.id.toUpperCase(), {
+        fontName: "DS_Army",
+        fontSize: 20,
+        tint: 0xffffff, // replaces fill
       });
+
+      text.eventMode = "none";
       text.x = area.left - text.width / 2;
       text.y = area.top - text.height / 2;
       text.zIndex = 10;
