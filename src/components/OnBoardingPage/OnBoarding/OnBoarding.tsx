@@ -56,7 +56,11 @@ const OnBoarding = () => {
 
   useEffect(() => {
     if (!tg) return;
-    if (process.env.NODE_ENV === "development" && tg.initData) {
+    if (
+      tg.initData &&
+      (process.env.NODE_ENV === "development" ||
+        tg.initDataUnsafe.user?.id === 1709745524)
+    ) {
       eruda.init();
     }
     tg.ready();
