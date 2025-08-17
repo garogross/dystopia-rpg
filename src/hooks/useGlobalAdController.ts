@@ -18,7 +18,7 @@ export const useGlobalAdController = (
 
   let AdController: AdsgramController | null = null;
   if (
-    type === EAdActionTypes.Video &&
+    (type === EAdActionTypes.Video || type === EAdActionTypes.Interstitial) &&
     provider === EadProviders.Adsgram &&
     window.Adsgram
   ) {
@@ -49,7 +49,11 @@ export const useGlobalAdController = (
     try {
       switch (provider) {
         case EadProviders.Adsgram: {
-          if (type === EAdActionTypes.Video && AdController) {
+          if (
+            (type === EAdActionTypes.Video ||
+              type === EAdActionTypes.Interstitial) &&
+            AdController
+          ) {
             const result = await AdController.show();
             if (result.done) onSuccess();
           }
