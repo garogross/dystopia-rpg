@@ -45,6 +45,19 @@ const HEX_SIZE = 24;
 let hexTexture: any = null;
 let hexTextureReversed: any = null;
 
+async function getHexTexture() {
+  if (!hexTexture) {
+    hexTexture = await Assets.load(influenceHexImage);
+  }
+  return hexTexture;
+}
+async function getReversedHexTexture() {
+  if (!hexTextureReversed) {
+    hexTextureReversed = await Assets.load(influenceHexReversedImage);
+  }
+  return hexTextureReversed;
+}
+
 const InfluenceMap = () => {
   const dispatch = useAppDispatch();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
@@ -135,8 +148,8 @@ const InfluenceMap = () => {
       child.destroy({ children: true, texture: false });
     });
     // Load the hex texture
-    // const hexTexture = await getHexTexture();
-    // const hexTextureReversed = await getReversedHexTexture();
+    const hexTexture = await getHexTexture();
+    const hexTextureReversed = await getReversedHexTexture();
 
     // Perf: batch sprites by type, then graphics, to minimize draw calls
     const spriteBatch: Sprite[] = [];
@@ -145,6 +158,7 @@ const InfluenceMap = () => {
     hexesWithBorders.forEach((hex) => {
       const { x, z, y } = hex;
       const { left, top } = getHexPixelPositions({ x, z }, HEX_SIZE);
+      console.log({ hexTexture });
 
       // Create sprite with the hex image
       const sprite = new Sprite(x % 2 ? hexTexture : hexTextureReversed);
@@ -192,7 +206,7 @@ const InfluenceMap = () => {
     });
 
     // Add all sprites, then all graphics (draw order optimization)
-    // spriteBatch.forEach((sprite) => hexLayerRef.current?.addChild(sprite));
+    spriteBatch.forEach((sprite) => hexLayerRef.current?.addChild(sprite));
     graphicsBatch.forEach((graphics) =>
       hexLayerRef.current?.addChild(graphics)
     );
