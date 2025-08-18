@@ -229,6 +229,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
       <NewPortalProvider>
         <TransitionProvider
           inProp={show}
+          duration={200}
           style={TransitionStyleTypes.opacity}
           className={styles.influenceMapHexInfoModal}
         >

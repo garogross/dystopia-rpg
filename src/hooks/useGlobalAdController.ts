@@ -49,15 +49,12 @@ export const useGlobalAdController = (
     try {
       switch (provider) {
         case EadProviders.Adsgram: {
-          console.log("type", type);
-
           if (
             (type === EAdActionTypes.Video ||
               type === EAdActionTypes.Interstitial) &&
             AdController
           ) {
             const result = await AdController.show();
-            console.log("result", result);
             if (result.done) onSuccess();
           }
           break;

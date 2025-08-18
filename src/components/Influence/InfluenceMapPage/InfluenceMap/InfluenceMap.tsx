@@ -158,7 +158,6 @@ const InfluenceMap = () => {
     hexesWithBorders.forEach((hex) => {
       const { x, z, y } = hex;
       const { left, top } = getHexPixelPositions({ x, z }, HEX_SIZE);
-      console.log({ hexTexture });
 
       // Create sprite with the hex image
       const sprite = new Sprite(x % 2 ? hexTexture : hexTextureReversed);
@@ -174,17 +173,6 @@ const InfluenceMap = () => {
 
       sprite.alpha = 0.6;
 
-      sprite.eventMode = "static";
-      sprite.cursor = "pointer";
-      sprite.on("pointertap", (event) => {
-        if (!isDraggingRef.current) {
-          // Prevent event from bubbling to React/modal backdrop
-          event.stopPropagation();
-          setTimeout(() => {
-            select(x, y, z);
-          }, 30);
-        }
-      });
       spriteBatch.push(sprite);
 
       // Graphics for hex border
@@ -202,6 +190,20 @@ const InfluenceMap = () => {
 
       textureSprite.x = left + HEX_SIZE;
       textureSprite.y = top + HEX_SIZE;
+
+      textureSprite.eventMode = "static";
+      textureSprite.cursor = "pointer";
+      textureSprite.on("pointertap", (event) => {
+        console.log("pointertap");
+
+        if (!isDraggingRef.current) {
+          // Prevent event from bubbling to React/modal backdrop
+          event.stopPropagation();
+          setTimeout(() => {
+            select(x, y, z);
+          }, 100);
+        }
+      });
       graphicsBatch.push(textureSprite);
     });
 
