@@ -10,7 +10,6 @@ import { useAppDispatch } from "../../hooks/redux";
 import { setLanguage } from "../../store/slices/uiSlice";
 import { postLog } from "../../api/logs";
 import { useStoreFreshDate } from "../../hooks/useStoreFreshDate";
-import { useNotificationAd } from "../../hooks/useNotificationAd";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
