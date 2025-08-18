@@ -112,7 +112,7 @@ export const App = () => {
   // update freshDate in store for use in timers if needed
   useStoreFreshDate();
   // set timer for adsController Notification (native)  Ad
-  useNotificationAd();
+  // useNotificationAd();
 
   useEffect(() => {
     if (!tg) return;
