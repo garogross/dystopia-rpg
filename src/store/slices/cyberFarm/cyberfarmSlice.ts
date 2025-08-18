@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface CyberfarmState {
-  dataReceived: boolean,
+  dataReceived: boolean;
 }
 
 const initialState: CyberfarmState = {
@@ -15,10 +15,11 @@ export const cyberfarmSlice = createSlice({
     initCyberFarm: (state) => {
       state.dataReceived = true;
     },
-   
+    closeCyberFarm: (state) => {
+      state.dataReceived = false;
+    },
   },
 });
 
-export const { initCyberFarm } =
-  cyberfarmSlice.actions;
+export const { initCyberFarm, closeCyberFarm } = cyberfarmSlice.actions;
 export default cyberfarmSlice.reducer;
