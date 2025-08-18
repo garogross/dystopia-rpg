@@ -15,6 +15,7 @@ export const useGlobalAdController = (
   const [onclickaAd, setOnclickaAd] = useState<any>(null);
 
   const tgId = useAppSelector((state) => state.profile.tgId);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
 
   let AdController: AdsgramController | null = null;
   if (
@@ -31,7 +32,7 @@ export const useGlobalAdController = (
 
   useEffect(
     () => {
-      if (!tgId) return;
+      if (!tgId || !gameInited) return;
       if (type === EAdActionTypes.Video && provider === EadProviders.Onclicka) {
         window
           .initCdTma?.({ id })
@@ -40,9 +41,24 @@ export const useGlobalAdController = (
           })
           .catch((e) => console.error(e));
       }
+
+      if (
+        (type === EAdActionTypes.Video ||
+          type === EAdActionTypes.Interstitial) &&
+        provider === EadProviders.AdsController
+      ) {
+        try {
+          window.TelegramAdsController = new TelegramAdsController();
+          window.TelegramAdsController?.initialize({
+            pubId: "983111",
+            appId: "3212",
+            debug: true,
+          });
+        } catch (error) {}
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    dependencies ? [...dependencies, tgId] : [tgId]
+    dependencies ? [...dependencies, gameInited, tgId] : [tgId, gameInited]
   );
 
   const onShowAd = async () => {
@@ -89,6 +105,23 @@ export const useGlobalAdController = (
               onViewThrough: (id: string) => scsClb?.(id || "id"),
             });
             if (!success) errClb?.(true);
+          }
+          break;
+        }
+        case EadProviders.AdsController: {
+          if (type === EAdActionTypes.Video) {
+            window.TelegramAdsController?.triggerNativeNotification()
+              .then(() => {})
+              .catch(() => {
+                errClb?.(true);
+              });
+          }
+          if (type === EAdActionTypes.Interstitial) {
+            window.TelegramAdsController?.triggerInterstitialBanner()
+              .then(() => {})
+              .catch(() => {
+                errClb?.(true);
+              });
           }
           break;
         }

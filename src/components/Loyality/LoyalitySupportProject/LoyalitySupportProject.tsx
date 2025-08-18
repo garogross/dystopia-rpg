@@ -48,7 +48,6 @@ const LoyalitySupportProject = () => {
   const isMobile = getPlatformType();
   useEffect(() => {
     dispatch(getPromoTasks());
-
     // init wallgram
     // const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
 
@@ -268,6 +267,23 @@ const LoyalitySupportProject = () => {
           </>
         )}
 
+        {/* <LoyalitySupportProjectVideoTaskItem
+          language={language}
+          gameInited={gameInited}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
+          scsClb={() => {
+            // dispatch(
+            //   claimAdReward({
+            //     ad_type: EAdActionTypes.Interstitial,
+            //     provider: EadProviders.Adsgram,
+            //   })
+            // );
+          }}
+          provider={EadProviders.AdsController}
+          index={7}
+          adType={EAdActionTypes.Interstitial}
+        /> */}
         {Array.isArray(taddyTasks) &&
           taddyTasks?.map((task, index) => (
             <LoyalitySupportProjectTaskItem
