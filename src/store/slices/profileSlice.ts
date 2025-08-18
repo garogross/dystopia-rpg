@@ -114,7 +114,6 @@ export const getAccountDetails =
     );
 
     dispatch(getAdRewardSettings());
-
     dispatch(
       setUser({
         id: resData.user?.id_tgrm,
@@ -136,19 +135,27 @@ export const getAccountDetails =
         [EStats.ton]: resData.ton_cyber_farm?.ton || 0,
       })
     );
-    if (resData.ton_cyber_farm) {
-      // update dailyReward
-      const { day_number, reward_available, rewards_by_day } =
-        resData.claim_daily_login;
-      dispatch(
-        initDailyReward({
-          dailyRewardAvailable: reward_available,
-          dailyRewardAvailableDay: day_number,
-          rewardsByDay: Object.values(rewards_by_day),
-          lastClaimedDate:
-            resData.ton_cyber_farm.timers?.daily_login_claimed || null,
-        })
-      );
+    // update dailyReward
+    const day_number =
+      resData?.claim_daily_login?.day_number ||
+      resData.settings?.claim_daily_login?.day_number;
+    const reward_available =
+      resData?.claim_daily_login?.reward_available ||
+      resData.settings?.claim_daily_login?.reward_available;
+    const rewards_by_day =
+      resData?.claim_daily_login?.rewards_by_day ||
+      resData.settings?.claim_daily_login?.rewards_by_day;
+
+    dispatch(
+      initDailyReward({
+        dailyRewardAvailable: reward_available,
+        dailyRewardAvailableDay: day_number,
+        rewardsByDay: Object.values(rewards_by_day),
+        lastClaimedDate:
+          resData.ton_cyber_farm?.timers?.daily_login_claimed || null,
+      })
+    );
+    if (resData.ton_cyber_farm && mode === "ton_cyber_farm") {
       // store slots
 
       const speedCosts = Object.entries(
