@@ -194,8 +194,6 @@ const InfluenceMap = () => {
       textureSprite.eventMode = "static";
       textureSprite.cursor = "pointer";
       textureSprite.on("pointertap", (event) => {
-        console.log("pointertap");
-
         if (!isDraggingRef.current) {
           // Prevent event from bubbling to React/modal backdrop
           event.stopPropagation();
