@@ -42,4 +42,7 @@ export type AdRewardSettingsType = {
   [EadProviders.Onclicka]: {
     [EAdActionTypes.Video]: VideoSettings;
   };
+  [EadProviders.AdsController]: {
+    [EAdActionTypes.Video]: VideoSettings;
+  };
 };

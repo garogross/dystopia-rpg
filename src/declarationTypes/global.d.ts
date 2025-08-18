@@ -84,6 +84,28 @@ declare global {
     initWidget(): void;
   }
 
+  class TelegramAdsController {
+    constructor();
+    initialize(options: {
+      pubId: string;
+      appId: string;
+      debug?: boolean;
+    }): void;
+    triggerNativeNotification(): Promise<any>;
+    triggerInterstitialBanner(): Promise<any>;
+  }
+
+  interface TaddyAds {
+    interstitial(options: {
+      onClosed?: () => void;
+      onViewThrough?: (id: string) => void;
+    }): Promise<boolean>;
+  }
+
+  interface Taddy {
+    ads(): TaddyAds;
+  }
+
   interface Window {
     bQuest?: any;
     bQuestInstance?: any;
@@ -100,5 +122,8 @@ declare global {
     gigaOfferWallSDK?: OfferWallSDK;
     TaskWidget?: typeof TaskWidget;
     AdMaster?: typeof AdMaster;
+
+    TelegramAdsController?: TelegramAdsController;
+    Taddy?: Taddy;
   }
 }

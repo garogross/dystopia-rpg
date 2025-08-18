@@ -7,4 +7,5 @@ export enum EadProviders {
   //   Wallgram = "wallgram",
   Gigapub = "gigapub",
   Adsgram = "adsgram",
+  AdsController = "adsController",
 }
