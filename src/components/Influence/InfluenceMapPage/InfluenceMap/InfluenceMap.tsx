@@ -103,8 +103,8 @@ const InfluenceMap = () => {
   useEffect(() => {
     if (!mapId) return;
     (async () => {
-      await dispatch(getMap({ id: mapId.toString() }));
       await dispatch(getPlayerColors({ id: mapId.toString() }));
+      await dispatch(getMap({ id: mapId.toString() }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapId]);
