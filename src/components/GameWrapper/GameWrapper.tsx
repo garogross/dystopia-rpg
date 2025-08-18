@@ -62,6 +62,7 @@ const GameWrapper: FC<Props> = ({
         setLoading(false);
       }
     };
+
     if (!gameInited) {
       fetchData(
         tg.initData,

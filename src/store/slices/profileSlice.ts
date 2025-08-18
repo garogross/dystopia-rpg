@@ -156,8 +156,8 @@ export const getAccountDetails =
       })
     );
     if (resData.ton_cyber_farm && resData.mode === "ton_cyber_farm") {
+      dispatch(initCyberFarm());
       // store slots
-
       const speedCosts = Object.entries(
         resData.game_settings?.production_settings || {}
       ).reduce(
@@ -302,10 +302,6 @@ export const authorizeUser =
 
     try {
       const res = await dispatch(getAccountDetails(avatar, username, mode));
-
-      if (res.ton_cyber_farm) {
-        dispatch(initCyberFarm());
-      }
 
       return res.mode;
     } catch (error: any) {
