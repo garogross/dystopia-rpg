@@ -152,10 +152,10 @@ export const getAccountDetails =
         dailyRewardAvailableDay: day_number,
         rewardsByDay: Object.values(rewards_by_day),
         lastClaimedDate:
-          resData.ton_cyber_farm?.timers?.daily_login_claimed || null,
+          resData?.ton_cyber_farm?.timers?.daily_login_claimed || null,
       })
     );
-    if (resData.ton_cyber_farm && mode === "ton_cyber_farm") {
+    if (resData.ton_cyber_farm && resData.mode === "ton_cyber_farm") {
       // store slots
 
       const speedCosts = Object.entries(
