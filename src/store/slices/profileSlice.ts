@@ -224,7 +224,7 @@ export const getAccountDetails =
       );
     }
 
-    if (mode === "influence") {
+    if (resData.mode === "influence") {
       dispatch(
         initInfluence({
           actionPoints: resData.user?.action_points_current || 0,
