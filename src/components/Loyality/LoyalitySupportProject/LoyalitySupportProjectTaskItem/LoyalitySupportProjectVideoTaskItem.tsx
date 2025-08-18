@@ -47,6 +47,7 @@ const LoyalitySupportProjectVideoTaskItem = ({
     provider,
     index,
     adId,
+    adType,
   });
 
   useEffect(() => {

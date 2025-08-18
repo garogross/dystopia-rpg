@@ -41,12 +41,6 @@ export const useGlobalAdController = (
           })
           .catch((e) => console.error(e));
       }
-      console.log(
-        "type === EAdActionTypes.Vide",
-        (type === EAdActionTypes.Video ||
-          type === EAdActionTypes.Interstitial) &&
-          provider === EadProviders.AdsController
-      );
 
       if (
         (type === EAdActionTypes.Video ||
@@ -54,21 +48,17 @@ export const useGlobalAdController = (
         provider === EadProviders.AdsController
       ) {
         try {
-          console.log("TelegramAdsController init");
-
           window.TelegramAdsController = new TelegramAdsController();
           window.TelegramAdsController?.initialize({
             pubId: "983111",
             appId: "3212",
             debug: true,
           });
-        } catch (error) {
-          console.log("TelegramAdsController init error", error);
-        }
+        } catch (error) {}
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    dependencies ? [...dependencies, gameInited, tgId] : [tgId]
+    dependencies ? [...dependencies, gameInited, tgId] : [tgId, gameInited]
   );
 
   const onShowAd = async () => {
@@ -116,27 +106,18 @@ export const useGlobalAdController = (
         }
         case EadProviders.AdsController: {
           if (type === EAdActionTypes.Video) {
-            console.log("triggerNativeNotification");
-
-            // window.TelegramAdsController.triggerNativeNotification()
-            //   .then((result) => {
-            //     console.log({ result });
-            //   })
-            //   .catch((result) => {
-            //     errClb?.(true);
-
-            //     console.log("err", { result });
-            //   });
+            window.TelegramAdsController?.triggerNativeNotification()
+              .then(() => {})
+              .catch(() => {
+                errClb?.(true);
+              });
           }
           if (type === EAdActionTypes.Interstitial) {
-            // window.TelegramAdsController.triggerInterstitialBanner()
-            //   .then((result) => {
-            //     console.log({ result });
-            //   })
-            //   .catch((result) => {
-            //     errClb?.(true);
-            //     console.log("err", { result });
-            //   });
+            window.TelegramAdsController?.triggerInterstitialBanner()
+              .then(() => {})
+              .catch(() => {
+                errClb?.(true);
+              });
           }
           break;
         }

@@ -262,22 +262,7 @@ const LoyalitySupportProject = () => {
           index={6}
           adId="int-13832"
         />
-        <LoyalitySupportProjectVideoTaskItem
-          language={language}
-          gameInited={gameInited}
-          disabled={adLoading}
-          onLoadingUpdate={(loading) => setAdLoading(loading)}
-          scsClb={() => {
-            // dispatch(
-            //   claimAdReward({
-            //     ad_type: EAdActionTypes.Interstitial,
-            //     provider: EadProviders.Adsgram,
-            //   })
-            // );
-          }}
-          provider={EadProviders.AdsController}
-          index={6}
-        />
+
         {/* <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
