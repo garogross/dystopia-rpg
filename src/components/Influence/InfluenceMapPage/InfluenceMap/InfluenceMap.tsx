@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./InfluenceMap.module.scss";
+import { isWebGLSupported } from "@pixi/utils";
 
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { IHex } from "../../../../models/Influence/IHex";
@@ -78,6 +79,14 @@ const InfluenceMap = () => {
   const selectedHex =
     selectedHexId &&
     visibleHexes.find(({ x, y, z }) => makeHexKey(x, y, z) === selectedHexId);
+  const webGLSupported = isWebGLSupported();
+  // const loadingText = isWebGLSupported
+  let loadingText = "loading Map";
+  if (gameInited) loadingText = "No Active map Right now";
+  if (!webGLSupported) {
+    loadingText =
+      "WebGL is not supported in your browser. Please update your browser or try a different one to view the map.";
+  }
 
   useSocket(
     `/influence_map/${mapId}`,
@@ -194,12 +203,10 @@ const InfluenceMap = () => {
       textureSprite.eventMode = "static";
       textureSprite.cursor = "pointer";
       textureSprite.on("pointertap", (event) => {
+        event.stopPropagation();
+        select(x, y, z);
         if (!isDraggingRef.current) {
           // Prevent event from bubbling to React/modal backdrop
-          event.stopPropagation();
-          setTimeout(() => {
-            select(x, y, z);
-          }, 100);
         }
       });
       graphicsBatch.push(textureSprite);
@@ -331,10 +338,7 @@ const InfluenceMap = () => {
           onClose={() => setInfoMoadlOpened(false)}
         />
       )}
-      <LoadingOverlay
-        loading={!mapId}
-        text={!gameInited ? "loading Map" : "No Active map Right now"}
-      />
+      <LoadingOverlay loading={!mapId || !webGLSupported} text={loadingText} />
     </div>
   );
 };
