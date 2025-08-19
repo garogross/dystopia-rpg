@@ -7,6 +7,7 @@ type OffsetType = {
   x: number;
   y: number;
 };
+const CLICKABLE_TRESHOLD = 2;
 
 export const usePixiTs = () => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
@@ -85,11 +86,15 @@ export const usePixiTs = () => {
         "mousemove",
         (e: MouseEvent) => {
           if (!dragging) return;
-          hexLayer.x += e.clientX - lastX;
-          hexLayer.y += e.clientY - lastY;
+          const dx = e.clientX - lastX;
+          const dy = e.clientY - lastY;
+          hexLayer.x += dx;
+          hexLayer.y += dy;
+          if (Math.sqrt(dx * dx + dy * dy) > CLICKABLE_TRESHOLD) {
+            isDraggingRef.current = true;
+          }
           lastX = e.clientX;
           lastY = e.clientY;
-          isDraggingRef.current = true; // Set drag flag if moved
         }
       );
       const onMouseUp = () => {
@@ -130,12 +135,16 @@ export const usePixiTs = () => {
       (app.view as HTMLCanvasElement).addEventListener(
         "touchmove",
         (e: TouchEvent) => {
-          isDraggingRef.current = true;
-
           if (e.touches.length === 1 && touchDragging) {
             const touch = e.touches[0];
-            hexLayer.x += touch.clientX - lastTouchX;
-            hexLayer.y += touch.clientY - lastTouchY;
+            const dx = touch.clientX - lastTouchX;
+            const dy = touch.clientY - lastTouchY;
+            hexLayer.x += dx;
+            hexLayer.y += dy;
+            // Only set drag flag if moved more than 5px
+            if (Math.sqrt(dx * dx + dy * dy) > CLICKABLE_TRESHOLD) {
+              isDraggingRef.current = true;
+            }
             lastTouchX = touch.clientX;
             lastTouchY = touch.clientY;
           } else if (e.touches.length === 2) {
@@ -155,7 +164,6 @@ export const usePixiTs = () => {
               hexLayer.scale.y = newScaleY;
               setScale(hexLayer.scale.y);
             }
-
             lastTouchDist = dist;
           }
           e.preventDefault();
