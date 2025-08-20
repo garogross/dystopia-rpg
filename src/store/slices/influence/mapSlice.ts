@@ -14,6 +14,14 @@ export interface MapState {
   hexes: IHex[];
   playerColors: Record<string, string>;
   hexesCaptured: number;
+  mapRewardsInfo: {
+    [key in string]: {
+      map_pool_size: number;
+      user_influence_points: number;
+      user_reward: number;
+    };
+  };
+  sessionFinishDate: Date | null;
 }
 
 const initialState: MapState = {
@@ -23,6 +31,8 @@ const initialState: MapState = {
   hexes: [],
   playerColors: {},
   hexesCaptured: 0,
+  mapRewardsInfo: {},
+  sessionFinishDate: null,
 };
 
 const getMapUrl = "/influence/map/";
@@ -101,6 +111,15 @@ export const mapSlice = createSlice({
       state.nextAttackTs = action.payload.nextAttackTs;
       state.mapId = action.payload.mapId;
       state.hexesCaptured = action.payload.hexesCaptured;
+      state.mapRewardsInfo = action.payload.mapRewardsInfo;
+      state.sessionFinishDate = action.payload.sessionFinishDate;
+    },
+    updateHex(state, { payload }) {
+      const updatingItemIndex = state.hexes.findIndex(
+        (hex) =>
+          hex.x === payload.x && hex.y === payload.y && hex.z === payload.z
+      );
+      state.hexes[updatingItemIndex] = payload;
     },
   },
   extraReducers: (builder) => {
@@ -113,27 +132,11 @@ export const mapSlice = createSlice({
       state.playerColors = action.payload;
     });
     builder.addCase(attackHex.fulfilled, (state, { payload }) => {
-      const updatedHexIndex = state.hexes.findIndex(
-        (hex) =>
-          hex.x === payload.x && hex.y === payload.y && hex.z === payload.z
-      );
-      if (updatedHexIndex !== -1) {
-        state.hexes = state.hexes.with(updatedHexIndex, {
-          ...state.hexes[updatedHexIndex],
-          ...(payload.captured
-            ? { owner_id: +payload.tgId }
-            : { harmedPoints: payload.ap_spent }),
-        });
-      }
-
       state.nextAttackTs = payload.next_attack_ts;
-      if (payload.captured) {
-        state.hexesCaptured += 1;
-      }
     });
   },
 });
 
-export const { initMap } = mapSlice.actions;
+export const { initMap, updateHex } = mapSlice.actions;
 
 export default mapSlice.reducer;

@@ -19,6 +19,9 @@ import { DotsLine } from "../../../layout/icons/RPGGame/Common";
 import {
   AttackIcon,
   PersonIcon,
+  DefenseRemainingIcon,
+  DamagePerTurnIcon,
+  EnemyDefenseIcon,
 } from "../../../layout/icons/Influence/InfluenceMaphexInfoModal";
 import { BuildIcon } from "../../../layout/icons/Influence/Common";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
@@ -33,6 +36,8 @@ import {
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import { FillupIcon } from "../../../layout/icons/Influence/Common";
 import { openRestoreModal } from "../../../../store/slices/influence/influenceSlice";
+import { formatTime } from "../../../../utils/formatTime";
+import { HEX_DEFAULT_COLOR } from "../../../../constants/influence/hexDefauktColor";
 
 interface Props {
   hex: IHex;
@@ -53,18 +58,46 @@ const {
   attackButtonText,
   confirmButtonText,
   fillupButtonText,
-  apWillBeSpentText,
+  enemyDefenseText,
+  damagePerTurnText,
+  apSpentText,
+  armorRemainingText,
 } = TRANSLATIONS.influence.map.infoModal;
-
-const DEFAULT_COLOR = "#7f5cff";
 
 const {
   notEnoughActionPointsText,
   actionWillEnableInText,
   hexOccupiedText,
   hexAttackedText,
+  inText,
 } = TRANSLATIONS.influence.map;
 const { somethingWentWrong } = TRANSLATIONS.errors;
+
+const BonusTimer = ({ timer, bonus }: { timer: number; bonus: number }) => {
+  const language = useAppSelector((state) => state.ui.language);
+  const [bonusTimer, setBonusTimer] = useState(timer);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBonusTimer((prev) => {
+        if (prev < 2) clearInterval(interval);
+        return prev < 2 ? 0 : prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return (
+    <p className={styles.influenceMapHexInfoModal__infoText}>
+      <span className={styles.influenceMapHexInfoModal__infoTextValue}>
+        + {bonus}IP {inText[language]} {formatTime(bonusTimer)}
+      </span>
+    </p>
+  );
+};
 
 const InfluenceMapHexInfoModal: React.FC<Props> = ({
   hex,
@@ -99,14 +132,11 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
   const [tooltipText, setTooltipText] = useState(hexOccupiedText[language]);
   const { show: showTooltip, openTooltip } = useTooltip();
 
-  if (!color) color = DEFAULT_COLOR;
+  if (!color) color = HEX_DEFAULT_COLOR;
 
-  let requiredPoints = hex.owner_id
+  const actionPointsCost = hex.owner_id
     ? attackEnemyHexWithoutBuilding.actionPointsCost
     : attackNeutralHex.actionPointsCost;
-  if (hex?.harmedPoints) requiredPoints -= hex.harmedPoints;
-  let nextHarm = actionPointMax;
-  if (nextHarm > requiredPoints) nextHarm = requiredPoints;
 
   useEffect(() => {
     if (!show) {
@@ -130,11 +160,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
     }
 
     // check enough AP
-    if (
-      (hex.owner_id &&
-        actionPoints < attackEnemyHexWithoutBuilding.actionPointsCost) ||
-      (!hex.owner_id && actionPoints < attackNeutralHex.actionPointsCost)
-    ) {
+    if (actionPoints < attackNeutralHex.actionPointsCost) {
       setTooltipText(notEnoughActionPointsText[language]);
       openTooltip();
       return;
@@ -203,6 +229,7 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
       <NewPortalProvider>
         <TransitionProvider
           inProp={show}
+          duration={200}
           style={TransitionStyleTypes.opacity}
           className={styles.influenceMapHexInfoModal}
         >
@@ -288,6 +315,12 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                     </div>
                   </div>
                 )}
+                {!!(hex.seconds_to_next_hold_reward && hex.hold_reward) && (
+                  <BonusTimer
+                    timer={hex.seconds_to_next_hold_reward}
+                    bonus={hex.hold_reward}
+                  />
+                )}
                 <div className={styles.influenceMapHexInfoModal__infoBlock}>
                   <p className={styles.influenceMapHexInfoModal__titleText}>
                     {actionsTitleText[language]}
@@ -337,9 +370,22 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                 >
                   <DotsLine preserveAspectRatio />
                 </div>
+
                 <div className={styles.influenceMapHexInfoModal__spendingAP}>
                   <p className={styles.influenceMapHexInfoModal__titleText}>
-                    {apWillBeSpentText[language]}: {nextHarm}/{requiredPoints}
+                    {enemyDefenseText[language]}: {hex.defense_max}
+                  </p>
+                  <EnemyDefenseIcon />
+                </div>
+                <div className={styles.influenceMapHexInfoModal__spendingAP}>
+                  <p className={styles.influenceMapHexInfoModal__titleText}>
+                    {damagePerTurnText[language]}: {actionPointMax}
+                  </p>
+                  <DamagePerTurnIcon />
+                </div>
+                <div className={styles.influenceMapHexInfoModal__spendingAP}>
+                  <p className={styles.influenceMapHexInfoModal__titleText}>
+                    {apSpentText[language]}: {actionPointMax}
                   </p>
                   <ImageWebp
                     src={influenceEnergyImage}
@@ -347,6 +393,14 @@ const InfluenceMapHexInfoModal: React.FC<Props> = ({
                     alt="action point"
                     className={styles.influenceMapHexInfoModal__actionPointsImg}
                   />
+                </div>
+                <div className={styles.influenceMapHexInfoModal__spendingAP}>
+                  <p className={styles.influenceMapHexInfoModal__titleText}>
+                    {armorRemainingText[language]}:{" "}
+                    {actionPointsCost -
+                      (hex?.defense_max - hex.defense_current || 0)}
+                  </p>
+                  <DefenseRemainingIcon />
                 </div>
                 <button
                   onClick={() => {

@@ -20,14 +20,8 @@ import {
 import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
 import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
 import {
-  claimAdsgramReward,
-  claimBarzhaReward,
-  claimOnclickaReward,
-  claimTaddyReward,
-  claimTadsReward,
-  claimTraffyReward,
-  claimVideoReward,
-  claimWallgramReward,
+  claimAdReward,
+  getAdRewardSettings,
   getPromoTaskReward,
   getRewardTaddy,
   verifyGigaHash,
@@ -39,7 +33,7 @@ import { finsihTutorial, initTutorial } from "./cyberFarm/tutorialSlice";
 import { initInfluence, restoreAP } from "./influence/influenceSlice";
 import { initSettings } from "./influence/settingsSlice";
 import { initMap } from "./influence/mapSlice";
-import { initMail } from "./influence/mailSlice";
+import { initMail, receiveMailReward } from "./influence/mailSlice";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -119,6 +113,7 @@ export const getAccountDetails =
       `${getAccountDetailsUrl}${mode ? `?mode=${mode}` : ""}`
     );
 
+    dispatch(getAdRewardSettings());
     dispatch(
       setUser({
         id: resData.user?.id_tgrm,
@@ -140,21 +135,29 @@ export const getAccountDetails =
         [EStats.ton]: resData.ton_cyber_farm?.ton || 0,
       })
     );
-    if (resData.ton_cyber_farm) {
-      // update dailyReward
-      const { day_number, reward_available, rewards_by_day } =
-        resData.claim_daily_login;
-      dispatch(
-        initDailyReward({
-          dailyRewardAvailable: reward_available,
-          dailyRewardAvailableDay: day_number,
-          rewardsByDay: Object.values(rewards_by_day),
-          lastClaimedDate:
-            resData.ton_cyber_farm.timers?.daily_login_claimed || null,
-        })
-      );
-      // store slots
+    // update dailyReward
+    const day_number =
+      resData?.claim_daily_login?.day_number ||
+      resData.settings?.claim_daily_login?.day_number;
+    const reward_available =
+      resData?.claim_daily_login?.reward_available ||
+      resData.settings?.claim_daily_login?.reward_available;
+    const rewards_by_day =
+      resData?.claim_daily_login?.rewards_by_day ||
+      resData.settings?.claim_daily_login?.rewards_by_day;
 
+    dispatch(
+      initDailyReward({
+        dailyRewardAvailable: reward_available,
+        dailyRewardAvailableDay: day_number,
+        rewardsByDay: Object.values(rewards_by_day),
+        lastClaimedDate:
+          resData?.ton_cyber_farm?.timers?.daily_login_claimed || null,
+      })
+    );
+    if (resData.ton_cyber_farm && resData.mode === "ton_cyber_farm") {
+      dispatch(initCyberFarm());
+      // store slots
       const speedCosts = Object.entries(
         resData.game_settings?.production_settings || {}
       ).reduce(
@@ -221,7 +224,7 @@ export const getAccountDetails =
       );
     }
 
-    if (mode === "influence") {
+    if (resData.mode === "influence") {
       dispatch(
         initInfluence({
           actionPoints: resData.user?.action_points_current || 0,
@@ -262,6 +265,8 @@ export const getAccountDetails =
           nextAttackTs: resData.user?.next_attack_ts || 0,
           mapId,
           hexesCaptured: mapId ? resData.hexes_captured?.[mapId] || 0 : 0,
+          mapRewardsInfo: resData.map_rewards_info || {},
+          sessionFinishDate: resData.active_maps?.[0]?.finished_at,
         })
       );
       dispatch(
@@ -297,10 +302,6 @@ export const authorizeUser =
 
     try {
       const res = await dispatch(getAccountDetails(avatar, username, mode));
-
-      if (res.ton_cyber_farm) {
-        dispatch(initCyberFarm());
-      }
 
       return res.mode;
     } catch (error: any) {
@@ -408,51 +409,17 @@ export const profileSlice = createSlice({
     });
 
     // tasks
+    builder.addCase(claimAdReward.fulfilled, (state, { payload }) => {
+      if (+payload.reward && payload.status === "ok") {
+        state.stats.cp += +payload.reward;
+      }
+    });
     builder.addCase(getPromoTaskReward.fulfilled, (state, { payload }) => {
       if (+payload.reward && payload.status === "ok") {
         state.stats.cp += +payload.reward;
       }
     });
-    builder.addCase(claimBarzhaReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimTraffyReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimWallgramReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimTaddyReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimAdsgramReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimOnclickaReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimTadsReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
-    builder.addCase(claimVideoReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward) {
-        state.stats.cp += +payload.reward;
-      }
-    });
+
     builder.addCase(verifyGigaHash.fulfilled, (state, { payload }) => {
       if (payload.success && payload.confirmationHash) {
         state.stats.cp += +payload.amount;
@@ -462,6 +429,9 @@ export const profileSlice = createSlice({
     // influence
     builder.addCase(restoreAP.fulfilled, (state, { payload }) => {
       if (payload.cash_point_left) state.stats.cp = payload.cash_point_left;
+    });
+    builder.addCase(receiveMailReward.fulfilled, (state, { payload }) => {
+      if (payload.reward_given?.cp) state.stats.cp += payload.reward_given.cp;
     });
   },
 });

@@ -1,31 +1,22 @@
-import { useEffect, useRef } from "react";
-import { useAppDispatch, useAppSelector } from "./redux";
-import { updateFreshDate } from "../store/slices/uiSlice";
+import { useEffect, useRef, useState } from "react";
 
-export const useFreshDate = () => {
-  const dispatch = useAppDispatch();
-  const freshDateUpdating = useAppSelector(
-    (state) => state.ui.freshDateUpdating
-  );
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
+export const useFreshDate = (inProgress: boolean) => {
+  const [freshDate, setFreshDate] = useState(Date.now());
+  const intervalRef = useRef<NodeJS.Timer | null>(null);
   useEffect(() => {
-    if (freshDateUpdating) {
-      // Clear any existing interval before setting a new one
-      if (intervalRef.current) clearInterval(intervalRef.current);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (inProgress) {
       intervalRef.current = setInterval(() => {
-        dispatch(updateFreshDate());
+        setFreshDate(Date.now());
       }, 1000);
-    } else if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+    } else {
+      if (intervalRef.current) clearInterval(intervalRef.current);
     }
 
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [freshDateUpdating, dispatch]);
+  }, [inProgress]);
+
+  return freshDate;
 };

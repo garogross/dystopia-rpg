@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { EAdTypes } from "../constants/EAdTypes";
 import { useAppSelector } from "./redux";
 import { AdsgramController } from "../types/AdsgramController";
+import { EAdActionTypes } from "../constants/EadActionTypes";
+import { EadProviders } from "../constants/EadProviders";
 
 export const useGlobalAdController = (
-  type: EAdTypes,
+  type: EAdActionTypes,
+  provider: EadProviders,
   id: string,
   scsClb?: (id?: string) => void,
   errClb?: (noAds?: boolean) => void,
@@ -13,9 +15,14 @@ export const useGlobalAdController = (
   const [onclickaAd, setOnclickaAd] = useState<any>(null);
 
   const tgId = useAppSelector((state) => state.profile.tgId);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
 
   let AdController: AdsgramController | null = null;
-  if (type === EAdTypes.ADSGRAM_V && window.Adsgram) {
+  if (
+    (type === EAdActionTypes.Video || type === EAdActionTypes.Interstitial) &&
+    provider === EadProviders.Adsgram &&
+    window.Adsgram
+  ) {
     AdController = window.Adsgram?.init({ blockId: id });
   }
 
@@ -25,8 +32,8 @@ export const useGlobalAdController = (
 
   useEffect(
     () => {
-      if (!tgId) return;
-      if (type === EAdTypes.ONCLICKA_V) {
+      if (!tgId || !gameInited) return;
+      if (type === EAdActionTypes.Video && provider === EadProviders.Onclicka) {
         window
           .initCdTma?.({ id })
           .then((show) => {
@@ -34,45 +41,88 @@ export const useGlobalAdController = (
           })
           .catch((e) => console.error(e));
       }
+
+      if (
+        (type === EAdActionTypes.Video ||
+          type === EAdActionTypes.Interstitial) &&
+        provider === EadProviders.AdsController
+      ) {
+        try {
+          window.TelegramAdsController = new TelegramAdsController();
+          window.TelegramAdsController?.initialize({
+            pubId: "983111",
+            appId: "3212",
+            debug: true,
+          });
+        } catch (error) {}
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    dependencies ? [...dependencies, tgId] : [tgId]
+    dependencies ? [...dependencies, gameInited, tgId] : [tgId, gameInited]
   );
 
   const onShowAd = async () => {
     try {
-      switch (type) {
-        case EAdTypes.ADSGRAM_V: {
-          if (AdController) {
+      switch (provider) {
+        case EadProviders.Adsgram: {
+          if (
+            (type === EAdActionTypes.Video ||
+              type === EAdActionTypes.Interstitial) &&
+            AdController
+          ) {
             const result = await AdController.show();
             if (result.done) onSuccess();
           }
           break;
         }
-        case EAdTypes.GIGA_V: {
-          if (!window.showGiga) {
-            errClb?.();
-            return;
+        case EadProviders.Gigapub: {
+          if (type === EAdActionTypes.Video) {
+            if (!window.showGiga) {
+              errClb?.();
+              return;
+            }
+
+            await window.showGiga();
+            onSuccess();
           }
-          await window.showGiga();
-          onSuccess();
           break;
         }
-        case EAdTypes.ONCLICKA_V: {
-          if (!onclickaAd) {
-            errClb?.();
-            return;
+        case EadProviders.Onclicka: {
+          if (type === EAdActionTypes.Video) {
+            if (!onclickaAd) {
+              errClb?.();
+              return;
+            }
+            await onclickaAd();
+            onSuccess();
           }
-          await onclickaAd();
-          onSuccess();
           break;
         }
-        case EAdTypes.TADDY_V: {
-          const success = await window.Taddy.ads().interstitial({
-            onClosed: () => console.dir("Объявление закрыто"),
-            onViewThrough: (id: string) => scsClb?.(id || "id"),
-          });
-          if (!success) errClb?.(true);
+        case EadProviders.Taddy: {
+          if (type === EAdActionTypes.Video) {
+            const success = await window.Taddy.ads().interstitial({
+              onClosed: () => console.dir("Объявление закрыто"),
+              onViewThrough: (id: string) => scsClb?.(id || "id"),
+            });
+            if (!success) errClb?.(true);
+          }
+          break;
+        }
+        case EadProviders.AdsController: {
+          if (type === EAdActionTypes.Video) {
+            window.TelegramAdsController?.triggerNativeNotification()
+              .then(() => {})
+              .catch(() => {
+                errClb?.(true);
+              });
+          }
+          if (type === EAdActionTypes.Interstitial) {
+            window.TelegramAdsController?.triggerInterstitialBanner()
+              .then(() => {})
+              .catch(() => {
+                errClb?.(true);
+              });
+          }
           break;
         }
         default:

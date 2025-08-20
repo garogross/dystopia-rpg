@@ -8,10 +8,7 @@ import TransitionProvider, {
 } from "../../../providers/TransitionProvider";
 import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
 import {
-  claimBarzhaReward,
-  claimOnclickaReward,
-  claimTaddyReward,
-  claimTadsReward,
+  claimAdReward,
   getPromoTaskReward,
   getPromoTasks,
   setPromoTaskSubscribed,
@@ -27,14 +24,17 @@ import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraff
 import { useTooltip } from "../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import Tooltip from "../../layout/Tooltip/Tooltip";
-import { EAdTypes } from "../../../constants/EAdTypes";
 import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
+import { getPlatformType } from "../../../utils/getPlatformType";
+import { EadProviders } from "../../../constants/EadProviders";
+import { EAdActionTypes } from "../../../constants/EadActionTypes";
+// import LoyalitySupportProjectAdMasterWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdMasterWidget";
+// import LoyalitySupportProjectBarzhaTaskWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectBarzhaTaskWidget";
 
 const { taskNotCompletedText, taskCompletedText, failedToClaimRewardText } =
   TRANSLATIONS.loyality.supportProject;
 
 const TADS_WIDGET_ID = "543";
-
 const LoyalitySupportProject = () => {
   const dispatch = useAppDispatch();
   const tgId = useAppSelector((state) => state.profile.tgId);
@@ -45,10 +45,9 @@ const LoyalitySupportProject = () => {
   const [tooltipText, setTooltipText] = useState(taskCompletedText);
   const [adLoading, setAdLoading] = useState(false);
   const { show, openTooltip } = useTooltip();
-
+  const isMobile = getPlatformType();
   useEffect(() => {
     dispatch(getPromoTasks());
-
     // init wallgram
     // const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;
 
@@ -59,6 +58,8 @@ const LoyalitySupportProject = () => {
     //       // Ваш код при загрузке витрины
     //     },
     //     onFinishTask: (task: WallgramFinishTaskItemType) => {
+    // dispatch(claimAdReward({ identifier: task.data.taskId, task_type: "video" }));
+
     //       dispatch(
     //         claimWallgramReward({
     //           taskId: task.data.taskId,
@@ -89,7 +90,14 @@ const LoyalitySupportProject = () => {
   const onOpenBarzhaTasks = () => {
     if (window.bQuest) {
       const callback = (data: BquestCallbackDataType) => {
-        dispatch(claimBarzhaReward(data));
+        dispatch(
+          claimAdReward({
+            ad_type: EAdActionTypes.Task,
+            provider: EadProviders.Barzha,
+            identifier: data.notification_uuid,
+            value: +data.reward,
+          })
+        );
       };
 
       window.bQuestInstance = new window.bQuest()
@@ -108,16 +116,28 @@ const LoyalitySupportProject = () => {
 
   const onSubscribe = (item: FeedItem) => {
     exchange?.open(item).then(() => {
-      dispatch(claimTaddyReward({ id: item?.id?.toString() }))
+      dispatch(
+        claimAdReward({
+          ad_type: EAdActionTypes.Exchange,
+          provider: EadProviders.Taddy,
+          identifier: item?.id?.toString(),
+        })
+      )
         .unwrap()
         .then(() => removeTaddyTask(item?.id));
     });
   };
 
-  const onClaimTads = async (id: string) => {
+  const onClaimTads = async (id: string | number) => {
     try {
       setAdLoading(true);
-      await dispatch(claimTadsReward({ id })).unwrap();
+      await dispatch(
+        claimAdReward({
+          ad_type: EAdActionTypes.Task,
+          provider: EadProviders.Tads,
+          identifier: id.toString(),
+        })
+      ).unwrap();
       setTooltipText(taskCompletedText);
     } catch (error) {
       setTooltipText(failedToClaimRewardText);
@@ -168,34 +188,102 @@ const LoyalitySupportProject = () => {
           gameInited={gameInited}
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
+          provider={EadProviders.Gigapub}
         />
-        <LoyalitySupportProjectVideoTaskItem
-          language={language}
-          gameInited={gameInited}
-          disabled={adLoading}
-          onLoadingUpdate={(loading) => setAdLoading(loading)}
-          scsClb={async (id) => {
-            if (id)
-              await dispatch(claimTaddyReward({ id, task_type: "video" }));
-          }}
-          adType={EAdTypes.TADDY_V}
-          index={1}
-        />
+        {isMobile && (
+          <LoyalitySupportProjectVideoTaskItem
+            language={language}
+            gameInited={gameInited}
+            disabled={adLoading}
+            onLoadingUpdate={(loading) => setAdLoading(loading)}
+            scsClb={async (id) => {
+              if (id)
+                await dispatch(
+                  claimAdReward({
+                    ad_type: EAdActionTypes.Video,
+                    provider: EadProviders.Taddy,
+                    identifier: id,
+                  })
+                );
+            }}
+            provider={EadProviders.Taddy}
+            index={1}
+          />
+        )}
         <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
           scsClb={() => {
-            dispatch(claimOnclickaReward());
+            dispatch(
+              claimAdReward({
+                ad_type: EAdActionTypes.Video,
+                provider: EadProviders.Onclicka,
+              })
+            );
           }}
-          adType={EAdTypes.ONCLICKA_V}
+          provider={EadProviders.Onclicka}
           index={2}
           adId="6079126"
-          maxPerHourArg={-1}
-          maxPerDayArg={15}
-          minPouseMsArg={3 * 60 * 1000} // 3 min
         />
+        {isMobile && (
+          <>
+            <LoyalitySupportProjectVideoTaskItem
+              language={language}
+              gameInited={gameInited}
+              disabled={adLoading}
+              onLoadingUpdate={(loading) => setAdLoading(loading)}
+              scsClb={() => {
+                dispatch(
+                  claimAdReward({
+                    ad_type: EAdActionTypes.Video,
+                    provider: EadProviders.Adsgram,
+                  })
+                );
+              }}
+              provider={EadProviders.Adsgram}
+              index={5}
+              adId="11778"
+            />
+            <LoyalitySupportProjectVideoTaskItem
+              language={language}
+              gameInited={gameInited}
+              disabled={adLoading}
+              onLoadingUpdate={(loading) => setAdLoading(loading)}
+              scsClb={() => {
+                dispatch(
+                  claimAdReward({
+                    ad_type: EAdActionTypes.Interstitial,
+                    provider: EadProviders.Adsgram,
+                  })
+                );
+              }}
+              provider={EadProviders.Adsgram}
+              adType={EAdActionTypes.Interstitial}
+              index={6}
+              adId="int-13832"
+            />
+          </>
+        )}
+
+        {/* <LoyalitySupportProjectVideoTaskItem
+          language={language}
+          gameInited={gameInited}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
+          scsClb={() => {
+            // dispatch(
+            //   claimAdReward({
+            //     ad_type: EAdActionTypes.Interstitial,
+            //     provider: EadProviders.Adsgram,
+            //   })
+            // );
+          }}
+          provider={EadProviders.AdsController}
+          index={7}
+          adType={EAdActionTypes.Interstitial}
+        /> */}
         {Array.isArray(taddyTasks) &&
           taddyTasks?.map((task, index) => (
             <LoyalitySupportProjectTaskItem
@@ -254,7 +342,9 @@ const LoyalitySupportProject = () => {
             )
           )}
         {/* <div id="wallgram_showcase"></div> */}
-        <LoadingOverlay loading={adLoading} />
+        {/* <LoyalitySupportProjectBarzhaTaskWidget />
+        <LoyalitySupportProjectAdMasterWidget /> */}
+        <LoadingOverlay loading={adLoading} withoutTransition />
       </div>
       <TransitionProvider
         inProp={gameInited}

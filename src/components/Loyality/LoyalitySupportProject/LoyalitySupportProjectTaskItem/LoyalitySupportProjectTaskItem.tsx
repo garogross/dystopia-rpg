@@ -43,7 +43,10 @@ const LoyalitySupportProjectTaskItem: React.FC<TaskItemProps> = ({
   onGetReward,
 }) => {
   const tg = useTelegram();
-  const rewardTaddy = useAppSelector((state) => state.tasks.rewardTaddy);
+  const adRewardSettings = useAppSelector(
+    (state) => state.tasks.adRewardSettings
+  );
+  const rewardTaddy = adRewardSettings?.taddy.exchange.amount || 0;
   const title = task.title || task.name;
   const price = isTaddyTask ? rewardTaddy : task.price;
 

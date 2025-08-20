@@ -22,6 +22,7 @@ import { useFarmFieldProgress } from "../../../hooks/useFarmFieldProgress";
 import { useVideoAd } from "../../../hooks/useVideoAd";
 import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
 import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
+import { EadProviders } from "../../../constants/EadProviders";
 
 interface Props {
   show: boolean;
@@ -50,7 +51,11 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
     onShowAd,
     showTooltip: showAdTooltip,
     tooltipText: addTooltipText,
-  } = useVideoAd(() => onSpeedUp(true), speedUpCompleteText);
+  } = useVideoAd({
+    scsClb: () => onSpeedUp(true),
+    speedUpCompleteText: speedUpCompleteText,
+    provider: EadProviders.Gigapub,
+  });
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);

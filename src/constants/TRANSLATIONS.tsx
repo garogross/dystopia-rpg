@@ -23,12 +23,14 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Будет доступно через NUMBER минуту",
     },
     dailyLimitReachedText: {
-      [ELanguages.en]: "Daily ad view limit reached (100/day)",
-      [ELanguages.ru]: "Достигнут дневной лимит просмотров рекламы (100/сутки)",
+      [ELanguages.en]: "Daily ad view limit reached (NUMBER/day)",
+      [ELanguages.ru]:
+        "Достигнут дневной лимит просмотров рекламы (NUMBER/сутки)",
     },
     hourlyLimitReachedText: {
-      [ELanguages.en]: "Hourly ad view limit reached (10/hour)",
-      [ELanguages.ru]: "Достигнут почасовой лимит просмотров рекламы (10/час)",
+      [ELanguages.en]: "Hourly ad view limit reached (NUMBER/hour)",
+      [ELanguages.ru]:
+        "Достигнут почасовой лимит просмотров рекламы (NUMBER/час)",
     },
     adAvailableInSecondsText: {
       [ELanguages.en]: (seconds: number) => {
@@ -57,8 +59,8 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "cp",
     },
     watchAdAndGetCpText: {
-      [ELanguages.en]: "Watch an ad and get 1 CP",
-      [ELanguages.ru]: "Посмотри рекламу и получи 1 CP",
+      [ELanguages.en]: "Watch an ad and get NUMBER CP",
+      [ELanguages.ru]: "Посмотри рекламу и получи NUMBER CP",
     },
     watchAdText: {
       [ELanguages.en]: "Watch",
@@ -1135,6 +1137,10 @@ export const TRANSLATIONS = {
         [ELanguages.ru]:
           "Все доступные задания будут обновляться через: 6д 12ч",
       },
+      claimAdText: {
+        [ELanguages.en]: "Claim",
+        [ELanguages.ru]: "Забрать",
+      },
       subscribeText: {
         [ELanguages.en]: "Subscribe",
         [ELanguages.ru]: "Подписаться",
@@ -1160,7 +1166,7 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Open",
         [ELanguages.ru]: "Перейти",
       },
-      claimAdText: {
+      claimText: {
         [ELanguages.en]: "Claim",
         [ELanguages.ru]: "Забрать",
       },
@@ -1186,8 +1192,8 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Задание выполнено успешно",
       },
       supportProjectText: {
-        [ELanguages.en]: "Support the sponsor's project and get 5 CP",
-        [ELanguages.ru]: "Поддержите проект спонсора и получите 5 CP",
+        [ELanguages.en]: "Support the sponsor's project and get NUMBER CP",
+        [ELanguages.ru]: "Поддержите проект спонсора и получите NUMBER CP",
       },
       perDayText: {
         [ELanguages.en]: "per day",
@@ -1302,6 +1308,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Received",
       [ELanguages.ru]: "Получено",
     },
+    claimText: {
+      [ELanguages.en]: "Claim",
+      [ELanguages.ru]: "Забрать",
+    },
     closeText: {
       [ELanguages.en]: "Close",
       [ELanguages.ru]: "Закрыть",
@@ -1309,6 +1319,19 @@ export const TRANSLATIONS = {
     takeAllText: {
       [ELanguages.en]: "Take all",
       [ELanguages.ru]: "Забрать всё",
+    },
+    claimRewardFailedText: {
+      [ELanguages.en]: "Failed to claim reward",
+      [ELanguages.ru]: "Не удалось забрать награду",
+    },
+    messageDeletedSuccessText: {
+      [ELanguages.en]: "Message deleted successfully",
+      [ELanguages.ru]: "Сообщение успешно удалено",
+    },
+
+    claimRewardSuccessText: {
+      [ELanguages.en]: "Reward claimed successfully",
+      [ELanguages.ru]: "Награда успешно получена",
     },
   },
   rating: {
@@ -2019,6 +2042,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Hex is attacked",
         [ELanguages.ru]: "Гекс атакован",
       },
+      inText: {
+        [ELanguages.en]: "in",
+        [ELanguages.ru]: "через",
+      },
       nextStepInText: {
         [ELanguages.en]: "Next step in SECONDS sec.",
         [ELanguages.ru]: "Следующий ход через SECONDS сек.",
@@ -2068,6 +2095,14 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Defense buildings",
           [ELanguages.ru]: "Постройки обороны",
         },
+        sessionTimeLeftText: {
+          [ELanguages.en]: "Time left in session",
+          [ELanguages.ru]: "Время до окончания игровой сессии",
+        },
+        sessionPrizePoolText: {
+          [ELanguages.en]: "Total session prize pool",
+          [ELanguages.ru]: "Общий призовой пул игровой сессии",
+        },
         capturedHexesText: {
           [ELanguages.en]: "Hexes captured",
           [ELanguages.ru]: "Захвачено гексов",
@@ -2095,8 +2130,8 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Владелец",
         },
         ownerPlayerText: {
-          [ELanguages.en]: "Player:",
-          [ELanguages.ru]: "Игрок:",
+          [ELanguages.en]: "Player",
+          [ELanguages.ru]: "Игрок",
         },
         neutralTerritoryText: {
           [ELanguages.en]: "Uncaptured neutral territory",
@@ -2130,9 +2165,22 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Fill up",
           [ELanguages.ru]: "Пополнить",
         },
-        apWillBeSpentText: {
-          [ELanguages.en]: "AP to be spent",
-          [ELanguages.ru]: "Будет потрачено ОД",
+
+        enemyDefenseText: {
+          [ELanguages.en]: "Enemy armor",
+          [ELanguages.ru]: "Броня противника",
+        },
+        damagePerTurnText: {
+          [ELanguages.en]: "Damage per turn",
+          [ELanguages.ru]: "Урон за ход",
+        },
+        apSpentText: {
+          [ELanguages.en]: "AP will be spent",
+          [ELanguages.ru]: "ОД будет потрачено",
+        },
+        armorRemainingText: {
+          [ELanguages.en]: "Armor remaining",
+          [ELanguages.ru]: "Осталось брони",
         },
       },
     },

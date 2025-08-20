@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { EAdTypes } from "../constants/EAdTypes";
 import { ELSProps } from "../constants/ELSProps";
 import { getLSItem, setLSItem } from "../helpers/localStorage";
-import { claimVideoReward } from "../store/slices/tasksSlice";
-// import { getPlatformType } from "../utils/getPlatformType";
+import { claimAdReward } from "../store/slices/tasksSlice";
 import { useAppDispatch, useAppSelector } from "./redux";
 import { useGlobalAdController } from "./useGlobalAdController";
 import { useTooltip } from "./useTooltip";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
 import { TranslationItemType } from "../types/TranslationItemType";
-
-const MAX_PER_HOUR = 10;
-const MAX_PER_DAY = 100;
-const MIN_PAUSE_MS = 60 * 1000; // 60 секунд
+import { EAdActionTypes } from "../constants/EadActionTypes";
+import { EadProviders } from "../constants/EadProviders";
+import { getVideoAdSettings } from "../utils/tasks/getVideoAdSettings";
 
 const {
   loadAdText,
@@ -45,33 +42,58 @@ function saveVideoAdViewTimestamps(timestamps: number[], index?: number) {
   setLSItem(getVideoAdViewTimestampsKey(index), timestamps);
 }
 
-export const useVideoAd = (
-  scsClb?: (id?: string) => void,
-  speedUpCompleteText?: TranslationItemType,
-  adType?: EAdTypes,
-  index?: number,
-  adId?: string,
-  maxPerHourArg?: number, // -1 for avoid check
-  maxPerDayArg?: number, // -1 for avoid check
-  minPouseMsArg?: number // -1 for avoid check
-) => {
+export const useVideoAd = ({
+  scsClb,
+  speedUpCompleteText,
+  provider,
+  index,
+  adId,
+  maxPerHourArg,
+  maxPerDayArg,
+  minPouseMsArg,
+  adType,
+}: {
+  scsClb?: (id?: string) => void;
+  speedUpCompleteText?: TranslationItemType;
+  provider: EadProviders;
+  index?: number;
+  adId?: string;
+  maxPerHourArg?: number;
+  maxPerDayArg?: number;
+  minPouseMsArg?: number;
+  adType?: EAdActionTypes;
+}) => {
   const dispatch = useAppDispatch();
-  const tgId = useAppSelector((state) => state.profile.tgId);
   const language = useAppSelector((state) => state.ui.language);
+  const adRewardSettings = useAppSelector(
+    (state) => state.tasks.adRewardSettings
+  );
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(loadAdText[language]);
   const [viewsInDay, setViewsInDay] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const maxPerHour = maxPerHourArg || MAX_PER_HOUR;
-  const maxPerDay = maxPerDayArg || MAX_PER_DAY;
-  const minPouseMs = minPouseMsArg || MIN_PAUSE_MS;
+  const curSettings = getVideoAdSettings(
+    adRewardSettings,
+    provider,
+    adType === EAdActionTypes.Interstitial
+  );
+
+  const maxPerHour = maxPerHourArg || curSettings.per_hour;
+  const maxPerDay = maxPerDayArg || curSettings.per_day;
+  const minPouseMs = minPouseMsArg || curSettings.pause_sec;
 
   const onReward = async (id?: string) => {
     try {
       // Сохраняем новый просмотр
       if (scsClb) await scsClb(id);
-      else await dispatch(claimVideoReward({ id: tgId?.toString() })).unwrap();
+      else
+        await dispatch(
+          claimAdReward({
+            ad_type: EAdActionTypes.Video,
+            provider: EadProviders.Gigapub,
+          })
+        ).unwrap();
       const now = Date.now();
       let timestamps = await getVideoAdViewTimestamps(index);
       timestamps = timestamps?.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
@@ -88,7 +110,8 @@ export const useVideoAd = (
   };
 
   const onShowOnClickaAd = useGlobalAdController(
-    adType || EAdTypes.GIGA_V,
+    adType || EAdActionTypes.Video,
+    provider,
     adId || "",
     onReward,
     (noAd) => {
@@ -111,15 +134,25 @@ export const useVideoAd = (
         return true;
       } // for update viewsInDay on mount
       if (maxPerDay !== -1 && last24h.length >= maxPerDay) {
-        setTooltipText(dailyLimitReachedText[language]);
+        setTooltipText(
+          dailyLimitReachedText[language].replace(
+            "NUMBER",
+            maxPerDay.toString()
+          )
+        );
         return false;
       }
       if (maxPerHour !== -1 && lastHour.length >= maxPerHour) {
-        setTooltipText(hourlyLimitReachedText[language]);
+        setTooltipText(
+          hourlyLimitReachedText[language].replace(
+            "NUMBER",
+            maxPerHour.toString()
+          )
+        );
         return false;
       }
-      if (minPouseMs !== -1 && now - last < minPouseMs) {
-        const seconds = Math.ceil((minPouseMs - (now - last)) / 1000);
+      if (minPouseMs !== -1 && now - last < minPouseMs * 1000) {
+        const seconds = Math.ceil((minPouseMs * 1000 - (now - last)) / 1000);
         setTooltipText(adAvailableInSecondsText[language](seconds));
         return false;
       }
@@ -152,7 +185,8 @@ export const useVideoAd = (
     showTooltip,
     tooltipText,
     loading,
-    maxPerDay: MAX_PER_DAY,
+    maxPerDay,
     viewsInDay,
+    amount: curSettings.amount,
   };
 };

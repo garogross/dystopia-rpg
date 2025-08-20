@@ -8,8 +8,8 @@ import { ELSProps } from "../../constants/ELSProps";
 import { ELanguages } from "../../constants/ELanguages";
 import { useAppDispatch } from "../../hooks/redux";
 import { setLanguage } from "../../store/slices/uiSlice";
-import { useFreshDate } from "../../hooks/useFreshDate";
 import { postLog } from "../../api/logs";
+import { useStoreFreshDate } from "../../hooks/useStoreFreshDate";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -19,7 +19,11 @@ const loadScripts = (tg: WebApp) => {
   barzhaScript.src = `https://app.barzha.com/bQuest.js?token=${process.env.REACT_APP_BARZHA_TOKEN}`;
   barzhaScript.async = true;
   document.body.appendChild(barzhaScript);
-
+  // load barzha task-widget script
+  // const barzhaTaskWidgetScript = document.createElement("script");
+  // barzhaTaskWidgetScript.src = "https://app.barzha.com/task-widget.js";
+  // barzhaTaskWidgetScript.async = true;
+  // document.body.appendChild(barzhaTaskWidgetScript);
   // load traffy script
   const traffyToken = process.env.REACT_APP_TRAFFY_TOKEN;
   if (traffyToken) {
@@ -31,7 +35,7 @@ const loadScripts = (tg: WebApp) => {
     document.body.appendChild(traffyScript);
   }
 
-  // load onclicka script
+  // load onclicka banner script
   const onclickaCode = process.env.REACT_APP_ONCLICKA_CODE;
 
   if (onclickaCode) {
@@ -41,7 +45,7 @@ const loadScripts = (tg: WebApp) => {
     onclickaScript.async = true;
     document.body.appendChild(onclickaScript);
   }
-  // load onclicka script
+  // load giga video ad script
   const gigapubProjectId = process.env.REACT_APP_GIGAPUB_PROJECT_ID;
 
   if (gigapubProjectId) {
@@ -76,6 +80,12 @@ const loadScripts = (tg: WebApp) => {
   script.src = "https://cdn.giga.pub/script/offer/loader/loader.js";
   script.async = true;
   document.head.appendChild(script);
+
+  // load onclicka script
+  const onclickaScript2 = document.createElement("script");
+  onclickaScript2.src = "https://js.onclckvd.com/in-stream-ad-admanager/tma.js";
+  onclickaScript2.async = true;
+  document.body.appendChild(onclickaScript2);
 };
 
 const getLanguage = async (language_code: string | undefined) => {
@@ -99,7 +109,9 @@ export const App = () => {
   const isMobile = getPlatformType();
 
   // update freshDate in store for use in timers if needed
-  useFreshDate();
+  useStoreFreshDate();
+  // set timer for adsController Notification (native)  Ad
+  // useNotificationAd();
 
   useEffect(() => {
     if (!tg) return;

@@ -10,6 +10,8 @@ import "./styles/_style.scss";
 import { TaddyProvider } from "./context/TaddyContext";
 import { TadsWidgetProvider } from "react-tads-widget";
 
+import "./extensions/pixi-extensions";
+
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(

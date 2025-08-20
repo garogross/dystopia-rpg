@@ -9,6 +9,13 @@ import { FarmSlotCostsType } from "../../types/FarmSlotCostsType";
 import { SocialShopType } from "../../types/SocialShopType";
 import { IMailMessage } from "../IMailMessage";
 
+type ClaimDailyLogin = {
+  next_reward: number;
+  day_number: number;
+  reward_available: boolean;
+  rewards_by_day: Record<string, number>; // {"1": 1}
+};
+
 export interface GetAccountDetailsResponse {
   mode: AppGameMode;
   user?: {
@@ -80,12 +87,7 @@ export interface GetAccountDetailsResponse {
     };
   };
   resource_deficit: FarmResourceDeficitType;
-  claim_daily_login: {
-    next_reward: number;
-    day_number: number;
-    reward_available: boolean;
-    rewards_by_day: Record<string, number>; // {"1": 1}
-  };
+  claim_daily_login: ClaimDailyLogin;
   social_shop: SocialShopType;
   metrics: {
     ton_cyber_farm_metrics: {
@@ -108,13 +110,30 @@ export interface GetAccountDetailsResponse {
       influence_points_reward: number;
     };
     max_action_points_per_turn: number;
+    map_session?: {
+      pause_minutes: number;
+      duration_hours: number;
+      start_datetime: Date; // "2025-07-28T12:00:00Z",
+      hexes_per_player: number;
+    };
+    claim_daily_login?: ClaimDailyLogin;
   };
   active_maps?: [
     {
       map_id: number;
+      created_at: Date;
+      start_at: Date;
+      finished_at: Date;
     }
   ];
   hexes_captured?: {
     [key in string]: number;
+  };
+  map_rewards_info?: {
+    [key in string]: {
+      map_pool_size: number;
+      user_influence_points: number;
+      user_reward: number;
+    };
   };
 }

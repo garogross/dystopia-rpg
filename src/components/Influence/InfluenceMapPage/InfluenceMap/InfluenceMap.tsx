@@ -1,28 +1,63 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./InfluenceMap.module.scss";
-import DragAndZoomProvider, {
-  OffsetType,
-} from "../../../../providers/DragAndZoomProvider";
+import { isWebGLSupported } from "@pixi/utils";
+
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { IHex } from "../../../../models/Influence/IHex";
 import {
   getMap,
   getPlayerColors,
+  updateHex,
 } from "../../../../store/slices/influence/mapSlice";
 import InfluenceMapControllModal from "../InfluenceMapControllModal/InfluenceMapControllModal";
 import { getHexPixelPositions } from "../../../../utils/influence/getHexPixelPositions";
-import InfluenceMapBonusAreas from "../InfluenceMapBonusAreas/InfluenceMapBonusAreas";
-import InfluenceMapHexVector from "../InfluenceMapHexVector/InfluenceMapHexVector";
+// import InfluenceMapBonusAreas from "../InfluenceMapBonusAreas/InfluenceMapBonusAreas";
 import { findBonusAreaBorders } from "../../../../utils/influence/findBonusAreaBorders";
 import InfluenceMapSteptimer from "../InfluenceMapSteptimer/InfluenceMapSteptimer";
 import InfluenceMapHexInfoModal from "../InfluenceMapHexVector/InfluenceMapHexInfoModal";
 import { makeHexKey } from "../../../../utils/influence/makeHexKey";
 import { useInfluencePlayerColors } from "../../../../hooks/influence/useInfluencePlayerColors";
-
-const COLOR_OPACITY = "70"; // in hex
-const BONUS_AREA_BORDER_COLOR = "#7f5cff";
+import { useSocket } from "../../../../hooks/useSocket";
+import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
+import {
+  Assets,
+  Sprite,
+  BitmapText,
+  Rectangle,
+  SVGResource,
+  Texture,
+  BitmapFont, // Add for filterArea and hitArea
+} from "pixi.js";
+import {
+  influenceHexImage,
+  influenceHexReversedImage,
+} from "../../../../assets/imageMaps";
+import { generateAreas } from "../../../../utils/influence/generateAreas";
+import { generateAreaSVGs } from "../../../../utils/influence/generateAreaSVGs";
+import { generateAndAddAreaGraphics } from "../../../../utils/influence/generateAreaGraphics";
+import { getHexSvg } from "../../../../utils/influence/getHexSvg";
+import { getBonusAreas } from "../../../../utils/influence/getBonusAreas";
+import { usePixiTs } from "../../../../hooks/influence/usePixi";
+import { HEX_DEFAULT_COLOR } from "../../../../constants/influence/hexDefauktColor";
 
 const HEX_SIZE = 24;
+
+// Load the hex texture once
+let hexTexture: any = null;
+let hexTextureReversed: any = null;
+
+async function getHexTexture() {
+  if (!hexTexture) {
+    hexTexture = await Assets.load(influenceHexImage);
+  }
+  return hexTexture;
+}
+async function getReversedHexTexture() {
+  if (!hexTextureReversed) {
+    hexTextureReversed = await Assets.load(influenceHexReversedImage);
+  }
+  return hexTextureReversed;
+}
 
 const InfluenceMap = () => {
   const dispatch = useAppDispatch();
@@ -33,131 +68,263 @@ const InfluenceMap = () => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [visibleHexes, setVisibleHexes] = useState<IHex[]>([]);
-  const [offset, setOffset] = useState<OffsetType>({
-    x: 0,
-    y: 0,
-  });
-  const [scale, setScale] = useState(1);
 
-  const hexesWithBorders = findBonusAreaBorders(visibleHexes);
-
+  const hexesWithBorders = useMemo(
+    () => findBonusAreaBorders(visibleHexes),
+    [visibleHexes]
+  );
   const [selectedHexId, setSelectedHexId] = useState<string | null>(null);
   const [infoMoadlOpened, setInfoMoadlOpened] = useState(Boolean);
-
+  const bonusAreaTexts = getBonusAreas(hexesWithBorders, HEX_SIZE);
   const selectedHex =
     selectedHexId &&
     visibleHexes.find(({ x, y, z }) => makeHexKey(x, y, z) === selectedHexId);
+  const webGLSupported = isWebGLSupported();
+  // const loadingText = isWebGLSupported
+  let loadingText = "loading Map";
+  if (gameInited) loadingText = "No Active map Right now";
+  if (!webGLSupported) {
+    loadingText =
+      "WebGL is not supported in your browser. Please update your browser or try a different one to view the map.";
+  }
+
+  useSocket(
+    `/influence_map/${mapId}`,
+    (res) => {
+      const data = res as { type?: string; hex?: IHex };
+
+      if (data && data.type === "hex_update" && data.hex) {
+        dispatch(updateHex(data.hex));
+      }
+    },
+    [mapId]
+  );
+  const {
+    isInitialized,
+    offset,
+    scale,
+    pixiContainer,
+    appRef,
+    hexLayerRef,
+    isDraggingRef,
+  } = usePixiTs();
 
   useEffect(() => {
     if (!mapId) return;
     (async () => {
-      await dispatch(getMap({ id: mapId.toString() }));
       await dispatch(getPlayerColors({ id: mapId.toString() }));
+      await dispatch(getMap({ id: mapId.toString() }));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapId]);
 
   useEffect(() => {
-    if (gameInited && containerRef.current) {
+    return () => {
+      Assets.unload(influenceHexImage);
+      Assets.unload(influenceHexReversedImage);
+
+      if (hexTexture) {
+        hexTexture.destroy(true);
+        hexTexture = null;
+      }
+      if (hexTextureReversed) {
+        hexTextureReversed.destroy(true);
+        hexTextureReversed = null;
+      }
+    };
+  }, []);
+
+  const ownedAreas = generateAreas(
+    hexesWithBorders,
+    "ownerBorders",
+    HEX_SIZE,
+    getPlayerColor
+  );
+  const bonusAreas = generateAreas(
+    hexesWithBorders,
+    "bonusAreaBorders",
+    HEX_SIZE,
+    undefined,
+    HEX_DEFAULT_COLOR
+  );
+  const ownedAreaSVGs = generateAreaSVGs(ownedAreas);
+  const bonusAreaSVGs = generateAreaSVGs(bonusAreas);
+
+  const updateCanvas = async () => {
+    if (!hexLayerRef.current) return;
+    hexLayerRef.current.removeChildren().forEach((child) => {
+      child.removeAllListeners?.(); // remove Pixi event handlers
+      child.destroy({ children: true, texture: false });
+    });
+    // Load the hex texture
+    const hexTexture = await getHexTexture();
+    const hexTextureReversed = await getReversedHexTexture();
+
+    // Perf: batch sprites by type, then graphics, to minimize draw calls
+    const spriteBatch: Sprite[] = [];
+    const graphicsBatch: Sprite[] = [];
+
+    hexesWithBorders.forEach((hex) => {
+      const { x, z, y } = hex;
+      const { left, top } = getHexPixelPositions({ x, z }, HEX_SIZE);
+
+      // Create sprite with the hex image
+      const sprite = new Sprite(x % 2 ? hexTexture : hexTextureReversed);
+      sprite.x = left;
+      sprite.y = top;
+      sprite.width = HEX_SIZE * 2;
+      sprite.height = HEX_SIZE * 2;
+
+      // Perf: set hitArea to avoid event crawling
+      sprite.hitArea = new Rectangle(0, 0, sprite.width, sprite.height);
+
+      // Apply tint based on owner_id if present
+
+      sprite.alpha = 0.6;
+
+      spriteBatch.push(sprite);
+
+      // Graphics for hex border
+      const svgString = getHexSvg(
+        HEX_SIZE,
+        hex.owner_id ? getPlayerColor(hex.owner_id) : undefined
+      );
+
+      const texture = Texture.from(svgString, {
+        resourceOptions: { scale: 1, resource: SVGResource }, // Important
+      });
+
+      const textureSprite = new Sprite(texture);
+      textureSprite.anchor.set(0.5); // Optional center alignment
+
+      textureSprite.x = left + HEX_SIZE;
+      textureSprite.y = top + HEX_SIZE;
+
+      textureSprite.eventMode = "static";
+      textureSprite.cursor = "pointer";
+      textureSprite.on("pointertap", (event) => {
+        if (!isDraggingRef.current) {
+          event.stopPropagation();
+          select(x, y, z);
+        }
+      });
+      graphicsBatch.push(textureSprite);
+    });
+
+    // Add all sprites, then all graphics (draw order optimization)
+    spriteBatch.forEach((sprite) => hexLayerRef.current?.addChild(sprite));
+    graphicsBatch.forEach((graphics) =>
+      hexLayerRef.current?.addChild(graphics)
+    );
+
+    generateAndAddAreaGraphics(hexLayerRef.current, ownedAreaSVGs, 2, false, 0);
+    generateAndAddAreaGraphics(
+      hexLayerRef.current,
+      bonusAreaSVGs,
+      1.5,
+      true,
+      1
+    );
+    await document.fonts.load("18px DS_Army");
+
+    // Destroy previous texts
+    hexLayerRef.current.children
+      .filter((c) => c instanceof BitmapText)
+      .forEach((c) => c.destroy());
+    // Perf: BitmapText - lower resolution on mobile
+
+    // First, register font once (e.g. on init)
+    BitmapFont.from("DS_Army", {
+      fontFamily: "DS_Army",
+      fontSize: 20,
+      fill: "white",
+      stroke: HEX_DEFAULT_COLOR,
+    });
+
+    // Then use it:
+    bonusAreaTexts.forEach((area) => {
+      const text = new BitmapText(area.id.toUpperCase(), {
+        fontName: "DS_Army",
+        fontSize: 20,
+        tint: 0xffffff, // replaces fill
+      });
+
+      text.eventMode = "none";
+      text.x = area.left - text.width / 2;
+      text.y = area.top - text.height / 2;
+      text.zIndex = 10;
+      hexLayerRef.current?.addChild(text);
+    });
+  };
+
+  useEffect(() => {
+    if (hexLayerRef.current && visibleHexes.length > 0) {
+      updateCanvas();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visibleHexes, isInitialized]);
+
+  useEffect(() => {
+    if (
+      gameInited &&
+      containerRef.current &&
+      appRef.current &&
+      isInitialized &&
+      scale
+    ) {
       const containerRect = containerRef.current.getBoundingClientRect();
-      const containerWidth = containerRect.width + HEX_SIZE;
-      const containerHeight = containerRect.height + HEX_SIZE;
-      // Center the map so that (0,0) is in the center of the container
-      const centerX = containerRect.width / 2;
-      const centerY = containerRect.height / 2;
+      const containerWidth = containerRect.width;
+      const containerHeight = containerRect.height;
+
+      // Calculate the visible area in hex coordinates
+      // Since the hex layer is centered, we need to account for the offset from the center
       const visibleHexes = hexes.filter((hex) => {
         const { left, top } = getHexPixelPositions(
           { x: hex.x, z: hex.z },
           HEX_SIZE * scale
         );
 
-        // Adjust so that (0,0) is at the center, then apply offset
-        const screenLeft = left + offset.x + centerX;
-        const screenTop = top + offset.y + centerY;
+        // The hex layer is centered, so we need to check if the hex is within the visible area
+        // The visible area is from -containerWidth/2 to containerWidth/2 and -containerHeight/2 to containerHeight/2
+        // Since the hex layer is centered, the hex positions are relative to the center
+        const screenLeft = left + offset.x;
+        const screenTop = top + offset.y;
 
+        // Check if the hex is within the visible area
         return (
-          screenLeft + HEX_SIZE * 2 > 0 &&
-          screenLeft < containerWidth &&
-          screenTop + HEX_SIZE * 2 > 0 &&
-          screenTop < containerHeight
+          screenLeft + HEX_SIZE * 2 > -containerWidth / 2 &&
+          screenLeft < containerWidth / 2 &&
+          screenTop + HEX_SIZE * 2 > -containerHeight / 2 &&
+          screenTop < containerHeight / 2
         );
       });
       setVisibleHexes(visibleHexes);
     }
-  }, [gameInited, containerRef, hexes, scale, offset.x, offset.y]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    gameInited,
+    containerRef,
+    hexes,
+    scale,
+    offset.x,
+    offset.y,
+    isInitialized,
+  ]);
 
+  const select = (x: number, y: number, z: number) => {
+    setSelectedHexId(makeHexKey(x, y, z));
+    setInfoMoadlOpened(true);
+  };
   return (
     <div ref={containerRef} className={styles.influenceMap}>
       <InfluenceMapSteptimer />
       <InfluenceMapControllModal />
-      <DragAndZoomProvider
-        className={styles.influenceMap__inner}
-        onUpdateEnd={(offset, scale) => {
-          setOffset(offset);
-          setScale(scale);
-        }}
-      >
-        <InfluenceMapBonusAreas
-          hexesWithBorders={hexesWithBorders}
-          hexSize={HEX_SIZE}
-        />
-        {hexesWithBorders.map(
-          ({ x, y, z, owner_id, ownerBorders, bonusAreaBorders }) => {
-            const { left, top } = getHexPixelPositions({ x, z }, HEX_SIZE);
-            const size = HEX_SIZE * 2;
-            return (
-              <button
-                title={owner_id?.toString() || ""}
-                onClick={() => {
-                  setSelectedHexId(makeHexKey(x, y, z));
-                  setInfoMoadlOpened(true);
-                }}
-                key={`${x},${y},${z}`}
-                className={styles.influenceMap__hex}
-                style={{
-                  left,
-                  top,
-                  width: size,
-                  height: size,
-                }}
-              >
-                <div
-                  style={{
-                    backgroundColor: owner_id
-                      ? getPlayerColor(owner_id) + COLOR_OPACITY
-                      : undefined,
-                  }}
-                  className={`${styles.influenceMap__hexInner} ${
-                    x % 2 ? styles.influenceMap__hexInner_rotated : ""
-                  }`}
-                ></div>
+      <div
+        ref={pixiContainer}
+        id="pixi-container"
+        style={{ width: "100%", height: "100%" }}
+      />
 
-                <InfluenceMapHexVector
-                  className={styles.influenceMap__bonusAreaStroke}
-                  stroke={(isBorder) =>
-                    isBorder ? BONUS_AREA_BORDER_COLOR : "transparent"
-                  }
-                  strokeDash={(isBorder) => (isBorder ? "6,4" : undefined)}
-                  borders={bonusAreaBorders}
-                  size={size}
-                />
-                <InfluenceMapHexVector
-                  className={styles.influenceMap__ownerAreaStroke}
-                  stroke={(isBorder) =>
-                    isBorder && owner_id
-                      ? getPlayerColor(owner_id)
-                      : "transparent"
-                  }
-                  strokeWidth={(isBorder) => (isBorder ? 5 : undefined)}
-                  borders={ownerBorders}
-                  size={size}
-                />
-              </button>
-            );
-          }
-        )}
-        {/* <div className={styles.influenceMap__hex}></div> */}
-      </DragAndZoomProvider>
       {selectedHex && (
         <InfluenceMapHexInfoModal
           hex={selectedHex}
@@ -170,6 +337,7 @@ const InfluenceMap = () => {
           onClose={() => setInfoMoadlOpened(false)}
         />
       )}
+      <LoadingOverlay loading={!mapId || !webGLSupported} text={loadingText} />
     </div>
   );
 };

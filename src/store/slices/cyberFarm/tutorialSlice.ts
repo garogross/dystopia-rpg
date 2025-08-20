@@ -60,7 +60,7 @@ export function calculateTutorialProgressIndex(
   if (!tutorialProgressAction) return 0;
 
   const curActionIndex = CYBERFARM_TUTORIAL_PROGRESS.findIndex(
-    (item) => item.action === tutorialProgressAction
+    (item) => item?.action === tutorialProgressAction
   );
 
   if (curActionIndex === -1) return 0;
@@ -72,7 +72,7 @@ export function calculateTutorialProgressIndex(
 
   if (curProgress.required) {
     const requiredProgressIndex = CYBERFARM_TUTORIAL_PROGRESS.findIndex(
-      (item) => item.action === curProgress.required
+      (item) => item?.action === curProgress.required
     );
 
     if (requiredProgressIndex !== -1) {

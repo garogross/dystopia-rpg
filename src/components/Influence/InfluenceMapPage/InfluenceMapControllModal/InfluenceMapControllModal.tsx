@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   ToggleIcon,
   // BuildingIcon,
@@ -18,16 +18,36 @@ import { DotsLine } from "../../../layout/icons/RPGGame/Common";
 import styles from "./InfluenceMapControllModal.module.scss";
 import { useAppSelector } from "../../../../hooks/redux";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { formatTime } from "../../../../utils/formatTime";
+import { useFreshDate } from "../../../../hooks/useFreshDate";
 
 const {
   // totalHexesText,
   // productionBuildingsText,
   // defenseBuildingsText,
+  sessionTimeLeftText,
+  sessionPrizePoolText,
   capturedHexesText,
   influencePointsText,
   rewardForecastText,
   clanControlTitleText,
 } = TRANSLATIONS.influence.map.controllModal;
+
+const SessionTimeLefTimer = () => {
+  const sessionFinishDate = useAppSelector(
+    (state) => state.influence.map.sessionFinishDate
+  );
+
+  let remainingTimeMs: ReactNode = 0;
+  if (sessionFinishDate) {
+    const endDate = new Date(sessionFinishDate);
+    if (endDate.getTime() > Date.now())
+      remainingTimeMs = (endDate.getTime() - Date.now()) / 1000;
+  }
+  useFreshDate(!!remainingTimeMs);
+
+  return <>{formatTime(remainingTimeMs < 0 ? 0 : remainingTimeMs)}</>;
+};
 
 const InfluenceMapControllModal = () => {
   const language = useAppSelector((state) => state.ui.language);
@@ -37,7 +57,60 @@ const InfluenceMapControllModal = () => {
   const influencePoints = useAppSelector(
     (state) => state.influence.influence.influencePoints
   );
+  const mapRewardsInfo = useAppSelector(
+    (state) => state.influence.map.mapRewardsInfo
+  );
+  const mapId = useAppSelector((state) => state.influence.map.mapId);
   const [open, setOpen] = useState(true);
+
+  const curMapRewardsInfo = mapId ? mapRewardsInfo[mapId] : null;
+
+  const controllModalStats = [
+    {
+      label: sessionTimeLeftText[language],
+      value: <SessionTimeLefTimer />,
+    },
+    {
+      label: sessionPrizePoolText[language],
+      value: curMapRewardsInfo?.map_pool_size
+        ? +(curMapRewardsInfo?.map_pool_size).toFixed(2)
+        : 0,
+      icon: {
+        src: cpImage,
+        srcSet: cpImageWebp,
+        alt: "cash point",
+      },
+    },
+    {
+      label: capturedHexesText[language],
+      value: hexesCaptured,
+      icon: {
+        src: hexIconImage,
+        srcSet: hexIconImageWebp,
+        alt: "hex",
+      },
+    },
+    {
+      label: influencePointsText[language],
+      value: influencePoints,
+      icon: {
+        src: influencePointIconImage,
+        srcSet: influencePointIconImageWebp,
+        alt: "influence point",
+      },
+    },
+    {
+      label: rewardForecastText[language],
+      value: curMapRewardsInfo?.user_reward
+        ? +(curMapRewardsInfo?.user_reward).toFixed(2)
+        : 0,
+      icon: {
+        src: cpImage,
+        srcSet: cpImageWebp,
+        alt: "cash point",
+      },
+    },
+  ];
 
   return (
     <div
@@ -63,37 +136,21 @@ const InfluenceMapControllModal = () => {
         <div className={styles.influenceMapControllModal__dotline}>
           <DotsLine preserveAspectRatio />
         </div>
-        <div className={styles.influenceMapControllModal__text}>
-          <span>
-            {capturedHexesText[language]}: {hexesCaptured}
-          </span>
-          <ImageWebp
-            src={hexIconImage}
-            srcSet={hexIconImageWebp}
-            alt="hex"
-            className={styles.influenceMapControllModal__img}
-          />
-        </div>
-        <div className={styles.influenceMapControllModal__text}>
-          <span>
-            {influencePointsText[language]}: {influencePoints}
-          </span>
-          <ImageWebp
-            src={influencePointIconImage}
-            srcSet={influencePointIconImageWebp}
-            alt="influence point"
-            className={styles.influenceMapControllModal__img}
-          />
-        </div>
-        <div className={styles.influenceMapControllModal__text}>
-          <span>{rewardForecastText[language]}: ≈ 0.182</span>
-          <ImageWebp
-            src={cpImage}
-            srcSet={cpImageWebp}
-            alt="cash point"
-            className={styles.influenceMapControllModal__img}
-          />
-        </div>
+        {controllModalStats.map((stat, idx) => (
+          <div className={styles.influenceMapControllModal__text} key={idx}>
+            <span>
+              {stat.label}: {stat.value}
+            </span>
+            {stat.icon && (
+              <ImageWebp
+                src={stat.icon.src}
+                srcSet={stat.icon.srcSet}
+                alt={stat.icon.alt}
+                className={styles.influenceMapControllModal__img}
+              />
+            )}
+          </div>
+        ))}
         {/* <div className={styles.influenceMapControllModal__dotline}>
           <DotsLine preserveAspectRatio />
         </div>
