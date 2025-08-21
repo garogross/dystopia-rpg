@@ -28,6 +28,7 @@ import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import { getPlatformType } from "../../../utils/getPlatformType";
 import { EadProviders } from "../../../constants/EadProviders";
 import { EAdActionTypes } from "../../../constants/EadActionTypes";
+import { postLog } from "../../../api/logs";
 // import LoyalitySupportProjectAdMasterWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdMasterWidget";
 // import LoyalitySupportProjectBarzhaTaskWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectBarzhaTaskWidget";
 
@@ -140,6 +141,10 @@ const LoyalitySupportProject = () => {
       ).unwrap();
       setTooltipText(taskCompletedText);
     } catch (error) {
+      postLog({
+        tgId,
+        error: error,
+      });
       setTooltipText(failedToClaimRewardText);
     } finally {
       setAdLoading(false);
