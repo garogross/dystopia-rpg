@@ -37,8 +37,8 @@ import { generateAreaSVGs } from "../../../../utils/influence/generateAreaSVGs";
 import { generateAndAddAreaGraphics } from "../../../../utils/influence/generateAreaGraphics";
 import { getHexSvg } from "../../../../utils/influence/getHexSvg";
 import { getBonusAreas } from "../../../../utils/influence/getBonusAreas";
-import { usePixiTs } from "../../../../hooks/influence/usePixi";
 import { HEX_DEFAULT_COLOR } from "../../../../constants/influence/hexDefauktColor";
+import { useIfluenceMapCanvas } from "../../../../hooks/influence/useIfluenceMapCanvas";
 
 const HEX_SIZE = 24;
 
@@ -107,7 +107,7 @@ const InfluenceMap = () => {
     appRef,
     hexLayerRef,
     isDraggingRef,
-  } = usePixiTs();
+  } = useIfluenceMapCanvas();
 
   useEffect(() => {
     if (!mapId) return;

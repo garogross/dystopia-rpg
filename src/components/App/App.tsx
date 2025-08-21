@@ -18,11 +18,25 @@ const loadScripts = (tg: WebApp) => {
   const barzhaScript = document.createElement("script");
   barzhaScript.src = `https://app.barzha.com/bQuest.js?token=${process.env.REACT_APP_BARZHA_TOKEN}`;
   barzhaScript.async = true;
+  barzhaScript.onerror = () => {
+    postLog({
+      type: "script_error",
+      message: "Failed to load barzha script",
+      src: barzhaScript.src,
+    });
+  };
   document.body.appendChild(barzhaScript);
   // load barzha task-widget script
   // const barzhaTaskWidgetScript = document.createElement("script");
   // barzhaTaskWidgetScript.src = "https://app.barzha.com/task-widget.js";
   // barzhaTaskWidgetScript.async = true;
+  // barzhaTaskWidgetScript.onerror = () => {
+  //   postLog({
+  //     type: "script_error",
+  //     message: "Failed to load barzha task-widget script",
+  //     src: barzhaTaskWidgetScript.src,
+  //   });
+  // };
   // document.body.appendChild(barzhaTaskWidgetScript);
   // load traffy script
   const traffyToken = process.env.REACT_APP_TRAFFY_TOKEN;
@@ -32,7 +46,54 @@ const loadScripts = (tg: WebApp) => {
     traffyScript.setAttribute("resource-id", traffyToken);
     traffyScript.setAttribute("mode", "production");
     traffyScript.async = true;
+    traffyScript.onerror = () => {
+      postLog({
+        type: "script_error",
+        message: "Failed to load traffy script",
+        src: traffyScript.src,
+      });
+    };
     document.body.appendChild(traffyScript);
+
+    // load adsgram script with error handling
+    const adsgramScript = document.createElement("script");
+    adsgramScript.src = "https://sad.adsgram.ai/js/sad.min.js";
+    adsgramScript.async = true;
+    adsgramScript.onerror = () => {
+      postLog({
+        type: "script_error",
+        message: "Failed to load adsgram script",
+        src: adsgramScript.src,
+      });
+    };
+    document.body.appendChild(adsgramScript);
+
+    // load taddy script with error handling
+    const taddyScript = document.createElement("script");
+    taddyScript.src = "https://sdk.taddy.pro/web/taddy.min.js";
+    taddyScript.async = true;
+    taddyScript.onerror = () => {
+      postLog({
+        type: "script_error",
+        message: "Failed to load taddy script",
+        src: taddyScript.src,
+      });
+    };
+    document.body.appendChild(taddyScript);
+
+    // load barzha admaster-callback script with error handling
+    const barzhaAdmasterCallbackScript = document.createElement("script");
+    barzhaAdmasterCallbackScript.src =
+      "https://app.barzha.com/admaster-callback.js";
+    barzhaAdmasterCallbackScript.async = true;
+    barzhaAdmasterCallbackScript.onerror = () => {
+      postLog({
+        type: "script_error",
+        message: "Failed to load barzha admaster-callback script",
+        src: barzhaAdmasterCallbackScript.src,
+      });
+    };
+    document.body.appendChild(barzhaAdmasterCallbackScript);
   }
 
   // load onclicka banner script
@@ -43,6 +104,13 @@ const loadScripts = (tg: WebApp) => {
     onclickaScript.src = "https://js.onclckmn.com/banner/oncbanner.m.js";
     onclickaScript.setAttribute("data-onclicka-banner", onclickaCode);
     onclickaScript.async = true;
+    onclickaScript.onerror = () => {
+      postLog({
+        type: "script_error",
+        message: "Failed to load onclicka banner script",
+        src: onclickaScript.src,
+      });
+    };
     document.body.appendChild(onclickaScript);
   }
   // load giga video ad script
@@ -72,6 +140,13 @@ const loadScripts = (tg: WebApp) => {
         l();
       }();
     `;
+    gigapubScript.onerror = () => {
+      postLog({
+        type: "script_error",
+        message: "Failed to load gigapub script",
+        src: "https://ad.gigapub.tech or https://ru-ad.gigapub.tech",
+      });
+    };
     document.body.appendChild(gigapubScript);
   }
 
@@ -79,12 +154,26 @@ const loadScripts = (tg: WebApp) => {
   const script = document.createElement("script");
   script.src = "https://cdn.giga.pub/script/offer/loader/loader.js";
   script.async = true;
+  script.onerror = () => {
+    postLog({
+      type: "script_error",
+      message: "Failed to load giga tasks script",
+      src: script.src,
+    });
+  };
   document.head.appendChild(script);
 
   // load onclicka script
   const onclickaScript2 = document.createElement("script");
   onclickaScript2.src = "https://js.onclckvd.com/in-stream-ad-admanager/tma.js";
   onclickaScript2.async = true;
+  onclickaScript2.onerror = () => {
+    postLog({
+      type: "script_error",
+      message: "Failed to load onclicka in-stream script",
+      src: onclickaScript2.src,
+    });
+  };
   document.body.appendChild(onclickaScript2);
 };
 

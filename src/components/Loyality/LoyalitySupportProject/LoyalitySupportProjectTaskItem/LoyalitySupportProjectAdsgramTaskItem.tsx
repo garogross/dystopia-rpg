@@ -51,7 +51,7 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
   }, []);
 
   useEffect(() => {
-    if (!isMobile) return;
+    if (!isMobile || !gameInited) return;
 
     const handler = (event: any) => {
       dispatch(
@@ -78,9 +78,9 @@ const LoyalitySupportProjectAdsgramTaskItem = ({
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [gameInited]);
 
-  if (!isMobile || hidden) return null;
+  if (!isMobile || hidden || !gameInited) return null;
 
   return (
     <TransitionProvider
