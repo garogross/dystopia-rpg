@@ -1998,6 +1998,26 @@ export const TRANSLATIONS = {
       },
     },
   },
+  bubbleFront: {
+    bottomNavbar: {
+      modeSelectText: {
+        [ELanguages.en]: "Mode Select",
+        [ELanguages.ru]: "Выбор режима",
+      },
+      ratingsText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
+      },
+      necrobombText: {
+        [ELanguages.en]: "Necrobomb",
+        [ELanguages.ru]: "Некробомба",
+      },
+      achievementsText: {
+        [ELanguages.en]: "Achievements",
+        [ELanguages.ru]: "Достижения",
+      },
+    },
+  },
   influence: {
     header: {
       throughText: {

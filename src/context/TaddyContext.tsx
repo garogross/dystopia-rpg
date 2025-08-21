@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { FeedItem } from "taddy-sdk-web";
 import { useTelegram } from "../hooks/useTelegram";
+import { useAppSelector } from "../hooks/redux";
 
 interface TaddyContextType {
   exchange: ReturnType<typeof window.Taddy.exchange> | null;
@@ -21,6 +22,8 @@ const taddyPublicId = process.env.REACT_APP_TADDY_PUBLIC_ID as string;
 export const TaddyProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
+
   const taddy = window.Taddy;
   const [exchange, setExchange] = useState<ReturnType<
     typeof taddy.exchange
@@ -29,14 +32,14 @@ export const TaddyProvider: React.FC<{ children: React.ReactNode }> = ({
   const [taddyTasks, setTaddyTasks] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!tg.initDataUnsafe.user?.id || !taddy) return;
+    if (!tg.initDataUnsafe.user?.id || !gameInited || !taddy) return;
     taddy?.init(taddyPublicId, { debug: true });
 
     taddy?.ready();
     const exchangeInstance = taddy.exchange();
     setExchange(exchangeInstance);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [gameInited]);
 
   const fetchTaddyTasks = () => {
     if (!exchange) return;

@@ -1,0 +1,65 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.bubbleFrontMainHeader {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  gap: 10px;
+
+  &__info {
+    @include flexCol(space-between, flex-end);
+  }
+  &__infoItem {
+    padding: 1px;
+    background-color: $color-primary;
+    width: 140px;
+  }
+  &__infoItemInner {
+    width: 100%;
+    background-color: $color-bg;
+    @include flexCol();
+    padding: 4px;
+    @include setFont(12px, 400, $font-fam-bowler, $color-primary);
+    gap: 2px;
+  }
+
+  &__infoItem:first-child,
+  &__infoItem:first-child &__infoItemInner {
+    clip-path: polygon(
+      96% 0%,
+      /* M130.097 0.5 */ 100% 100%,
+      /* L135.359 21.5 */ 3% 100%,
+      /* H4.50293 */ 0% 32%,
+      /* L0.539062 6.94336 */ 3% 0%,
+      /* L4.51074 0.5 */ 96% 0% /* H130.097Z */
+    );
+  }
+  &__infoItem:last-child,
+  &__infoItem:last-child &__infoItemInner {
+    clip-path: polygon(
+      4% 0%,
+      /* M4.51074 0.5 */ 0% 100%,
+      /* L0.539062 21.5 */ 97% 100%,
+      /* H135.359 */ 100% 32%,
+      /* L130.097 6.94336 */ 97% 0%,
+      /* L130.097 0.5 */ 4% 0% /* H4.51074Z */
+    );
+  }
+
+  &__centerLine {
+    flex: 1;
+    border-bottom: 1px solid $color-primary;
+  }
+
+  &__misses {
+    @include flexCol();
+    gap: 3px;
+  }
+  &__miss {
+    width: 9px;
+    height: 9px;
+    background-color: $color-primary;
+    border-radius: 50%;
+  }
+}

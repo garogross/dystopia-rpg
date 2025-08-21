@@ -55,6 +55,9 @@ import {
   influenceMyClanPagePath,
   influenceMailPagePath,
   influenceRatingsPagePath,
+  bubbleFrontRatingsPagePath,
+  bubbleFrontPagePath,
+  bubbleFrontAchievmentsPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -103,6 +106,10 @@ import InfluenceCreateClanPage from "../pages/Influence/InfluenceCreateClanPage"
 import InfluenceMyClanPage from "../pages/Influence/InfluenceMyClanPage";
 import InfluenceMailPage from "../pages/Influence/InfluenceMailPage";
 import InfluenceRatingsPage from "../pages/Influence/InfluenceRatingsPage";
+import BubbleFrontPage from "../pages/BubbleFront/BubbleFrontPage";
+import BubbleFrontMainPage from "../pages/BubbleFront/BubbleFrontMainPage";
+import BubbleFrontAchievmentsPage from "../pages/BubbleFront/BubbleFrontAchievmentsPage";
+import BubbleFrontRatingsPage from "../pages/BubbleFront/BubbleFrontRatingsPage";
 
 export const homePagePath = "/";
 
@@ -281,6 +288,21 @@ export const routes: IRoute[] = [
       {
         path: puzzleRatingsPagePath,
         component: <PuzzleRatingsPage />,
+      },
+    ],
+  },
+  {
+    path: bubbleFrontPagePath,
+    component: <BubbleFrontPage />,
+    indexComponent: <BubbleFrontMainPage />,
+    children: [
+      {
+        path: bubbleFrontAchievmentsPagePath,
+        component: <BubbleFrontAchievmentsPage />,
+      },
+      {
+        path: bubbleFrontRatingsPagePath,
+        component: <BubbleFrontRatingsPage />,
       },
     ],
   },

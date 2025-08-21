@@ -41,6 +41,10 @@ export const puzzleGalleryPagePath = "gallery";
 export const puzzleAchievmentsPagePath = "achievments";
 export const puzzleRatingsPagePath = "ratings";
 
+export const bubbleFrontPagePath = onBoardingPagePath + "/bubblefront";
+export const bubbleFrontAchievmentsPagePath = "achievments";
+export const bubbleFrontRatingsPagePath = "ratings";
+
 export const influencePagePath = onBoardingPagePath + "/influence";
 export const influenceClanPagePath = "clan";
 export const influenceMyClanPagePath = "clan/my";

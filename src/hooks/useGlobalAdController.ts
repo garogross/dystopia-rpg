@@ -16,15 +16,9 @@ export const useGlobalAdController = (
 
   const tgId = useAppSelector((state) => state.profile.tgId);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
-
-  let AdController: AdsgramController | null = null;
-  if (
-    (type === EAdActionTypes.Video || type === EAdActionTypes.Interstitial) &&
-    provider === EadProviders.Adsgram &&
-    window.Adsgram
-  ) {
-    AdController = window.Adsgram?.init({ blockId: id });
-  }
+  const [adController, setadController] = useState<AdsgramController | null>(
+    null
+  );
 
   const onSuccess = () => {
     scsClb?.();
@@ -40,6 +34,15 @@ export const useGlobalAdController = (
             setOnclickaAd(() => show);
           })
           .catch((e) => console.error(e));
+      }
+
+      if (
+        (type === EAdActionTypes.Video ||
+          type === EAdActionTypes.Interstitial) &&
+        provider === EadProviders.Adsgram &&
+        window.Adsgram
+      ) {
+        setadController(window.Adsgram?.init({ blockId: id }));
       }
 
       if (
@@ -68,10 +71,14 @@ export const useGlobalAdController = (
           if (
             (type === EAdActionTypes.Video ||
               type === EAdActionTypes.Interstitial) &&
-            AdController
+            adController
           ) {
-            const result = await AdController.show();
-            if (result.done) onSuccess();
+            console.log("adController");
+
+            const result = await adController?.show();
+            console.log("result");
+
+            if (result?.done) onSuccess();
           }
           break;
         }
