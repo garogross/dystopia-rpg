@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { EAdActionTypes } from "../constants/EadActionTypes";
 import { EadProviders } from "../constants/EadProviders";
-import { claimAdReward, getAdMeditation } from "../store/slices/tasksSlice";
+import {
+  claimAdReward,
+  getAdMeditation,
+  removeAdMeditation,
+} from "../store/slices/tasksSlice";
 import { AdRewardValidPairsType } from "../types/tasks/AdRewardValidPairsType";
 import { useAppDispatch, useAppSelector } from "./redux";
 import { useGlobalAdController } from "./useGlobalAdController";
@@ -115,6 +119,10 @@ export const useSoltAd = (slotId: string) => {
         }
       })();
     }
+
+    return () => {
+      dispatch(removeAdMeditation());
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mediation]);
 
