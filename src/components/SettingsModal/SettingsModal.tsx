@@ -93,7 +93,8 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
             <DotsLine />
           </div>
         </div>
-        {testerIds.includes(+tgId) && (
+        {(process.env.REACT_APP_MODE === "dev" ||
+          testerIds.includes(+tgId)) && (
           <div className={styles.settingsModal__linkItem}>
             <div className={styles.settingsModal__linkDotline}>
               <DotsLine />
