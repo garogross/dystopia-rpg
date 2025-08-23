@@ -54,21 +54,21 @@ export const useGlobalAdController = (
         setadController(window.Adsgram?.init({ blockId }));
       }
 
-      if (
-        forceInit ||
-        ((type === EAdActionTypes.Video ||
-          type === EAdActionTypes.Interstitial) &&
-          provider === EadProviders.AdsController)
-      ) {
-        try {
-          window.TelegramAdsController = new TelegramAdsController();
-          window.TelegramAdsController?.initialize({
-            pubId: "983111",
-            appId: "3212",
-            debug: true,
-          });
-        } catch (error) {}
-      }
+      // if (
+      //   forceInit ||
+      //   ((type === EAdActionTypes.Video ||
+      //     type === EAdActionTypes.Interstitial) &&
+      //     provider === EadProviders.AdsController)
+      // ) {
+      //   try {
+      //     window.TelegramAdsController = new TelegramAdsController();
+      //     window.TelegramAdsController?.initialize({
+      //       pubId: "983111",
+      //       appId: "3212",
+      //       debug: true,
+      //     });
+      //   } catch (error) {}
+      // }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     dependencies ? [...dependencies, gameInited, tgId] : [tgId, gameInited]
