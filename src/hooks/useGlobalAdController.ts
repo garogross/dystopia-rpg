@@ -32,8 +32,6 @@ export const useGlobalAdController = (
         forceInit ||
         (type === EAdActionTypes.Video && provider === EadProviders.Onclicka)
       ) {
-        console.log("init onclicka");
-
         window
           .initCdTma?.({ id: "6079126" })
           .then((show) => {
@@ -103,8 +101,6 @@ export const useGlobalAdController = (
         }
         case EadProviders.Onclicka: {
           if (type === EAdActionTypes.Video) {
-            console.log({ onclickaAd });
-
             if (!onclickaAd) {
               errClb?.();
               return;

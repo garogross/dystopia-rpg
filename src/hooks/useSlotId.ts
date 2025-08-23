@@ -1,11 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EAdActionTypes } from "../constants/EadActionTypes";
 import { EadProviders } from "../constants/EadProviders";
-import {
-  claimAdReward,
-  getAdMeditation,
-  removeAdMeditation,
-} from "../store/slices/tasksSlice";
+import { claimAdReward, getAdMeditation } from "../store/slices/tasksSlice";
 import { AdRewardValidPairsType } from "../types/tasks/AdRewardValidPairsType";
 import { useAppDispatch, useAppSelector } from "./redux";
 import { useGlobalAdController } from "./useGlobalAdController";
@@ -70,66 +66,48 @@ export const useSoltAd = (slotId: string) => {
     "",
     onSuccess,
     onError,
-    [curSlotDetails],
+    [],
     true
   );
-
-  useEffect(() => {
-    if (mediation) {
-      (async () => {
-        try {
-          const curSlot = mediation[slotId];
-          if (curSlot) {
-            switch (curSlot.status) {
-              case EMediationStatuses.AdAvailable: {
-                await onShowAd();
-                break;
-              }
-              case EMediationStatuses.NoAds: {
-                setTooltipText(noAdText[language]);
-                openTooltip();
-                break;
-              }
-              case EMediationStatuses.Inactive: {
-                setTooltipText(slotInactiveText[language]);
-                openTooltip();
-                break;
-              }
-              case EMediationStatuses.SlotCooldown: {
-                setTooltipText(
-                  adAvailableInSecondsText[language](curSlot.seconds_left)
-                );
-                openTooltip();
-                break;
-              }
-              case EMediationStatuses.AdLimit: {
-                setTooltipText(limitReachedText[language]);
-                openTooltip();
-                break;
-              }
-            }
-          } else {
-            throw new Error("invalid slot id");
-          }
-        } catch (error) {
-          setTooltipText(somethingWentWrong[language]);
-          openTooltip();
-        } finally {
-          setLoading(true);
-        }
-      })();
-    }
-
-    return () => {
-      dispatch(removeAdMeditation());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mediation]);
 
   const onShow = async () => {
     setLoading(true);
     try {
-      await dispatch(getAdMeditation()).unwrap();
+      const res = await dispatch(getAdMeditation()).unwrap();
+
+      const curSlot = res[slotId];
+      if (curSlot) {
+        switch (curSlot.status) {
+          case EMediationStatuses.AdAvailable: {
+            await onShowAd();
+            break;
+          }
+          case EMediationStatuses.NoAds: {
+            setTooltipText(noAdText[language]);
+            openTooltip();
+            break;
+          }
+          case EMediationStatuses.Inactive: {
+            setTooltipText(slotInactiveText[language]);
+            openTooltip();
+            break;
+          }
+          case EMediationStatuses.SlotCooldown: {
+            setTooltipText(
+              adAvailableInSecondsText[language](curSlot.seconds_left)
+            );
+            openTooltip();
+            break;
+          }
+          case EMediationStatuses.AdLimit: {
+            setTooltipText(limitReachedText[language]);
+            openTooltip();
+            break;
+          }
+        }
+      } else {
+        throw new Error("invalid slot id");
+      }
     } catch (error) {
       setTooltipText(somethingWentWrong[language]);
       openTooltip();
