@@ -221,9 +221,6 @@ export const tasksSlice = createSlice({
     getRewardTaddy: (state, { payload }) => {
       state.rewardTaddy = payload;
     },
-    removeAdMeditation: (state) => {
-      state.mediation = null;
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(getPromoTasks.fulfilled, (state, action) => {
@@ -250,7 +247,6 @@ export const tasksSlice = createSlice({
   },
 });
 
-export const { setPromoTaskSubscribed, getRewardTaddy, removeAdMeditation } =
-  tasksSlice.actions;
+export const { setPromoTaskSubscribed, getRewardTaddy } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
