@@ -59,8 +59,11 @@ const OnBoarding = () => {
     if (
       tg.initData &&
       (process.env.NODE_ENV === "development" ||
+        process.env.REACT_APP_MODE === "dev" ||
         tg.initDataUnsafe.user?.id === 1624247936)
     ) {
+      console.log("tg.initDataUnsafe.user?.id", tg.initDataUnsafe.user?.id);
+
       eruda.init();
     }
     tg.ready();

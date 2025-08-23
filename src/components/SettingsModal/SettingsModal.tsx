@@ -29,7 +29,7 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
   const tg = useTelegram();
   const { onShow, showTooltip, tooltipText } = useSoltAd("slot_1");
 
-  const testerIds = [1709745524, 6601840647];
+  const testerIds = [1624247936, 6601840647];
 
   const onLanguageChange = (lang: ELanguages) => {
     dispatch(setLanguage(lang));
