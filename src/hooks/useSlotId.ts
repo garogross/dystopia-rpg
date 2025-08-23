@@ -66,7 +66,8 @@ export const useSoltAd = (slotId: string) => {
     "",
     onSuccess,
     onError,
-    [curSlotDetails]
+    [curSlotDetails],
+    true
   );
 
   useEffect(() => {
