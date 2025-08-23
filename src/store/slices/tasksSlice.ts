@@ -10,17 +10,21 @@ import {
   GetAdRewardSettingsResponse,
 } from "../../models/api/tasks/tasks";
 import { AdRewardSettingsType } from "../../types/tasks/AdRewardSettingsType";
+import { MediationType } from "../../types/tasks/MediationsType";
+import { AdRewardValidPairsType } from "../../types/tasks/AdRewardValidPairsType";
 
 export interface TasksState {
   promoTasks: IPromoTask[];
   rewardTaddy: number;
   adRewardSettings: AdRewardSettingsType | null;
+  mediation: MediationType | null;
 }
 
 const initialState: TasksState = {
   promoTasks: [],
   rewardTaddy: 0,
   adRewardSettings: null,
+  mediation: null,
 };
 
 const getPromoTasksUrl = "/promo_tasks/";
@@ -39,6 +43,22 @@ export const getPromoTasks = createAsyncThunk<IPromoTask[], undefined>(
     }
   }
 );
+
+const getAdMeditationUrl = "/ad_mediation/";
+export const getAdMeditation = createAsyncThunk<MediationType, undefined>(
+  "tasks/getAdMeditation",
+  async (_payload, { rejectWithValue }) => {
+    try {
+      const resData = await fetchRequest<MediationType>(getAdMeditationUrl);
+
+      return resData || [];
+    } catch (error: any) {
+      console.error("error", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const getPromoTaskRewardUrl = "/promo_tasks/reward/";
 export const getPromoTaskReward = createAsyncThunk<
   GetPromoTaskRewardResponse,
@@ -61,17 +81,11 @@ export const getPromoTaskReward = createAsyncThunk<
   }
 });
 
-type AdRewardValidPairs = {
-  [P in keyof AdRewardSettingsType]: {
-    provider: P;
-    ad_type: keyof AdRewardSettingsType[P];
-  };
-}[keyof AdRewardSettingsType];
-
 const claimAdRewardUrl = "/reward/ad/";
 export const claimAdReward = createAsyncThunk<
   ClaimAdRewardResponse,
-  AdRewardValidPairs & {
+  AdRewardValidPairsType & {
+    slotId?: string;
     identifier?: string;
     value?: number;
   }
@@ -85,6 +99,7 @@ export const claimAdReward = createAsyncThunk<
         ad_type: payload.ad_type,
         identifier: payload.identifier,
         value: payload.value,
+        slot_id: payload.slotId,
       }
     );
 
@@ -218,6 +233,9 @@ export const tasksSlice = createSlice({
     });
     builder.addCase(getAdRewardSettings.fulfilled, (state, { payload }) => {
       state.adRewardSettings = payload.reward_ad;
+    });
+    builder.addCase(getAdMeditation.fulfilled, (state, { payload }) => {
+      state.mediation = payload;
     });
     builder.addCase(getPromoTaskReward.rejected, (state, { payload }) => {
       const task = state.promoTasks.find((task) => task.id === payload?.id);

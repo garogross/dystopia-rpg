@@ -29,7 +29,7 @@ export const useGlobalAdController = (
       if (!tgId || !gameInited) return;
       if (type === EAdActionTypes.Video && provider === EadProviders.Onclicka) {
         window
-          .initCdTma?.({ id })
+          .initCdTma?.({ id: "6079126" })
           .then((show) => {
             setOnclickaAd(() => show);
           })
@@ -42,7 +42,9 @@ export const useGlobalAdController = (
         provider === EadProviders.Adsgram &&
         window.Adsgram
       ) {
-        setadController(window.Adsgram?.init({ blockId: id }));
+        const blockId =
+          type === EAdActionTypes.Interstitial ? "int-13832" : "11778";
+        setadController(window.Adsgram?.init({ blockId }));
       }
 
       if (
@@ -73,10 +75,7 @@ export const useGlobalAdController = (
               type === EAdActionTypes.Interstitial) &&
             adController
           ) {
-            console.log("adController");
-
             const result = await adController?.show();
-            console.log("result");
 
             if (result?.done) onSuccess();
           }
