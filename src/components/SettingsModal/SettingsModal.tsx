@@ -10,6 +10,8 @@ import { ELanguages } from "../../constants/ELanguages";
 import { useTelegram } from "../../hooks/useTelegram";
 import { setLSItem } from "../../helpers/localStorage";
 import { ELSProps } from "../../constants/ELSProps";
+import { useSoltAd } from "../../hooks/useSlotId";
+import Tooltip from "../layout/Tooltip/Tooltip";
 
 interface Props {
   show: boolean;
@@ -23,7 +25,11 @@ const { titleText, languageText, goToChatText } = TRANSLATIONS.settings;
 const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const tgId = useAppSelector((state) => state.profile.tgId);
   const tg = useTelegram();
+  const { onShow, showTooltip, tooltipText } = useSoltAd("slot_1");
+
+  const testerIds = [1709745524, 6601840647];
 
   const onLanguageChange = (lang: ELanguages) => {
     dispatch(setLanguage(lang));
@@ -82,11 +88,27 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
           >
             {goToChatText[language]}
           </button>
+
           <div className={styles.settingsModal__linkDotline}>
             <DotsLine />
           </div>
         </div>
+        {testerIds.includes(+tgId) && (
+          <div className={styles.settingsModal__linkItem}>
+            <div className={styles.settingsModal__linkDotline}>
+              <DotsLine />
+            </div>
+            <button onClick={onShow} className={styles.settingsModal__link}>
+              View Ad
+            </button>
+
+            <div className={styles.settingsModal__linkDotline}>
+              <DotsLine />
+            </div>
+          </div>
+        )}
       </div>
+      <Tooltip text={tooltipText} show={showTooltip} />
     </ModalWithAdd>
   );
 };
