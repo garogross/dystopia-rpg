@@ -10,7 +10,8 @@ export const useGlobalAdController = (
   id: string,
   scsClb?: (id?: string) => void,
   errClb?: (noAds?: boolean) => void,
-  dependencies?: unknown[]
+  dependencies?: unknown[],
+  forceInit?: boolean
 ) => {
   const [onclickaAd, setOnclickaAd] = useState<any>(null);
 
@@ -27,7 +28,12 @@ export const useGlobalAdController = (
   useEffect(
     () => {
       if (!tgId || !gameInited) return;
-      if (type === EAdActionTypes.Video && provider === EadProviders.Onclicka) {
+      if (
+        forceInit ||
+        (type === EAdActionTypes.Video && provider === EadProviders.Onclicka)
+      ) {
+        console.log("init onclicka");
+
         window
           .initCdTma?.({ id: "6079126" })
           .then((show) => {
@@ -37,9 +43,10 @@ export const useGlobalAdController = (
       }
 
       if (
-        (type === EAdActionTypes.Video ||
-          type === EAdActionTypes.Interstitial) &&
-        provider === EadProviders.Adsgram &&
+        (forceInit ||
+          ((type === EAdActionTypes.Video ||
+            type === EAdActionTypes.Interstitial) &&
+            provider === EadProviders.Adsgram)) &&
         window.Adsgram
       ) {
         const blockId =
@@ -48,9 +55,10 @@ export const useGlobalAdController = (
       }
 
       if (
-        (type === EAdActionTypes.Video ||
+        forceInit ||
+        ((type === EAdActionTypes.Video ||
           type === EAdActionTypes.Interstitial) &&
-        provider === EadProviders.AdsController
+          provider === EadProviders.AdsController)
       ) {
         try {
           window.TelegramAdsController = new TelegramAdsController();
@@ -95,6 +103,8 @@ export const useGlobalAdController = (
         }
         case EadProviders.Onclicka: {
           if (type === EAdActionTypes.Video) {
+            console.log({ onclickaAd });
+
             if (!onclickaAd) {
               errClb?.();
               return;
