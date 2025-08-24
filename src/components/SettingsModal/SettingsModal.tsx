@@ -12,6 +12,7 @@ import { setLSItem } from "../../helpers/localStorage";
 import { ELSProps } from "../../constants/ELSProps";
 import { useSoltAd } from "../../hooks/useSlotId";
 import Tooltip from "../layout/Tooltip/Tooltip";
+import { checkTesterAccount } from "../../utils/checkTesterAccount";
 
 interface Props {
   show: boolean;
@@ -29,7 +30,7 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
   const tg = useTelegram();
   const { onShow, showTooltip, tooltipText } = useSoltAd("slot_1");
 
-  const testerIds = [1624247936, 6601840647];
+  const isTester = checkTesterAccount(tgId);
 
   const onLanguageChange = (lang: ELanguages) => {
     dispatch(setLanguage(lang));
@@ -95,7 +96,7 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
         </div>
         {(process.env.NODE_ENV === "development" ||
           process.env.REACT_APP_MODE === "dev" ||
-          testerIds.includes(+tgId)) && (
+          isTester) && (
           <div className={styles.settingsModal__linkItem}>
             <div className={styles.settingsModal__linkDotline}>
               <DotsLine />
