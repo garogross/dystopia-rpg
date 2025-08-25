@@ -18,6 +18,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "No ad at this moment",
       [ELanguages.ru]: "Реклама сейчас недоступна",
     },
+    slotInactiveText: {
+      [ELanguages.en]: "Slot is inactive",
+      [ELanguages.ru]: "Слот неактивен",
+    },
     willBeAvailableFromSecondText: {
       [ELanguages.en]: "Will be available from NUMBER minute",
       [ELanguages.ru]: "Будет доступно через NUMBER минуту",
@@ -26,6 +30,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Daily ad view limit reached (NUMBER/day)",
       [ELanguages.ru]:
         "Достигнут дневной лимит просмотров рекламы (NUMBER/сутки)",
+    },
+    limitReachedText: {
+      [ELanguages.en]: "Ad view limit reached",
+      [ELanguages.ru]: "Достигнут лимит просмотров рекламы",
     },
     hourlyLimitReachedText: {
       [ELanguages.en]: "Hourly ad view limit reached (NUMBER/hour)",

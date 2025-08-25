@@ -56,17 +56,17 @@ const loadScripts = (tg: WebApp) => {
     document.body.appendChild(traffyScript);
 
     // load adsgram script with error handling
-    const adsgramScript = document.createElement("script");
-    adsgramScript.src = "https://sad.adsgram.ai/js/sad.min.js";
-    adsgramScript.async = true;
-    adsgramScript.onerror = () => {
-      postLog({
-        type: "script_error",
-        message: "Failed to load adsgram script",
-        src: adsgramScript.src,
-      });
-    };
-    document.body.appendChild(adsgramScript);
+    // const adsgramScript = document.createElement("script");
+    // adsgramScript.src = "https://sad.adsgram.ai/js/sad.min.js";
+    // adsgramScript.async = true;
+    // adsgramScript.onerror = () => {
+    //   postLog({
+    //     type: "script_error",
+    //     message: "Failed to load adsgram script",
+    //     src: adsgramScript.src,
+    //   });
+    // };
+    // document.body.appendChild(adsgramScript);
 
     // load taddy script with error handling
     const taddyScript = document.createElement("script");

@@ -9,6 +9,7 @@ import TransitionProvider, {
 import { BquestCallbackDataType } from "../../../types/BquestCallbackDataType";
 import {
   claimAdReward,
+  getAdMeditation,
   getPromoTaskReward,
   getPromoTasks,
   setPromoTaskSubscribed,
@@ -48,6 +49,7 @@ const LoyalitySupportProject = () => {
   const { show, openTooltip } = useTooltip();
   const isMobile = getPlatformType();
   useEffect(() => {
+    dispatch(getAdMeditation());
     dispatch(getPromoTasks());
     // init wallgram
     // const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;

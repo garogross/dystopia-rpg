@@ -10,7 +10,8 @@ export const useGlobalAdController = (
   id: string,
   scsClb?: (id?: string) => void,
   errClb?: (noAds?: boolean) => void,
-  dependencies?: unknown[]
+  dependencies?: unknown[],
+  forceInit?: boolean
 ) => {
   const [onclickaAd, setOnclickaAd] = useState<any>(null);
 
@@ -27,9 +28,12 @@ export const useGlobalAdController = (
   useEffect(
     () => {
       if (!tgId || !gameInited) return;
-      if (type === EAdActionTypes.Video && provider === EadProviders.Onclicka) {
+      if (
+        forceInit ||
+        (type === EAdActionTypes.Video && provider === EadProviders.Onclicka)
+      ) {
         window
-          .initCdTma?.({ id })
+          .initCdTma?.({ id: "6079126" })
           .then((show) => {
             setOnclickaAd(() => show);
           })
@@ -37,28 +41,32 @@ export const useGlobalAdController = (
       }
 
       if (
-        (type === EAdActionTypes.Video ||
-          type === EAdActionTypes.Interstitial) &&
-        provider === EadProviders.Adsgram &&
+        (forceInit ||
+          ((type === EAdActionTypes.Video ||
+            type === EAdActionTypes.Interstitial) &&
+            provider === EadProviders.Adsgram)) &&
         window.Adsgram
       ) {
-        setadController(window.Adsgram?.init({ blockId: id }));
+        const blockId =
+          type === EAdActionTypes.Interstitial ? "int-13832" : "11778";
+        setadController(window.Adsgram?.init({ blockId }));
       }
 
-      if (
-        (type === EAdActionTypes.Video ||
-          type === EAdActionTypes.Interstitial) &&
-        provider === EadProviders.AdsController
-      ) {
-        try {
-          window.TelegramAdsController = new TelegramAdsController();
-          window.TelegramAdsController?.initialize({
-            pubId: "983111",
-            appId: "3212",
-            debug: true,
-          });
-        } catch (error) {}
-      }
+      // if (
+      //   forceInit ||
+      //   ((type === EAdActionTypes.Video ||
+      //     type === EAdActionTypes.Interstitial) &&
+      //     provider === EadProviders.AdsController)
+      // ) {
+      //   try {
+      //     window.TelegramAdsController = new TelegramAdsController();
+      //     window.TelegramAdsController?.initialize({
+      //       pubId: "983111",
+      //       appId: "3212",
+      //       debug: true,
+      //     });
+      //   } catch (error) {}
+      // }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     dependencies ? [...dependencies, gameInited, tgId] : [tgId, gameInited]
@@ -73,10 +81,7 @@ export const useGlobalAdController = (
               type === EAdActionTypes.Interstitial) &&
             adController
           ) {
-            console.log("adController");
-
             const result = await adController?.show();
-            console.log("result");
 
             if (result?.done) onSuccess();
           }

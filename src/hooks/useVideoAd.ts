@@ -17,9 +17,9 @@ const {
   dailyLimitReachedText,
   hourlyLimitReachedText,
   adAvailableInSecondsText,
+  somethingWentWrong,
 } = TRANSLATIONS.errors;
 const { rewardReceivedText } = TRANSLATIONS.loyality.tabs.supportProject;
-const { somethingWentWrong } = TRANSLATIONS.errors;
 
 const getVideoAdViewTimestampsKey = (index?: number) =>
   index
@@ -115,7 +115,7 @@ export const useVideoAd = ({
     adId || "",
     onReward,
     (noAd) => {
-      if (noAd) setTooltipText(noAdText[language]);
+      setTooltipText((noAd ? noAdText : loadAdText)[language]);
       openTooltip();
     }
   );
