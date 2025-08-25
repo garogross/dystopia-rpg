@@ -4,8 +4,6 @@ import BubbleFrontMainCanvas from "../BubbleFrontMainCanvas/BubbleFrontMainCanva
 import BubbleFrontMainHeader from "../BubbleFrontMainHeader/BubbleFrontMainHeader";
 
 const BubbleFrontMain = () => {
-  //   const { isInitialized, pixiContainer, appRef, hexLayerRef } = usePixi();
-
   return (
     <div className={`container ${styles.bubbleFrontMain}`}>
       <BubbleFrontMainHeader />

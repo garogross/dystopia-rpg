@@ -22,6 +22,7 @@
     padding: 4px;
     @include setFont(12px, 400, $font-fam-bowler, $color-primary);
     gap: 2px;
+    line-height: 8px;
   }
 
   &__infoItem:first-child,

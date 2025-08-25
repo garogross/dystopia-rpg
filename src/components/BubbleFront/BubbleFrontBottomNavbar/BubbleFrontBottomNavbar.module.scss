@@ -57,19 +57,6 @@
     }
   }
 
-  &__gun {
-    width: 90px;
-    position: relative;
-    height: 100%;
-  }
-  &__gunImg {
-    width: 100%;
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-  }
-
   &__bottowmWings {
     width: 100%;
     padding: 12px;

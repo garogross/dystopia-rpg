@@ -5,8 +5,6 @@ import {
   NecrobombIcon,
   RatingsIcon,
 } from "../../layout/icons/BubbleFront/BubbleFrontBottomNavbar";
-import ImageWebp from "../../layout/ImageWebp/ImageWebp";
-import { bubbleGunImage, bubbleGunImageWebp } from "../../../assets/imageMaps";
 import { TopBtnBg } from "../../layout/icons/BubbleFront/BubbleFrontBottomNavbar/TopBtnBg";
 import BottomBtnBg from "../../layout/icons/BubbleFront/BubbleFrontBottomNavbar/BottomBtnBg";
 import styles from "./BubbleFrontBottomNavbar.module.scss";
@@ -21,6 +19,7 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
+import BubbleFrontGun from "./BubbleFrontGun/BubbleFrontGun";
 
 const { modeSelectText, ratingsText, necrobombText, achievementsText } =
   TRANSLATIONS.bubbleFront.bottomNavbar;
@@ -61,14 +60,7 @@ const BubbleFrontBottomNavbar = () => {
             </div>
           </NavLink>
         </div>
-        <div className={styles.bubbleFrontBottomNavbar__gun}>
-          <ImageWebp
-            src={bubbleGunImage}
-            srcSet={bubbleGunImageWebp}
-            alt="bubble gun"
-            className={styles.bubbleFrontBottomNavbar__gunImg}
-          />
-        </div>
+        <BubbleFrontGun />
         <div className={styles.bubbleFrontBottomNavbar__col}>
           <button className={styles.bubbleFrontBottomNavbar__btn}>
             <NecrobombIcon />

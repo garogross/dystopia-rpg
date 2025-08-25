@@ -1,0 +1,17 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.bubbleFrontGun {
+  width: 90px;
+  position: relative;
+  height: 100%;
+
+  &__img {
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    transform-origin: center;
+  }
+}
