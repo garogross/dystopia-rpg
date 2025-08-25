@@ -8,12 +8,14 @@ import { useGlobalAdController } from "./useGlobalAdController";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
 import { useTooltip } from "./useTooltip";
 import { EMediationStatuses } from "../constants/EMediationStatuses";
+import { getPlatformType } from "../utils/getPlatformType";
 
 const {
   loadAdText,
   noAdText,
   slotInactiveText,
   limitReachedText,
+  currentAdNotAvailableForDeviceText,
   adAvailableInSecondsText,
   somethingWentWrong,
 } = TRANSLATIONS.errors;
@@ -27,6 +29,8 @@ export const useSoltAd = (slotId: string) => {
   const [loading, setLoading] = useState(false);
 
   const { show: showTooltip, openTooltip } = useTooltip();
+
+  const isMobile = getPlatformType();
 
   const curSlotDetails = mediation?.[slotId];
   const adType =
@@ -79,6 +83,11 @@ export const useSoltAd = (slotId: string) => {
       if (curSlot) {
         switch (curSlot.status) {
           case EMediationStatuses.AdAvailable: {
+            if (curSlot.device && isMobile !== (curSlot.device === "mobile")) {
+              setTooltipText(currentAdNotAvailableForDeviceText[language]);
+              openTooltip();
+              return;
+            }
             await onShowAd();
             break;
           }

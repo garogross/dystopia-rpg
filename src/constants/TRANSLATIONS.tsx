@@ -35,6 +35,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Ad view limit reached",
       [ELanguages.ru]: "Достигнут лимит просмотров рекламы",
     },
+    currentAdNotAvailableForDeviceText: {
+      [ELanguages.en]: "Current ad is not available for this device",
+      [ELanguages.ru]: "Текущая реклама недоступна для этого устройства",
+    },
     hourlyLimitReachedText: {
       [ELanguages.en]: "Hourly ad view limit reached (NUMBER/hour)",
       [ELanguages.ru]:

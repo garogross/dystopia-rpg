@@ -47,5 +47,6 @@ type OptionalReponceType =
 export type MediationType = {
   [slotId: string]: {
     message: string;
+    device?: "mobile" | "desktop";
   } & OptionalReponceType;
 };
