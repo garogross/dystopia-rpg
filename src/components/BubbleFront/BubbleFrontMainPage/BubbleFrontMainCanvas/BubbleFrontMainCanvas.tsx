@@ -19,11 +19,16 @@ import {
   nuclearBallImage,
 } from "../../../../assets/imageMaps";
 import { BUBBLE_FRONT_GUN_ID } from "../../../../constants/bubbleFront/bubbleFrontGunId";
+import { useCopyRef } from "../../../../hooks/useCopyRef";
 
 const HEX_IN_LINE = 10;
 const LINES_COUNT = 7;
 const DEFAULT_HEX_LINES_COUNT = 3;
 
+const getHexesCountInrow = (lineIndex: number) => {
+  const isOdd = lineIndex % 2 === 1;
+  return HEX_IN_LINE - (isOdd ? 1 : 0);
+};
 const BALLS = {
   chemicalBomb: Texture.from(chemicalBombImage),
   fireBall: Texture.from(fireBallImage),
@@ -33,16 +38,26 @@ const BALLS = {
 };
 const ballKeys = Object.keys(BALLS) as (keyof typeof BALLS)[];
 
-const generateRandomBallsArr = (length: number) => {
-  return Array.from({ length }).map(() => ({
-    ball: ballKeys[Math.floor(Math.random() * ballKeys.length)],
-  }));
+const getRandomBall = () =>
+  ballKeys[Math.floor(Math.random() * ballKeys.length)];
+
+interface IBall {
+  ball: (typeof ballKeys)[0] | null;
+  position?: { x: number; y: number };
+}
+const generateRandomBallsArr = (): IBall[][] => {
+  return Array.from({ length: LINES_COUNT }, (_, lineIndex) =>
+    Array.from({ length: getHexesCountInrow(lineIndex) }, () => ({
+      ball: lineIndex < DEFAULT_HEX_LINES_COUNT ? getRandomBall() : null,
+    }))
+  );
 };
 
 const getGunSettings = () => {
   const gunEl = document.querySelector(`#${BUBBLE_FRONT_GUN_ID}`);
   if (gunEl) {
     const gunRect = gunEl.getBoundingClientRect();
+
     const centerX = gunRect.left + gunRect.width / 2;
     const centerY = gunRect.top + gunRect.height / 2;
     // Type assertion to HTMLElement to access dataset
@@ -54,76 +69,153 @@ const getGunSettings = () => {
 };
 
 const BubbleFrontMainCanvas = () => {
-  const arrLength = Array.from({ length: DEFAULT_HEX_LINES_COUNT }).reduce(
-    (acc: number, _, idx) => {
-      return acc + (idx % 2 === 1 ? HEX_IN_LINE - 1 : HEX_IN_LINE);
-    },
-    0
+  const [hexes, setHexes] = useState<IBall[][]>(generateRandomBallsArr());
+  const [readyBalls, setReadyBalls] = useState(
+    Array.from({ length: 2 }, () => getRandomBall())
   );
-  const [hexes] = useState<{ ball: keyof typeof BALLS }[]>(
-    generateRandomBallsArr(arrLength)
-  );
-  const [readyBalls, setReadyBalls] = useState(generateRandomBallsArr(2));
   const [hexSize, setHexSize] = useState(0);
-  const hexSizeRef = useRef(hexSize);
+  const hexSizeRef = useCopyRef(hexSize);
+  const hexesRef = useCopyRef(hexes);
+  const hexesWithBalls = hexes.flat().filter((item) => item.ball);
 
-  useEffect(() => {
-    hexSizeRef.current = hexSize;
-  }, [hexSize]);
+  const strikeBall = (app: Application<ICanvas>, hexLayer: Container) => {
+    const { centerX, centerY, rotation } = getGunSettings();
+
+    // Create sprite with readyBalls[0]
+    if (readyBalls.length > 0) {
+      const ballType = readyBalls[0];
+
+      const ballSprite = new Sprite(BALLS[ballType]);
+
+      const canvasRect = app.view.getBoundingClientRect?.();
+      ballSprite.anchor.set(0.5);
+      ballSprite.scale.set(0);
+      ballSprite.x = centerX - (canvasRect?.x || 0);
+      ballSprite.y = centerY - (canvasRect?.y || 0);
+
+      // Add ball to the hex layer
+      hexLayer.addChild(ballSprite);
+
+      // Calculate movement direction based on rotation
+      // Adjust for -90 degree offset and convert to radians
+      const angleInRadians = ((rotation + 90) * Math.PI) / 180;
+      const moveSpeed = 5; // Adjust speed as needed
+      const scaleSpeed = 0.03; // Adjust speed as needed (0..1 per frame)
+      let velocityX = Math.cos(angleInRadians) * moveSpeed;
+      let velocityY = Math.sin(angleInRadians) * moveSpeed;
+
+      // Determine target scale so that final visual size equals hex size
+      const baseTextureWidth =
+        ballSprite.texture.orig?.width || ballSprite.texture.width;
+      const targetScale =
+        baseTextureWidth > 0 ? hexSizeRef.current / baseTextureWidth : 1;
+
+      const hittableBallsLines = hexesRef.current.filter((line, index, arr) => {
+        if (!line.some((item) => item.ball)) return false;
+        const isCurLineFilled =
+          line.filter((item) => item.ball).length !== getHexesCountInrow(index);
+        const isNextLineFilled =
+          arr[index + 1]?.filter((item) => item.ball)?.length !==
+          getHexesCountInrow(index + 1);
+        return isCurLineFilled || isNextLineFilled;
+      });
+
+      // Animation function
+      const animateBall = () => {
+        ballSprite.x -= velocityX;
+        ballSprite.y -= velocityY;
+
+        // Smoothly scale up to target size
+        const currentScale = ballSprite.scale.x; // uniform scale
+        if (currentScale < targetScale) {
+          const nextScale = Math.min(currentScale + scaleSpeed, targetScale);
+          ballSprite.scale.set(nextScale);
+        }
+
+        // Compute current radius for collision (texture size * scale / 2)
+        const currentRadius = (baseTextureWidth * ballSprite.scale.x) / 2;
+
+        // Bounce on left/right walls
+        if (ballSprite.x - currentRadius <= 0) {
+          ballSprite.x = currentRadius;
+          velocityX = -velocityX;
+        } else if (ballSprite.x + currentRadius >= app.screen.width) {
+          ballSprite.x = app.screen.width - currentRadius;
+          velocityX = -velocityX;
+        }
+
+        // check touch to grid balls
+        const touchedBall = hittableBallsLines.flat().find((item) => {
+          if (!item.position || !item.ball) return false;
+          const { x, y } = item.position;
+          // Calculate the distance between the moving ball and the grid ball
+          const dx = ballSprite.x - x;
+          const dy = ballSprite.y - y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          // Assume grid balls are scaled to hexSize, so their radius is hexSize / 2
+          const gridBallRadius = hexSizeRef.current;
+          // Use the current moving ball radius
+          const movingBallRadius = (baseTextureWidth * ballSprite.scale.x) / 2;
+
+          // If the distance is less than the sum of the radii, they touch
+          return distance <= gridBallRadius + movingBallRadius;
+        });
+
+        if (!touchedBall) {
+          requestAnimationFrame(animateBall);
+        } else {
+          const curLineIndex = hexesRef.current.findIndex((line) => {
+            const lineY = line[0]?.position?.y || 0;
+
+            return (
+              ballSprite.y >= lineY && ballSprite.y < lineY + ballSprite.height
+            );
+          });
+
+          if (curLineIndex !== -1) {
+            const hexIndex = hexesRef.current[curLineIndex].findIndex(
+              (item) => {
+                const x = item.position?.x || 0;
+                return (
+                  (ballSprite.x >= x &&
+                    ballSprite.x <= x + ballSprite.width / 2) ||
+                  (ballSprite.x >= x + ballSprite.width / 2 &&
+                    ballSprite.x <= x + ballSprite.width)
+                );
+              }
+            );
+
+            if (hexIndex !== -1) {
+              setHexes((prev) => {
+                const newHexes = [...prev];
+                newHexes[curLineIndex] = [...newHexes[curLineIndex]];
+                newHexes[curLineIndex][hexIndex] = {
+                  ...newHexes[curLineIndex][hexIndex],
+                  ball: ballType,
+                };
+                return newHexes;
+              });
+            }
+            ballSprite.destroy();
+            hexLayer.removeChild(ballSprite);
+          }
+          // Remove ball when it goes off screen or exceeds bounces
+          // hexLayer.removeChild(ballSprite);
+          // ballSprite.destroy();
+        }
+      };
+
+      // Start animation
+      animateBall();
+    }
+  };
 
   const onInitApp = (app: Application<ICanvas>, hexLayer: Container) => {
     (app.view as HTMLCanvasElement).addEventListener(
       "mousedown",
       (e: MouseEvent) => {
-        const { centerX, centerY, rotation } = getGunSettings();
-
-        // Create sprite with readyBalls[0]
-        if (readyBalls.length > 0) {
-          const ballType = readyBalls[0].ball;
-
-          const ballSprite = new Sprite(BALLS[ballType]);
-
-          const canvasTop = app.view.getBoundingClientRect?.();
-
-          // Position the ball at the gun center
-          ballSprite.width = hexSizeRef.current; // Adjust size as needed
-          ballSprite.height = hexSizeRef.current;
-          ballSprite.x = centerX - hexSizeRef.current;
-          ballSprite.y = centerY - (canvasTop?.y || 0);
-
-          // Add ball to the hex layer
-          hexLayer.addChild(ballSprite);
-
-          // Calculate movement direction based on rotation
-          // Adjust for -90 degree offset and convert to radians
-          const angleInRadians = ((rotation + 90) * Math.PI) / 180;
-          const speed = 5; // Adjust speed as needed
-          const velocityX = Math.cos(angleInRadians) * speed;
-          const velocityY = Math.sin(angleInRadians) * speed;
-
-          // Animation function
-          const animateBall = () => {
-            ballSprite.x -= velocityX;
-            ballSprite.y -= velocityY;
-            console.log("animateBall", ballSprite.x, ballSprite.y);
-
-            // Continue animation if ball is still on screen
-            if (
-              ballSprite.x > 0 &&
-              ballSprite.x < app.screen.width &&
-              ballSprite.y > 0
-            ) {
-              requestAnimationFrame(animateBall);
-            } else {
-              // Remove ball when it goes off screen
-              hexLayer.removeChild(ballSprite);
-              ballSprite.destroy();
-            }
-          };
-
-          // Start animation
-          animateBall();
-        }
+        strikeBall(app, hexLayer);
       }
     );
   };
@@ -138,6 +230,7 @@ const BubbleFrontMainCanvas = () => {
     hexLayerRef.current.removeChildren().forEach((child) => {
       child.destroy({ children: true, texture: false });
     });
+
     const spriteBatch: Sprite[] = [];
 
     const graphicsBatch: Sprite[] = [];
@@ -149,24 +242,27 @@ const BubbleFrontMainCanvas = () => {
     const halfHexSize = hexSize / 2;
     // Calculate the total width and height of the hex grid
     setHexSize(hexSize);
-    let globalIndex = 0;
+    const updatingHexes = [...hexes];
+
     for (let l = 0; l < LINES_COUNT; l++) {
       // Offset every other row for hex grid
-      const isOdd = l % 2 === 1;
-      const hexesInRow = HEX_IN_LINE - (isOdd ? 1 : 0);
+      const hexesInRow = getHexesCountInrow(l);
+      const isOdd = hexesInRow < HEX_IN_LINE; // l % 2 === 1;
       for (let i = 0; i < hexesInRow; i++) {
         const x = i * hexSize + (isOdd ? hexSize / 2 : 0);
         const y = l * hexSize * 0.8; // Vertical spacing for hex grid
-        const index = globalIndex;
+        updatingHexes[l][i].position = { x, y };
         // Create sprite with the ball image
-        const ballType = hexes[index]?.ball;
-        const sprite = new Sprite(BALLS[ballType]);
-        sprite.x = x;
-        sprite.y = y;
-        sprite.width = hexSize;
-        sprite.height = hexSize;
-
-        spriteBatch.push(sprite);
+        const curBall = hexes[l]?.[i].ball;
+        if (curBall) {
+          const ballType = curBall;
+          const sprite = new Sprite(BALLS[ballType]);
+          sprite.x = x;
+          sprite.y = y;
+          sprite.width = hexSize;
+          sprite.height = hexSize;
+          spriteBatch.push(sprite);
+        }
 
         // load hex texture
         const svgString = getHexSvg(halfHexSize, undefined, "#3D2B7E", [2, 4]);
@@ -179,9 +275,10 @@ const BubbleFrontMainCanvas = () => {
         textureSprite.y = y;
 
         graphicsBatch.push(textureSprite);
-        globalIndex++;
       }
     }
+
+    setHexes(updatingHexes);
     // Add ball sprites to the layer
     spriteBatch.forEach((sprite) => hexLayerRef.current?.addChild(sprite));
 
@@ -192,11 +289,11 @@ const BubbleFrontMainCanvas = () => {
   };
 
   useEffect(() => {
-    if (hexLayerRef.current) {
+    if (hexLayerRef.current && hexesWithBalls.length) {
       updateCanvas();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isInitialized]);
+  }, [isInitialized, hexesWithBalls.length]);
 
   return (
     <div className={styles.bubbleFrontMainCanvas}>

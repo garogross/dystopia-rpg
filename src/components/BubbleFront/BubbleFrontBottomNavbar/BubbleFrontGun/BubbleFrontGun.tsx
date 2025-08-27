@@ -5,19 +5,18 @@ import {
   bubbleGunImage,
   bubbleGunImageWebp,
 } from "../../../../assets/imageMaps";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 import { bubbleFrontPagePath } from "../../../../router/constants";
 import { useAppSelector } from "../../../../hooks/redux";
 import { BUBBLE_FRONT_GUN_ID } from "../../../../constants/bubbleFront/bubbleFrontGunId";
 
 const BubbleFrontGun = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const [rotation, setRotation] = useState(0);
   const gunRef = useRef<HTMLDivElement>(null);
 
-  const isMainPage = location.pathname === bubbleFrontPagePath;
+  const isMainPage = useMatch(bubbleFrontPagePath);
 
   useEffect(() => {
     if (!gameInited) return;
