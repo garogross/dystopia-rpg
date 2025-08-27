@@ -5,6 +5,7 @@ import styles from "./BubbleFrontMainCanvas.module.scss";
 import {
   Application,
   Container,
+  DisplayObject,
   ICanvas,
   Sprite,
   SVGResource,
@@ -21,8 +22,8 @@ import {
 import { BUBBLE_FRONT_GUN_ID } from "../../../../constants/bubbleFront/bubbleFrontGunId";
 import { useCopyRef } from "../../../../hooks/useCopyRef";
 
-const HEX_IN_LINE = 10;
-const LINES_COUNT = 7;
+const HEX_IN_LINE = 15;
+const LINES_COUNT = 15;
 const DEFAULT_HEX_LINES_COUNT = 3;
 
 const getHexesCountInrow = (lineIndex: number) => {
@@ -68,6 +69,44 @@ const getGunSettings = () => {
   } else return { centerX: 0, centerY: 0, rotation: 0 };
 };
 
+// Helpers
+function getSpriteCenter(sprite: DisplayObject) {
+  const b = (sprite as any).getBounds(); // world-space AABB (accounts for anchor/scale)
+  return { x: b.x + b.width / 2, y: b.y + b.height / 2 };
+}
+
+function segmentCircleTOI(
+  p0: { x: number; y: number },
+  p1: { x: number; y: number },
+  c: { x: number; y: number },
+  r: number
+): number | null {
+  // Solve |(p0 + d*t) - c|^2 = r^2 for t in [0,1]
+  const dx = p1.x - p0.x;
+  const dy = p1.y - p0.y;
+  const fx = p0.x - c.x;
+  const fy = p0.y - c.y;
+
+  const a = dx * dx + dy * dy;
+  const b = 2 * (fx * dx + fy * dy);
+  const cTerm = fx * fx + fy * fy - r * r;
+
+  if (cTerm <= 0) return 0; // already overlapping at start
+  if (a === 0) return null; // no movement this tick
+
+  const disc = b * b - 4 * a * cTerm;
+  if (disc < 0) return null;
+
+  const sqrt = Math.sqrt(disc);
+  const t1 = (-b - sqrt) / (2 * a);
+  const t2 = (-b + sqrt) / (2 * a);
+
+  // earliest hit within the step
+  if (t1 >= 0 && t1 <= 1) return t1;
+  if (t2 >= 0 && t2 <= 1) return t2;
+  return null;
+}
+
 const BubbleFrontMainCanvas = () => {
   const [hexes, setHexes] = useState<IBall[][]>(generateRandomBallsArr());
   const [readyBalls, setReadyBalls] = useState(
@@ -99,7 +138,7 @@ const BubbleFrontMainCanvas = () => {
       // Calculate movement direction based on rotation
       // Adjust for -90 degree offset and convert to radians
       const angleInRadians = ((rotation + 90) * Math.PI) / 180;
-      const moveSpeed = 5; // Adjust speed as needed
+      const moveSpeed = 10; // Adjust speed as needed
       const scaleSpeed = 0.03; // Adjust speed as needed (0..1 per frame)
       let velocityX = Math.cos(angleInRadians) * moveSpeed;
       let velocityY = Math.sin(angleInRadians) * moveSpeed;
@@ -145,22 +184,45 @@ const BubbleFrontMainCanvas = () => {
         }
 
         // check touch to grid balls
-        const touchedBall = hittableBallsLines.flat().find((item) => {
-          if (!item.position || !item.ball) return false;
-          const { x, y } = item.position;
-          // Calculate the distance between the moving ball and the grid ball
-          const dx = ballSprite.x - x;
-          const dy = ballSprite.y - y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        const prevCenter = getSpriteCenter(ballSprite);
 
-          // Assume grid balls are scaled to hexSize, so their radius is hexSize / 2
-          const gridBallRadius = hexSizeRef.current;
-          // Use the current moving ball radius
-          const movingBallRadius = (baseTextureWidth * ballSprite.scale.x) / 2;
+        const currCenter = getSpriteCenter(ballSprite);
+        const movingR = (ballSprite as any).getBounds().width / 2;
 
-          // If the distance is less than the sum of the radii, they touch
-          return distance <= gridBallRadius + movingBallRadius;
-        });
+        // Assuming grid balls are sized by your hex size:
+        const gridR = hexSizeRef.current / 2;
+
+        // 4) Find first touched (closest time-of-impact) ball this frame:
+        let best: { item: any; t: number } | null = null;
+
+        for (const item of hittableBallsLines.flat()) {
+          if (!item.position || !item.ball) continue;
+
+          // If item.position is top-left of the hex cell:
+          const cx = item.position.x + gridR;
+          const cy = item.position.y + gridR;
+
+          // Broad-phase: quick AABB sweep reject (optional but fast)
+          const minX = Math.min(prevCenter.x, currCenter.x) - (movingR + gridR);
+          const maxX = Math.max(prevCenter.x, currCenter.x) + (movingR + gridR);
+          const minY = Math.min(prevCenter.y, currCenter.y) - (movingR + gridR);
+          const maxY = Math.max(prevCenter.y, currCenter.y) + (movingR + gridR);
+          if (cx < minX || cx > maxX || cy < minY || cy > maxY) continue;
+
+          // Narrow-phase: swept segment vs circle (includes all sides)
+          const t = segmentCircleTOI(
+            prevCenter,
+            currCenter,
+            { x: cx, y: cy },
+            movingR + gridR
+          );
+          if (t !== null && (best === null || t < best.t)) {
+            best = { item, t };
+          }
+        }
+
+        // 5) Result
+        const touchedBall = best?.item ?? null;
 
         if (!touchedBall) {
           requestAnimationFrame(animateBall);
