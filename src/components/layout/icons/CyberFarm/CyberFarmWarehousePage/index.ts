@@ -1,2 +1,1 @@
-export {SocialStoreIcon} from "./SocialStoreIcon"
-export {ConfirmIcon} from "./ConfirmIcon"
+export { ConfirmIcon } from "./ConfirmIcon";

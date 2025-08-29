@@ -120,10 +120,10 @@
 
   &__footer {
     @include flexCol(space-between);
+    gap: 10px;
   }
 
   &__sellBtn {
-    max-width: 96px;
     padding: 1px;
     @include button($color-primary);
     height: 22px;
@@ -154,10 +154,15 @@
     }
   }
 
-  &__sellBtn,
-  &__sellBtnInner {
+  &__sellBtn:first-child,
+  &__sellBtn:first-child &__sellBtnInner {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 4% 100%, 0% 80%, 0% 0%);
+  }
+  &__sellBtn:last-child,
+  &__sellBtn:last-child &__sellBtnInner {
     clip-path: polygon(100% 100%, 100% 80%, 96% 100%, 0% 100%, 0% 0%, 100% 0%);
   }
+
   &__sellBtn:disabled &__sellBtnInner {
     color: $color-disabledText;
 
