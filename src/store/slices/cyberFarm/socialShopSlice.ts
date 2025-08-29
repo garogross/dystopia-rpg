@@ -25,7 +25,10 @@ export const exchange = createAsyncThunk<ExchangeResponse, string>(
       const resData = await fetchRequest<ExchangeResponse>(
         exchangeUrl,
         "POST",
-        { operation_id: payload }
+        {
+          product: "organic_meat", // название продукта
+          amount: 10,
+        }
       );
 
       return resData;

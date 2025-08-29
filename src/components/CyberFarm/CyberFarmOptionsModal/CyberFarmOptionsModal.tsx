@@ -22,6 +22,8 @@ import TransitionProvider, {
 import { BuyIcon } from "../../layout/icons/CyberFarm/CyberFarmOptionsModal";
 import {
   buyResourceDeflict,
+  getProductionEstimate,
+  getProductPrices,
   getResourcesDeflict,
 } from "../../../store/slices/cyberFarm/resourcesSlice";
 import { EPlants } from "../../../constants/cyberfarm/EPlants";
@@ -73,6 +75,12 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   const resourceDeficit = useAppSelector(
     (state) => state.cyberfarm.resources.resourceDeficit
   );
+  const productsSettings = useAppSelector(
+    (state) => state.cyberfarm.resources.productsSettings
+  );
+  const productionEstimate = useAppSelector(
+    (state) => state.cyberfarm.resources.productionEstimate
+  );
   const resources = useAppSelector(
     (state) => state.cyberfarm.resources.resources
   );
@@ -80,21 +88,40 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   const [selectedResource, setSelectedResource] =
     useState<CyberFarmProductType | null>(null);
 
-  const curChain =
-    selectedResource && productionChains
-      ? productionChains[type][selectedResource]
-      : null;
   const curProduct = selectedResource ? products[selectedResource] : null;
   const totalPricyByCp =
     selectedResource && resourceDeficit
       ? resourceDeficit[type]?.[selectedResource]?.total_price || 0
       : 0;
+
+  const curEstimate =
+    selectedResource && productionEstimate
+      ? productionEstimate[selectedResource]
+      : null;
+  const curProductSettings =
+    selectedResource && productsSettings
+      ? productsSettings[selectedResource]
+      : null;
+
+  const fetchProductInfo = async () => {
+    setLoading(true);
+    try {
+      await Promise.all([
+        dispatch(getResourcesDeflict()),
+        dispatch(getProductionEstimate()),
+        dispatch(getProductPrices()),
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!show) {
       setErrorText("");
       setErrored(false);
     } else {
-      dispatch(getResourcesDeflict());
+      fetchProductInfo();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -149,8 +176,8 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   const col1 = data.slice(0, Math.ceil(data.length / 2));
   const col2 = data.slice(Math.ceil(data.length / 2));
 
-  const inputResources = curChain?.input
-    ? Object.entries(curChain.input).map(([k, value]) => {
+  const inputResources = curProductSettings
+    ? Object.entries(curProductSettings.requirements).map(([k, value]) => {
         const key = k as CyberFarmProductType;
         return {
           key,
@@ -220,7 +247,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           ))}
         </div>
         <TransitionProvider
-          inProp={!!curChain}
+          inProp={!!(selectedResource && curEstimate)}
           style={TransitionStyleTypes.height}
           height={600}
           className={styles.cyberFarmOptionsModal__info}
@@ -241,7 +268,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
               {productionText[language]}
             </span>
             <span className={styles.cyberFarmOptionsModal__infoText}>
-              {curChain?.output}
+              {curEstimate ? curEstimate[type].final_production : 0}
             </span>
           </div>
           <div className={styles.cyberFarmOptionsModal__infoHeader}>
@@ -257,27 +284,38 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           </div>
           <table className={styles.cyberFarmOptionsModal__infoTable}>
             <tbody>
-              {inputResources.map((resource) => (
-                <tr key={resource.key}>
-                  <td className={styles.cyberFarmOptionsModal__infoTableRow}>
-                    <span className={styles.cyberFarmOptionsModal__infoText}>
-                      {resource.name}
-                    </span>
-                  </td>
-                  <td className={styles.cyberFarmOptionsModal__infoTableRow}>
-                    <span className={styles.cyberFarmOptionsModal__infoText}>
-                      {resource.isInsufficient ? (
-                        <span className="redText">
-                          ({youHaveText[language]}:{resource.available})
+              {inputResources &&
+                inputResources.map((resource) => {
+                  return (
+                    <tr key={resource.key}>
+                      <td
+                        className={styles.cyberFarmOptionsModal__infoTableRow}
+                      >
+                        <span
+                          className={styles.cyberFarmOptionsModal__infoText}
+                        >
+                          {resource.name}
                         </span>
-                      ) : (
-                        ""
-                      )}{" "}
-                      {resource.required}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      </td>
+                      <td
+                        className={styles.cyberFarmOptionsModal__infoTableRow}
+                      >
+                        <span
+                          className={styles.cyberFarmOptionsModal__infoText}
+                        >
+                          {resource.isInsufficient ? (
+                            <span className="redText">
+                              ({youHaveText[language]}:{resource.available})
+                            </span>
+                          ) : (
+                            ""
+                          )}{" "}
+                          {resource.required}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </TransitionProvider>

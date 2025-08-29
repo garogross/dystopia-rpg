@@ -49,7 +49,7 @@ const LoyalitySupportProject = () => {
   const { show, openTooltip } = useTooltip();
   const isMobile = getPlatformType();
   useEffect(() => {
-    dispatch(getAdMeditation());
+    dispatch(getAdMeditation({ device: isMobile ? "mobile" : "desktop" }));
     dispatch(getPromoTasks());
     // init wallgram
     // const wallgramPublicId = process.env.REACT_APP_WALLGRAM_PUBLIC_ID;

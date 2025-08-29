@@ -120,23 +120,23 @@ export const useGlobalAdController = (
           }
           break;
         }
-        case EadProviders.AdsController: {
-          if (type === EAdActionTypes.Video) {
-            window.TelegramAdsController?.triggerNativeNotification()
-              .then(() => {})
-              .catch(() => {
-                errClb?.(true);
-              });
-          }
-          if (type === EAdActionTypes.Interstitial) {
-            window.TelegramAdsController?.triggerInterstitialBanner()
-              .then(() => {})
-              .catch(() => {
-                errClb?.(true);
-              });
-          }
-          break;
-        }
+        // case EadProviders.AdsController: {
+        //   if (type === EAdActionTypes.Video) {
+        //     window.TelegramAdsController?.triggerNativeNotification()
+        //       .then(() => {})
+        //       .catch(() => {
+        //         errClb?.(true);
+        //       });
+        //   }
+        //   if (type === EAdActionTypes.Interstitial) {
+        //     window.TelegramAdsController?.triggerInterstitialBanner()
+        //       .then(() => {})
+        //       .catch(() => {
+        //         errClb?.(true);
+        //       });
+        //   }
+        //   break;
+        // }
         default:
           break;
       }

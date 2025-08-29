@@ -8,6 +8,8 @@ import { useGlobalAdController } from "./useGlobalAdController";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
 import { useTooltip } from "./useTooltip";
 import { EMediationStatuses } from "../constants/EMediationStatuses";
+import { getPlatformType } from "../utils/getPlatformType";
+import { ClaimAdRewardActionType } from "../types/tasks/ClaimAdRewardActionType";
 
 const {
   loadAdText,
@@ -19,13 +21,20 @@ const {
 } = TRANSLATIONS.errors;
 const { rewardReceivedText } = TRANSLATIONS.loyality.tabs.supportProject;
 
-export const useSoltAd = (slotId: string) => {
+export const useSoltAd = (
+  slotId: string,
+  game_action?: ClaimAdRewardActionType,
+  farm_slot?: string,
+  scsClb?: () => void,
+  successTooltipText?: string
+) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
   const mediation = useAppSelector((state) => state.tasks.mediation);
-  const [tooltipText, setTooltipText] = useState(rewardReceivedText[language]);
+  const successText = successTooltipText || rewardReceivedText[language];
+  const [tooltipText, setTooltipText] = useState(successText);
   const [loading, setLoading] = useState(false);
-
+  const isMobile = getPlatformType();
   const { show: showTooltip, openTooltip } = useTooltip();
 
   const curSlotDetails = mediation?.[slotId];
@@ -44,13 +53,15 @@ export const useSoltAd = (slotId: string) => {
         claimAdReward({
           ad_type: adType,
           provider: provider,
+          game_action,
+          farm_slot,
         } as AdRewardValidPairsType)
       ).unwrap();
-
-      setTooltipText(rewardReceivedText[language]);
+      setTooltipText(successText);
+      await openTooltip();
+      scsClb?.();
     } catch (error) {
       setTooltipText(somethingWentWrong[language]);
-    } finally {
       openTooltip();
     }
   };
@@ -73,13 +84,15 @@ export const useSoltAd = (slotId: string) => {
   const onShow = async () => {
     setLoading(true);
     try {
-      const res = await dispatch(getAdMeditation()).unwrap();
+      const res = await dispatch(
+        getAdMeditation({ device: isMobile ? "mobile" : "desktop" })
+      ).unwrap();
 
       const curSlot = res[slotId];
       if (curSlot) {
         switch (curSlot.status) {
           case EMediationStatuses.AdAvailable: {
-            await onShowAd();
+            onShowAd();
             break;
           }
           case EMediationStatuses.NoAds: {
@@ -112,7 +125,7 @@ export const useSoltAd = (slotId: string) => {
       setTooltipText(somethingWentWrong[language]);
       openTooltip();
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 

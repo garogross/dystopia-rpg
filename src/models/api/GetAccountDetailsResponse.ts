@@ -8,6 +8,8 @@ import { FarmResourceDeficitType } from "../../types/FarmResourceDeficitType";
 import { FarmSlotCostsType } from "../../types/FarmSlotCostsType";
 import { SocialShopType } from "../../types/SocialShopType";
 import { IMailMessage } from "../IMailMessage";
+import { FarmProductionChainsType } from "../../types/FarmProductionChainsType";
+import { FarmProductsSettingsType } from "../../types/FarmProductsSettingsType";
 
 type ClaimDailyLogin = {
   next_reward: number;
@@ -68,16 +70,7 @@ export interface GetAccountDetailsResponse {
         production_time_hours: number;
       };
     };
-    production_chains: {
-      [key in EFarmSlotTypes]: {
-        [key in CyberFarmProductType]: {
-          input: {
-            [key in CyberFarmProductType]: number;
-          };
-          output: number;
-        };
-      };
-    };
+    production_chains: FarmProductionChainsType;
     achievements_settings: FarmAchievmentSettingsType;
     ton_withdraw_commission: number;
   };
@@ -85,6 +78,7 @@ export interface GetAccountDetailsResponse {
     reward_taddy: {
       exchange: number;
     };
+    ton_cyber_farm_products: FarmProductsSettingsType;
   };
   resource_deficit: FarmResourceDeficitType;
   claim_daily_login: ClaimDailyLogin;

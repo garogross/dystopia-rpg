@@ -12,13 +12,12 @@ import { ELSProps } from "../../constants/ELSProps";
 import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
 import { buySlot, getCyberFarmSlots, speedUp } from "./cyberFarm/slotsSlice";
 import {
-  buyProduct,
   buyResourceDeflict,
   getCyberFarmResources,
-  sellProduct,
+  exchange,
 } from "./cyberFarm/resourcesSlice";
 import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
-import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
+import { initSocialShop } from "./cyberFarm/socialShopSlice";
 import {
   claimAdReward,
   getAdRewardSettings,
@@ -158,21 +157,11 @@ export const getAccountDetails =
     if (resData.ton_cyber_farm && resData.mode === "ton_cyber_farm") {
       dispatch(initCyberFarm());
       // store slots
-      const speedCosts = Object.entries(
-        resData.game_settings?.production_settings || {}
-      ).reduce(
-        (acc, [type, settings]) => ({
-          ...acc,
-          [type]: settings.speedup_bonus,
-        }),
-        {}
-      );
 
       dispatch(
         getCyberFarmSlots({
           slots: resData.ton_cyber_farm.slots,
           slotCosts: resData.game_settings?.slot_costs,
-          speedUpCosts: speedCosts,
         })
       );
 
@@ -181,10 +170,11 @@ export const getAccountDetails =
         dispatch(
           getCyberFarmResources({
             resources: resData.ton_cyber_farm.resources,
-            productCosts: resData.game_settings.base_costs,
             productionChains: resData.game_settings.production_chains,
             resourceTonmailValue: resData.ton_cyber_farm.resource_ton_value,
             resourceDeficit: resData?.resource_deficit,
+            productsSettings:
+              resData?.game_settings_new?.ton_cyber_farm_products,
           })
         );
       }
@@ -375,12 +365,7 @@ export const profileSlice = createSlice({
     });
 
     // cyberfarm
-    builder.addCase(buyProduct.fulfilled, (state, { payload }) => {
-      state.stats.cp = payload.cash_point_left;
-    });
-    builder.addCase(sellProduct.fulfilled, (state, { payload }) => {
-      state.stats.ton = payload.ton_total;
-    });
+
     builder.addCase(buyResourceDeflict.fulfilled, (state, { payload }) => {
       state.stats.cp = payload.cash_point_left;
     });
@@ -397,8 +382,8 @@ export const profileSlice = createSlice({
       state.stats.cp = payload.cash_point_left;
     });
     builder.addCase(exchange.fulfilled, (state, { payload }) => {
-      if (payload.reward.cash_point) {
-        state.stats.cp += payload.reward.cash_point;
+      if (payload.cash_point_left) {
+        state.stats.cp = payload.cash_point_left;
       }
     });
 

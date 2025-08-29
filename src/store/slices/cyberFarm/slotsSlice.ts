@@ -15,13 +15,11 @@ import { getSlotCost } from "../../../utils/getSlotCost";
 export interface SlotsState {
   slots: Record<string, IFarmSlot> | null;
   slotCosts: FarmSlotCostsType | null;
-  speedUpCosts: { [key in EFarmSlotTypes]: number } | null;
 }
 
 const initialState: SlotsState = {
   slots: null,
   slotCosts: null,
-  speedUpCosts: null,
 };
 
 const buySlotUrl = "/ton_cyber_farm/buy_slot/";
@@ -118,7 +116,6 @@ export const slotsSlice = createSlice({
     getCyberFarmSlots: (state, action) => {
       state.slots = action.payload.slots;
       state.slotCosts = action.payload.slotCosts;
-      state.speedUpCosts = action.payload.speedUpCosts;
     },
   },
   extraReducers: (builder) => {

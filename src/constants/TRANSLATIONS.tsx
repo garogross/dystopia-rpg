@@ -323,9 +323,9 @@ export const TRANSLATIONS = {
           "💾 ...Прием. Рада видеть тебя в сети, незнакомец. Ищешь острых ощущений? Мои каналы открыты:\n• Play2Earn (ТОН Кибер Ферма);\n• Архив Мини-Игр: куча способов убить время.\n• RPG: скоро, но обещаю, оно того стоит.\nДай сигнал. Я позабочусь, чтобы твой сеанс был... незабываемым. 🌀",
       },
 
-      titleTonCyberFarm: {
-        [ELanguages.en]: "Ton Cyber Farm",
-        [ELanguages.ru]: "Тон Кибер Ферма",
+      titleCyberFarm: {
+        [ELanguages.en]: "Cyber Farm",
+        [ELanguages.ru]: "Кибер Ферма",
       },
 
       titleMiniGames: {
@@ -551,46 +551,20 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Warehouse is empty",
         [ELanguages.ru]: "Склад пуст",
       },
-      socialStoreButtonText: {
-        [ELanguages.en]: "Social Store",
-        [ELanguages.ru]: "Социальный магазин",
-      },
-      farmEstimatedValueText: {
-        [ELanguages.en]: "Farm estimated value",
-        [ELanguages.ru]: "Оценочная стоимость фермы",
-      },
-      sellForText: {
-        [ELanguages.en]: "Sell for",
-        [ELanguages.ru]: "Продажа за",
-      },
-      buyForText: {
-        [ELanguages.en]: "Buy for",
-        [ELanguages.ru]: "Покупка за",
-      },
+
       productInfo: {
         youHaveText: {
           [ELanguages.en]: "You have:",
           [ELanguages.ru]: "У вас:",
         },
-        priceText: {
-          [ELanguages.en]: "Price:",
-          [ELanguages.ru]: "Цена:",
-        },
-        youWillGetText: {
-          [ELanguages.en]: "You will get:",
-          [ELanguages.ru]: "Вы получите:",
-        },
-        youWillSpendText: {
-          [ELanguages.en]: "You will spend:",
-          [ELanguages.ru]: "Вы тратите:",
-        },
+
         buyButtonText: {
-          [ELanguages.en]: "Buy",
-          [ELanguages.ru]: "Купить",
+          [ELanguages.en]: "Buy by",
+          [ELanguages.ru]: "Купить за",
         },
         sellButtonText: {
-          [ELanguages.en]: "Sell",
-          [ELanguages.ru]: "Продать",
+          [ELanguages.en]: "Sell by",
+          [ELanguages.ru]: "Продать за",
         },
         piecesText: {
           [ELanguages.en]: "pcs",
@@ -651,13 +625,18 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Collect harvest",
         [ELanguages.ru]: "Собрать урожай",
       },
-      speedUpCpButtonText: {
-        [ELanguages.en]: "Speed up for NUMBERCP",
-        [ELanguages.ru]: "Ускорить за NUMBERCP",
+
+      watchAdIncreaseProfitText: {
+        [ELanguages.en]: "Watch ad for more profit",
+        [ELanguages.ru]: "Реклама — больше прибыли",
       },
-      speedUpAdButtonText: {
-        [ELanguages.en]: "Speed up with ad",
-        [ELanguages.ru]: "Ускорить за рекламу",
+      watchAdInstantFinishText: {
+        [ELanguages.en]: "Watch ad to finish and boost profit",
+        [ELanguages.ru]: "Реклама — завершить и увеличить прибыль",
+      },
+      profitIncreasedText: {
+        [ELanguages.en]: "Profit increased",
+        [ELanguages.ru]: "Прибыль увеличена",
       },
       harvestCollectedText: {
         [ELanguages.en]: "Harvest collected!",

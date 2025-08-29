@@ -1,21 +1,17 @@
+import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
 
-export interface BuyProductResponse {
+export interface ExchangeResponse {
   status: "ok";
+  operation: "buy" | "sell";
   product: CyberFarmProductType;
-  amount: number;
+  amount_sold?: number;
+  amount?: number;
+  price_per_unit?: number;
   total_price: number;
   cash_point_left: number;
-}
-
-export interface SellProductResponse {
-  status: string;
-  resource: CyberFarmProductType;
-  amount_exchanged: number;
-  ton_received: number;
-  ton_total: number;
-  resources_left: number;
+  pool_left: number;
 }
 
 export interface BuyResourceDeflictResponse {
@@ -45,4 +41,28 @@ export interface GetStorageResponse {
 
 export interface GetResourcesDeflictResponse {
   resource_deficit: FarmResourceDeficitType;
+}
+
+export interface GetProductPricesResponse {
+  status: string;
+  prices: {
+    [key in CyberFarmProductType]: {
+      price_buy: number;
+      price_sell: number;
+    };
+  };
+}
+
+export interface GetProductionEstimateResponse {
+  status: string;
+  production_estimate: {
+    [key in CyberFarmProductType]: {
+      [key in EFarmSlotTypes]: {
+        base_production: number;
+        pool_bonus: number;
+        final_production: number;
+        pool_take: number;
+      };
+    };
+  };
 }
