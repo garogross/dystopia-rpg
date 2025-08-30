@@ -69,9 +69,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   const [errored, setErrored] = useState(false);
   const [errorText, setErrorText] = useState("");
   const { show: showTooltip, openTooltip } = useTooltip();
-  const productionChains = useAppSelector(
-    (state) => state.cyberfarm.resources.productionChains
-  );
+
   const resourceDeficit = useAppSelector(
     (state) => state.cyberfarm.resources.resourceDeficit
   );
@@ -176,17 +174,19 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   const col1 = data.slice(0, Math.ceil(data.length / 2));
   const col2 = data.slice(Math.ceil(data.length / 2));
 
-  const inputResources = curProductSettings
-    ? Object.entries(curProductSettings.requirements).map(([k, value]) => {
-        const key = k as CyberFarmProductType;
-        return {
-          key,
-          name: products[key].name[language],
-          required: value,
-          available: resources[key],
-          isInsufficient: resources[key] < value,
-        };
-      })
+  const inputResources = curProductSettings?.production?.[type]?.requirements
+    ? Object.entries(curProductSettings.production[type].requirements).map(
+        ([k, value]) => {
+          const key = k as CyberFarmProductType;
+          return {
+            key,
+            name: products[key].name[language],
+            required: value,
+            available: resources[key],
+            isInsufficient: resources[key] < value,
+          };
+        }
+      )
     : [];
 
   const isUnavailableForProduce = inputResources.some(
