@@ -51,8 +51,8 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
     "farm_production_bonus"
   );
 
-  const onHarvest = async () => {
-    if (gameAction !== "farm_boost_production") return;
+  const onHarvest = async (withoutAd?: boolean) => {
+    if (!withoutAd && gameAction !== "farm_boost_production") return;
     try {
       setLoading(true);
       setErrored(false);
@@ -135,7 +135,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
           <div className={styles.cyberFarmProcessModal__actions}>
             {isReadyToCollect ? (
               <button
-                onClick={onHarvest}
+                onClick={() => onHarvest(true)}
                 className={styles.cyberFarmProcessModal__btn}
               >
                 <div className={styles.cyberFarmProcessModal__btnInner}>

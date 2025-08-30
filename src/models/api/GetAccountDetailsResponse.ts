@@ -8,7 +8,6 @@ import { FarmResourceDeficitType } from "../../types/FarmResourceDeficitType";
 import { FarmSlotCostsType } from "../../types/FarmSlotCostsType";
 import { SocialShopType } from "../../types/SocialShopType";
 import { IMailMessage } from "../IMailMessage";
-import { FarmProductionChainsType } from "../../types/FarmProductionChainsType";
 import { FarmProductsSettingsType } from "../../types/FarmProductsSettingsType";
 
 type ClaimDailyLogin = {
@@ -70,7 +69,6 @@ export interface GetAccountDetailsResponse {
         production_time_hours: number;
       };
     };
-    production_chains: FarmProductionChainsType;
     achievements_settings: FarmAchievmentSettingsType;
     ton_withdraw_commission: number;
   };

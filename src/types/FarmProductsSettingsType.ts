@@ -1,3 +1,4 @@
+import { EFarmSlotTypes } from "../constants/cyberfarm/EFarmSlotTypes";
 import { CyberFarmProductType } from "./CyberFarmProductType";
 
 export type FarmProductsSettingsType = {
@@ -6,8 +7,12 @@ export type FarmProductsSettingsType = {
     max_price: number;
     sell_coef: number;
     base_price: number;
-    requirements: {
-      [key in CyberFarmProductType]: number;
+    production: {
+      [key in EFarmSlotTypes]: {
+        requirements: {
+          [key in CyberFarmProductType]: number;
+        };
+      };
     };
     base_production: number;
   };

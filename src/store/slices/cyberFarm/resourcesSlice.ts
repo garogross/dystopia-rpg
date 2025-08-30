@@ -9,7 +9,6 @@ import {
   GetProductPricesResponse,
   GetProductionEstimateResponse,
 } from "../../../models/api/CyberFarm/Resources";
-import { FarmProductionChainsType } from "../../../types/FarmProductionChainsType";
 import { buySlot, harvest, produceSlot } from "./slotsSlice";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
 import { FarmProductionEstimateType } from "../../../types/FarmProductionEstimateType";
@@ -26,7 +25,6 @@ export interface ResourcesState {
       price_sell: number;
     }
   >;
-  productionChains: FarmProductionChainsType | null;
   productionEstimate: FarmProductionEstimateType | null;
   resourceDeficit: FarmResourceDeficitType | null;
   productsSettings: FarmProductsSettingsType | null;
@@ -48,7 +46,6 @@ const initialProductPrices = Object.keys(products).reduce((acc, cur) => {
 const initialState: ResourcesState = {
   resources: initialResources,
   productPrices: initialProductPrices,
-  productionChains: null,
   resourceDeficit: null,
   productionEstimate: null,
   productsSettings: null,
@@ -171,17 +168,9 @@ export const resourcesSlice = createSlice({
   reducers: {
     getCyberFarmResources: (
       state,
-      {
-        payload: {
-          resources,
-          productionChains,
-          resourceDeficit,
-          productsSettings,
-        },
-      }
+      { payload: { resources, resourceDeficit, productsSettings } }
     ) => {
       state.resources = { ...state.resources, ...resources };
-      if (productionChains) state.productionChains = productionChains;
       if (resourceDeficit) state.resourceDeficit = resourceDeficit;
       if (productsSettings) state.productsSettings = productsSettings;
     },
@@ -234,13 +223,14 @@ export const resourcesSlice = createSlice({
       state.productionEstimate = payload.production_estimate;
     });
     builder.addCase(produceSlot.fulfilled, (state, { payload }) => {
-      if (state.productionChains) {
-        const curProductproductionChains =
-          state.productionChains[payload.type]?.[payload.product].input;
+      if (state.productsSettings) {
+        const curProductproductionSettings =
+          state.productsSettings?.[payload.product]?.production?.[payload.type]
+            ?.requirements;
 
-        if (curProductproductionChains) {
+        if (curProductproductionSettings) {
           const updatedResources = Object.entries(
-            curProductproductionChains
+            curProductproductionSettings
           ).reduce((acc, [k, value]) => {
             const key = k as CyberFarmProductType;
             acc[key] = state.resources[key] - value;
