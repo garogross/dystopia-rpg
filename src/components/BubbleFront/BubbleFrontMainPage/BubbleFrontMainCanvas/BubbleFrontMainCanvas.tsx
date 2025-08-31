@@ -47,11 +47,6 @@ interface IHex {
   lineIndex: number;
   colIndex: number;
 }
-
-// Physics constants from bubble shooter example
-const BUBBLE_SPEED = 1000; // pixels per second
-const BUBBLE_RADIUS = 20; // collision radius
-
 const generateRandomBallsArr = (): IHex[][] => {
   return Array.from({ length: LINES_COUNT }, (_, lineIndex) =>
     Array.from({ length: getHexesCountInrow(lineIndex) }, (_, colIndex) => ({
@@ -85,7 +80,7 @@ const neighborsoffsets = [
     [-1, 0],
     [-1, -1],
     [0, -1],
-  ], // Odd row tiles
+  ],
   [
     [1, 1],
     [0, 1],
@@ -94,13 +89,12 @@ const neighborsoffsets = [
     [1, 0],
     [0, -1],
   ], // Even row tiles
-];
+]; // Odd row tiles
 
 // Get the neighbors of the specified tile
 const getNeighbors = (hex: IHex, hexes: IHex[][]) => {
   const hexesInRow = getHexesCountInrow(hex.lineIndex); // Even or odd row
-  const isOddRow = hexesInRow < HEX_IN_LINE; // Determine if it's an odd row
-  const rowIndex = isOddRow ? 0 : 1; // 0 for odd rows, 1 for even rows
+  const rowIndex = HEX_IN_LINE - hexesInRow;
   const neighbors: IHex[] = [];
 
   // Get the neighbor offsets for the specified tile
@@ -112,64 +106,14 @@ const getNeighbors = (hex: IHex, hexes: IHex[][]) => {
     const nx = hex.colIndex + n[i][1];
     const ny = hex.lineIndex + n[i][0];
 
-    // Make sure the tile is valid and within bounds
-    if (ny >= 0 && ny < hexes.length) {
-      const tile = hexes[ny]?.[nx];
-      if (tile && !tile.ball) {
-        neighbors.push(tile);
-      }
+    // Make sure the tile is valid
+    if (hexes?.[ny]?.[nx]) {
+      neighbors.push(hexes[ny][nx]);
     }
   }
 
   return neighbors;
 };
-
-// Physics helper functions from bubble shooter example
-const degToRad = (angle: number) => {
-  return angle * (Math.PI / 180);
-};
-
-const circleIntersection = (
-  x1: number,
-  y1: number,
-  r1: number,
-  x2: number,
-  y2: number,
-  r2: number
-) => {
-  // Calculate the distance between the centers
-  const dx = x1 - x2;
-  const dy = y1 - y2;
-  const len = Math.sqrt(dx * dx + dy * dy);
-
-  if (len < r1 + r2) {
-    // Circles intersect
-    return true;
-  }
-
-  return false;
-};
-
-// Get the closest grid position for snapping
-const getGridPosition = (
-  x: number,
-  y: number,
-  hexSize: number,
-  levelX: number,
-  levelY: number
-) => {
-  const gridY = Math.floor((y - levelY) / (hexSize * 0.8));
-
-  // Check for offset
-  let xOffset = 0;
-  if (gridY % 2) {
-    xOffset = hexSize / 2;
-  }
-  const gridX = Math.floor((x - xOffset - levelX) / hexSize);
-
-  return { x: gridX, y: gridY };
-};
-
 const BubbleFrontMainCanvas = () => {
   const [hexes, setHexes] = useState<IHex[][]>(generateRandomBallsArr());
   const [readyBalls, setReadyBalls] = useState(
@@ -178,16 +122,14 @@ const BubbleFrontMainCanvas = () => {
   const [hexSize, setHexSize] = useState(0);
   const hexSizeRef = useCopyRef(hexSize);
   const hexesRef = useCopyRef(hexes);
-  const readyBallsRef = useCopyRef(readyBalls);
   const hexesWithBalls = hexes.flat().filter((item) => item.ball);
-  console.log({ readyBalls });
 
   const strikeBall = (app: Application<ICanvas>, hexLayer: Container) => {
     const { centerX, centerY, rotation } = getGunSettings();
 
     // Create sprite with readyBalls[0]
-    if (readyBallsRef.current.length > 0) {
-      const ballType = readyBallsRef.current[0];
+    if (readyBalls.length > 0) {
+      const ballType = readyBalls[0];
 
       const ballSprite = new Sprite(BALLS[ballType]);
 
@@ -201,26 +143,12 @@ const BubbleFrontMainCanvas = () => {
       hexLayer.addChild(ballSprite);
 
       // Calculate movement direction based on rotation
-      // Apply angle restrictions like in bubble shooter example
-      let restrictedRotation = rotation;
-
-      // Restrict angle to 8, 172 degrees (like bubble shooter example)
-      const lbound = 8;
-      const ubound = 172;
-      if (restrictedRotation > 90 && restrictedRotation < 270) {
-        // Left side
-        if (restrictedRotation > ubound) {
-          restrictedRotation = ubound;
-        }
-      } else {
-        // Right side
-        if (restrictedRotation < lbound || restrictedRotation >= 270) {
-          restrictedRotation = lbound;
-        }
-      }
-
-      let angleInRadians = degToRad(restrictedRotation);
+      // Adjust for -90 degree offset and convert to radians
+      const angleInRadians = ((rotation + 90) * Math.PI) / 180;
+      const moveSpeed = 8; // Adjust speed as needed
       const scaleSpeed = 0.03; // Adjust speed as needed (0..1 per frame)
+      let velocityX = Math.cos(angleInRadians) * moveSpeed;
+      let velocityY = Math.sin(angleInRadians) * moveSpeed;
 
       // Determine target scale so that final visual size equals hex size
       const baseTextureWidth =
@@ -228,23 +156,20 @@ const BubbleFrontMainCanvas = () => {
       const targetScale =
         baseTextureWidth > 0 ? hexSizeRef.current / baseTextureWidth : 1;
 
-      // Get level boundaries
-      const levelX = 0;
-      const levelY = 0;
-      const levelWidth = app.screen.width;
-      const levelHeight = app.screen.height;
-
-      // Animation variables
-      let lastFrameTime = performance.now();
+      const hittableBallsLines = hexesRef.current.filter((line, index, arr) => {
+        if (!line.some((item) => item.ball)) return false;
+        const isCurLineFilled =
+          line.filter((item) => item.ball).length !== getHexesCountInrow(index);
+        const isNextLineFilled =
+          arr[index + 1]?.filter((item) => item.ball)?.length !==
+          getHexesCountInrow(index + 1);
+        return isCurLineFilled || isNextLineFilled;
+      });
 
       // Animation function
-      const animateBall = (currentTime: number) => {
-        const dt = (currentTime - lastFrameTime) / 1000; // Convert to seconds
-        lastFrameTime = currentTime;
-
-        // Move the bubble in the direction of the angle (physics-based movement)
-        ballSprite.x += dt * BUBBLE_SPEED * Math.cos(angleInRadians);
-        ballSprite.y += dt * BUBBLE_SPEED * -1 * Math.sin(angleInRadians);
+      const animateBall = () => {
+        ballSprite.x -= velocityX;
+        ballSprite.y -= velocityY;
 
         // Smoothly scale up to target size
         const currentScale = ballSprite.scale.x; // uniform scale
@@ -256,150 +181,89 @@ const BubbleFrontMainCanvas = () => {
         // Compute current radius for collision (texture size * scale / 2)
         const currentRadius = (baseTextureWidth * ballSprite.scale.x) / 2;
 
-        // Handle left and right collisions with the level (wall bouncing)
-        if (ballSprite.x - currentRadius <= levelX) {
-          // Left edge - reflect angle
-          ballSprite.x = levelX + currentRadius;
-          angleInRadians = Math.PI - angleInRadians;
-        } else if (ballSprite.x + currentRadius >= levelX + levelWidth) {
-          // Right edge - reflect angle
-          ballSprite.x = levelX + levelWidth - currentRadius;
-          angleInRadians = Math.PI - angleInRadians;
+        // Bounce on left/right walls
+        if (ballSprite.x - currentRadius <= 0) {
+          ballSprite.x = currentRadius;
+          velocityX = -velocityX;
+        } else if (ballSprite.x + currentRadius >= app.screen.width) {
+          ballSprite.x = app.screen.width - currentRadius;
+          velocityX = -velocityX;
         }
 
-        // Collisions with the top of the level
-        if (ballSprite.y - currentRadius <= levelY) {
-          // Top collision - snap to grid
-          ballSprite.y = levelY + currentRadius;
-          snapBubbleToGrid(ballSprite, ballType, hexLayer);
-          return;
-        }
+        // check touch to grid balls
+        const touchedBall = hittableBallsLines.flat().find((item) => {
+          if (!item.position || !item.ball) return false;
+          const { x, y } = item.position;
+          // Calculate the distance between the moving ball and the grid ball
+          const dx = ballSprite.x - (x + hexSizeRef.current / 2);
+          const dy = ballSprite.y - (y + hexSizeRef.current / 2);
+          const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Check collisions with existing balls using circle intersection
-        const touchedBall = checkBallCollisions(ballSprite, currentRadius);
-        if (touchedBall) {
-          snapBubbleToGrid(ballSprite, ballType, hexLayer);
-          return;
-        }
+          // Assume grid balls are scaled to hexSize, so their radius is hexSize / 2
+          const gridBallRadius = hexSizeRef.current / 2;
+          // Use the current moving ball radius
+          const movingBallRadius = (baseTextureWidth * ballSprite.scale.x) / 2;
 
-        // Continue animation
-        requestAnimationFrame(animateBall);
+          // If the distance is less than the sum of the radii, they touch
+          return distance <= gridBallRadius + movingBallRadius;
+        });
+
+        if (!touchedBall) {
+          requestAnimationFrame(animateBall);
+        } else {
+          // Find empty neighbors of the ball we collided with
+          const emptyNeighbours = getNeighbors(
+            touchedBall,
+            hexesRef.current
+          ).filter((n) => !n.ball && n.position);
+
+          if (emptyNeighbours.length > 0) {
+            // Find which empty neighbor is closest to the projectile's center
+            let closestNeighbour = emptyNeighbours[0];
+            let minDistance = Infinity;
+
+            emptyNeighbours.forEach((neighbour) => {
+              // Ensure neighbour.position is not undefined
+              if (neighbour.position) {
+                const neighbourCenterX =
+                  neighbour.position.x + hexSizeRef.current / 2;
+                const neighbourCenterY =
+                  neighbour.position.y + hexSizeRef.current / 2;
+
+                const dx = ballSprite.x - neighbourCenterX;
+                const dy = ballSprite.y - neighbourCenterY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < minDistance) {
+                  minDistance = distance;
+                  closestNeighbour = neighbour;
+                }
+              }
+            });
+
+            // Update the hex grid state immutably
+            setHexes((prevHexes) => {
+              const newHexes = prevHexes.map((line) => [...line]); // Deep copy
+              newHexes[closestNeighbour.lineIndex][closestNeighbour.colIndex] =
+                {
+                  ...newHexes[closestNeighbour.lineIndex][
+                    closestNeighbour.colIndex
+                  ],
+                  ball: ballType,
+                };
+              return newHexes;
+            });
+          }
+
+          // Clean up the projectile sprite
+          hexLayer.removeChild(ballSprite);
+          ballSprite.destroy();
+        }
       };
 
       // Start animation
-      requestAnimationFrame(animateBall);
+      animateBall();
     }
-  };
-
-  // Check collisions with existing balls
-  const checkBallCollisions = (ballSprite: Sprite, currentRadius: number) => {
-    const hittableBallsLines = hexesRef.current.filter((line, index, arr) => {
-      if (!line.some((item) => item.ball)) return false;
-      const isCurLineFilled =
-        line.filter((item) => item.ball).length !== getHexesCountInrow(index);
-      const isNextLineFilled =
-        arr[index + 1]?.filter((item) => item.ball)?.length !==
-        getHexesCountInrow(index + 1);
-      return isCurLineFilled || isNextLineFilled;
-    });
-
-    return hittableBallsLines.flat().find((item) => {
-      if (!item.position || !item.ball) return false;
-      const { x, y } = item.position;
-
-      // Use circle intersection for proper collision detection
-      return circleIntersection(
-        ballSprite.x,
-        ballSprite.y,
-        currentRadius,
-        x + hexSizeRef.current / 2,
-        y + hexSizeRef.current / 2,
-        hexSizeRef.current / 2
-      );
-    });
-  };
-
-  // Snap bubble to grid position
-  const snapBubbleToGrid = (
-    ballSprite: Sprite,
-    ballType: (typeof ballKeys)[0],
-    hexLayer: Container
-  ) => {
-    // Get the grid position
-    const centerX = ballSprite.x;
-    const centerY = ballSprite.y;
-    const gridPos = getGridPosition(centerX, centerY, hexSizeRef.current, 0, 0);
-
-    // Make sure the grid position is valid
-    const clampedX = Math.max(0, Math.min(gridPos.x, HEX_IN_LINE - 1));
-    const clampedY = Math.max(0, Math.min(gridPos.y, LINES_COUNT - 1));
-
-    // Find the nearest empty position
-    const nearestNeighbour = findNearestEmptyPosition(clampedX, clampedY);
-
-    if (nearestNeighbour) {
-      // Update hexes state
-      setHexes((prev) => {
-        const newHexes = [...prev];
-        newHexes[nearestNeighbour.lineIndex] = [
-          ...newHexes[nearestNeighbour.lineIndex],
-        ];
-        newHexes[nearestNeighbour.lineIndex][nearestNeighbour.colIndex] = {
-          ...newHexes[nearestNeighbour.lineIndex][nearestNeighbour.colIndex],
-          ball: ballType,
-        };
-        return newHexes;
-      });
-
-      // Update ready balls - remove the used ball and add a new one
-      setReadyBalls((prev) => {
-        const newBalls = [...prev];
-        newBalls.shift(); // Remove the used ball
-        newBalls.push(getRandomBall()); // Add a new random ball
-        return newBalls;
-      });
-    }
-
-    // Remove ball sprite
-    hexLayer.removeChild(ballSprite);
-    ballSprite.destroy();
-  };
-
-  // Find nearest empty position for ball placement
-  const findNearestEmptyPosition = (gridX: number, gridY: number) => {
-    // First try the exact grid position
-    if (
-      hexesRef.current[gridY]?.[gridX] &&
-      !hexesRef.current[gridY][gridX].ball
-    ) {
-      return hexesRef.current[gridY][gridX];
-    }
-
-    // If not empty, find the nearest empty neighbor
-    const targetHex = hexesRef.current[gridY]?.[gridX];
-    if (targetHex) {
-      const neighbours = getNeighbors(targetHex, hexesRef.current);
-      let nearestValue: number | null = null;
-      let nearestNeighbour: IHex | null = null;
-
-      neighbours.forEach((item) => {
-        if (!item.ball && item.position && targetHex.position) {
-          // Use Euclidean distance for more accurate nearest neighbor calculation
-          const dx = targetHex.position.x - item.position.x;
-          const dy = targetHex.position.y - item.position.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (nearestValue === null || distance < nearestValue) {
-            nearestValue = distance;
-            nearestNeighbour = item;
-          }
-        }
-      });
-
-      return nearestNeighbour;
-    }
-
-    return null;
   };
 
   const onInitApp = (app: Application<ICanvas>, hexLayer: Container) => {
