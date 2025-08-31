@@ -19,7 +19,6 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { useFarmFieldProgress } from "../../../hooks/useFarmFieldProgress";
-import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
 import { useSoltAd } from "../../../hooks/useSlotId";
 import { ClaimAdRewardActionType } from "../../../types/tasks/ClaimAdRewardActionType";
 
@@ -38,6 +37,7 @@ const {
   watchAdIncreaseProfitText,
   watchAdInstantFinishText,
   speedUpCompleteText,
+  productionText,
 } = TRANSLATIONS.cyberFarm.processModal;
 const { somethingWentWrong } = TRANSLATIONS.errors;
 
@@ -47,12 +47,9 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
-  const [gameAction, setGameAction] = useState<ClaimAdRewardActionType>(
-    "farm_production_bonus"
-  );
 
   const onHarvest = async (withoutAd?: boolean) => {
-    if (!withoutAd && gameAction !== "farm_boost_production") return;
+    if (!withoutAd && !item.adProductionBonusReceived) return;
     try {
       setLoading(true);
       setErrored(false);
@@ -65,6 +62,10 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
       setLoading(false);
     }
   };
+
+  const gameAction: ClaimAdRewardActionType = !item.adProductionBonusReceived
+    ? "farm_production_bonus"
+    : "farm_boost_production";
   const {
     onShow,
     showTooltip: showAdTooltip,
@@ -121,15 +122,20 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
                   ></div>
                 </div>
               </div>
-              <p className={styles.cyberFarmProcessModal__text}>
-                {isReadyToCollect
-                  ? readyToCollectText[language]
-                  : remainingTimeInSecs
-                  ? `${timeRemainingText[language]} ${formatTime(
-                      remainingTimeInSecs
-                    )}`
-                  : ""}
-              </p>
+              <div className={styles.cyberFarmProcessModal__infoCol}>
+                <p className={styles.cyberFarmProcessModal__text}>
+                  {isReadyToCollect
+                    ? readyToCollectText[language]
+                    : remainingTimeInSecs
+                    ? `${timeRemainingText[language]} ${formatTime(
+                        remainingTimeInSecs
+                      )}`
+                    : ""}
+                </p>
+                <p className={styles.cyberFarmProcessModal__text}>
+                  {productionText[language]} - {item.finalProduction || 0}
+                </p>
+              </div>
             </div>
           </div>
           <div className={styles.cyberFarmProcessModal__actions}>
@@ -146,31 +152,17 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
             ) : (
               <>
                 <button
-                  onClick={() => {
-                    setGameAction("farm_production_bonus");
-                    onShow();
-                  }}
-                  id={ECyberfarmTutorialActions.speedUpProduce}
+                  onClick={onShow}
                   className={styles.cyberFarmProcessModal__btn}
                 >
                   <div className={styles.cyberFarmProcessModal__btnInner}>
-                    <span>{watchAdIncreaseProfitText[language]}</span>
-                    <img
-                      src={adImage}
-                      alt="cash point"
-                      className={styles.cyberFarmProcessModal__btnImg}
-                    />
-                  </div>
-                </button>
-                <button
-                  onClick={() => {
-                    setGameAction("farm_boost_production");
-                    onShow();
-                  }}
-                  className={styles.cyberFarmProcessModal__btn}
-                >
-                  <div className={styles.cyberFarmProcessModal__btnInner}>
-                    <span>{watchAdInstantFinishText[language]}</span>
+                    <span>
+                      {
+                        (item.adProductionBonusReceived
+                          ? watchAdInstantFinishText
+                          : watchAdIncreaseProfitText)[language]
+                      }
+                    </span>
                     <img
                       src={adImage}
                       alt="cash point"

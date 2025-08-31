@@ -13,6 +13,7 @@ export interface ClaimAdRewardResponse {
   bonus_distribution?: {
     ref_amount: number;
     production_amount: number;
+    final_production?: number;
     global_amount: number;
     ad_bonus_production: number;
     slot_type: EFarmSlotTypes;

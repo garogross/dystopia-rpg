@@ -13,6 +13,7 @@ export interface ProduceSlotResponse {
   product: CyberFarmProductType;
   start_time: 1749648608926;
   finish_time: 1749652208926;
+  final_production: number;
 }
 
 export interface HarvestResponse {

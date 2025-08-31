@@ -13,4 +13,6 @@ export interface IFarmField {
     endDate: number;
   };
   idArg?: string;
+  adProductionBonusReceived?: boolean;
+  finalProduction?: number;
 }

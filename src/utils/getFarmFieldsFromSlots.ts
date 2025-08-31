@@ -26,6 +26,8 @@ export const getFarmFieldsFromSlots = (slots: SlotsState["slots"]) => {
                 }
               : undefined,
           updated_at: slot.updated_at,
+          adProductionBonusReceived: !!slot.ad_production_bonus_received,
+          finalProduction: slot.final_production,
         }))
         .sort((a, b) => a.updated_at - b.updated_at)
     : [];

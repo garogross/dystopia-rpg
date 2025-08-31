@@ -7,4 +7,6 @@ export interface IFarmSlot {
   start_time?: number;
   finish_time?: number;
   updated_at: number;
+  ad_production_bonus_received?: boolean;
+  final_production?: number;
 }
