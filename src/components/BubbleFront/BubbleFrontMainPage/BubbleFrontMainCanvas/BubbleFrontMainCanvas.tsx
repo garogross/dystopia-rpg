@@ -24,6 +24,9 @@ import { useCopyRef } from "../../../../hooks/useCopyRef";
 const HEX_IN_LINE = 15;
 const LINES_COUNT = 10;
 const DEFAULT_HEX_LINES_COUNT = 3;
+const MOVE_SPEED = 15; // Adjust speed as needed
+const SCALE_SPEED = 0.03; // Adjust speed as needed (0..1 per frame)
+const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
 
 const getHexesCountInrow = (lineIndex: number) => {
   const isOdd = lineIndex % 2 === 1;
@@ -122,12 +125,14 @@ const BubbleFrontMainCanvas = () => {
   const [hexSize, setHexSize] = useState(0);
   const hexSizeRef = useCopyRef(hexSize);
   const hexesRef = useCopyRef(hexes);
+  const readyBallsRef = useCopyRef(readyBalls);
   const hexesWithBalls = hexes.flat().filter((item) => item.ball);
 
   const strikeBall = (app: Application<ICanvas>, hexLayer: Container) => {
     const { centerX, centerY, rotation } = getGunSettings();
 
     // Create sprite with readyBalls[0]
+    const readyBalls = readyBallsRef.current;
     if (readyBalls.length > 0) {
       const ballType = readyBalls[0];
 
@@ -145,10 +150,9 @@ const BubbleFrontMainCanvas = () => {
       // Calculate movement direction based on rotation
       // Adjust for -90 degree offset and convert to radians
       const angleInRadians = ((rotation + 90) * Math.PI) / 180;
-      const moveSpeed = 8; // Adjust speed as needed
-      const scaleSpeed = 0.03; // Adjust speed as needed (0..1 per frame)
-      let velocityX = Math.cos(angleInRadians) * moveSpeed;
-      let velocityY = Math.sin(angleInRadians) * moveSpeed;
+
+      let velocityX = Math.cos(angleInRadians) * MOVE_SPEED;
+      let velocityY = Math.sin(angleInRadians) * MOVE_SPEED;
 
       // Determine target scale so that final visual size equals hex size
       const baseTextureWidth =
@@ -174,7 +178,7 @@ const BubbleFrontMainCanvas = () => {
         // Smoothly scale up to target size
         const currentScale = ballSprite.scale.x; // uniform scale
         if (currentScale < targetScale) {
-          const nextScale = Math.min(currentScale + scaleSpeed, targetScale);
+          const nextScale = Math.min(currentScale + SCALE_SPEED, targetScale);
           ballSprite.scale.set(nextScale);
         }
 
@@ -202,7 +206,8 @@ const BubbleFrontMainCanvas = () => {
           // Assume grid balls are scaled to hexSize, so their radius is hexSize / 2
           const gridBallRadius = hexSizeRef.current / 2;
           // Use the current moving ball radius
-          const movingBallRadius = (baseTextureWidth * ballSprite.scale.x) / 2;
+          const movingBallRadius =
+            (baseTextureWidth * TOUCHABLE_RADIUS * ballSprite.scale.x) / 2;
 
           // If the distance is less than the sum of the radii, they touch
           return distance <= gridBallRadius + movingBallRadius;
@@ -254,7 +259,12 @@ const BubbleFrontMainCanvas = () => {
               return newHexes;
             });
           }
-
+          setReadyBalls((prev) => {
+            const newBalls = [...prev];
+            newBalls.shift(); // Remove the used ball
+            newBalls.push(getRandomBall()); // Add a new random ball
+            return newBalls;
+          });
           // Clean up the projectile sprite
           hexLayer.removeChild(ballSprite);
           ballSprite.destroy();
