@@ -55,6 +55,7 @@ export const useSoltAd = (
           provider: provider,
           game_action,
           farm_slot,
+          slotId,
         } as AdRewardValidPairsType)
       ).unwrap();
       setTooltipText(

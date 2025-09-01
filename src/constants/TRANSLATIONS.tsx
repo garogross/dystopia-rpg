@@ -67,8 +67,8 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "cp",
     },
     watchAdAndGetCpText: {
-      [ELanguages.en]: "Watch an ad and get NUMBER CP",
-      [ELanguages.ru]: "Посмотри рекламу и получи NUMBER CP",
+      [ELanguages.en]: "Watch an ad and get CP",
+      [ELanguages.ru]: "Посмотри рекламу и получи CP",
     },
     watchAdText: {
       [ELanguages.en]: "Watch",
