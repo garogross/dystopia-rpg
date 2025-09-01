@@ -27,6 +27,8 @@ const DEFAULT_HEX_LINES_COUNT = 3;
 const MOVE_SPEED = 15; // Adjust speed as needed
 const SCALE_SPEED = 0.03; // Adjust speed as needed (0..1 per frame)
 const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
+// Minimum number of connected balls required to form a cluster for removal
+const MIN_CLUSTERS = 3;
 
 const getHexesCountInrow = (lineIndex: number) => {
   const isOdd = lineIndex % 2 === 1;
@@ -127,6 +129,54 @@ const BubbleFrontMainCanvas = () => {
   const hexesRef = useCopyRef(hexes);
   const readyBallsRef = useCopyRef(readyBalls);
   const hexesWithBalls = hexes.flat().filter((item) => item.ball);
+  console.log({ readyBalls });
+
+  const findCluster = (targettile: IHex, matchColors?: boolean) => {
+    // Get the target tile. Tile coord must be valid.
+
+    // Initialize the toprocess array with the specified tile
+    const toprocess = [targettile];
+    const processed: IHex[] = [];
+    const foundcluster = [];
+    console.log({ targettile });
+
+    while (toprocess.length > 0) {
+      // Pop the last element from the array
+      const currenttile = toprocess.pop();
+      // Skip processed and empty tiles
+      if (!currenttile?.ball) {
+        continue;
+      }
+
+      // Check if current tile has the right type, if matchtype is true
+      if (!matchColors || currenttile.ball === targettile.ball) {
+        // Add current tile to the cluster
+        foundcluster.push(currenttile);
+
+        // Get the neighbors of the current tile
+        const neighbors = getNeighbors(currenttile, hexes);
+
+        neighbors
+          .filter(
+            (item) =>
+              (!matchColors || item.ball === targettile.ball) &&
+              !processed.some(
+                (processItem) =>
+                  processItem.colIndex === item.colIndex &&
+                  processItem.lineIndex &&
+                  item.lineIndex
+              )
+          )
+          .forEach((item) => {
+            toprocess.push(item);
+          });
+        processed.push(currenttile);
+      }
+    }
+
+    // Return the found cluster
+    return foundcluster;
+  };
 
   const strikeBall = (app: Application<ICanvas>, hexLayer: Container) => {
     const { centerX, centerY, rotation } = getGunSettings();
@@ -258,6 +308,31 @@ const BubbleFrontMainCanvas = () => {
                 };
               return newHexes;
             });
+
+            const clusters = findCluster(
+              { ...closestNeighbour, ball: ballType },
+              true
+            );
+            console.log({ clusters });
+
+            if (clusters.length >= MIN_CLUSTERS) {
+              setHexes((prevHexes) => {
+                // Remove balls that are part of the cluster
+                const newHexes = prevHexes.map((line) =>
+                  line.map((hex) =>
+                    clusters.some(
+                      (item) =>
+                        item.colIndex === hex.colIndex &&
+                        item.lineIndex === hex.lineIndex
+                    )
+                      ? { ...hex, ball: null }
+                      : hex
+                  )
+                );
+                return newHexes;
+              });
+            }
+            console.log({ clusters });
           }
           setReadyBalls((prev) => {
             const newBalls = [...prev];
