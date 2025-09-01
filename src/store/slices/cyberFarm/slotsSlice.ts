@@ -160,7 +160,7 @@ export const slotsSlice = createSlice({
           [slotId]: {
             ...state.slots?.[slotId],
             ad_production_bonus_received: true,
-            final_production: payload.bonus_distribution?.final_production || 0,
+            final_production: payload?.final_production || 0,
           },
         };
       }

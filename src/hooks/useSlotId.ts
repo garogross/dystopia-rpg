@@ -58,10 +58,7 @@ export const useSoltAd = (
         } as AdRewardValidPairsType)
       ).unwrap();
       setTooltipText(
-        successText.replace(
-          "NUMBER",
-          (res.bonus_distribution?.final_production || 0).toString()
-        )
+        successText.replace("NUMBER", (res?.final_production || 0).toString())
       );
       await openTooltip();
       scsClb?.();
