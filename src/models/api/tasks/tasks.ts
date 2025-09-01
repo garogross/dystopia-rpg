@@ -19,6 +19,7 @@ export interface ClaimAdRewardResponse {
     farm_slot: string;
     ad_production_bonus_received: boolean;
   };
+  final_production?: number;
 }
 
 export interface GetAdRewardSettingsResponse {

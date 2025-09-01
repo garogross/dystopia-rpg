@@ -49,15 +49,18 @@ export const useSoltAd = (
 
   const onSuccess = async () => {
     try {
-      await dispatch(
+      const res = await dispatch(
         claimAdReward({
           ad_type: adType,
           provider: provider,
           game_action,
           farm_slot,
+          slotId,
         } as AdRewardValidPairsType)
       ).unwrap();
-      setTooltipText(successText);
+      setTooltipText(
+        successText.replace("NUMBER", (res?.final_production || 0).toString())
+      );
       await openTooltip();
       scsClb?.();
     } catch (error) {
@@ -92,7 +95,7 @@ export const useSoltAd = (
       if (curSlot) {
         switch (curSlot.status) {
           case EMediationStatuses.AdAvailable: {
-            onShowAd();
+            process.env.NODE_ENV === "development" ? onSuccess() : onShowAd();
             break;
           }
           case EMediationStatuses.NoAds: {

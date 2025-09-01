@@ -67,8 +67,8 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "cp",
     },
     watchAdAndGetCpText: {
-      [ELanguages.en]: "Watch an ad and get NUMBER CP",
-      [ELanguages.ru]: "Посмотри рекламу и получи NUMBER CP",
+      [ELanguages.en]: "Watch an ad and get CP",
+      [ELanguages.ru]: "Посмотри рекламу и получи CP",
     },
     watchAdText: {
       [ELanguages.en]: "Watch",
@@ -621,6 +621,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Time remaining:",
         [ELanguages.ru]: "Осталось:",
       },
+      productionText: {
+        [ELanguages.en]: "Production",
+        [ELanguages.ru]: "Выработка",
+      },
       collectButtonText: {
         [ELanguages.en]: "Collect harvest",
         [ELanguages.ru]: "Собрать урожай",
@@ -635,8 +639,8 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Реклама — завершить и увеличить прибыль",
       },
       profitIncreasedText: {
-        [ELanguages.en]: "Profit increased",
-        [ELanguages.ru]: "Прибыль увеличена",
+        [ELanguages.en]: "Profit increased to NUMBER",
+        [ELanguages.ru]: "Прибыль увеличена до NUMBER",
       },
       harvestCollectedText: {
         [ELanguages.en]: "Harvest collected!",
