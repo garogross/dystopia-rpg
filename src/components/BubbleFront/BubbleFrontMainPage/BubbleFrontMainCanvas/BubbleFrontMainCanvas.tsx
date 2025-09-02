@@ -32,6 +32,7 @@ const SCALE_SPEED = 0.03; // Adjust speed as needed (0..1 per frame)
 const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
 // Minimum number of connected balls required to form a cluster for removal
 const MIN_CLUSTERS = 3;
+const MAX_TURN_COUNTER = 2;
 
 const getHexesCountInrow = (lineIndex: number) => {
   const isOdd = lineIndex % 2 === 1;
@@ -55,13 +56,25 @@ interface IHex {
   lineIndex: number;
   colIndex: number;
 }
+
+const generateRandomBallsRow = (
+  length: number,
+  lineIndex: number,
+  withBall?: boolean
+) => {
+  return Array.from({ length: length }, (_, colIndex) => ({
+    ball: withBall ? getRandomBall() : null,
+    lineIndex,
+    colIndex,
+  }));
+};
 const generateRandomBallsArr = (): IHex[][] => {
   return Array.from({ length: LINES_COUNT }, (_, lineIndex) =>
-    Array.from({ length: getHexesCountInrow(lineIndex) }, (_, colIndex) => ({
-      ball: lineIndex < DEFAULT_HEX_LINES_COUNT ? getRandomBall() : null,
+    generateRandomBallsRow(
+      getHexesCountInrow(lineIndex),
       lineIndex,
-      colIndex,
-    }))
+      lineIndex < DEFAULT_HEX_LINES_COUNT
+    )
   );
 };
 
@@ -101,7 +114,7 @@ const neighborsoffsets = [
 
 // Get the neighbors of the specified tile
 const getNeighbors = (hex: IHex, hexes: IHex[][]) => {
-  const hexesInRow = getHexesCountInrow(hex.lineIndex); // Even or odd row
+  const hexesInRow = hexes[hex.lineIndex].length; // Even or odd row
   const rowIndex = HEX_IN_LINE - hexesInRow;
   const neighbors: IHex[] = [];
 
@@ -124,12 +137,14 @@ const getNeighbors = (hex: IHex, hexes: IHex[][]) => {
 };
 const BubbleFrontMainCanvas = () => {
   const dispatch = useAppDispatch();
-  const [hexes, setHexes] = useState<IHex[][]>(generateRandomBallsArr());
-
   const readyBalls = useAppSelector(
     (state) => state.bubbleFront.global.nextBalls
   );
+  const [hexes, setHexes] = useState<IHex[][]>(generateRandomBallsArr());
+
   const [hexSize, setHexSize] = useState(0);
+  const [turnCounter, setTurnCounter] = useState(0);
+
   const hexSizeRef = useCopyRef(hexSize);
   const hexesRef = useCopyRef(hexes);
   const readyBallsRef = useCopyRef(readyBalls);
@@ -266,10 +281,10 @@ const BubbleFrontMainCanvas = () => {
       const hittableBallsLines = hexesRef.current.filter((line, index, arr) => {
         if (!line.some((item) => item.ball)) return false;
         const isCurLineFilled =
-          line.filter((item) => item.ball).length !== getHexesCountInrow(index);
+          line.filter((item) => item.ball).length !== line.length;
         const isNextLineFilled =
           arr[index + 1]?.filter((item) => item.ball)?.length !==
-          getHexesCountInrow(index + 1);
+          arr[index + 1]?.length;
         return isCurLineFilled || isNextLineFilled;
       });
 
@@ -349,25 +364,26 @@ const BubbleFrontMainCanvas = () => {
               );
               setHexes(newHexes);
               updatingHexes = newHexes;
-            }
+              const floatingClusters = findFloatingClusters(updatingHexes);
 
-            const floatingClusters = findFloatingClusters(updatingHexes);
-
-            if (floatingClusters?.length) {
-              const newHexes = updatingHexes.map((line) =>
-                line.map((hex) =>
-                  floatingClusters
-                    .flat()
-                    .some(
-                      (item) =>
-                        item.colIndex === hex.colIndex &&
-                        item.lineIndex === hex.lineIndex
-                    )
-                    ? { ...hex, ball: null }
-                    : hex
-                )
-              );
-              setHexes(newHexes);
+              if (floatingClusters?.length) {
+                const newHexes = updatingHexes.map((line) =>
+                  line.map((hex) =>
+                    floatingClusters
+                      .flat()
+                      .some(
+                        (item) =>
+                          item.colIndex === hex.colIndex &&
+                          item.lineIndex === hex.lineIndex
+                      )
+                      ? { ...hex, ball: null }
+                      : hex
+                  )
+                );
+                setHexes(newHexes);
+              }
+            } else {
+              setTurnCounter((prev) => prev + 1);
             }
 
             const updatingReadyBalls = [...readyBalls] as typeof readyBalls;
@@ -465,25 +481,27 @@ const BubbleFrontMainCanvas = () => {
               );
               setHexes(newHexes);
               updatingHexes = newHexes;
-            }
 
-            const floatingClusters = findFloatingClusters(updatingHexes);
+              const floatingClusters = findFloatingClusters(updatingHexes);
 
-            if (floatingClusters?.length) {
-              const newHexes = updatingHexes.map((line) =>
-                line.map((hex) =>
-                  floatingClusters
-                    .flat()
-                    .some(
-                      (item) =>
-                        item.colIndex === hex.colIndex &&
-                        item.lineIndex === hex.lineIndex
-                    )
-                    ? { ...hex, ball: null }
-                    : hex
-                )
-              );
-              setHexes(newHexes);
+              if (floatingClusters?.length) {
+                const newHexes = updatingHexes.map((line) =>
+                  line.map((hex) =>
+                    floatingClusters
+                      .flat()
+                      .some(
+                        (item) =>
+                          item.colIndex === hex.colIndex &&
+                          item.lineIndex === hex.lineIndex
+                      )
+                      ? { ...hex, ball: null }
+                      : hex
+                  )
+                );
+                setHexes(newHexes);
+              }
+            } else {
+              setTurnCounter((prev) => prev + 1);
             }
           }
           const updatingReadyBalls = [...readyBalls] as typeof readyBalls;
@@ -511,13 +529,32 @@ const BubbleFrontMainCanvas = () => {
     );
   };
 
-  const { isInitialized, pixiContainer, appRef, hexLayerRef } =
-    usePixi(onInitApp);
+  const { isInitialized, pixiContainer, hexLayerRef } = usePixi(onInitApp);
 
   useEffect(() => {
     dispatch(setNextBalls([getRandomBall(), getRandomBall()]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (turnCounter >= MAX_TURN_COUNTER) {
+      setTimeout(() => {
+        setHexes((prev) => {
+          const lineLength =
+            prev[0].length === HEX_IN_LINE ? HEX_IN_LINE - 1 : HEX_IN_LINE;
+          // Insert a new row at the top with correct length and balls
+          const newRow = generateRandomBallsRow(lineLength, 0, true);
+          const updated = [newRow, ...prev.slice(0, prev.length - 1)];
+
+          // Update lineIndex for all hexes
+          return updated.map((line, lineIndex) =>
+            line.map((hex) => ({ ...hex, lineIndex }))
+          );
+        });
+        setTurnCounter(0);
+      }, 100);
+    }
+  }, [turnCounter]);
 
   const updateCanvas = () => {
     if (!pixiContainer.current || !hexLayerRef.current) return;
@@ -542,8 +579,8 @@ const BubbleFrontMainCanvas = () => {
 
     for (let l = 0; l < LINES_COUNT; l++) {
       // Offset every other row for hex grid
-      const hexesInRow = getHexesCountInrow(l);
-      const isOdd = hexesInRow < HEX_IN_LINE; // l % 2 === 1;
+      const hexesInRow = hexes[l].length;
+      const isOdd = hexesInRow < HEX_IN_LINE;
       for (let i = 0; i < hexesInRow; i++) {
         const x = i * hexSize + (isOdd ? hexSize / 2 : 0);
         const y = l * hexSize * 0.8; // Vertical spacing for hex grid
