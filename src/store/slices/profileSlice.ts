@@ -312,7 +312,7 @@ export const authorizeUser =
     }
   };
 
-const withdrawCPUrl = "/withdraw_cp/";
+const withdrawCPUrl = "/ton_cyber_farm/withdraw_cp/";
 export const withdrawCP = createAsyncThunk<
   WithdrawCPResponse,
   { amount: number; address: string; currency: "usdt" | "ton" }
@@ -360,7 +360,7 @@ export const profileSlice = createSlice({
       state.tgId = payload.user.id_tgrm;
     });
     builder.addCase(withdrawCP.fulfilled, (state, { payload }) => {
-      state.stats.cp = state.stats.cp - payload.amount;
+      state.stats.cp = state.stats.cp - payload.amount_cp;
     });
 
     // referals

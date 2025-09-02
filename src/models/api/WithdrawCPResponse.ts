@@ -1,6 +1,10 @@
 export interface WithdrawCPResponse {
   status: string;
-  withdraw_id: string;
-  amount: number;
+  amount_cp: number;
+  currency: "usdt" | "ton";
+  payout: number;
+  payout_usd: number;
+  cp_usdt_price: number;
+  ton_usd_rate: number;
   address: string;
 }

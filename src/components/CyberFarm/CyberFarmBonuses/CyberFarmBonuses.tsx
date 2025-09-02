@@ -187,7 +187,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
       return;
     }
     const currencies = ["usdt", "ton"];
-    if (formData.currency && currencies.includes(formData.currency)) {
+    if (!formData.currency || !currencies.includes(formData.currency)) {
       setTooltipText(invalidCurrencyText);
       openTooltip();
       setError((prev) => ({ ...prev, currency: "invalid" }));
