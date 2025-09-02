@@ -389,13 +389,21 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Your wallet",
         [ELanguages.ru]: "Ваш кошелёк",
       },
+      currencyText: {
+        [ELanguages.en]: "Currency",
+        [ELanguages.ru]: "Валюта",
+      },
+      currencyPlaceholder: {
+        [ELanguages.en]: "Select currency...",
+        [ELanguages.ru]: "Выберите валюту...",
+      },
       walletPlaceholder: {
         [ELanguages.en]: "Enter wallet number...",
         [ELanguages.ru]: "Вставлять номер кошелька...",
       },
       withdrawAmountText: {
-        [ELanguages.en]: "Withdrawal amount (TON)",
-        [ELanguages.ru]: "Сумма вывода (TON)",
+        [ELanguages.en]: "Withdrawal amount (CP)",
+        [ELanguages.ru]: "Сумма вывода (CP)",
       },
       withdrawAmountPlaceholder: {
         [ELanguages.en]: "0.5",
@@ -441,9 +449,13 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Amount after commission must be greater than 0",
         [ELanguages.ru]: "Сумма после вычета комиссии должна быть больше 0",
       },
-      amountExceedsTonBalanceText: {
-        [ELanguages.en]: "Amount exceeds your TON balance",
-        [ELanguages.ru]: "Сумма превышает ваш баланс TON",
+      amountExceedsCPBalanceText: {
+        [ELanguages.en]: "Amount exceeds your CP balance",
+        [ELanguages.ru]: "Сумма превышает ваш баланс CP",
+      },
+      invalidCurrencyText: {
+        [ELanguages.en]: "Invalid currency selected",
+        [ELanguages.ru]: "Выбрана неверная валюта",
       },
       walletAddressRequiredText: {
         [ELanguages.en]: "Wallet address is required",

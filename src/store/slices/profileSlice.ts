@@ -26,7 +26,7 @@ import {
   verifyGigaHash,
 } from "./tasksSlice";
 import { initAchievments } from "./cyberFarm/achievmentsSlice";
-import { WithdrawTonResponse } from "../../models/api/WithdrawTonResponse";
+import { WithdrawCPResponse } from "../../models/api/WithdrawCPResponse";
 import { convertReferals } from "./refferencesSlice";
 import { finsihTutorial, initTutorial } from "./cyberFarm/tutorialSlice";
 import { initInfluence, restoreAP } from "./influence/influenceSlice";
@@ -48,6 +48,7 @@ export interface ProfileState {
   };
   accountDetailsReceived: boolean;
   tonWithdrawCommission: number;
+  usdtWithdrawCommission: number;
 }
 
 const initUserData =
@@ -77,6 +78,7 @@ const initialState: ProfileState = {
   },
   accountDetailsReceived: false,
   tonWithdrawCommission: 0,
+  usdtWithdrawCommission: 0,
 };
 const authUserUrl = "/auth";
 
@@ -125,7 +127,9 @@ export const getAccountDetails =
     dispatch(
       receiveAccountDetails({
         tonWithdrawCommission:
-          resData.game_settings?.ton_withdraw_commission || 0,
+          resData.game_settings_new.pools.ton_pool.amount || 0,
+        usdtWithdrawCommission:
+          resData.game_settings_new.pools.usdt_pool.amount || 0,
       })
     );
     dispatch(
@@ -308,18 +312,19 @@ export const authorizeUser =
     }
   };
 
-const withdrawTonUrl = "/withdraw_ton/";
-export const withdrawTon = createAsyncThunk<
-  WithdrawTonResponse,
-  { amount: number; address: string }
->("profile/withdrawTon", async (payload, { rejectWithValue }) => {
+const withdrawCPUrl = "/withdraw_cp/";
+export const withdrawCP = createAsyncThunk<
+  WithdrawCPResponse,
+  { amount: number; address: string; currency: "usdt" | "ton" }
+>("profile/withdrawCP", async (payload, { rejectWithValue }) => {
   try {
-    const resData = await fetchRequest<WithdrawTonResponse>(
-      withdrawTonUrl,
+    const resData = await fetchRequest<WithdrawCPResponse>(
+      withdrawCPUrl,
       "POST",
       {
         amount: payload.amount,
         address: payload.address,
+        currency: payload.currency,
       }
     );
 
@@ -354,8 +359,8 @@ export const profileSlice = createSlice({
       state.username = payload.user.username;
       state.tgId = payload.user.id_tgrm;
     });
-    builder.addCase(withdrawTon.fulfilled, (state, { payload }) => {
-      state.stats.ton = state.stats.ton - payload.amount;
+    builder.addCase(withdrawCP.fulfilled, (state, { payload }) => {
+      state.stats.cp = state.stats.cp - payload.amount;
     });
 
     // referals

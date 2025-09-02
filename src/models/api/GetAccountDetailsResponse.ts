@@ -77,6 +77,18 @@ export interface GetAccountDetailsResponse {
       exchange: number;
     };
     ton_cyber_farm_products: FarmProductsSettingsType;
+    pools: {
+      ton_pool: {
+        amount: number;
+        description: string;
+        ton_usd_rate: number;
+      };
+      usdt_pool: {
+        amount: number;
+        description: string;
+      };
+      max_cp_usdt_price: 0.001;
+    };
   };
   resource_deficit: FarmResourceDeficitType;
   claim_daily_login: ClaimDailyLogin;

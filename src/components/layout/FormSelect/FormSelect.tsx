@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 
-import styles from "./Select.module.scss";
+import styles from "./FormSelect.module.scss";
 import { TranslationItemType } from "../../../types/TranslationItemType";
 import { useAppSelector } from "../../../hooks/redux";
 import { ArrowIcon } from "../icons/Common";
@@ -18,17 +18,15 @@ interface Props {
   onChange: (val: string) => void;
   wrapperClass?: string;
   btnClass?: string;
-  btnInnerClass?: string;
 }
 
-const Select: FC<Props> = ({
+const FormSelect: FC<Props> = ({
   name,
   options,
   value,
   onChange,
   wrapperClass,
   btnClass,
-  btnInnerClass,
 }) => {
   const language = useAppSelector((state) => state.ui.language);
 
@@ -66,31 +64,33 @@ const Select: FC<Props> = ({
   }, []);
 
   return (
-    <div className={`${styles.select} ${wrapperClass || ""}`} ref={selectRef}>
+    <div
+      className={`${styles.formSelect} ${wrapperClass || ""}`}
+      ref={selectRef}
+    >
       <button
-        className={`${styles.select__btn} ${btnClass || ""} ${
-          dropdownOpened ? styles.select__btn_active : ""
+        className={`${styles.formSelect__btn} ${btnClass || ""} ${
+          dropdownOpened ? styles.formSelect__btn_active : ""
         }`}
         type="button"
         onClick={() => setDropdownOpened((prev) => !prev)}
       >
-        <div className={`${styles.select__btnInner} ${btnInnerClass || ""}`}>
-          <span>
-            {selectedItem?.label ||
-              (typeof name === "string" ? name : name[language])}
-          </span>
-          <ArrowIcon rotate={dropdownOpened} />
-        </div>
+        <span>
+          {selectedItem?.label ||
+            (typeof name === "string" ? name : name[language])}
+        </span>
+        <ArrowIcon rotate={dropdownOpened} />
       </button>
       <TransitionProvider
         inProp={dropdownOpened}
-        style={TransitionStyleTypes.opacity}
-        className={styles.select__dropdownContent}
+        style={TransitionStyleTypes.height}
+        height={60}
+        className={styles.formSelect__dropdownContent}
       >
         {options.map((option) => (
           <button
             type="button"
-            className={styles.select__dropdonContentItem}
+            className={styles.formSelect__dropdonContentItem}
             key={option.value}
             onClick={() => {
               onChange(option.value);
@@ -105,4 +105,4 @@ const Select: FC<Props> = ({
   );
 };
 
-export default Select;
+export default FormSelect;
