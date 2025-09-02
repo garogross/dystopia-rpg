@@ -6,7 +6,11 @@ import { MissesIcon } from "../../../layout/icons/BubbleFront/BubbleFrontMainPag
 
 import styles from "./BubbleFrontMainHeader.module.scss";
 
-const BubbleFrontMainHeader = () => {
+interface Props {
+  score: number;
+}
+
+const BubbleFrontMainHeader: React.FC<Props> = ({ score }) => {
   const navigate = useNavigate();
   return (
     <div className={styles.bubbleFrontMainHeader}>
@@ -19,7 +23,7 @@ const BubbleFrontMainHeader = () => {
       <div className={styles.bubbleFrontMainHeader__info}>
         <div className={styles.bubbleFrontMainHeader__infoItem}>
           <div className={styles.bubbleFrontMainHeader__infoItemInner}>
-            очки: 1000
+            очки: {score}
           </div>
         </div>
         <div className={styles.bubbleFrontMainHeader__centerLine}></div>

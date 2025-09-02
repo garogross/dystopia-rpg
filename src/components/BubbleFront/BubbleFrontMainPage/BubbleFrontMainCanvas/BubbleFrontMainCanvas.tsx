@@ -23,6 +23,7 @@ import { useCopyRef } from "../../../../hooks/useCopyRef";
 import { EBubbleFrontBalls } from "../../../../constants/bubbleFront/EBubbleFrontBalls";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setNextBalls } from "../../../../store/slices/bubbleFront/bubbleFrontSlice";
+import BubbleFrontMainGameOverModal from "../BubbleFrontMainGameOverModal/BubbleFrontMainGameOverModal";
 
 const HEX_IN_LINE = 15;
 const LINES_COUNT = 10;
@@ -33,6 +34,7 @@ const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
 // Minimum number of connected balls required to form a cluster for removal
 const MIN_CLUSTERS = 3;
 const MAX_TURN_COUNTER = 2;
+const SCORE_PER_BALL = 100;
 
 const getHexesCountInrow = (lineIndex: number) => {
   const isOdd = lineIndex % 2 === 1;
@@ -135,7 +137,13 @@ const getNeighbors = (hex: IHex, hexes: IHex[][]) => {
 
   return neighbors;
 };
-const BubbleFrontMainCanvas = () => {
+
+interface Props {
+  score: number;
+  setScore: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const dispatch = useAppDispatch();
   const readyBalls = useAppSelector(
     (state) => state.bubbleFront.global.nextBalls
@@ -143,6 +151,7 @@ const BubbleFrontMainCanvas = () => {
   const [hexes, setHexes] = useState<IHex[][]>(generateRandomBallsArr());
 
   const [hexSize, setHexSize] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
   const [turnCounter, setTurnCounter] = useState(0);
 
   const hexSizeRef = useCopyRef(hexSize);
@@ -382,6 +391,14 @@ const BubbleFrontMainCanvas = () => {
                 );
                 setHexes(newHexes);
               }
+              //////
+
+              setScore(
+                (prev) =>
+                  prev +
+                  (clusters.length + (floatingClusters?.length || 0)) *
+                    SCORE_PER_BALL
+              );
             } else {
               setTurnCounter((prev) => prev + 1);
             }
@@ -500,6 +517,13 @@ const BubbleFrontMainCanvas = () => {
                 );
                 setHexes(newHexes);
               }
+
+              setScore(
+                (prev) =>
+                  prev +
+                  (clusters.length + (floatingClusters?.length || 0)) *
+                    SCORE_PER_BALL
+              );
             } else {
               setTurnCounter((prev) => prev + 1);
             }
@@ -531,8 +555,11 @@ const BubbleFrontMainCanvas = () => {
 
   const { isInitialized, pixiContainer, hexLayerRef } = usePixi(onInitApp);
 
-  useEffect(() => {
+  const initNextBalls = () => {
     dispatch(setNextBalls([getRandomBall(), getRandomBall()]));
+  };
+  useEffect(() => {
+    initNextBalls();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -624,9 +651,24 @@ const BubbleFrontMainCanvas = () => {
   useEffect(() => {
     if (hexLayerRef.current && hexesWithBalls.length) {
       updateCanvas();
+
+      if (
+        hexes.filter((line) => line.some((hex) => hex.ball)).length >=
+        LINES_COUNT
+      ) {
+        setGameOver(true);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInitialized, hexesWithBalls.length]);
+
+  const onReset = () => {
+    setHexes(generateRandomBallsArr());
+    setGameOver(false);
+    setTurnCounter(0);
+    setScore(0);
+    initNextBalls();
+  };
 
   return (
     <div className={styles.bubbleFrontMainCanvas}>
@@ -634,6 +676,11 @@ const BubbleFrontMainCanvas = () => {
         ref={pixiContainer}
         className={styles.bubbleFrontMainCanvas__container}
       ></div>
+      <BubbleFrontMainGameOverModal
+        show={gameOver}
+        onReset={onReset}
+        score={score}
+      />
     </div>
   );
 };
