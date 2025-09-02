@@ -6,12 +6,32 @@
   position: relative;
   height: 100%;
 
-  &__img {
+  &__wrapper {
     width: 100%;
     position: absolute;
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
     transform-origin: center;
+  }
+
+  &__img {
+    width: 100%;
+  }
+
+  &__ballImg {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 24px;
+
+    &_next {
+      top: 60px;
+    }
+
+    &_preNext {
+      top: 85px;
+    }
   }
 }

@@ -72,7 +72,11 @@ export const usePixi = (
           view.replaceWith(view.cloneNode(true));
           // Quick hack: clears all attached listeners
         }
-        appRef.current.destroy(true, { children: true, texture: true });
+        appRef.current.destroy(true, {
+          children: true,
+          texture: false,
+          baseTexture: false,
+        });
         appRef.current = undefined;
       }
       if (canvas && canvas.parentNode) {

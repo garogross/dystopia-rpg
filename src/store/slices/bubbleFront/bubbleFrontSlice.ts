@@ -1,30 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { EBubbleFrontBalls } from "../../../constants/bubbleFront/EBubbleFrontBalls";
 
 export interface BubbleFrontState {
-  gunSettings: {
-    x: number;
-    y: number;
-    rotate: number;
-  };
+  nextBalls: [EBubbleFrontBalls, EBubbleFrontBalls] | null;
 }
 
 const initialState: BubbleFrontState = {
-  gunSettings: {
-    x: 0,
-    y: 0,
-    rotate: 0,
-  },
+  nextBalls: null,
 };
 
 export const bubbleFrontSlice = createSlice({
   name: "bubbleFront",
   initialState,
   reducers: {
-    setGameSettings: (state, { payload }) => {
-      state.gunSettings = payload;
+    setNextBalls(
+      state,
+      action: { payload: [EBubbleFrontBalls, EBubbleFrontBalls] }
+    ) {
+      state.nextBalls = action.payload;
     },
   },
 });
 
-export const { setGameSettings } = bubbleFrontSlice.actions;
+export const { setNextBalls } = bubbleFrontSlice.actions;
+
 export default bubbleFrontSlice.reducer;

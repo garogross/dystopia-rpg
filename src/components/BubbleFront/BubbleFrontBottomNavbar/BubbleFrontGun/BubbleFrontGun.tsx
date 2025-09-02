@@ -4,17 +4,42 @@ import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
 import {
   bubbleGunImage,
   bubbleGunImageWebp,
+  chemicalBombImage,
+  chemicalBombImageWebp,
+  fireBallImage,
+  fireBallImageWebp,
+  iceBallImage,
+  iceBallImageWebp,
+  lightingBBallImage,
+  lightingBBallImageWebp,
+  nuclearBallImage,
+  nuclearBallImageWebp,
 } from "../../../../assets/imageMaps";
 import { useMatch, useNavigate } from "react-router-dom";
 import { bubbleFrontPagePath } from "../../../../router/constants";
 import { useAppSelector } from "../../../../hooks/redux";
 import { BUBBLE_FRONT_GUN_ID } from "../../../../constants/bubbleFront/bubbleFrontGunId";
+import { EBubbleFrontBalls } from "../../../../constants/bubbleFront/EBubbleFrontBalls";
+
+const BALLS = {
+  [EBubbleFrontBalls.FIRE_BALL]: [fireBallImage, fireBallImageWebp],
+  [EBubbleFrontBalls.CHEMICAL_BOMB]: [chemicalBombImage, chemicalBombImageWebp],
+  [EBubbleFrontBalls.ICE_BALL]: [iceBallImage, iceBallImageWebp],
+  [EBubbleFrontBalls.LIGHTING_BALL]: [
+    lightingBBallImage,
+    lightingBBallImageWebp,
+  ],
+  [EBubbleFrontBalls.NUCLEAR_BALL]: [nuclearBallImage, nuclearBallImageWebp],
+};
 
 const BubbleFrontGun = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const [rotation, setRotation] = useState(0);
   const gunRef = useRef<HTMLDivElement>(null);
+  const nextBalls = useAppSelector(
+    (state) => state.bubbleFront.global.nextBalls
+  );
 
   const isMainPage = useMatch(bubbleFrontPagePath);
 
@@ -66,17 +91,37 @@ const BubbleFrontGun = () => {
       className={styles.bubbleFrontGun}
       ref={gunRef}
     >
-      <ImageWebp
-        src={bubbleGunImage}
-        srcSet={bubbleGunImageWebp}
-        alt="bubble gun"
-        className={styles.bubbleFrontGun__img}
+      <div
+        className={styles.bubbleFrontGun__wrapper}
         id={BUBBLE_FRONT_GUN_ID}
         data-rotation={rotation}
         style={{
           transform: `translateX(-50%) rotate(${rotation}deg)`,
         }}
-      />
+      >
+        {nextBalls && (
+          <>
+            <ImageWebp
+              srcSet={BALLS[nextBalls[0]][1]}
+              src={BALLS[nextBalls[0]][0]}
+              alt={"ball"}
+              className={`${styles.bubbleFrontGun__ballImg} ${styles.bubbleFrontGun__ballImg_next}`}
+            />
+            <ImageWebp
+              srcSet={BALLS[nextBalls[1]][1]}
+              src={BALLS[nextBalls[1]][0]}
+              alt={"ball"}
+              className={`${styles.bubbleFrontGun__ballImg} ${styles.bubbleFrontGun__ballImg_preNext}`}
+            />
+          </>
+        )}
+        <ImageWebp
+          src={bubbleGunImage}
+          srcSet={bubbleGunImageWebp}
+          alt="bubble gun"
+          className={styles.bubbleFrontGun__img}
+        />
+      </div>
     </div>
   );
 };
