@@ -180,7 +180,7 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
             className={styles.cyberFarmWarehouseProductInfo__sellBtn}
           >
             <div className={styles.cyberFarmWarehouseProductInfo__sellBtnInner}>
-              {sellButtonText[language]} {+totalCostonSell.toFixed(2)}
+              {sellButtonText[language]} {+totalCostonSell.toFixed(4)}
             </div>
           </button>
           <button
@@ -189,7 +189,7 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
             className={styles.cyberFarmWarehouseProductInfo__sellBtn}
           >
             <div className={styles.cyberFarmWarehouseProductInfo__sellBtnInner}>
-              {buyButtonText[language]} {+totalCostOnBuy.toFixed(2)}
+              {buyButtonText[language]} {+totalCostOnBuy.toFixed(4)}
             </div>
           </button>
         </div>
