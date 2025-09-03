@@ -5,6 +5,7 @@ import fireBallImageWebp from "../images/BubbleFront/balls/fireBall.webp";
 import iceBallImage from "../images/BubbleFront/balls/iceBall.png";
 import iceBallImageWebp from "../images/BubbleFront/balls/iceBall.webp";
 import lightingBBallImage from "../images/BubbleFront/balls/lightingBBall.png";
+import lightingBallSpriteImage from "../images/BubbleFront/balls/lightingBallSprite.png";
 import lightingBBallImageWebp from "../images/BubbleFront/balls/lightingBBall.webp";
 import nuclearBallImage from "../images/BubbleFront/balls/nuclearBall.png";
 import nuclearBallImageWebp from "../images/BubbleFront/balls/nuclearBall.webp";
@@ -21,6 +22,7 @@ export {
   iceBallImageWebp,
   lightingBBallImage,
   lightingBBallImageWebp,
+  lightingBallSpriteImage,
   nuclearBallImage,
   nuclearBallImageWebp,
   bubbleGunImage,

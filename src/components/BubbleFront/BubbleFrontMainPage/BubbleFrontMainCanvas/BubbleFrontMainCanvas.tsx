@@ -17,6 +17,7 @@ import {
   fireBallImage,
   iceBallImage,
   lightingBBallImage,
+  lightingBallSpriteImage,
   nuclearBallImage,
 } from "../../../../assets/imageMaps";
 import { BUBBLE_FRONT_GUN_ID } from "../../../../constants/bubbleFront/bubbleFrontGunId";
@@ -25,6 +26,7 @@ import { EBubbleFrontBalls } from "../../../../constants/bubbleFront/EBubbleFron
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setNextBalls } from "../../../../store/slices/bubbleFront/bubbleFrontSlice";
 import BubbleFrontMainGameOverModal from "../BubbleFrontMainGameOverModal/BubbleFrontMainGameOverModal";
+import { Rectangle } from "pixi.js";
 
 const HEX_IN_LINE = 15;
 const LINES_COUNT = 10;
@@ -42,17 +44,54 @@ const getHexesCountInrow = (lineIndex: number) => {
   return HEX_IN_LINE - (isOdd ? 1 : 0);
 };
 
+// Cache: base textures per ball
 const BALLS = {
-  [EBubbleFrontBalls.FIRE_BALL]: Texture.from(fireBallImage),
-  [EBubbleFrontBalls.CHEMICAL_BOMB]: Texture.from(chemicalBombImage),
-  [EBubbleFrontBalls.ICE_BALL]: Texture.from(iceBallImage),
-  [EBubbleFrontBalls.LIGHTING_BALL]: Texture.from(lightingBBallImage),
-  [EBubbleFrontBalls.NUCLEAR_BALL]: Texture.from(nuclearBallImage),
+  // [EBubbleFrontBalls.FIRE_BALL]: Texture.from(fireBallImage),
+  // [EBubbleFrontBalls.CHEMICAL_BOMB]: Texture.from(chemicalBombImage),
+  // [EBubbleFrontBalls.ICE_BALL]: Texture.from(iceBallImage),
+  [EBubbleFrontBalls.LIGHTING_BALL]: Texture.from(lightingBallSpriteImage),
+  // [EBubbleFrontBalls.NUCLEAR_BALL]: Texture.from(nuclearBallImage),
 };
 const ballKeys = Object.keys(BALLS) as (keyof typeof BALLS)[];
 
 const getRandomBall = () =>
   ballKeys[Math.floor(Math.random() * ballKeys.length)];
+
+// Generic spritesheet slicer (horizontal strip). Frame size is fixed to 82x82.
+const SPRITESHEET_FRAME_SIZE = 90;
+const framesCache: Partial<Record<keyof typeof BALLS, Texture[]>> = {};
+const getFramesForBall = (ballType: keyof typeof BALLS): Texture[] => {
+  if (framesCache[ballType]) return framesCache[ballType] as Texture[];
+  const baseTexture = BALLS[ballType].baseTexture;
+  const framesCount = Math.max(
+    1,
+    Math.floor(baseTexture.width / SPRITESHEET_FRAME_SIZE)
+  );
+
+  const frames: Texture[] = [];
+  for (let i = 0; i < framesCount; i++) {
+    frames.push(
+      new Texture(
+        baseTexture,
+        new Rectangle(
+          i * SPRITESHEET_FRAME_SIZE,
+          0,
+          SPRITESHEET_FRAME_SIZE,
+          SPRITESHEET_FRAME_SIZE
+        )
+      )
+    );
+  }
+
+  framesCache[ballType] = frames;
+  return frames;
+};
+
+// Factory to create a display object for a ball type (first frame only)
+const createBallDisplay = (ballType: keyof typeof BALLS): Sprite => {
+  const frames = getFramesForBall(ballType);
+  return new Sprite(frames[0]);
+};
 
 interface IHex {
   ball: (typeof ballKeys)[0] | null;
@@ -156,6 +195,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const [hexSize, setHexSize] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [turnCounter, setTurnCounter] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const hexSizeRef = useCopyRef(hexSize);
   const hexesRef = useCopyRef(hexes);
@@ -290,13 +330,14 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     ballType: EBubbleFrontBalls,
     setHexes: React.Dispatch<React.SetStateAction<IHex[][]>>,
     setScore: React.Dispatch<React.SetStateAction<number>>,
-    setTurnCounter: React.Dispatch<React.SetStateAction<number>>
+    setTurnCounter: React.Dispatch<React.SetStateAction<number>>,
+    hexLayer: Container<DisplayObject>
   ) => {
     let updatingHexes: IHex[][] = [...(hexesRef.current || [])];
     const clusters = findCluster({ ...closestHex, ball: ballType }, true);
 
     if (clusters.length >= MIN_CLUSTERS) {
-      // Remove clusters
+      // Compute updated hexes with clusters removed
       updatingHexes = hexesRef.current
         .map((line) => [...line])
         .map((line) =>
@@ -313,32 +354,91 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
 
       const floatingClusters = findFloatingClusters(updatingHexes);
 
-      // Remove floating clusters if any
-      console.log({ floatingClusters });
+      // Prepare list of all tiles to animate (clusters + floating)
+      const tilesToAnimate: IHex[] = [
+        ...clusters,
+        ...(floatingClusters?.flat() || []),
+      ];
 
-      if (floatingClusters?.length) {
-        updatingHexes = updatingHexes.map((line) =>
-          line.map((hex) =>
-            floatingClusters
-              .flat()
-              .some(
-                (item) =>
-                  item.colIndex === hex.colIndex &&
-                  item.lineIndex === hex.lineIndex
+      // Run removal animation, then update state and score
+      const animateRemoval = async () => {
+        if (!hexLayer) return;
+        const animations: Promise<void>[] = [];
+        const animationDurationMs = 1000;
+        tilesToAnimate.forEach((tile) => {
+          const tileBallType = tile.ball as keyof typeof BALLS;
+          if (!tile.position || !tileBallType) return;
+          const display = createBallDisplay(tileBallType);
+
+          if (display) {
+            display.x = tile.position.x;
+            display.y = tile.position.y;
+            (display as any).width = hexSizeRef.current;
+            (display as any).height = hexSizeRef.current;
+            hexLayer.addChild(display);
+
+            animations.push(
+              new Promise<void>((resolve) => {
+                const start = performance.now();
+                const frames = getFramesForBall(tileBallType);
+                const totalFrames = frames.length;
+
+                const step = (now: number) => {
+                  const t = Math.min(1, (now - start) / animationDurationMs);
+                  const frameIndex = Math.min(
+                    totalFrames - 1,
+                    Math.floor(t * totalFrames)
+                  );
+                  if ((display as any).texture !== frames[frameIndex]) {
+                    (display as any).texture = frames[frameIndex];
+                  }
+                  if (t < 1) {
+                    requestAnimationFrame(step);
+                  } else {
+                    hexLayer.removeChild(display);
+                    display.destroy({ children: true });
+                    resolve();
+                  }
+                };
+                requestAnimationFrame(step);
+              })
+            );
+          }
+        });
+        await Promise.all(animations);
+      };
+
+      setIsAnimating(true);
+      animateRemoval()
+        .then(() => {
+          // Remove floating clusters if any
+          if (floatingClusters?.length) {
+            updatingHexes = updatingHexes.map((line) =>
+              line.map((hex) =>
+                floatingClusters
+                  .flat()
+                  .some(
+                    (item) =>
+                      item.colIndex === hex.colIndex &&
+                      item.lineIndex === hex.lineIndex
+                  )
+                  ? { ...hex, ball: null }
+                  : hex
               )
-              ? { ...hex, ball: null }
-              : hex
-          )
-        );
-      }
-      setHexes(updatingHexes);
+            );
+          }
+          setIsAnimating(false);
 
-      // Update score
-      setScore(
-        (prev) =>
-          prev +
-          (clusters.length + (floatingClusters?.length || 0)) * SCORE_PER_BALL
-      );
+          setHexes(updatingHexes);
+
+          // Update score (count all removed tiles)
+          const removedCount =
+            clusters.length + (floatingClusters?.flat().length || 0);
+          setScore((prev) => prev + removedCount * SCORE_PER_BALL);
+        })
+        .catch(() => {
+          setIsAnimating(false);
+        });
     } else {
       setTurnCounter((prev) => prev + 1);
     }
@@ -394,7 +494,8 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         ballType,
         setHexes,
         setScore,
-        setTurnCounter
+        setTurnCounter,
+        hexLayer
       );
     }
 
@@ -412,10 +513,10 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     if (readyBalls && readyBalls.length > 0) {
       const ballType = readyBalls[0];
 
-      const ballSprite = new Sprite(BALLS[ballType]);
+      const ballSprite = createBallDisplay(ballType) as Sprite;
 
       const canvasRect = app.view.getBoundingClientRect?.();
-      ballSprite.anchor.set(0.5);
+      (ballSprite as any).anchor?.set?.(0.5);
       ballSprite.scale.set(0);
       ballSprite.x = centerX - (canvasRect?.x || 0);
       ballSprite.y = centerY - (canvasRect?.y || 0);
@@ -431,10 +532,9 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
       let velocityY = Math.sin(angleInRadians) * MOVE_SPEED;
 
       // Determine target scale so that final visual size equals hex size
-      const baseTextureWidth =
-        ballSprite.texture.orig?.width || ballSprite.texture.width;
+      const baseFrameWidth = SPRITESHEET_FRAME_SIZE;
       const targetScale =
-        baseTextureWidth > 0 ? hexSizeRef.current / baseTextureWidth : 1;
+        baseFrameWidth > 0 ? hexSizeRef.current / baseFrameWidth : 1;
 
       const hittableBallsLines = hexesRef.current.filter((line, index, arr) => {
         if (!line.some((item) => item.ball)) return false;
@@ -459,7 +559,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         }
 
         // Compute current radius for collision (texture size * scale / 2)
-        const currentRadius = (baseTextureWidth * ballSprite.scale.x) / 2;
+        const currentRadius = (baseFrameWidth * ballSprite.scale.x) / 2;
 
         // Bounce on left/right walls
         if (ballSprite.x - currentRadius <= 0) {
@@ -498,7 +598,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
           const gridBallRadius = hexSizeRef.current / 2;
           // Use the current moving ball radius
           const movingBallRadius =
-            (baseTextureWidth * TOUCHABLE_RADIUS * ballSprite.scale.x) / 2;
+            (baseFrameWidth * TOUCHABLE_RADIUS * ballSprite.scale.x) / 2;
 
           // If the distance is less than the sum of the radii, they touch
           return distance <= gridBallRadius + movingBallRadius;
@@ -528,14 +628,14 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     }
   };
 
-  const onInitApp = (app: Application<ICanvas>, hexLayer: Container) => {
+  function onInitApp(app: Application<ICanvas>, hexLayer: Container) {
     (app.view as HTMLCanvasElement).addEventListener(
       "mousedown",
       (e: MouseEvent) => {
         strikeBall(app, hexLayer);
       }
     );
-  };
+  }
 
   const { isInitialized, pixiContainer, hexLayerRef } = usePixi(onInitApp);
 
@@ -569,7 +669,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   }, [turnCounter]);
 
   const updateCanvas = () => {
-    if (!pixiContainer.current || !hexLayerRef.current) return;
+    if (isAnimating || !pixiContainer.current || !hexLayerRef.current) return;
 
     // Clear previous children to avoid memory leaks and overdraw
     hexLayerRef.current.removeChildren().forEach((child) => {
@@ -601,7 +701,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         const curBall = hexes[l]?.[i].ball;
         if (curBall) {
           const ballType = curBall;
-          const sprite = new Sprite(BALLS[ballType]);
+          const sprite = createBallDisplay(ballType) as Sprite;
           sprite.x = x;
           sprite.y = y;
           sprite.width = hexSize;
@@ -645,7 +745,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isInitialized, hexesWithBalls.length]);
+  }, [isInitialized, hexesWithBalls.length, isAnimating]);
 
   const onReset = () => {
     setHexes(generateRandomBallsArr());
