@@ -5,6 +5,7 @@ import styles from "./BubbleFrontMainCanvas.module.scss";
 import {
   Application,
   Container,
+  DisplayObject,
   ICanvas,
   Sprite,
   SVGResource,
@@ -40,6 +41,7 @@ const getHexesCountInrow = (lineIndex: number) => {
   const isOdd = lineIndex % 2 === 1;
   return HEX_IN_LINE - (isOdd ? 1 : 0);
 };
+
 const BALLS = {
   [EBubbleFrontBalls.FIRE_BALL]: Texture.from(fireBallImage),
   [EBubbleFrontBalls.CHEMICAL_BOMB]: Texture.from(chemicalBombImage),
@@ -70,6 +72,7 @@ const generateRandomBallsRow = (
     colIndex,
   }));
 };
+
 const generateRandomBallsArr = (): IHex[][] => {
   return Array.from({ length: LINES_COUNT }, (_, lineIndex) =>
     generateRandomBallsRow(
@@ -255,6 +258,152 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     return foundclusters;
   };
 
+  // Helper function to find closest hex to a position
+  const findClosestHex = (
+    position: { x: number; y: number },
+    hexes: IHex[]
+  ) => {
+    let closestHex = hexes[0];
+    let minDistance = Infinity;
+
+    hexes.forEach((hex) => {
+      if (!hex.position) return;
+      const centerX = hex.position.x + hexSizeRef.current / 2;
+      const centerY = hex.position.y + hexSizeRef.current / 2;
+      const dx = position.x - centerX;
+      const dy = position.y - centerY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < minDistance) {
+        minDistance = dist;
+        closestHex = hex;
+      }
+    });
+
+    return closestHex;
+  };
+
+  // Helper function to remove clusters and update score
+  const removeClustersAndUpdateScore = (
+    // clusters: IHex[],
+    // floatingClusters: IHex[][] | undefined,
+    closestHex: IHex,
+    ballType: EBubbleFrontBalls,
+    setHexes: React.Dispatch<React.SetStateAction<IHex[][]>>,
+    setScore: React.Dispatch<React.SetStateAction<number>>,
+    setTurnCounter: React.Dispatch<React.SetStateAction<number>>
+  ) => {
+    let updatingHexes: IHex[][] = [...(hexesRef.current || [])];
+    const clusters = findCluster({ ...closestHex, ball: ballType }, true);
+
+    if (clusters.length >= MIN_CLUSTERS) {
+      // Remove clusters
+      updatingHexes = hexesRef.current
+        .map((line) => [...line])
+        .map((line) =>
+          line.map((hex) =>
+            clusters.some(
+              (item) =>
+                item.colIndex === hex.colIndex &&
+                item.lineIndex === hex.lineIndex
+            )
+              ? { ...hex, ball: null }
+              : hex
+          )
+        );
+
+      const floatingClusters = findFloatingClusters(updatingHexes);
+
+      // Remove floating clusters if any
+      console.log({ floatingClusters });
+
+      if (floatingClusters?.length) {
+        updatingHexes = updatingHexes.map((line) =>
+          line.map((hex) =>
+            floatingClusters
+              .flat()
+              .some(
+                (item) =>
+                  item.colIndex === hex.colIndex &&
+                  item.lineIndex === hex.lineIndex
+              )
+              ? { ...hex, ball: null }
+              : hex
+          )
+        );
+      }
+      setHexes(updatingHexes);
+
+      // Update score
+      setScore(
+        (prev) =>
+          prev +
+          (clusters.length + (floatingClusters?.length || 0)) * SCORE_PER_BALL
+      );
+    } else {
+      setTurnCounter((prev) => prev + 1);
+    }
+  };
+
+  // Helper function to update ready balls
+  const updateReadyBalls = (
+    readyBalls: [EBubbleFrontBalls, EBubbleFrontBalls]
+  ) => {
+    const updatingReadyBalls = [...readyBalls] as typeof readyBalls;
+    updatingReadyBalls.shift();
+    updatingReadyBalls.push(getRandomBall());
+    dispatch(setNextBalls(updatingReadyBalls));
+  };
+
+  // Helper function to place ball in hex grid
+  const placeBallInHex = (
+    hex: IHex,
+    ballType: keyof typeof BALLS,
+    setHexes: React.Dispatch<React.SetStateAction<IHex[][]>>
+  ) => {
+    setHexes((prevHexes) => {
+      const newHexes = prevHexes.map((line) => [...line]);
+      newHexes[hex.lineIndex][hex.colIndex] = {
+        ...newHexes[hex.lineIndex][hex.colIndex],
+        ball: ballType,
+      };
+      return newHexes;
+    });
+  };
+
+  const onStikeBubbleTouch = (
+    ballSprite: Sprite,
+    emptyFirstRow: IHex[],
+    ballType: EBubbleFrontBalls,
+    readyBalls: [EBubbleFrontBalls, EBubbleFrontBalls],
+    hexLayer: Container<DisplayObject>
+  ) => {
+    if (emptyFirstRow.length) {
+      const closestHex = findClosestHex(
+        { x: ballSprite.x, y: ballSprite.y },
+        emptyFirstRow
+      );
+
+      // Place the ball in the closest empty first-row hex
+      placeBallInHex(closestHex, ballType, setHexes);
+
+      removeClustersAndUpdateScore(
+        // clusters,
+        // floatingClusters,
+        // updatingHexes,
+        closestHex,
+        ballType,
+        setHexes,
+        setScore,
+        setTurnCounter
+      );
+    }
+
+    updateReadyBalls(readyBalls);
+
+    hexLayer.removeChild(ballSprite);
+    ballSprite.destroy();
+  };
+
   const strikeBall = (app: Application<ICanvas>, hexLayer: Container) => {
     const { centerX, centerY, rotation } = getGunSettings();
 
@@ -326,92 +475,14 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
           const firstRow = hexesRef.current[0];
           const emptyFirstRow = firstRow?.filter((h) => !h.ball && h.position);
 
-          if (emptyFirstRow && emptyFirstRow.length > 0) {
-            let closestHex = emptyFirstRow[0];
-            let minDistance = Infinity;
-
-            emptyFirstRow.forEach((hex) => {
-              if (!hex.position) return;
-              const centerX = hex.position.x + hexSizeRef.current / 2;
-              const centerY = hex.position.y + hexSizeRef.current / 2;
-              const dx = ballSprite.x - centerX;
-              const dy = ballSprite.y - centerY;
-              const dist = Math.sqrt(dx * dx + dy * dy);
-              if (dist < minDistance) {
-                minDistance = dist;
-                closestHex = hex;
-              }
-            });
-
-            // Place the ball in the closest empty first-row hex
-            setHexes((prevHexes) => {
-              const newHexes = prevHexes.map((line) => [...line]);
-              newHexes[closestHex.lineIndex][closestHex.colIndex] = {
-                ...newHexes[closestHex.lineIndex][closestHex.colIndex],
-                ball: ballType,
-              };
-              return newHexes;
-            });
-
-            let updatingHexes: IHex[][] = [...(hexesRef.current || [])];
-            const clusters = findCluster(
-              { ...closestHex, ball: ballType },
-              true
-            );
-
-            if (clusters.length >= MIN_CLUSTERS) {
-              const newHexes = updatingHexes.map((line) =>
-                line.map((hex) =>
-                  clusters.some(
-                    (item) =>
-                      item.colIndex === hex.colIndex &&
-                      item.lineIndex === hex.lineIndex
-                  )
-                    ? { ...hex, ball: null }
-                    : hex
-                )
-              );
-              setHexes(newHexes);
-              updatingHexes = newHexes;
-              const floatingClusters = findFloatingClusters(updatingHexes);
-
-              if (floatingClusters?.length) {
-                const newHexes = updatingHexes.map((line) =>
-                  line.map((hex) =>
-                    floatingClusters
-                      .flat()
-                      .some(
-                        (item) =>
-                          item.colIndex === hex.colIndex &&
-                          item.lineIndex === hex.lineIndex
-                      )
-                      ? { ...hex, ball: null }
-                      : hex
-                  )
-                );
-                setHexes(newHexes);
-              }
-              //////
-
-              setScore(
-                (prev) =>
-                  prev +
-                  (clusters.length + (floatingClusters?.length || 0)) *
-                    SCORE_PER_BALL
-              );
-            } else {
-              setTurnCounter((prev) => prev + 1);
-            }
-
-            const updatingReadyBalls = [...readyBalls] as typeof readyBalls;
-            updatingReadyBalls.shift();
-            updatingReadyBalls.push(getRandomBall());
-            dispatch(setNextBalls(updatingReadyBalls));
-
-            hexLayer.removeChild(ballSprite);
-            ballSprite.destroy();
-            return; // Stop animating after snapping to top row
-          }
+          onStikeBubbleTouch(
+            ballSprite,
+            emptyFirstRow,
+            ballType,
+            readyBalls,
+            hexLayer
+          );
+          return; // Stop animating after snapping to top row
         }
 
         // check touch to grid balls
@@ -442,100 +513,13 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
             hexesRef.current
           ).filter((n) => !n.ball && n.position);
 
-          if (emptyNeighbours.length > 0) {
-            // Find which empty neighbor is closest to the projectile's center
-            let closestNeighbour = emptyNeighbours[0];
-            let minDistance = Infinity;
-
-            emptyNeighbours.forEach((neighbour) => {
-              // Ensure neighbour.position is not undefined
-              if (neighbour.position) {
-                const neighbourCenterX =
-                  neighbour.position.x + hexSizeRef.current / 2;
-                const neighbourCenterY =
-                  neighbour.position.y + hexSizeRef.current / 2;
-
-                const dx = ballSprite.x - neighbourCenterX;
-                const dy = ballSprite.y - neighbourCenterY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < minDistance) {
-                  minDistance = distance;
-                  closestNeighbour = neighbour;
-                }
-              }
-            });
-
-            // Update the hex grid state immutably
-            setHexes((prevHexes) => {
-              const newHexes = prevHexes.map((line) => [...line]); // Deep copy
-              newHexes[closestNeighbour.lineIndex][closestNeighbour.colIndex] =
-                {
-                  ...newHexes[closestNeighbour.lineIndex][
-                    closestNeighbour.colIndex
-                  ],
-                  ball: ballType,
-                };
-              return newHexes;
-            });
-            let updatingHexes: IHex[][] = [...(hexesRef.current || [])];
-            const clusters = findCluster(
-              { ...closestNeighbour, ball: ballType },
-              true
-            );
-
-            if (clusters.length >= MIN_CLUSTERS) {
-              const newHexes = updatingHexes.map((line) =>
-                line.map((hex) =>
-                  clusters.some(
-                    (item) =>
-                      item.colIndex === hex.colIndex &&
-                      item.lineIndex === hex.lineIndex
-                  )
-                    ? { ...hex, ball: null }
-                    : hex
-                )
-              );
-              setHexes(newHexes);
-              updatingHexes = newHexes;
-
-              const floatingClusters = findFloatingClusters(updatingHexes);
-
-              if (floatingClusters?.length) {
-                const newHexes = updatingHexes.map((line) =>
-                  line.map((hex) =>
-                    floatingClusters
-                      .flat()
-                      .some(
-                        (item) =>
-                          item.colIndex === hex.colIndex &&
-                          item.lineIndex === hex.lineIndex
-                      )
-                      ? { ...hex, ball: null }
-                      : hex
-                  )
-                );
-                setHexes(newHexes);
-              }
-
-              setScore(
-                (prev) =>
-                  prev +
-                  (clusters.length + (floatingClusters?.length || 0)) *
-                    SCORE_PER_BALL
-              );
-            } else {
-              setTurnCounter((prev) => prev + 1);
-            }
-          }
-          const updatingReadyBalls = [...readyBalls] as typeof readyBalls;
-          updatingReadyBalls.shift(); // Remove the used ball
-          updatingReadyBalls.push(getRandomBall()); // Add a new random ball
-          dispatch(setNextBalls(updatingReadyBalls));
-
-          // Clean up the projectile sprite
-          hexLayer.removeChild(ballSprite);
-          ballSprite.destroy();
+          onStikeBubbleTouch(
+            ballSprite,
+            emptyNeighbours,
+            ballType,
+            readyBalls,
+            hexLayer
+          );
         }
       };
 
@@ -558,6 +542,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const initNextBalls = () => {
     dispatch(setNextBalls([getRandomBall(), getRandomBall()]));
   };
+
   useEffect(() => {
     initNextBalls();
     // eslint-disable-next-line react-hooks/exhaustive-deps
