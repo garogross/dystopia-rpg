@@ -335,7 +335,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
         >
           <span className={styles.cyberFarmOptionsModal__missingResCostText}>
             {missingResourcesCostText[language]}:{" "}
-            {totalPricyByCp ? +totalPricyByCp.toFixed(2) : 0}
+            {totalPricyByCp ? +totalPricyByCp.toFixed(4) : 0}
           </span>
           <ImageWebp
             src={cpImage}
