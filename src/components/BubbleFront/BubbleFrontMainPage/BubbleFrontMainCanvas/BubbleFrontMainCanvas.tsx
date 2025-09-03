@@ -13,12 +13,11 @@ import {
 } from "pixi.js";
 import { getHexSvg } from "../../../../utils/influence/getHexSvg";
 import {
-  chemicalBombImage,
-  fireBallImage,
-  iceBallImage,
-  lightingBBallImage,
   lightingBallSpriteImage,
-  nuclearBallImage,
+  chemicalBombSpriteImage,
+  fireBallSpriteImage,
+  iceBallSpriteImage,
+  nuclearBallSpriteImage,
 } from "../../../../assets/imageMaps";
 import { BUBBLE_FRONT_GUN_ID } from "../../../../constants/bubbleFront/bubbleFrontGunId";
 import { useCopyRef } from "../../../../hooks/useCopyRef";
@@ -38,6 +37,7 @@ const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
 const MIN_CLUSTERS = 3;
 const MAX_TURN_COUNTER = 2;
 const SCORE_PER_BALL = 100;
+const BALL_ANIMATION_DURATION_MS = 500;
 
 const getHexesCountInrow = (lineIndex: number) => {
   const isOdd = lineIndex % 2 === 1;
@@ -46,11 +46,11 @@ const getHexesCountInrow = (lineIndex: number) => {
 
 // Cache: base textures per ball
 const BALLS = {
-  // [EBubbleFrontBalls.FIRE_BALL]: Texture.from(fireBallImage),
-  // [EBubbleFrontBalls.CHEMICAL_BOMB]: Texture.from(chemicalBombImage),
-  // [EBubbleFrontBalls.ICE_BALL]: Texture.from(iceBallImage),
+  [EBubbleFrontBalls.FIRE_BALL]: Texture.from(fireBallSpriteImage),
+  [EBubbleFrontBalls.CHEMICAL_BOMB]: Texture.from(chemicalBombSpriteImage),
+  [EBubbleFrontBalls.ICE_BALL]: Texture.from(iceBallSpriteImage),
   [EBubbleFrontBalls.LIGHTING_BALL]: Texture.from(lightingBallSpriteImage),
-  // [EBubbleFrontBalls.NUCLEAR_BALL]: Texture.from(nuclearBallImage),
+  [EBubbleFrontBalls.NUCLEAR_BALL]: Texture.from(nuclearBallSpriteImage),
 };
 const ballKeys = Object.keys(BALLS) as (keyof typeof BALLS)[];
 
@@ -63,22 +63,16 @@ const framesCache: Partial<Record<keyof typeof BALLS, Texture[]>> = {};
 const getFramesForBall = (ballType: keyof typeof BALLS): Texture[] => {
   if (framesCache[ballType]) return framesCache[ballType] as Texture[];
   const baseTexture = BALLS[ballType].baseTexture;
-  const framesCount = Math.max(
-    1,
-    Math.floor(baseTexture.width / SPRITESHEET_FRAME_SIZE)
-  );
+  // Assume square frames laid out horizontally; use texture height as frame size
+  const frameSize = baseTexture.height || SPRITESHEET_FRAME_SIZE;
+  const framesCount = Math.max(1, Math.floor(baseTexture.width / frameSize));
 
   const frames: Texture[] = [];
   for (let i = 0; i < framesCount; i++) {
     frames.push(
       new Texture(
         baseTexture,
-        new Rectangle(
-          i * SPRITESHEET_FRAME_SIZE,
-          0,
-          SPRITESHEET_FRAME_SIZE,
-          SPRITESHEET_FRAME_SIZE
-        )
+        new Rectangle(i * frameSize, 0, frameSize, frameSize)
       )
     );
   }
@@ -364,10 +358,18 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
       const animateRemoval = async () => {
         if (!hexLayer) return;
         const animations: Promise<void>[] = [];
-        const animationDurationMs = 1000;
+        const animationDurationMs = BALL_ANIMATION_DURATION_MS;
         tilesToAnimate.forEach((tile) => {
           const tileBallType = tile.ball as keyof typeof BALLS;
           if (!tile.position || !tileBallType) return;
+          // Try to get existing sprite by name and remove it so only the anim display is visible
+          const existing = hexLayer.children.find(
+            (c: any) => c.name === `ball-${tile.lineIndex}-${tile.colIndex}`
+          ) as Sprite | undefined;
+          if (existing) {
+            hexLayer.removeChild(existing);
+            existing.destroy({ children: true });
+          }
           const display = createBallDisplay(tileBallType);
 
           if (display) {
@@ -389,8 +391,17 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
                     totalFrames - 1,
                     Math.floor(t * totalFrames)
                   );
+
                   if ((display as any).texture !== frames[frameIndex]) {
                     (display as any).texture = frames[frameIndex];
+                  }
+                  // Start fading out at 70% of the animation progress
+                  const fadeStart = 0.5;
+                  if (t >= fadeStart) {
+                    const localProgress = (t - fadeStart) / (1 - fadeStart);
+                    (display as any).alpha = Math.max(0, 1 - localProgress);
+                  } else {
+                    (display as any).alpha = 1;
                   }
                   if (t < 1) {
                     requestAnimationFrame(step);
@@ -702,6 +713,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         if (curBall) {
           const ballType = curBall;
           const sprite = createBallDisplay(ballType) as Sprite;
+          sprite.name = `ball-${l}-${i}`;
           sprite.x = x;
           sprite.y = y;
           sprite.width = hexSize;

@@ -10,8 +10,8 @@ import {
   fireBallImageWebp,
   iceBallImage,
   iceBallImageWebp,
-  lightingBBallImage,
-  lightingBBallImageWebp,
+  lightingBallImage,
+  lightingBallImageWebp,
   nuclearBallImage,
   nuclearBallImageWebp,
 } from "../../../../assets/imageMaps";
@@ -25,10 +25,7 @@ const BALLS = {
   [EBubbleFrontBalls.FIRE_BALL]: [fireBallImage, fireBallImageWebp],
   [EBubbleFrontBalls.CHEMICAL_BOMB]: [chemicalBombImage, chemicalBombImageWebp],
   [EBubbleFrontBalls.ICE_BALL]: [iceBallImage, iceBallImageWebp],
-  [EBubbleFrontBalls.LIGHTING_BALL]: [
-    lightingBBallImage,
-    lightingBBallImageWebp,
-  ],
+  [EBubbleFrontBalls.LIGHTING_BALL]: [lightingBallImage, lightingBallImageWebp],
   [EBubbleFrontBalls.NUCLEAR_BALL]: [nuclearBallImage, nuclearBallImageWebp],
 };
 
