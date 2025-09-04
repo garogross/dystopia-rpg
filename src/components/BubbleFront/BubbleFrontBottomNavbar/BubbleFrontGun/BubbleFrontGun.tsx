@@ -6,6 +6,8 @@ import {
   chemicalBombImageWebp,
   fireBallImage,
   fireBallImageWebp,
+  gunFireImage,
+  gunFireImageWebp,
   iceBallImage,
   iceBallImageWebp,
   lightingBallImage,
@@ -111,19 +113,31 @@ const BubbleFrontGun = () => {
           transform: `translateX(-50%) rotate(${rotation}deg)`,
         }}
       >
+        <ImageWebp
+          srcSet={gunFireImageWebp}
+          src={gunFireImage}
+          alt={"fire"}
+          className={`${styles.bubbleFrontGun__gunFireImg} ${
+            isAnimating ? styles.bubbleFrontGun__gunFireImg_anim : ""
+          }`}
+        />
         {nextBalls && (
           <>
             <ImageWebp
               srcSet={BALLS[nextBalls[0]][1]}
               src={BALLS[nextBalls[0]][0]}
               alt={"ball"}
-              className={`${styles.bubbleFrontGun__ballImg} ${styles.bubbleFrontGun__ballImg_next}`}
+              className={`${styles.bubbleFrontGun__ballImg} ${
+                isAnimating ? styles.bubbleFrontGun__ballImg_anim : ""
+              } ${styles.bubbleFrontGun__ballImg_next}`}
             />
             <ImageWebp
               srcSet={BALLS[nextBalls[1]][1]}
               src={BALLS[nextBalls[1]][0]}
               alt={"ball"}
-              className={`${styles.bubbleFrontGun__ballImg} ${styles.bubbleFrontGun__ballImg_preNext}`}
+              className={`${styles.bubbleFrontGun__ballImg} ${
+                isAnimating ? styles.bubbleFrontGun__ballImg_anim : ""
+              } ${styles.bubbleFrontGun__ballImg_preNext}`}
             />
           </>
         )}

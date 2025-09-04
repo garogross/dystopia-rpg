@@ -16,6 +16,8 @@ import nuclearBallSpriteImage from "../images/BubbleFront/balls/nuclearBallSprit
 
 import bubbleGunImage from "../images/BubbleFront/BottomNavbar/bubbleGun.png";
 import bubbleGunImageWebp from "../images/BubbleFront/BottomNavbar/bubbleGun.webp";
+import gunFireImage from "../images/BubbleFront/BottomNavbar/gunFire.png";
+import gunFireImageWebp from "../images/BubbleFront/BottomNavbar/gunFire.webp";
 
 export {
   chemicalBombImage,
@@ -35,4 +37,6 @@ export {
   fireBallSpriteImage,
   iceBallSpriteImage,
   nuclearBallSpriteImage,
+  gunFireImage,
+  gunFireImageWebp,
 };
