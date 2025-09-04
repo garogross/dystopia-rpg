@@ -399,7 +399,11 @@ export const profileSlice = createSlice({
 
     // tasks
     builder.addCase(claimAdReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward && payload.status === "ok") {
+      if (
+        +payload.reward &&
+        payload.status === "ok" &&
+        !payload.bonus_distribution
+      ) {
         state.stats.cp += +payload.reward;
       }
     });
