@@ -190,10 +190,12 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const [gameOver, setGameOver] = useState(false);
   const [turnCounter, setTurnCounter] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isStriking, setIsStriking] = useState(false);
 
   const hexSizeRef = useCopyRef(hexSize);
   const hexesRef = useCopyRef(hexes);
   const readyBallsRef = useCopyRef(readyBalls);
+  const isStrikingRef = useCopyRef(isStriking);
   const hexesWithBalls = hexes.flat().filter((item) => item.ball);
 
   const findCluster = (
@@ -317,7 +319,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   };
 
   // Helper function to remove clusters and update score
-  const removeClustersAndUpdateScore = (
+  const removeClustersAndUpdateScore = async (
     // clusters: IHex[],
     // floatingClusters: IHex[][] | undefined,
     closestHex: IHex,
@@ -420,36 +422,35 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
       };
 
       setIsAnimating(true);
-      animateRemoval()
-        .then(() => {
-          // Remove floating clusters if any
-          if (floatingClusters?.length) {
-            updatingHexes = updatingHexes.map((line) =>
-              line.map((hex) =>
-                floatingClusters
-                  .flat()
-                  .some(
-                    (item) =>
-                      item.colIndex === hex.colIndex &&
-                      item.lineIndex === hex.lineIndex
-                  )
-                  ? { ...hex, ball: null }
-                  : hex
-              )
-            );
-          }
-          setIsAnimating(false);
+      try {
+        await animateRemoval();
+        // Remove floating clusters if any
+        if (floatingClusters?.length) {
+          updatingHexes = updatingHexes.map((line) =>
+            line.map((hex) =>
+              floatingClusters
+                .flat()
+                .some(
+                  (item) =>
+                    item.colIndex === hex.colIndex &&
+                    item.lineIndex === hex.lineIndex
+                )
+                ? { ...hex, ball: null }
+                : hex
+            )
+          );
+        }
+        setIsAnimating(false);
 
-          setHexes(updatingHexes);
+        setHexes(updatingHexes);
 
-          // Update score (count all removed tiles)
-          const removedCount =
-            clusters.length + (floatingClusters?.flat().length || 0);
-          setScore((prev) => prev + removedCount * SCORE_PER_BALL);
-        })
-        .catch(() => {
-          setIsAnimating(false);
-        });
+        // Update score (count all removed tiles)
+        const removedCount =
+          clusters.length + (floatingClusters?.flat().length || 0);
+        setScore((prev) => prev + removedCount * SCORE_PER_BALL);
+      } catch {
+        setIsAnimating(false);
+      }
     } else {
       setTurnCounter((prev) => prev + 1);
     }
@@ -512,9 +513,14 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
 
     hexLayer.removeChild(ballSprite);
     ballSprite.destroy();
+    setTimeout(() => {
+      setIsStriking(false);
+    }, 400);
   };
 
   const strikeBall = (app: Application<ICanvas>, hexLayer: Container) => {
+    if (isStrikingRef.current) return;
+    setIsStriking(true);
     const { centerX, centerY, rotation } = getGunSettings();
 
     // Create sprite with readyBalls[0]
@@ -558,6 +564,8 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
 
       // Animation function
       const animateBall = () => {
+        if (!ballSprite) return;
+
         ballSprite.x -= velocityX;
         ballSprite.y -= velocityY;
 
@@ -650,7 +658,9 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const { isInitialized, pixiContainer, hexLayerRef } = usePixi(onInitApp);
 
   const initNextBalls = () => {
-    dispatch(setNextBalls([getRandomBall(), getRandomBall()]));
+    if (!readyBalls?.length) {
+      dispatch(setNextBalls([getRandomBall(), getRandomBall()]));
+    }
   };
 
   useEffect(() => {
