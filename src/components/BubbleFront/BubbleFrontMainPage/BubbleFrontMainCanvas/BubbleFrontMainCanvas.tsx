@@ -27,6 +27,7 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setNextBalls } from "../../../../store/slices/bubbleFront/bubbleFrontSlice";
 import BubbleFrontMainGameOverModal from "../BubbleFrontMainGameOverModal/BubbleFrontMainGameOverModal";
 import { Rectangle } from "pixi.js";
+import { getAngle } from "../../../../utils/bubbleFront/getAngle";
 
 const HEX_IN_LINE = 15;
 const LINES_COUNT = 10;
@@ -122,7 +123,7 @@ const generateRandomBallsArr = (): IHex[][] => {
   );
 };
 
-const getGunSettings = () => {
+const getGunSettings = (clientX: number, clientY: number) => {
   const gunEl = document.querySelector(`#${BUBBLE_FRONT_GUN_ID}`);
   if (gunEl) {
     const gunRect = gunEl.getBoundingClientRect();
@@ -130,9 +131,7 @@ const getGunSettings = () => {
     const centerX = gunRect.left + gunRect.width / 2;
     const centerY = gunRect.top + gunRect.height / 2;
     // Type assertion to HTMLElement to access dataset
-    const rotation = +(gunEl instanceof HTMLElement && gunEl.dataset?.rotation
-      ? gunEl.dataset.rotation
-      : 0);
+    const rotation = getAngle(clientX, clientY, centerX, centerY);
     return { centerX, centerY, rotation };
   } else return { centerX: 0, centerY: 0, rotation: 0 };
 };
@@ -568,10 +567,17 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     }, 400);
   };
 
-  const strikeBall = (app: Application<ICanvas>, hexLayer: Container) => {
+  const strikeBall = (
+    app: Application<ICanvas>,
+    hexLayer: Container,
+    clientPosition: { clientX: number; clientY: number }
+  ) => {
     if (isStrikingRef.current) return;
     setIsStriking(true);
-    const { centerX, centerY, rotation } = getGunSettings();
+    const { centerX, centerY, rotation } = getGunSettings(
+      clientPosition.clientX,
+      clientPosition.clientY
+    );
 
     // Create sprite with readyBalls[0]
     const readyBalls = readyBallsRef.current;
@@ -697,11 +703,28 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   };
 
   function onInitApp(app: Application<ICanvas>, hexLayer: Container) {
+    // Desktop: mouse click
     (app.view as HTMLCanvasElement).addEventListener(
       "mousedown",
       (e: MouseEvent) => {
-        strikeBall(app, hexLayer);
+        strikeBall(app, hexLayer, { clientX: e.clientX, clientY: e.clientY });
       }
+    );
+    // Mobile: touchend (not touchcancel)
+    (app.view as HTMLCanvasElement).addEventListener(
+      "touchend",
+      (e: TouchEvent) => {
+        // Prevent default to avoid double firing with mouse events on mobile
+        e.preventDefault();
+        if (e.changedTouches && e.changedTouches.length > 0) {
+          const touch = e.changedTouches[0];
+          strikeBall(app, hexLayer, {
+            clientX: touch.clientX,
+            clientY: touch.clientY,
+          });
+        }
+      },
+      { passive: false }
     );
   }
 

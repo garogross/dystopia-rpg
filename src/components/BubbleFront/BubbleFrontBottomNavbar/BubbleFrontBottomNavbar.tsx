@@ -47,7 +47,6 @@ const BubbleFrontBottomNavbar = () => {
       const updatedNextBalls = [...nextBalls] as typeof nextBalls;
       updatedNextBalls.pop();
       updatedNextBalls.unshift(EBubbleFrontBalls.NEKRO_BALL);
-      console.log({ updatedNextBalls });
 
       dispatch(setNextBalls(updatedNextBalls));
     }

@@ -21,6 +21,7 @@ import { bubbleFrontPagePath } from "../../../../router/constants";
 import { useAppSelector } from "../../../../hooks/redux";
 import { BUBBLE_FRONT_GUN_ID } from "../../../../constants/bubbleFront/bubbleFrontGunId";
 import { EBubbleFrontBalls } from "../../../../constants/bubbleFront/EBubbleFrontBalls";
+import { getAngle } from "../../../../utils/bubbleFront/getAngle";
 
 const BALLS = {
   [EBubbleFrontBalls.FIRE_BALL]: [fireBallImage, fireBallImageWebp],
@@ -46,41 +47,55 @@ const BubbleFrontGun = () => {
 
   useEffect(() => {
     if (!gameInited) return;
-    const handleMouseMove = (event: MouseEvent) => {
+
+    // Shared logic for both mouse and touch
+    const computeAndSetRotation = (clientX: number, clientY: number) => {
       if (!gunRef.current) return;
 
       const gunRect = gunRef.current.getBoundingClientRect();
       const gunCenterX = gunRect.left + gunRect.width / 2;
       const gunCenterY = gunRect.top + gunRect.height / 2;
 
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-
-      // Calculate angle between gun center and mouse position
-      const deltaX = mouseX - gunCenterX;
-      const deltaY = mouseY - gunCenterY;
-      const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
-
-      // Convert to degrees and adjust for gun's natural orientation
-      // Assuming the gun points right by default (0 degrees)
-      let adjustedAngle = angle + 90;
-
-      // Limit rotation to reasonable bounds (e.g., -45 to 45 degrees)
-      adjustedAngle = Math.max(-45, Math.min(45, adjustedAngle));
+      const adjustedAngle = getAngle(clientX, clientY, gunCenterX, gunCenterY);
 
       setRotation(adjustedAngle);
     };
 
+    const handleMouseMove = (event: MouseEvent) => {
+      computeAndSetRotation(event.clientX, event.clientY);
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (event.touches && event.touches.length > 0) {
+        const touch = event.touches[0];
+        computeAndSetRotation(touch.clientX, touch.clientY);
+      }
+    };
+
+    // Also update on touchend (using the last touch point)
+    const handleTouchEnd = (event: TouchEvent) => {
+      if (event.changedTouches && event.changedTouches.length > 0) {
+        const touch = event.changedTouches[0];
+        computeAndSetRotation(touch.clientX, touch.clientY);
+      }
+    };
+
     if (isMainPage) {
       window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("touchmove", handleTouchMove, { passive: false });
+      window.addEventListener("touchend", handleTouchEnd, { passive: false });
     } else {
       setRotation(0);
 
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
     }
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
     };
   }, [isMainPage, gameInited]);
 
