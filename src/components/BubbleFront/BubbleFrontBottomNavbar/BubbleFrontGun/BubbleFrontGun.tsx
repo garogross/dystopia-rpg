@@ -12,6 +12,7 @@ import {
   iceBallImageWebp,
   lightingBallImage,
   lightingBallImageWebp,
+  nekroBallImage,
   nuclearBallImage,
   nuclearBallImageWebp,
 } from "../../../../assets/imageMaps";
@@ -27,6 +28,7 @@ const BALLS = {
   [EBubbleFrontBalls.ICE_BALL]: [iceBallImage, iceBallImageWebp],
   [EBubbleFrontBalls.LIGHTING_BALL]: [lightingBallImage, lightingBallImageWebp],
   [EBubbleFrontBalls.NUCLEAR_BALL]: [nuclearBallImage, nuclearBallImageWebp],
+  [EBubbleFrontBalls.NEKRO_BALL]: [nekroBallImage, nekroBallImage],
 };
 
 const BubbleFrontGun = () => {
@@ -83,7 +85,7 @@ const BubbleFrontGun = () => {
   }, [isMainPage, gameInited]);
 
   useEffect(() => {
-    if (nextBalls?.length) {
+    if (nextBalls?.length && nextBalls[0] !== EBubbleFrontBalls.NEKRO_BALL) {
       if (isInited) {
         setIsAnimating(true);
         setTimeout(() => {

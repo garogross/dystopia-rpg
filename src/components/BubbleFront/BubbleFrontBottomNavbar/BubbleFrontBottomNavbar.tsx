@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AchievmentsIcon,
   ModeSelectIcon,
@@ -14,26 +14,44 @@ import {
   bubbleFrontAchievmentsPagePath,
   bubbleFrontRatingsPagePath,
 } from "../../../router/constants";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import BubbleFrontGun from "./BubbleFrontGun/BubbleFrontGun";
+import BubbleFrontMainBuyNecroBallModal from "../BubbleFrontMainPage/BubbleFrontMainBuyNecroBallModal/BubbleFrontMainBuyNecroBallModal";
+import { setNextBalls } from "../../../store/slices/bubbleFront/bubbleFrontSlice";
+import { EBubbleFrontBalls } from "../../../constants/bubbleFront/EBubbleFrontBalls";
 
 const { modeSelectText, ratingsText, necrobombText, achievementsText } =
   TRANSLATIONS.bubbleFront.bottomNavbar;
 
 const BubbleFrontBottomNavbar = () => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const language = useAppSelector((state) => state.ui.language);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const nextBalls = useAppSelector(
+    (state) => state.bubbleFront.global.nextBalls
+  );
+  const [buyNecroBallModalOpened, setBuyNecroBallModalOpened] = useState(false);
 
   const linkActiveClass = ({ isActive }: { isActive: boolean }) =>
     isActive
       ? `${styles.bubbleFrontBottomNavbar__btn_active} ${styles.bubbleFrontBottomNavbar__btn}`
       : `${styles.bubbleFrontBottomNavbar__btn}`;
 
+  const onBuyNecroBall = () => {
+    if (nextBalls) {
+      const updatedNextBalls = [...nextBalls] as typeof nextBalls;
+      updatedNextBalls.pop();
+      updatedNextBalls.unshift(EBubbleFrontBalls.NEKRO_BALL);
+      console.log({ updatedNextBalls });
+
+      dispatch(setNextBalls(updatedNextBalls));
+    }
+  };
   return (
     <div className={styles.bubbleFrontBottomNavbar}>
       <TransitionProvider
@@ -62,7 +80,10 @@ const BubbleFrontBottomNavbar = () => {
         </div>
         <BubbleFrontGun />
         <div className={styles.bubbleFrontBottomNavbar__col}>
-          <button className={styles.bubbleFrontBottomNavbar__btn}>
+          <button
+            onClick={() => setBuyNecroBallModalOpened(true)}
+            className={styles.bubbleFrontBottomNavbar__btn}
+          >
             <NecrobombIcon />
             <span>{necrobombText[language]}</span>
             <div className={styles.bubbleFrontBottomNavbar__btnBg}>
@@ -92,6 +113,11 @@ const BubbleFrontBottomNavbar = () => {
       >
         <BottomWings />
       </TransitionProvider>
+      <BubbleFrontMainBuyNecroBallModal
+        show={buyNecroBallModalOpened}
+        onClose={() => setBuyNecroBallModalOpened(false)}
+        onBuy={onBuyNecroBall}
+      />
     </div>
   );
 };

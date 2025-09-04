@@ -13,11 +13,17 @@ import chemicalBombSpriteImage from "../images/BubbleFront/balls/chemicalBombSpr
 import fireBallSpriteImage from "../images/BubbleFront/balls/fireBallSprite.png";
 import iceBallSpriteImage from "../images/BubbleFront/balls/iceBallSprite.png";
 import nuclearBallSpriteImage from "../images/BubbleFront/balls/nuclearBallSprite.png";
+import nekroBallImage from "../images/BubbleFront/balls/nekroBall.png";
+import nekroBallImageWebp from "../images/BubbleFront/balls/nekroBall.webp";
+import nekroBallSpriteImage from "../images/BubbleFront/balls/nekroBallSprite.png";
 
 import bubbleGunImage from "../images/BubbleFront/BottomNavbar/bubbleGun.png";
 import bubbleGunImageWebp from "../images/BubbleFront/BottomNavbar/bubbleGun.webp";
 import gunFireImage from "../images/BubbleFront/BottomNavbar/gunFire.png";
 import gunFireImageWebp from "../images/BubbleFront/BottomNavbar/gunFire.webp";
+
+import buyNecroballImage from "../images/BubbleFront/BubbleFrontMainBuyNecroBallModal/buyNecroball.png";
+import buyNecroballImageWebp from "../images/BubbleFront/BubbleFrontMainBuyNecroBallModal/buyNecroball.webp";
 
 export {
   chemicalBombImage,
@@ -39,4 +45,9 @@ export {
   nuclearBallSpriteImage,
   gunFireImage,
   gunFireImageWebp,
+  nekroBallImage,
+  nekroBallImageWebp,
+  nekroBallSpriteImage,
+  buyNecroballImage,
+  buyNecroballImageWebp,
 };

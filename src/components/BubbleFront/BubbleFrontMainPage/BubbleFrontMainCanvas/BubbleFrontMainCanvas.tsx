@@ -18,6 +18,7 @@ import {
   fireBallSpriteImage,
   iceBallSpriteImage,
   nuclearBallSpriteImage,
+  nekroBallSpriteImage,
 } from "../../../../assets/imageMaps";
 import { BUBBLE_FRONT_GUN_ID } from "../../../../constants/bubbleFront/bubbleFrontGunId";
 import { useCopyRef } from "../../../../hooks/useCopyRef";
@@ -35,6 +36,7 @@ const SCALE_SPEED = 0.03; // Adjust speed as needed (0..1 per frame)
 const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
 // Minimum number of connected balls required to form a cluster for removal
 const MIN_CLUSTERS = 3;
+const NEKRO_BALL_RADIUS = 3;
 const MAX_TURN_COUNTER = 2;
 const SCORE_PER_BALL = 100;
 const BALL_ANIMATION_DURATION_MS = 500;
@@ -51,11 +53,15 @@ const BALLS = {
   [EBubbleFrontBalls.ICE_BALL]: Texture.from(iceBallSpriteImage),
   [EBubbleFrontBalls.LIGHTING_BALL]: Texture.from(lightingBallSpriteImage),
   [EBubbleFrontBalls.NUCLEAR_BALL]: Texture.from(nuclearBallSpriteImage),
+  // NEKRO_BALL always need to be end
+  [EBubbleFrontBalls.NEKRO_BALL]: Texture.from(nekroBallSpriteImage),
 };
 const ballKeys = Object.keys(BALLS) as (keyof typeof BALLS)[];
 
 const getRandomBall = () =>
-  ballKeys[Math.floor(Math.random() * ballKeys.length)];
+  ballKeys[
+    Math.floor(Math.random() * (ballKeys.length - 1)) // -1 for not select NEKRO_BALL
+  ];
 
 // Generic spritesheet slicer (horizontal strip). Frame size is fixed to 82x82.
 const SPRITESHEET_FRAME_SIZE = 90;
@@ -318,6 +324,44 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     return closestHex;
   };
 
+  // Collect hexes within a given radius (in steps) starting from origin
+  const getHexesWithinRadius = (
+    origin: IHex,
+    radius: number,
+    hexGrid: IHex[][]
+  ): IHex[] => {
+    if (radius <= 0) return [origin];
+
+    const queue: IHex[] = [origin];
+    const visited: Set<string> = new Set([
+      `${origin.lineIndex}:${origin.colIndex}`,
+    ]);
+    const result: IHex[] = [origin];
+    const distanceMap: Map<string, number> = new Map([
+      [`${origin.lineIndex}:${origin.colIndex}`, 0],
+    ]);
+
+    while (queue.length > 0) {
+      const current = queue.shift() as IHex;
+      const currentKey = `${current.lineIndex}:${current.colIndex}`;
+      const currentDistance = distanceMap.get(currentKey) ?? 0;
+      if (currentDistance === radius) continue;
+
+      const neighbors = getNeighbors(current, hexGrid);
+      neighbors.forEach((n) => {
+        const key = `${n.lineIndex}:${n.colIndex}`;
+        if (!visited.has(key)) {
+          visited.add(key);
+          distanceMap.set(key, currentDistance + 1);
+          result.push(n);
+          queue.push(n);
+        }
+      });
+    }
+
+    return result;
+  };
+
   // Helper function to remove clusters and update score
   const removeClustersAndUpdateScore = async (
     // clusters: IHex[],
@@ -330,15 +374,102 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     hexLayer: Container<DisplayObject>
   ) => {
     let updatingHexes: IHex[][] = [...(hexesRef.current || [])];
-    const clusters = findCluster({ ...closestHex, ball: ballType }, true);
 
-    if (clusters.length >= MIN_CLUSTERS) {
-      // Compute updated hexes with clusters removed
-      updatingHexes = hexesRef.current
+    // Small helper to animate removal of a provided tile list
+    const animateTilesRemoval = async (tiles: IHex[]) => {
+      if (!hexLayer || !tiles.length) return;
+      const animations: Promise<void>[] = [];
+      const animationDurationMs = BALL_ANIMATION_DURATION_MS;
+      tiles.forEach((tile) => {
+        const tileBallType = tile.ball as keyof typeof BALLS;
+        if (!tile.position || !tileBallType) return;
+        const existing = hexLayer.children.find(
+          (c: any) => c.name === `ball-${tile.lineIndex}-${tile.colIndex}`
+        ) as Sprite | undefined;
+        if (existing) {
+          hexLayer.removeChild(existing);
+          existing.destroy({ children: true });
+        }
+        const display = createBallDisplay(tileBallType);
+        if (display) {
+          display.x = tile.position.x;
+          display.y = tile.position.y;
+          (display as any).width = hexSizeRef.current;
+          (display as any).height = hexSizeRef.current;
+          hexLayer.addChild(display);
+
+          animations.push(
+            new Promise<void>((resolve) => {
+              const start = performance.now();
+              const frames = getFramesForBall(tileBallType);
+              const totalFrames = frames.length;
+
+              const step = (now: number) => {
+                const t = Math.min(1, (now - start) / animationDurationMs);
+                const frameIndex = Math.min(
+                  totalFrames - 1,
+                  Math.floor(t * totalFrames)
+                );
+
+                if ((display as any).texture !== frames[frameIndex]) {
+                  (display as any).texture = frames[frameIndex];
+                }
+                const fadeStart = 0.5;
+                if (t >= fadeStart) {
+                  const localProgress = (t - fadeStart) / (1 - fadeStart);
+                  (display as any).alpha = Math.max(0, 1 - localProgress);
+                } else {
+                  (display as any).alpha = 1;
+                }
+                if (t < 1) {
+                  requestAnimationFrame(step);
+                } else {
+                  hexLayer.removeChild(display);
+                  display.destroy({ children: true });
+                  resolve();
+                }
+              };
+              requestAnimationFrame(step);
+            })
+          );
+        }
+      });
+      await Promise.all(animations);
+    };
+
+    // 1) Decide which tiles are initially removed
+    let initialRemovals: IHex[] = [];
+    if (ballType === EBubbleFrontBalls.NEKRO_BALL) {
+      initialRemovals = getHexesWithinRadius(
+        closestHex,
+        NEKRO_BALL_RADIUS,
+        updatingHexes
+      ).filter((h) => h.ball) as IHex[];
+    } else {
+      const clusters = findCluster({ ...closestHex, ball: ballType }, true);
+      if (clusters.length < MIN_CLUSTERS) {
+        setTurnCounter((prev) => prev + 1);
+        return;
+      }
+      initialRemovals = clusters;
+    }
+
+    if (!initialRemovals.length) {
+      setTurnCounter((prev) => prev + 1);
+      return;
+    }
+
+    // 2) Animate initial removals
+    setIsAnimating(true);
+    try {
+      // await animateTilesRemoval(initialRemovals);
+
+      // 3) Remove from grid
+      updatingHexes = updatingHexes
         .map((line) => [...line])
         .map((line) =>
           line.map((hex) =>
-            clusters.some(
+            initialRemovals.some(
               (item) =>
                 item.colIndex === hex.colIndex &&
                 item.lineIndex === hex.lineIndex
@@ -348,111 +479,30 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
           )
         );
 
-      const floatingClusters = findFloatingClusters(updatingHexes);
-
-      // Prepare list of all tiles to animate (clusters + floating)
-      const tilesToAnimate: IHex[] = [
-        ...clusters,
-        ...(floatingClusters?.flat() || []),
-      ];
-
-      // Run removal animation, then update state and score
-      const animateRemoval = async () => {
-        if (!hexLayer) return;
-        const animations: Promise<void>[] = [];
-        const animationDurationMs = BALL_ANIMATION_DURATION_MS;
-        tilesToAnimate.forEach((tile) => {
-          const tileBallType = tile.ball as keyof typeof BALLS;
-          if (!tile.position || !tileBallType) return;
-          // Try to get existing sprite by name and remove it so only the anim display is visible
-          const existing = hexLayer.children.find(
-            (c: any) => c.name === `ball-${tile.lineIndex}-${tile.colIndex}`
-          ) as Sprite | undefined;
-          if (existing) {
-            hexLayer.removeChild(existing);
-            existing.destroy({ children: true });
-          }
-          const display = createBallDisplay(tileBallType);
-
-          if (display) {
-            display.x = tile.position.x;
-            display.y = tile.position.y;
-            (display as any).width = hexSizeRef.current;
-            (display as any).height = hexSizeRef.current;
-            hexLayer.addChild(display);
-
-            animations.push(
-              new Promise<void>((resolve) => {
-                const start = performance.now();
-                const frames = getFramesForBall(tileBallType);
-                const totalFrames = frames.length;
-
-                const step = (now: number) => {
-                  const t = Math.min(1, (now - start) / animationDurationMs);
-                  const frameIndex = Math.min(
-                    totalFrames - 1,
-                    Math.floor(t * totalFrames)
-                  );
-
-                  if ((display as any).texture !== frames[frameIndex]) {
-                    (display as any).texture = frames[frameIndex];
-                  }
-                  // Start fading out at 70% of the animation progress
-                  const fadeStart = 0.5;
-                  if (t >= fadeStart) {
-                    const localProgress = (t - fadeStart) / (1 - fadeStart);
-                    (display as any).alpha = Math.max(0, 1 - localProgress);
-                  } else {
-                    (display as any).alpha = 1;
-                  }
-                  if (t < 1) {
-                    requestAnimationFrame(step);
-                  } else {
-                    hexLayer.removeChild(display);
-                    display.destroy({ children: true });
-                    resolve();
-                  }
-                };
-                requestAnimationFrame(step);
-              })
-            );
-          }
-        });
-        await Promise.all(animations);
-      };
-
-      setIsAnimating(true);
-      try {
-        await animateRemoval();
-        // Remove floating clusters if any
-        if (floatingClusters?.length) {
-          updatingHexes = updatingHexes.map((line) =>
-            line.map((hex) =>
-              floatingClusters
-                .flat()
-                .some(
-                  (item) =>
-                    item.colIndex === hex.colIndex &&
-                    item.lineIndex === hex.lineIndex
-                )
-                ? { ...hex, ball: null }
-                : hex
+      // 4) Find floating clusters and animate/remove them as well
+      const floatingClusters = findFloatingClusters(updatingHexes) || [];
+      const floatingTiles = floatingClusters.flat();
+      await animateTilesRemoval([...initialRemovals, ...floatingTiles]);
+      if (floatingTiles.length) {
+        updatingHexes = updatingHexes.map((line) =>
+          line.map((hex) =>
+            floatingTiles.some(
+              (item) =>
+                item.colIndex === hex.colIndex &&
+                item.lineIndex === hex.lineIndex
             )
-          );
-        }
-        setIsAnimating(false);
-
-        setHexes(updatingHexes);
-
-        // Update score (count all removed tiles)
-        const removedCount =
-          clusters.length + (floatingClusters?.flat().length || 0);
-        setScore((prev) => prev + removedCount * SCORE_PER_BALL);
-      } catch {
-        setIsAnimating(false);
+              ? { ...hex, ball: null }
+              : hex
+          )
+        );
       }
-    } else {
-      setTurnCounter((prev) => prev + 1);
+
+      // 5) Commit state and score once
+      setHexes(updatingHexes);
+      const removedCount = initialRemovals.length + (floatingTiles.length || 0);
+      setScore((prev) => prev + removedCount * SCORE_PER_BALL);
+    } finally {
+      setIsAnimating(false);
     }
   };
 
