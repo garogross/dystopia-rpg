@@ -510,8 +510,6 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
       );
     }
 
-    updateReadyBalls(readyBalls);
-
     hexLayer.removeChild(ballSprite);
     ballSprite.destroy();
   };
@@ -522,6 +520,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     // Create sprite with readyBalls[0]
     const readyBalls = readyBallsRef.current;
     if (readyBalls && readyBalls.length > 0) {
+      updateReadyBalls(readyBalls);
       const ballType = readyBalls[0];
 
       const ballSprite = createBallDisplay(ballType) as Sprite;

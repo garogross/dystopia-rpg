@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./BubbleFrontGun.module.scss";
 import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
 import {
-  bubbleGunImage,
-  bubbleGunImageWebp,
   chemicalBombImage,
   chemicalBombImageWebp,
   fireBallImage,
@@ -33,6 +31,8 @@ const BubbleFrontGun = () => {
   const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const [rotation, setRotation] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isInited, setIsInited] = useState(false);
   const gunRef = useRef<HTMLDivElement>(null);
   const nextBalls = useAppSelector(
     (state) => state.bubbleFront.global.nextBalls
@@ -80,6 +80,19 @@ const BubbleFrontGun = () => {
     };
   }, [isMainPage, gameInited]);
 
+  useEffect(() => {
+    if (nextBalls?.length) {
+      if (isInited) {
+        setIsAnimating(true);
+        setTimeout(() => {
+          setIsAnimating(false);
+        }, 300);
+      } else {
+        setIsInited(true);
+      }
+    }
+  }, [isInited, nextBalls]);
+
   return (
     <div
       onClick={() => {
@@ -89,7 +102,9 @@ const BubbleFrontGun = () => {
       ref={gunRef}
     >
       <div
-        className={styles.bubbleFrontGun__wrapper}
+        className={`${styles.bubbleFrontGun__wrapper} ${
+          isAnimating ? styles.bubbleFrontGun__wrapper_animate : ""
+        }`}
         id={BUBBLE_FRONT_GUN_ID}
         data-rotation={rotation}
         style={{
@@ -112,12 +127,12 @@ const BubbleFrontGun = () => {
             />
           </>
         )}
-        <ImageWebp
+        {/* <ImageWebp
           src={bubbleGunImage}
           srcSet={bubbleGunImageWebp}
           alt="bubble gun"
           className={styles.bubbleFrontGun__img}
-        />
+        /> */}
       </div>
     </div>
   );
