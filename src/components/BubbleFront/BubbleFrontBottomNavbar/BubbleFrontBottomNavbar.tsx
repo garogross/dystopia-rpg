@@ -8,10 +8,11 @@ import {
 import { TopBtnBg } from "../../layout/icons/BubbleFront/BubbleFrontBottomNavbar/TopBtnBg";
 import BottomBtnBg from "../../layout/icons/BubbleFront/BubbleFrontBottomNavbar/BottomBtnBg";
 import styles from "./BubbleFrontBottomNavbar.module.scss";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useMatch } from "react-router-dom";
 import { BottomWings } from "../../layout/icons/HackTerminal/HackTerminalBottomNavbar";
 import {
   bubbleFrontAchievmentsPagePath,
+  bubbleFrontPagePath,
   bubbleFrontRatingsPagePath,
 } from "../../../router/constants";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
@@ -24,9 +25,12 @@ import BubbleFrontMainBuyNecroBallModal from "../BubbleFrontBuyNecroBallModal/Bu
 import { setNextBalls } from "../../../store/slices/bubbleFront/bubbleFrontSlice";
 import { EBubbleFrontBalls } from "../../../constants/bubbleFront/EBubbleFrontBalls";
 import BubbleFrontLevelDifficultyModal from "../BubbleFrontLevelDifficultyModal/BubbleFrontLevelDifficultyModal";
+import { useTooltip } from "../../../hooks/useTooltip";
+import Tooltip from "../../layout/Tooltip/Tooltip";
 
 const { modeSelectText, ratingsText, necrobombText, achievementsText } =
   TRANSLATIONS.bubbleFront.bottomNavbar;
+const { inDevelopmentText } = TRANSLATIONS.common;
 
 const BubbleFrontBottomNavbar = () => {
   const dispatch = useAppDispatch();
@@ -39,6 +43,8 @@ const BubbleFrontBottomNavbar = () => {
   const [buyNecroBallModalOpened, setBuyNecroBallModalOpened] = useState(false);
   const [difficultyLevelModalOpened, setDifficultyLevelModalOpened] =
     useState(false);
+  const isMainPage = useMatch(bubbleFrontPagePath);
+  const { show, openTooltip } = useTooltip();
 
   const linkActiveClass = ({ isActive }: { isActive: boolean }) =>
     isActive
@@ -72,7 +78,14 @@ const BubbleFrontBottomNavbar = () => {
               <TopBtnBg />
             </div>
           </button>
-          <NavLink to={bubbleFrontRatingsPagePath} className={linkActiveClass}>
+          <NavLink
+            onClick={(e) => {
+              e.preventDefault();
+              openTooltip();
+            }}
+            to={bubbleFrontRatingsPagePath}
+            className={linkActiveClass}
+          >
             <RatingsIcon />
             <span>{ratingsText[language]}</span>
             <div className={styles.bubbleFrontBottomNavbar__btnBg}>
@@ -86,6 +99,7 @@ const BubbleFrontBottomNavbar = () => {
         <BubbleFrontGun />
         <div className={styles.bubbleFrontBottomNavbar__col}>
           <button
+            disabled={!isMainPage}
             onClick={() => setBuyNecroBallModalOpened(true)}
             className={styles.bubbleFrontBottomNavbar__btn}
           >
@@ -98,6 +112,10 @@ const BubbleFrontBottomNavbar = () => {
           <NavLink
             to={bubbleFrontAchievmentsPagePath}
             className={linkActiveClass}
+            onClick={(e) => {
+              e.preventDefault();
+              openTooltip();
+            }}
           >
             <AchievmentsIcon />
             <span>{achievementsText[language]}</span>
@@ -127,6 +145,7 @@ const BubbleFrontBottomNavbar = () => {
         show={difficultyLevelModalOpened}
         onClose={() => setDifficultyLevelModalOpened(false)}
       />
+      <Tooltip show={show} text={inDevelopmentText[language]} />
     </div>
   );
 };

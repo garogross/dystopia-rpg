@@ -38,6 +38,11 @@
       fill: $color-black;
     }
 
+    &:disabled {
+      color: $color-primary;
+      fill: $color-primary;
+    }
+
     & svg {
       fill: inherit;
       transition: $transition;
