@@ -23,6 +23,7 @@ import BubbleFrontGun from "./BubbleFrontGun/BubbleFrontGun";
 import BubbleFrontMainBuyNecroBallModal from "../BubbleFrontBuyNecroBallModal/BubbleFrontBuyNecroBallModal";
 import { setNextBalls } from "../../../store/slices/bubbleFront/bubbleFrontSlice";
 import { EBubbleFrontBalls } from "../../../constants/bubbleFront/EBubbleFrontBalls";
+import BubbleFrontLevelDifficultyModal from "../BubbleFrontLevelDifficultyModal/BubbleFrontLevelDifficultyModal";
 
 const { modeSelectText, ratingsText, necrobombText, achievementsText } =
   TRANSLATIONS.bubbleFront.bottomNavbar;
@@ -36,6 +37,8 @@ const BubbleFrontBottomNavbar = () => {
     (state) => state.bubbleFront.global.nextBalls
   );
   const [buyNecroBallModalOpened, setBuyNecroBallModalOpened] = useState(false);
+  const [difficultyLevelModalOpened, setDifficultyLevelModalOpened] =
+    useState(false);
 
   const linkActiveClass = ({ isActive }: { isActive: boolean }) =>
     isActive
@@ -59,7 +62,10 @@ const BubbleFrontBottomNavbar = () => {
         className={styles.bubbleFrontBottomNavbar__main}
       >
         <div className={styles.bubbleFrontBottomNavbar__col}>
-          <button className={styles.bubbleFrontBottomNavbar__btn}>
+          <button
+            onClick={() => setDifficultyLevelModalOpened(true)}
+            className={styles.bubbleFrontBottomNavbar__btn}
+          >
             <ModeSelectIcon />
             <span>{modeSelectText[language]}</span>
             <div className={styles.bubbleFrontBottomNavbar__btnBg}>
@@ -116,6 +122,10 @@ const BubbleFrontBottomNavbar = () => {
         show={buyNecroBallModalOpened}
         onClose={() => setBuyNecroBallModalOpened(false)}
         onBuy={onBuyNecroBall}
+      />
+      <BubbleFrontLevelDifficultyModal
+        show={difficultyLevelModalOpened}
+        onClose={() => setDifficultyLevelModalOpened(false)}
       />
     </div>
   );

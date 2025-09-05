@@ -28,6 +28,7 @@ import { setNextBalls } from "../../../../store/slices/bubbleFront/bubbleFrontSl
 import BubbleFrontMainGameOverModal from "../BubbleFrontMainGameOverModal/BubbleFrontMainGameOverModal";
 import { Rectangle } from "pixi.js";
 import { getAngle } from "../../../../utils/bubbleFront/getAngle";
+import { BUBBLE_FRONT_LEVELS_SETTINGS } from "../../../../constants/bubbleFront/BubbleFrontLevelsSettings";
 
 const HEX_IN_LINE = 15;
 const LINES_COUNT = 10;
@@ -38,7 +39,6 @@ const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
 // Minimum number of connected balls required to form a cluster for removal
 const MIN_CLUSTERS = 3;
 const NEKRO_BALL_RADIUS = 3;
-const MAX_TURN_COUNTER = 2;
 const SCORE_PER_BALL = 100;
 const BALL_ANIMATION_DURATION_MS = 500;
 
@@ -189,6 +189,9 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const readyBalls = useAppSelector(
     (state) => state.bubbleFront.global.nextBalls
   );
+  const curDifficultylevel = useAppSelector(
+    (state) => state.bubbleFront.global.curDifficultylevel
+  );
   const [hexes, setHexes] = useState<IHex[][]>(generateRandomBallsArr());
 
   const [hexSize, setHexSize] = useState(0);
@@ -202,6 +205,8 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const readyBallsRef = useCopyRef(readyBalls);
   const isStrikingRef = useCopyRef(isStriking);
   const hexesWithBalls = hexes.flat().filter((item) => item.ball);
+
+  const maxTurnCounter = BUBBLE_FRONT_LEVELS_SETTINGS[curDifficultylevel];
 
   const findCluster = (
     targettile: IHex,
@@ -742,7 +747,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   }, []);
 
   useEffect(() => {
-    if (turnCounter >= MAX_TURN_COUNTER) {
+    if (turnCounter >= maxTurnCounter) {
       setTimeout(() => {
         setHexes((prev) => {
           const lineLength =
@@ -759,6 +764,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         setTurnCounter(0);
       }, 100);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [turnCounter]);
 
   const updateCanvas = () => {
@@ -848,6 +854,13 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     setScore(0);
     initNextBalls();
   };
+
+  useEffect(() => {
+    if (readyBalls?.length) {
+      onReset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maxTurnCounter]);
 
   return (
     <div className={styles.bubbleFrontMainCanvas}>
