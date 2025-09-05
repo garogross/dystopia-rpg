@@ -12,27 +12,36 @@ import {
 import { BUBBLE_FRONT_LEVELS_SETTINGS } from "../../../constants/bubbleFront/BubbleFrontLevelsSettings";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setDifficultyLevel } from "../../../store/slices/bubbleFront/bubbleFrontSlice";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 
 interface Props {
   show: boolean;
   onClose: () => void;
 }
 
+const {
+  titleText,
+  descriptionText,
+  levelsTexts,
+  selectedMarkText,
+  rowDescriptionText,
+} = TRANSLATIONS.bubbleFront.difficultyModal;
+
 const levels = [
   {
     key: EBubbleFrontLevels.Calibration,
     icon: <CalibrationLevelIcon />,
-    name: "Калибровка",
+    name: levelsTexts.calibration,
   },
   {
     key: EBubbleFrontLevels.CombatMode,
     icon: <CombatModelIcon />,
-    name: "Боевой режим",
+    name: levelsTexts.combatMode,
   },
   {
     key: EBubbleFrontLevels.Overload,
     icon: <OverloadLevelIcon />,
-    name: "Перегрузка",
+    name: levelsTexts.overload,
   },
 ];
 
@@ -41,6 +50,8 @@ const BubbleFrontLevelDifficultyModal: React.FC<Props> = ({
   onClose,
 }) => {
   const dispatch = useAppDispatch();
+  const language = useAppSelector((state) => state.ui.language);
+
   const curDifficultylevel = useAppSelector(
     (state) => state.bubbleFront.global.curDifficultylevel
   );
@@ -48,13 +59,13 @@ const BubbleFrontLevelDifficultyModal: React.FC<Props> = ({
     <ModalWithAdd
       show={show}
       onClose={onClose}
-      title="выберите уровень сложноси"
+      title={titleText[language]}
       hideAd
       titleClass={styles.bubbleFrontLevelDifficultyModal__title}
     >
       <div className={styles.bubbleFrontLevelDifficultyModal}>
         <p className={styles.bubbleFrontLevelDifficultyModal__text}>
-          Сложность — это стиль. Выбери свой.
+          {descriptionText[language]}
         </p>
         <div className={styles.bubbleFrontLevelDifficultyModal__optionsList}>
           {levels.map((option) => (
@@ -77,7 +88,7 @@ const BubbleFrontLevelDifficultyModal: React.FC<Props> = ({
                       styles.bubbleFrontLevelDifficultyModal__optionNameText
                     }
                   >
-                    {option.name}
+                    {option.name[language]}
                   </h5>
                   {option.key === curDifficultylevel && (
                     <span
@@ -90,7 +101,7 @@ const BubbleFrontLevelDifficultyModal: React.FC<Props> = ({
                           styles.bubbleFrontLevelDifficultyModal__selectedMarkInner
                         }
                       >
-                        Выбран
+                        {selectedMarkText[language]}
                       </span>
                     </span>
                   )}
@@ -100,8 +111,8 @@ const BubbleFrontLevelDifficultyModal: React.FC<Props> = ({
                     styles.bubbleFrontLevelDifficultyModal__optionDescription
                   }
                 >
-                  {BUBBLE_FRONT_LEVELS_SETTINGS[option.key]} неудачных выстрелов
-                  — новый ряд.
+                  {BUBBLE_FRONT_LEVELS_SETTINGS[option.key]}{" "}
+                  {rowDescriptionText[language]}
                 </p>
               </div>
             </button>

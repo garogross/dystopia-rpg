@@ -7,13 +7,17 @@ import styles from "./BubbleFrontMainHeader.module.scss";
 import { useAppSelector } from "../../../../hooks/redux";
 import { BUBBLE_FRONT_LEVELS_SETTINGS } from "../../../../constants/bubbleFront/BubbleFrontLevelsSettings";
 import { DifficultyIcon } from "../../../layout/icons/BubbleFront/BubbleFrontMainPage/BubbleFrontMainHeader";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 
 interface Props {
   score: number;
 }
 
+const { scoreText, difficultyText } = TRANSLATIONS.bubbleFront.main.header;
+
 const BubbleFrontMainHeader: React.FC<Props> = ({ score }) => {
   const navigate = useNavigate();
+  const language = useAppSelector((state) => state.ui.language);
   const curDifficultylevel = useAppSelector(
     (state) => state.bubbleFront.global.curDifficultylevel
   );
@@ -31,13 +35,13 @@ const BubbleFrontMainHeader: React.FC<Props> = ({ score }) => {
       <div className={styles.bubbleFrontMainHeader__info}>
         <div className={styles.bubbleFrontMainHeader__infoItem}>
           <div className={styles.bubbleFrontMainHeader__infoItemInner}>
-            очки: {score}
+            {scoreText[language]}: {score}
           </div>
         </div>
         <div className={styles.bubbleFrontMainHeader__centerLine}></div>
         <div className={styles.bubbleFrontMainHeader__infoItem}>
           <div className={styles.bubbleFrontMainHeader__infoItemInner}>
-            <span>Сложность:</span>
+            <span>{difficultyText[language]}:</span>
             <div className={styles.bubbleFrontMainHeader__difficulty}>
               {Array.from({ length: 3 }, (_, i) => (
                 <DifficultyIcon hidden={i > levelindex} key={i} />

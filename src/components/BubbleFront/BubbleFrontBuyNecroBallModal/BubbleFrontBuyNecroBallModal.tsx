@@ -11,6 +11,8 @@ import {
   BuyByCpIcon,
   WatchAdIcon,
 } from "../../layout/icons/BubbleFront/BubbleFrontBuyNecroBallModal";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../hooks/redux";
 
 interface Props {
   show: boolean;
@@ -18,11 +20,21 @@ interface Props {
   onBuy: () => void;
 }
 
+const {
+  titleText,
+  descriptionText,
+  chooseMethodText,
+  watchAdText,
+  buyForCpText,
+} = TRANSLATIONS.bubbleFront.buyNecroballModal;
+
 const BubbleFrontBuyNecroBallModal: React.FC<Props> = ({
   show,
   onClose,
   onBuy,
 }) => {
+  const language = useAppSelector((state) => state.ui.language);
+
   const onBuyBall = (e: React.MouseEvent) => {
     e.stopPropagation();
     onBuy();
@@ -33,13 +45,13 @@ const BubbleFrontBuyNecroBallModal: React.FC<Props> = ({
     <ModalWithAdd
       show={show}
       onClose={onClose}
-      title="Некрабомба готова к запуску!"
+      title={titleText[language]}
       hideAd
       titleClass={styles.bubbleFrontBuyNecroBallModal__title}
     >
       <div className={styles.bubbleFrontBuyNecroBallModal}>
         <p className={styles.bubbleFrontBuyNecroBallModal__text}>
-          Мощнее стандартного некроснаряда. Радиус поражения — три шара.
+          {descriptionText[language]}
         </p>
         <ImageWebp
           srcSet={buyNecroballImage}
@@ -48,7 +60,7 @@ const BubbleFrontBuyNecroBallModal: React.FC<Props> = ({
           alt={"necro ball"}
         />
         <p className={styles.bubbleFrontBuyNecroBallModal__text}>
-          Выберите способ получения супер снаряда.
+          {chooseMethodText[language]}
         </p>
         <div className={styles.bubbleFrontBuyNecroBallModal__btnsWrapper}>
           <button
@@ -57,7 +69,7 @@ const BubbleFrontBuyNecroBallModal: React.FC<Props> = ({
           >
             <div className={styles.bubbleFrontBuyNecroBallModal__btnInner}>
               <WatchAdIcon />
-              <span>Смотреть рекламу</span>
+              <span>{watchAdText[language]}</span>
             </div>
           </button>
           <button
@@ -66,7 +78,7 @@ const BubbleFrontBuyNecroBallModal: React.FC<Props> = ({
           >
             <div className={styles.bubbleFrontBuyNecroBallModal__btnInner}>
               <BuyByCpIcon />
-              <span>Купить за 1CP</span>
+              <span>{buyForCpText[language]}</span>
             </div>
           </button>
         </div>
