@@ -199,6 +199,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const [turnCounter, setTurnCounter] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isStriking, setIsStriking] = useState(false);
+  const [played, setPlayed] = useState(false);
 
   const hexSizeRef = useCopyRef(hexSize);
   const hexesRef = useCopyRef(hexes);
@@ -579,6 +580,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   ) => {
     if (isStrikingRef.current) return;
     setIsStriking(true);
+    setPlayed(true);
     const { centerX, centerY, rotation } = getGunSettings(
       clientPosition.clientX,
       clientPosition.clientY
@@ -850,6 +852,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const onReset = () => {
     setHexes(generateRandomBallsArr());
     setGameOver(false);
+    setPlayed(false);
     setTurnCounter(0);
     setScore(0);
     initNextBalls();
@@ -858,6 +861,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   useEffect(() => {
     if (readyBalls?.length) {
       onReset();
+      if (!played) updateCanvas(); // update manulay becouse it will not work if length of hexes not changed
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maxTurnCounter]);
