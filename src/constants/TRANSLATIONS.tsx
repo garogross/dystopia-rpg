@@ -1428,6 +1428,18 @@ export const TRANSLATIONS = {
           "Взломай код терминала, у тебя всего несколько попыток",
       },
     },
+    bubbleFront: {
+      name: {
+        [ELanguages.en]: "Bubble Front",
+        [ELanguages.ru]: "Bubble Front",
+      },
+      description: {
+        [ELanguages.en]:
+          "Bubble Front — tactical artillery in an arcade shell.",
+        [ELanguages.ru]:
+          "Bubble Front — тактическая артиллерия в оболочке аркады.",
+      },
+    },
     achievments: {
       titleText: {
         [ELanguages.en]: "Achievements",

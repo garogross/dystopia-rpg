@@ -1,14 +1,19 @@
 import {
+  bubblefrontImage,
+  bubblefrontImageWebp,
   hackTerminalImage,
   hackTerminalImageWebp,
   minGamesPuzzleImage,
   minGamesPuzzleImageWebp,
 } from "../../assets/imageMaps";
-import { hackTerminalPagePath } from "../../router/constants";
+import {
+  bubbleFrontPagePath,
+  hackTerminalPagePath,
+} from "../../router/constants";
 import { TRANSLATIONS } from "../TRANSLATIONS";
 import { EMiniGames } from "./EMiniGames";
 
-const { puzzle, hackTerminal } = TRANSLATIONS.miniGames;
+const { puzzle, hackTerminal, bubbleFront } = TRANSLATIONS.miniGames;
 
 export const MINI_GAMES = [
   {
@@ -30,5 +35,15 @@ export const MINI_GAMES = [
     description: hackTerminal.description,
     key: EMiniGames.HACK_TERMINAL,
     link: hackTerminalPagePath,
+  },
+  {
+    image: {
+      src: bubblefrontImage,
+      srcSet: bubblefrontImageWebp,
+    },
+    name: bubbleFront.name,
+    description: bubbleFront.description,
+    key: EMiniGames.BUBBLE_FRONT,
+    link: bubbleFrontPagePath,
   },
 ];
