@@ -6,7 +6,7 @@ import {
   MiniGamesBottomNavbarLoyalityIcon,
   MiniGamesBottomNavbarPinnedIcon,
   MiniGamesBottomNavbarRefferalsIcon,
-} from "../../layout/MiniGames/MiniGamesBottomNavbar";
+} from "../../layout/icons/MiniGames/MiniGamesBottomNavbar";
 import {
   miniGamesAchievmentsPagePath,
   miniGamesLoyalityPagePath,

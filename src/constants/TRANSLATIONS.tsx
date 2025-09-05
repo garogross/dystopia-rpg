@@ -1423,6 +1423,18 @@ export const TRANSLATIONS = {
           "Взломай код терминала, у тебя всего несколько попыток",
       },
     },
+    bubbleFront: {
+      name: {
+        [ELanguages.en]: "Bubble Front",
+        [ELanguages.ru]: "Bubble Front",
+      },
+      description: {
+        [ELanguages.en]:
+          "Bubble Front — tactical artillery in an arcade shell.",
+        [ELanguages.ru]:
+          "Bubble Front — тактическая артиллерия в оболочке аркады.",
+      },
+    },
     achievments: {
       titleText: {
         [ELanguages.en]: "Achievements",
@@ -2018,6 +2030,88 @@ export const TRANSLATIONS = {
       achievementsText: {
         [ELanguages.en]: "Achievements",
         [ELanguages.ru]: "Достижения",
+      },
+    },
+    buyNecroballModal: {
+      titleText: {
+        [ELanguages.en]: "Necrobomb is ready to launch!",
+        [ELanguages.ru]: "Некрабомба готова к запуску!",
+      },
+      descriptionText: {
+        [ELanguages.en]:
+          "Stronger than a standard necro shell. Blast radius — three balls.",
+        [ELanguages.ru]:
+          "Мощнее стандартного некроснаряда. Радиус поражения — три шара.",
+      },
+      chooseMethodText: {
+        [ELanguages.en]: "Choose how to get the super shell.",
+        [ELanguages.ru]: "Выберите способ получения супер снаряда.",
+      },
+      watchAdText: {
+        [ELanguages.en]: "Watch ad",
+        [ELanguages.ru]: "Смотреть рекламу",
+      },
+      buyForCpText: {
+        [ELanguages.en]: "Buy for 1CP",
+        [ELanguages.ru]: "Купить за 1CP",
+      },
+    },
+    difficultyModal: {
+      titleText: {
+        [ELanguages.en]: "Select difficulty level",
+        [ELanguages.ru]: "выберите уровень сложноси",
+      },
+      descriptionText: {
+        [ELanguages.en]: "Difficulty is a style. Choose yours.",
+        [ELanguages.ru]: "Сложность — это стиль. Выбери свой.",
+      },
+      levelsTexts: {
+        calibration: {
+          [ELanguages.en]: "Calibration",
+          [ELanguages.ru]: "Калибровка",
+        },
+        combatMode: {
+          [ELanguages.en]: "Combat mode",
+          [ELanguages.ru]: "Боевой режим",
+        },
+        overload: {
+          [ELanguages.en]: "Overload",
+          [ELanguages.ru]: "Перегрузка",
+        },
+      },
+      selectedMarkText: {
+        [ELanguages.en]: "Selected",
+        [ELanguages.ru]: "Выбран",
+      },
+      rowDescriptionText: {
+        [ELanguages.en]: "unsuccessful shots — new row.",
+        [ELanguages.ru]: "неудачных выстрелов — новый ряд.",
+      },
+    },
+    main: {
+      header: {
+        scoreText: {
+          [ELanguages.en]: "Score",
+          [ELanguages.ru]: "Очки",
+        },
+        difficultyText: {
+          [ELanguages.en]: "Difficulty",
+          [ELanguages.ru]: "Сложность",
+        },
+      },
+      gameOverModal: {
+        titleText: {
+          [ELanguages.en]: "Game over",
+          [ELanguages.ru]: "Игра окончена",
+        },
+        collectedScoreText: {
+          [ELanguages.en]: "Collected Score",
+          [ELanguages.ru]: "Набрано очков",
+        },
+        restartButtonText: {
+          [ELanguages.en]: "Restart",
+          [ELanguages.ru]: "Перезапустить",
+        },
       },
     },
   },

@@ -22,6 +22,10 @@
     padding: 4px;
     @include setFont(12px, 400, $font-fam-bowler, $color-primary);
     gap: 2px;
+
+    & span {
+      transform: translateY(2px);
+    }
   }
 
   &__infoItem:first-child,
@@ -52,14 +56,8 @@
     border-bottom: 1px solid $color-primary;
   }
 
-  &__misses {
+  &__difficulty {
     @include flexCol();
     gap: 3px;
-  }
-  &__miss {
-    width: 9px;
-    height: 9px;
-    background-color: $color-primary;
-    border-radius: 50%;
   }
 }
