@@ -1,16 +1,16 @@
 import React from "react";
 
-import styles from "./BubbleFrontMainBuyNecroBallModal.module.scss";
-import ModalWithAdd from "../../../layout/ModalWithAdd/ModalWithAdd";
-import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
+import styles from "./BubbleFrontBuyNecroBallModal.module.scss";
+import ModalWithAdd from "../../layout/ModalWithAdd/ModalWithAdd";
+import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
   buyNecroballImage,
   buyNecroballImageWebp,
-} from "../../../../assets/imageMaps";
+} from "../../../assets/imageMaps";
 import {
   BuyByCpIcon,
   WatchAdIcon,
-} from "../../../layout/icons/BubbleFront/BubbleFrontMainBuyNecroBallModal";
+} from "../../layout/icons/BubbleFront/BubbleFrontBuyNecroBallModal";
 
 interface Props {
   show: boolean;
@@ -18,7 +18,7 @@ interface Props {
   onBuy: () => void;
 }
 
-const BubbleFrontMainBuyNecroBallModal: React.FC<Props> = ({
+const BubbleFrontBuyNecroBallModal: React.FC<Props> = ({
   show,
   onClose,
   onBuy,
@@ -35,36 +35,36 @@ const BubbleFrontMainBuyNecroBallModal: React.FC<Props> = ({
       onClose={onClose}
       title="Некрабомба готова к запуску!"
       hideAd
-      titleClass={styles.bubbleFrontMainBuyNecroBallModal__title}
+      titleClass={styles.bubbleFrontBuyNecroBallModal__title}
     >
-      <div className={styles.bubbleFrontMainBuyNecroBallModal}>
-        <p className={styles.bubbleFrontMainBuyNecroBallModal__text}>
+      <div className={styles.bubbleFrontBuyNecroBallModal}>
+        <p className={styles.bubbleFrontBuyNecroBallModal__text}>
           Мощнее стандартного некроснаряда. Радиус поражения — три шара.
         </p>
         <ImageWebp
           srcSet={buyNecroballImage}
           src={buyNecroballImageWebp}
-          className={styles.bubbleFrontMainBuyNecroBallModal__img}
+          className={styles.bubbleFrontBuyNecroBallModal__img}
           alt={"necro ball"}
         />
-        <p className={styles.bubbleFrontMainBuyNecroBallModal__text}>
+        <p className={styles.bubbleFrontBuyNecroBallModal__text}>
           Выберите способ получения супер снаряда.
         </p>
-        <div className={styles.bubbleFrontMainBuyNecroBallModal__btnsWrapper}>
+        <div className={styles.bubbleFrontBuyNecroBallModal__btnsWrapper}>
           <button
-            className={styles.bubbleFrontMainBuyNecroBallModal__btn}
+            className={styles.bubbleFrontBuyNecroBallModal__btn}
             onClick={onBuyBall}
           >
-            <div className={styles.bubbleFrontMainBuyNecroBallModal__btnInner}>
+            <div className={styles.bubbleFrontBuyNecroBallModal__btnInner}>
               <WatchAdIcon />
               <span>Смотреть рекламу</span>
             </div>
           </button>
           <button
-            className={styles.bubbleFrontMainBuyNecroBallModal__btn}
+            className={styles.bubbleFrontBuyNecroBallModal__btn}
             onClick={onBuyBall}
           >
-            <div className={styles.bubbleFrontMainBuyNecroBallModal__btnInner}>
+            <div className={styles.bubbleFrontBuyNecroBallModal__btnInner}>
               <BuyByCpIcon />
               <span>Купить за 1CP</span>
             </div>
@@ -75,4 +75,4 @@ const BubbleFrontMainBuyNecroBallModal: React.FC<Props> = ({
   );
 };
 
-export default BubbleFrontMainBuyNecroBallModal;
+export default BubbleFrontBuyNecroBallModal;

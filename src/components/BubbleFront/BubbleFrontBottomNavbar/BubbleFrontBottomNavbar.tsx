@@ -20,7 +20,7 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import BubbleFrontGun from "./BubbleFrontGun/BubbleFrontGun";
-import BubbleFrontMainBuyNecroBallModal from "../BubbleFrontMainPage/BubbleFrontMainBuyNecroBallModal/BubbleFrontMainBuyNecroBallModal";
+import BubbleFrontMainBuyNecroBallModal from "../BubbleFrontBuyNecroBallModal/BubbleFrontBuyNecroBallModal";
 import { setNextBalls } from "../../../store/slices/bubbleFront/bubbleFrontSlice";
 import { EBubbleFrontBalls } from "../../../constants/bubbleFront/EBubbleFrontBalls";
 

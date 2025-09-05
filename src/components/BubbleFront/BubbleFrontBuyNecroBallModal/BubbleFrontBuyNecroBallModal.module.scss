@@ -1,7 +1,7 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/vars";
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
 
-.bubbleFrontMainBuyNecroBallModal {
+.bubbleFrontBuyNecroBallModal {
   @include flexCol();
   flex-direction: column;
   gap: 8px;
