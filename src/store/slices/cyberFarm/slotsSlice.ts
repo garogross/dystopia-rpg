@@ -11,17 +11,16 @@ import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import { IFarmSlot } from "../../../models/CyberFarm/IFarmSlot";
 import { FarmSlotCostsType } from "../../../types/FarmSlotCostsType";
 import { getSlotCost } from "../../../utils/getSlotCost";
+import { claimAdReward } from "../tasksSlice";
 
 export interface SlotsState {
   slots: Record<string, IFarmSlot> | null;
   slotCosts: FarmSlotCostsType | null;
-  speedUpCosts: { [key in EFarmSlotTypes]: number } | null;
 }
 
 const initialState: SlotsState = {
   slots: null,
   slotCosts: null,
-  speedUpCosts: null,
 };
 
 const buySlotUrl = "/ton_cyber_farm/buy_slot/";
@@ -118,7 +117,6 @@ export const slotsSlice = createSlice({
     getCyberFarmSlots: (state, action) => {
       state.slots = action.payload.slots;
       state.slotCosts = action.payload.slotCosts;
-      state.speedUpCosts = action.payload.speedUpCosts;
     },
   },
   extraReducers: (builder) => {
@@ -136,6 +134,7 @@ export const slotsSlice = createSlice({
           product: payload.product,
           start_time: payload.start_time,
           finish_time: payload.finish_time,
+          final_production: payload.final_production,
         },
       };
     });
@@ -148,6 +147,20 @@ export const slotsSlice = createSlice({
             product: undefined,
             start_time: undefined,
             finish_time: undefined,
+            ad_production_bonus_received: false,
+          },
+        };
+      }
+    });
+    builder.addCase(claimAdReward.fulfilled, (state, { payload }) => {
+      const slotId = payload.bonus_distribution?.farm_slot;
+      if (state.slots && slotId && payload.game_action) {
+        state.slots = {
+          ...state.slots,
+          [slotId]: {
+            ...state.slots?.[slotId],
+            ad_production_bonus_received: true,
+            final_production: payload?.final_production || 0,
           },
         };
       }

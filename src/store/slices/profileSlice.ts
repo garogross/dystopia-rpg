@@ -12,13 +12,12 @@ import { ELSProps } from "../../constants/ELSProps";
 import { initCyberFarm } from "./cyberFarm/cyberfarmSlice";
 import { buySlot, getCyberFarmSlots, speedUp } from "./cyberFarm/slotsSlice";
 import {
-  buyProduct,
   buyResourceDeflict,
   getCyberFarmResources,
-  sellProduct,
+  exchange,
 } from "./cyberFarm/resourcesSlice";
 import { claimDailyReward, initDailyReward } from "./cyberFarm/activitySlice";
-import { exchange, initSocialShop } from "./cyberFarm/socialShopSlice";
+import { initSocialShop } from "./cyberFarm/socialShopSlice";
 import {
   claimAdReward,
   getAdRewardSettings,
@@ -27,7 +26,7 @@ import {
   verifyGigaHash,
 } from "./tasksSlice";
 import { initAchievments } from "./cyberFarm/achievmentsSlice";
-import { WithdrawTonResponse } from "../../models/api/WithdrawTonResponse";
+import { WithdrawCPResponse } from "../../models/api/WithdrawCPResponse";
 import { convertReferals } from "./refferencesSlice";
 import { finsihTutorial, initTutorial } from "./cyberFarm/tutorialSlice";
 import { initInfluence, restoreAP } from "./influence/influenceSlice";
@@ -49,6 +48,7 @@ export interface ProfileState {
   };
   accountDetailsReceived: boolean;
   tonWithdrawCommission: number;
+  usdtWithdrawCommission: number;
 }
 
 const initUserData =
@@ -78,6 +78,7 @@ const initialState: ProfileState = {
   },
   accountDetailsReceived: false,
   tonWithdrawCommission: 0,
+  usdtWithdrawCommission: 0,
 };
 const authUserUrl = "/auth";
 
@@ -126,7 +127,9 @@ export const getAccountDetails =
     dispatch(
       receiveAccountDetails({
         tonWithdrawCommission:
-          resData.game_settings?.ton_withdraw_commission || 0,
+          resData.game_settings_new.pools.ton_pool.amount || 0,
+        usdtWithdrawCommission:
+          resData.game_settings_new.pools.usdt_pool.amount || 0,
       })
     );
     dispatch(
@@ -158,21 +161,11 @@ export const getAccountDetails =
     if (resData.ton_cyber_farm && resData.mode === "ton_cyber_farm") {
       dispatch(initCyberFarm());
       // store slots
-      const speedCosts = Object.entries(
-        resData.game_settings?.production_settings || {}
-      ).reduce(
-        (acc, [type, settings]) => ({
-          ...acc,
-          [type]: settings.speedup_bonus,
-        }),
-        {}
-      );
 
       dispatch(
         getCyberFarmSlots({
           slots: resData.ton_cyber_farm.slots,
           slotCosts: resData.game_settings?.slot_costs,
-          speedUpCosts: speedCosts,
         })
       );
 
@@ -181,10 +174,10 @@ export const getAccountDetails =
         dispatch(
           getCyberFarmResources({
             resources: resData.ton_cyber_farm.resources,
-            productCosts: resData.game_settings.base_costs,
-            productionChains: resData.game_settings.production_chains,
             resourceTonmailValue: resData.ton_cyber_farm.resource_ton_value,
             resourceDeficit: resData?.resource_deficit,
+            productsSettings:
+              resData?.game_settings_new?.ton_cyber_farm_products,
           })
         );
       }
@@ -319,18 +312,19 @@ export const authorizeUser =
     }
   };
 
-const withdrawTonUrl = "/withdraw_ton/";
-export const withdrawTon = createAsyncThunk<
-  WithdrawTonResponse,
-  { amount: number; address: string }
->("profile/withdrawTon", async (payload, { rejectWithValue }) => {
+const withdrawCPUrl = "/ton_cyber_farm/withdraw_cp/";
+export const withdrawCP = createAsyncThunk<
+  WithdrawCPResponse,
+  { amount: number; address: string; currency: "usdt" | "ton" }
+>("profile/withdrawCP", async (payload, { rejectWithValue }) => {
   try {
-    const resData = await fetchRequest<WithdrawTonResponse>(
-      withdrawTonUrl,
+    const resData = await fetchRequest<WithdrawCPResponse>(
+      withdrawCPUrl,
       "POST",
       {
         amount: payload.amount,
         address: payload.address,
+        currency: payload.currency,
       }
     );
 
@@ -365,8 +359,8 @@ export const profileSlice = createSlice({
       state.username = payload.user.username;
       state.tgId = payload.user.id_tgrm;
     });
-    builder.addCase(withdrawTon.fulfilled, (state, { payload }) => {
-      state.stats.ton = state.stats.ton - payload.amount;
+    builder.addCase(withdrawCP.fulfilled, (state, { payload }) => {
+      state.stats.cp = state.stats.cp - payload.amount_cp;
     });
 
     // referals
@@ -375,12 +369,7 @@ export const profileSlice = createSlice({
     });
 
     // cyberfarm
-    builder.addCase(buyProduct.fulfilled, (state, { payload }) => {
-      state.stats.cp = payload.cash_point_left;
-    });
-    builder.addCase(sellProduct.fulfilled, (state, { payload }) => {
-      state.stats.ton = payload.ton_total;
-    });
+
     builder.addCase(buyResourceDeflict.fulfilled, (state, { payload }) => {
       state.stats.cp = payload.cash_point_left;
     });
@@ -397,8 +386,8 @@ export const profileSlice = createSlice({
       state.stats.cp = payload.cash_point_left;
     });
     builder.addCase(exchange.fulfilled, (state, { payload }) => {
-      if (payload.reward.cash_point) {
-        state.stats.cp += payload.reward.cash_point;
+      if (payload.cash_point_left) {
+        state.stats.cp = payload.cash_point_left;
       }
     });
 
@@ -410,7 +399,11 @@ export const profileSlice = createSlice({
 
     // tasks
     builder.addCase(claimAdReward.fulfilled, (state, { payload }) => {
-      if (+payload.reward && payload.status === "ok") {
+      if (
+        +payload.reward &&
+        payload.status === "ok" &&
+        !payload.bonus_distribution
+      ) {
         state.stats.cp += +payload.reward;
       }
     });

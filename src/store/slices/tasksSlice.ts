@@ -12,6 +12,7 @@ import {
 import { AdRewardSettingsType } from "../../types/tasks/AdRewardSettingsType";
 import { MediationType } from "../../types/tasks/MediationsType";
 import { AdRewardValidPairsType } from "../../types/tasks/AdRewardValidPairsType";
+import { ClaimAdRewardActionType } from "../../types/tasks/ClaimAdRewardActionType";
 
 export interface TasksState {
   promoTasks: IPromoTask[];
@@ -45,19 +46,23 @@ export const getPromoTasks = createAsyncThunk<IPromoTask[], undefined>(
 );
 
 const getAdMeditationUrl = "/ad_mediation/";
-export const getAdMeditation = createAsyncThunk<MediationType, undefined>(
-  "tasks/getAdMeditation",
-  async (_payload, { rejectWithValue }) => {
-    try {
-      const resData = await fetchRequest<MediationType>(getAdMeditationUrl);
+export const getAdMeditation = createAsyncThunk<
+  MediationType,
+  { device: "mobile" | "desktop" }
+>("tasks/getAdMeditation", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<MediationType>(
+      getAdMeditationUrl,
+      "POST",
+      { request: { device: payload.device } }
+    );
 
-      return resData || [];
-    } catch (error: any) {
-      console.error("error", error);
-      return rejectWithValue(error);
-    }
+    return resData || [];
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
   }
-);
+});
 
 const getPromoTaskRewardUrl = "/promo_tasks/reward/";
 export const getPromoTaskReward = createAsyncThunk<
@@ -83,11 +88,13 @@ export const getPromoTaskReward = createAsyncThunk<
 
 const claimAdRewardUrl = "/reward/ad/";
 export const claimAdReward = createAsyncThunk<
-  ClaimAdRewardResponse,
+  ClaimAdRewardResponse & { game_action?: ClaimAdRewardActionType },
   AdRewardValidPairsType & {
     slotId?: string;
     identifier?: string;
     value?: number;
+    game_action?: ClaimAdRewardActionType;
+    farm_slot?: string;
   }
 >("tasks/claimAdReward", async (payload, { rejectWithValue }) => {
   try {
@@ -100,10 +107,12 @@ export const claimAdReward = createAsyncThunk<
         identifier: payload.identifier,
         value: payload.value,
         slot_id: payload.slotId,
+        game_action: payload.game_action,
+        farm_slot: payload.farm_slot,
       }
     );
 
-    return resData;
+    return { ...resData, game_action: payload.game_action };
   } catch (error: any) {
     console.error("error", error);
     return rejectWithValue(error);

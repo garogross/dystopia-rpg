@@ -4,16 +4,12 @@ import styles from "./CyberFarmWarehouseProductInfo.module.scss";
 import { IWarehouseProduct } from "../../../../models/IWarehouseProduct";
 import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
 import { products } from "../../../../constants/cyberfarm/products";
-import { Walleticon } from "../../../layout/icons/Common";
 import HeaderBtn from "../../../layout/HeaderBtn/HeaderBtn";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import {
-  buyProduct,
-  sellProduct,
-} from "../../../../store/slices/cyberFarm/resourcesSlice";
+import { exchange } from "../../../../store/slices/cyberFarm/resourcesSlice";
 import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
@@ -28,9 +24,6 @@ interface Props {
 const { somethingWentWrong } = TRANSLATIONS.errors;
 const {
   youHaveText,
-  priceText,
-  youWillGetText,
-  youWillSpendText,
   buyButtonText,
   sellButtonText,
   piecesText,
@@ -45,24 +38,21 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const productCosts = useAppSelector(
-    (state) => state.cyberfarm.resources.productCosts
+  const productPrices = useAppSelector(
+    (state) => state.cyberfarm.resources.productPrices
   );
-  const resourceTonValue = useAppSelector(
-    (state) => state.cyberfarm.resources.resourceTonValue
-  );
+
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const { show: showTooltip, openTooltip } = useTooltip();
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
   const [counter, setCounter] = useState(1);
+  const [tooltipText, setTooltipText] = useState(successText);
   const [inputValue, setInputValue] = useState(counter.toString());
   const product = products[item.product];
 
-  const isForSale = !!product.forSale;
-  const cost = productCosts[item.product];
-  const totalCost = productCosts[item.product] * counter;
-  const price = resourceTonValue[item.product] || 0;
+  const totalCostOnBuy = productPrices[item.product].price_buy * counter;
+  const totalCostonSell = productPrices[item.product].price_sell * counter;
 
   const onChangeCount = (value: number) => {
     setInputValue(value.toString());
@@ -72,39 +62,30 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
   useEffect(() => {
     setCounter(1);
     setErrored(false);
-  }, [item]);
+  }, [item.id]);
 
   const onCalculate = (type: "minus" | "plus") => {
     let value = counter;
     if (type === "minus") {
       value = Math.max(1, value - 1);
     } else {
-      value = isForSale ? Math.min(item.count, value + 1) : value + 1;
+      value = value + 1;
     }
     onChangeCount(value);
   };
 
-  const onBuy = async () => {
+  const onShop = async (isSell?: boolean) => {
     try {
       setErrored(false);
       setLoading(true);
       await dispatch(
-        buyProduct({ amount: counter, product: item.product })
+        exchange({
+          amount: counter,
+          product: item.product,
+          operation: isSell ? "sell" : "buy",
+        })
       ).unwrap();
-      openTooltip();
-    } catch (error) {
-      setErrored(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-  const onSell = async () => {
-    try {
-      setErrored(false);
-      setLoading(true);
-      await dispatch(
-        sellProduct({ amount: counter, product: item.product })
-      ).unwrap();
+      setTooltipText(isSell ? exchangeSuccessText : successText);
       openTooltip();
     } catch (error) {
       setErrored(true);
@@ -141,10 +122,6 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
               <p className={styles.cyberFarmWarehouseProductInfo__text}>
                 {youHaveText[language]} {item.count} {piecesText[language]}
               </p>
-              <p className={styles.cyberFarmWarehouseProductInfo__text}>
-                {priceText[language]} {+(isForSale ? price : cost).toFixed(4)}{" "}
-                {isForSale ? "TON" : "CP"}
-              </p>
             </div>
             <div className={styles.cyberFarmWarehouseProductInfo__calculator}>
               <button
@@ -175,7 +152,6 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
               />
 
               <button
-                disabled={isForSale && item.count < counter}
                 onClick={() => onCalculate("plus")}
                 className={`${styles.cyberFarmWarehouseProductInfo__calculatorBtn} ${styles.cyberFarmWarehouseProductInfo__calculatorBtn_plus}`}
               >
@@ -198,36 +174,28 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
           {somethingWentWrong[language]}
         </p>
         <div className={styles.cyberFarmWarehouseProductInfo__footer}>
-          <p
-            className={`${styles.cyberFarmWarehouseProductInfo__text} ${
-              !isForSale && cp < totalCost
-                ? styles.cyberFarmWarehouseProductInfo__text_invalid
-                : ""
-            }`}
-          >
-            {isForSale
-              ? `${youWillGetText[language]} ${+(price * counter).toFixed(
-                  4
-                )} TON`
-              : `${youWillSpendText[language]} ${+totalCost.toFixed(4)} CP`}
-          </p>
           <button
-            onClick={isForSale ? onSell : onBuy}
-            disabled={isForSale ? !item.count : cp < totalCost}
+            onClick={() => onShop(true)}
+            disabled={!item.count || item.count < counter}
             className={styles.cyberFarmWarehouseProductInfo__sellBtn}
           >
             <div className={styles.cyberFarmWarehouseProductInfo__sellBtnInner}>
-              {isForSale ? sellButtonText[language] : buyButtonText[language]}
-              <Walleticon />
+              {sellButtonText[language]} {+totalCostonSell.toFixed(4)}
+            </div>
+          </button>
+          <button
+            onClick={() => onShop()}
+            disabled={cp < totalCostOnBuy}
+            className={styles.cyberFarmWarehouseProductInfo__sellBtn}
+          >
+            <div className={styles.cyberFarmWarehouseProductInfo__sellBtnInner}>
+              {buyButtonText[language]} {+totalCostOnBuy.toFixed(4)}
             </div>
           </button>
         </div>
         <LoadingOverlay loading={loading} />
       </div>
-      <Tooltip
-        show={showTooltip}
-        text={(isForSale ? exchangeSuccessText : successText)[language]}
-      />
+      <Tooltip show={showTooltip} text={tooltipText[language]} />
     </TransitionProvider>
   );
 };

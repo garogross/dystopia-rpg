@@ -7,11 +7,11 @@ import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import { products } from "../../../constants/cyberfarm/products";
 import { IFarmField } from "../../../models/CyberFarm/IFarmField";
 import { formatTime } from "../../../utils/formatTime";
-import { adImage, cpImage, cpImageWebp } from "../../../assets/imageMaps";
+import { adImage } from "../../../assets/imageMaps";
 import { CollectIcon } from "../../layout/icons/CyberFarm/CyberFarmProcessModal";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { harvest, speedUp } from "../../../store/slices/cyberFarm/slotsSlice";
+import { harvest } from "../../../store/slices/cyberFarm/slotsSlice";
 import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { useTooltip } from "../../../hooks/useTooltip";
@@ -19,10 +19,8 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { useFarmFieldProgress } from "../../../hooks/useFarmFieldProgress";
-import { useVideoAd } from "../../../hooks/useVideoAd";
-import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
-import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
-import { EadProviders } from "../../../constants/EadProviders";
+import { useSoltAd } from "../../../hooks/useSlotId";
+import { ClaimAdRewardActionType } from "../../../types/tasks/ClaimAdRewardActionType";
 
 interface Props {
   show: boolean;
@@ -34,31 +32,52 @@ const {
   readyToCollectText,
   timeRemainingText,
   collectButtonText,
-  speedUpCpButtonText,
-  speedUpAdButtonText,
+  profitIncreasedText,
   harvestCollectedText,
+  watchAdIncreaseProfitText,
+  watchAdInstantFinishText,
   speedUpCompleteText,
+  productionText,
 } = TRANSLATIONS.cyberFarm.processModal;
 const { somethingWentWrong } = TRANSLATIONS.errors;
 
 const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const speedUpCosts = useAppSelector(
-    (state) => state.cyberfarm.slots.speedUpCosts
-  );
-  const {
-    onShowAd,
-    showTooltip: showAdTooltip,
-    tooltipText: addTooltipText,
-  } = useVideoAd({
-    scsClb: () => onSpeedUp(true),
-    speedUpCompleteText: speedUpCompleteText,
-    provider: EadProviders.Gigapub,
-  });
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
+
+  const onHarvest = async (withoutAd?: boolean) => {
+    if (!withoutAd && !item.adProductionBonusReceived) return;
+    try {
+      setLoading(true);
+      setErrored(false);
+      setTooltipText(harvestCollectedText);
+      await dispatch(harvest({ id: item.id, clb: openTooltip })).unwrap();
+      onClose();
+    } catch (error) {
+      setErrored(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const gameAction: ClaimAdRewardActionType = !item.adProductionBonusReceived
+    ? "farm_production_bonus"
+    : "farm_boost_production";
+  const {
+    onShow,
+    showTooltip: showAdTooltip,
+    tooltipText: adTooltipText,
+    loading: adLoading,
+  } = useSoltAd(
+    "slot_1",
+    gameAction,
+    item.id,
+    onHarvest,
+    profitIncreasedText[language]
+  );
 
   const { show: showTooltip, openTooltip } = useTooltip();
 
@@ -73,40 +92,10 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
     }
   }, [show]);
 
-  const onHarvest = async () => {
-    try {
-      setLoading(true);
-      setErrored(false);
-      setTooltipText(harvestCollectedText);
-      await dispatch(harvest({ id: item.id, clb: openTooltip })).unwrap();
-      onClose();
-    } catch (error) {
-      setErrored(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-  const onSpeedUp = async (byAd?: boolean, tutorial?: boolean) => {
-    try {
-      setLoading(true);
-      setErrored(false);
-      setTooltipText(speedUpCompleteText);
-      await dispatch(
-        speedUp({ id: item.id, clb: openTooltip, byAd, tutorial })
-      ).unwrap();
-      onHarvest();
-    } catch (error) {
-      setErrored(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   if (!productKey || !item.process) return null;
 
   const productdetails = products[productKey];
   const isReadyToCollect = progress && progress >= 100;
-  const speedUpCost = speedUpCosts?.[item.type] || 0;
 
   return (
     <ModalWithAdd show={show} onClose={onClose} title={titleText[language]}>
@@ -133,21 +122,26 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
                   ></div>
                 </div>
               </div>
-              <p className={styles.cyberFarmProcessModal__text}>
-                {isReadyToCollect
-                  ? readyToCollectText[language]
-                  : remainingTimeInSecs
-                  ? `${timeRemainingText[language]} ${formatTime(
-                      remainingTimeInSecs
-                    )}`
-                  : ""}
-              </p>
+              <div className={styles.cyberFarmProcessModal__infoCol}>
+                <p className={styles.cyberFarmProcessModal__text}>
+                  {isReadyToCollect
+                    ? readyToCollectText[language]
+                    : remainingTimeInSecs
+                    ? `${timeRemainingText[language]} ${formatTime(
+                        remainingTimeInSecs
+                      )}`
+                    : ""}
+                </p>
+                <p className={styles.cyberFarmProcessModal__text}>
+                  {productionText[language]} - {item.finalProduction || 0}
+                </p>
+              </div>
             </div>
           </div>
           <div className={styles.cyberFarmProcessModal__actions}>
             {isReadyToCollect ? (
               <button
-                onClick={onHarvest}
+                onClick={() => onHarvest(true)}
                 className={styles.cyberFarmProcessModal__btn}
               >
                 <div className={styles.cyberFarmProcessModal__btnInner}>
@@ -158,31 +152,17 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
             ) : (
               <>
                 <button
-                  onClick={() => onSpeedUp()}
-                  id={ECyberfarmTutorialActions.speedUpProduce}
+                  onClick={onShow}
                   className={styles.cyberFarmProcessModal__btn}
                 >
                   <div className={styles.cyberFarmProcessModal__btnInner}>
                     <span>
-                      {speedUpCpButtonText[language].replace(
-                        "NUMBER",
-                        speedUpCost.toString()
-                      )}
+                      {
+                        (item.adProductionBonusReceived
+                          ? watchAdInstantFinishText
+                          : watchAdIncreaseProfitText)[language]
+                      }
                     </span>
-                    <ImageWebp
-                      src={cpImage}
-                      srcSet={cpImageWebp}
-                      alt="cash point"
-                      className={styles.cyberFarmProcessModal__btnImg}
-                    />
-                  </div>
-                </button>
-                <button
-                  onClick={onShowAd}
-                  className={styles.cyberFarmProcessModal__btn}
-                >
-                  <div className={styles.cyberFarmProcessModal__btnInner}>
-                    <span>{speedUpAdButtonText[language]}</span>
                     <img
                       src={adImage}
                       alt="cash point"
@@ -203,13 +183,13 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
           </TransitionProvider>
         </div>
         <Tooltip show={showTooltip} text={tooltipText[language]} />
-        <Tooltip show={showAdTooltip} text={addTooltipText} />
+        <Tooltip show={showAdTooltip} text={adTooltipText} />
       </div>
-      <LoadingOverlay loading={loading} />
-      <CloneFixedElementProvider
+      <LoadingOverlay loading={loading || adLoading} />
+      {/* <CloneFixedElementProvider
         id={ECyberfarmTutorialActions.speedUpProduce}
         onClick={async () => await onSpeedUp(undefined, true)}
-      />
+      /> */}
     </ModalWithAdd>
   );
 };

@@ -3,26 +3,31 @@ import { fetchRequest } from "../../tools/fetchTools";
 import { products } from "../../../constants/cyberfarm/products";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import {
-  BuyProductResponse,
   GetStorageResponse,
-  SellProductResponse,
   BuyResourceDeflictResponse,
   GetResourcesDeflictResponse,
+  GetProductPricesResponse,
+  GetProductionEstimateResponse,
 } from "../../../models/api/CyberFarm/Resources";
-import { FarmProductionChainsType } from "../../../types/FarmProductionChainsType";
 import { buySlot, harvest, produceSlot } from "./slotsSlice";
-import { exchange } from "./socialShopSlice";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
+import { FarmProductionEstimateType } from "../../../types/FarmProductionEstimateType";
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
+import { ExchangeResponse } from "../../../models/api/CyberFarm/Resources";
+import { FarmProductsSettingsType } from "../../../types/FarmProductsSettingsType";
 
 export interface ResourcesState {
   resources: Record<CyberFarmProductType, number>;
-  productCosts: Record<CyberFarmProductType, number>;
-  productionChains: FarmProductionChainsType | null;
+  productPrices: Record<
+    CyberFarmProductType,
+    {
+      price_buy: number;
+      price_sell: number;
+    }
+  >;
+  productionEstimate: FarmProductionEstimateType | null;
   resourceDeficit: FarmResourceDeficitType | null;
-  resourceTonValue: Partial<Record<CyberFarmProductType, number>>;
-  totalEstimatedCostInTon: number;
-  totalEstimatedCostInCp: number;
+  productsSettings: FarmProductsSettingsType | null;
 }
 
 const initialResources = Object.keys(products).reduce((acc, cur) => {
@@ -30,59 +35,22 @@ const initialResources = Object.keys(products).reduce((acc, cur) => {
   return acc;
 }, {} as ResourcesState["resources"]);
 
+const initialProductPrices = Object.keys(products).reduce((acc, cur) => {
+  acc[cur as CyberFarmProductType] = {
+    price_buy: 0,
+    price_sell: 0,
+  };
+  return acc;
+}, {} as ResourcesState["productPrices"]);
+
 const initialState: ResourcesState = {
   resources: initialResources,
-  productCosts: initialResources,
-  productionChains: null,
+  productPrices: initialProductPrices,
   resourceDeficit: null,
-  resourceTonValue: {},
-  totalEstimatedCostInTon: 0,
-  totalEstimatedCostInCp: 0,
+  productionEstimate: null,
+  productsSettings: null,
 };
 
-const buyProductUrl = "/ton_cyber_farm/buy_product/";
-export const buyProduct = createAsyncThunk<
-  BuyProductResponse,
-  { amount: number; product: CyberFarmProductType }
->("resources/buyProduct", async (payload, { rejectWithValue }) => {
-  try {
-    const resData = await fetchRequest<BuyProductResponse>(
-      buyProductUrl,
-      "POST",
-      {
-        product: payload.product,
-        amount: payload.amount,
-      }
-    );
-
-    return resData;
-  } catch (error: any) {
-    console.error("error", error);
-    return rejectWithValue(error);
-  }
-});
-
-const sellProductUrl = "/ton_cyber_farm/exchange_ton/";
-export const sellProduct = createAsyncThunk<
-  SellProductResponse,
-  { amount: number; product: CyberFarmProductType }
->("resources/sellProduct", async (payload, { rejectWithValue }) => {
-  try {
-    const resData = await fetchRequest<SellProductResponse>(
-      sellProductUrl,
-      "POST",
-      {
-        resource: payload.product,
-        amount: payload.amount,
-      }
-    );
-
-    return resData;
-  } catch (error: any) {
-    console.error("error", error);
-    return rejectWithValue(error);
-  }
-});
 const buyResourceDeflictUrl = "/ton_cyber_farm/buy_resource_deficit/";
 export const buyResourceDeflict = createAsyncThunk<
   BuyResourceDeflictResponse,
@@ -110,6 +78,25 @@ export const buyResourceDeflict = createAsyncThunk<
   }
 });
 
+const exchangeUrl = "/ton_cyber_farm/shop/";
+export const exchange = createAsyncThunk<
+  ExchangeResponse,
+  { product: CyberFarmProductType; amount: number; operation: "buy" | "sell" }
+>("resources/exchange", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<ExchangeResponse>(exchangeUrl, "POST", {
+      product: payload.product,
+      amount: payload.amount,
+      operation: payload.operation,
+    });
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
 const getStorageUrl = "/ton_cyber_farm/storage/";
 export const getStorage = createAsyncThunk<GetStorageResponse, undefined>(
   "resources/getStorage",
@@ -124,6 +111,22 @@ export const getStorage = createAsyncThunk<GetStorageResponse, undefined>(
     }
   }
 );
+const getProductPricesUrl = "/ton_cyber_farm/shop/prices/";
+export const getProductPrices = createAsyncThunk<
+  GetProductPricesResponse,
+  undefined
+>("resources/getProductPrices", async (_payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<GetProductPricesResponse>(
+      getProductPricesUrl
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
 
 const getResourcesDeflictUrl = "/ton_cyber_farm/resource_deficit/";
 export const getResourcesDeflict = createAsyncThunk<
@@ -142,43 +145,37 @@ export const getResourcesDeflict = createAsyncThunk<
   }
 });
 
+const getProductionEstimateUrl = "/ton_cyber_farm/production_estimate/";
+export const getProductionEstimate = createAsyncThunk<
+  GetProductionEstimateResponse,
+  undefined
+>("resources/getProductionEstimate", async (_payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<GetProductionEstimateResponse>(
+      getProductionEstimateUrl
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
 export const resourcesSlice = createSlice({
   name: "resourcesSlice",
   initialState,
   reducers: {
     getCyberFarmResources: (
       state,
-      {
-        payload: {
-          resources,
-          productCosts,
-          productionChains,
-          resourceTonValue,
-          resourceDeficit,
-        },
-      }
+      { payload: { resources, resourceDeficit, productsSettings } }
     ) => {
       state.resources = { ...state.resources, ...resources };
-      state.productCosts = { ...state.resources, ...productCosts };
-      if (productionChains) state.productionChains = productionChains;
-      if (resourceTonValue) state.resourceTonValue = resourceTonValue;
       if (resourceDeficit) state.resourceDeficit = resourceDeficit;
+      if (productsSettings) state.productsSettings = productsSettings;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(buyProduct.fulfilled, (state, { payload }) => {
-      state.resources = {
-        ...state.resources,
-        [payload.product]: state.resources[payload.product] + payload.amount,
-      };
-    });
-    builder.addCase(sellProduct.fulfilled, (state, { payload }) => {
-      state.resources = {
-        ...state.resources,
-        [payload.resource]:
-          state.resources[payload.resource] - payload.amount_exchanged,
-      };
-    });
     builder.addCase(buyResourceDeflict.fulfilled, (state, { payload }) => {
       const updatedResources: Partial<Record<CyberFarmProductType, number>> =
         {};
@@ -194,10 +191,10 @@ export const resourcesSlice = createSlice({
       };
     });
     builder.addCase(getStorage.fulfilled, (state, { payload }) => {
-      state.resourceTonValue = payload.resource_ton_value;
       state.resources = { ...state.resources, ...payload.resources };
-      state.totalEstimatedCostInTon = payload.estimated_cost.total_in_ton;
-      state.totalEstimatedCostInCp = payload.estimated_cost.total;
+    });
+    builder.addCase(getProductPrices.fulfilled, (state, { payload }) => {
+      state.productPrices = payload.prices;
     });
     builder.addCase(getResourcesDeflict.fulfilled, (state, { payload }) => {
       state.resourceDeficit = payload.resource_deficit;
@@ -222,14 +219,18 @@ export const resourcesSlice = createSlice({
         ...payload.resources,
       };
     });
+    builder.addCase(getProductionEstimate.fulfilled, (state, { payload }) => {
+      state.productionEstimate = payload.production_estimate;
+    });
     builder.addCase(produceSlot.fulfilled, (state, { payload }) => {
-      if (state.productionChains) {
-        const curProductproductionChains =
-          state.productionChains[payload.type]?.[payload.product].input;
+      if (state.productsSettings) {
+        const curProductproductionSettings =
+          state.productsSettings?.[payload.product]?.production?.[payload.type]
+            ?.requirements;
 
-        if (curProductproductionChains) {
+        if (curProductproductionSettings) {
           const updatedResources = Object.entries(
-            curProductproductionChains
+            curProductproductionSettings
           ).reduce((acc, [k, value]) => {
             const key = k as CyberFarmProductType;
             acc[key] = state.resources[key] - value;
@@ -245,20 +246,21 @@ export const resourcesSlice = createSlice({
     });
 
     builder.addCase(exchange.fulfilled, (state, { payload }) => {
-      const updatedRes: Partial<typeof state.resources> = {};
-
-      for (let k in payload.reward) {
-        const key = k as keyof typeof payload.reward;
-        if (key === "cash_point") continue;
-
-        updatedRes[key] = state.resources[key] + payload.reward[key];
+      if (
+        payload &&
+        payload.product &&
+        state.resources[payload.product] !== undefined
+      ) {
+        const amount = payload.amount_sold || payload.amount || 0;
+        state.resources = {
+          ...state.resources,
+          [payload.product]: Math.max(
+            0,
+            (state.resources[payload.product] ?? 0) +
+              (payload.operation === "sell" ? -amount : amount)
+          ),
+        };
       }
-
-      state.resources = {
-        ...state.resources,
-        metal_cactus: payload.cactus_left,
-        ...updatedRes,
-      };
     });
   },
 });

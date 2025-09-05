@@ -30,7 +30,7 @@ interface Props {
 
 const {
   talkText,
-  titleTonCyberFarm,
+  titleCyberFarm,
   titleMiniGames,
   titleInfluence,
   titleRPG,
@@ -40,7 +40,7 @@ const {
 } = TRANSLATIONS.onBoarding.main;
 
 const titleKeysMap: Record<string, { [key: string]: string }> = {
-  titleTonCyberFarm,
+  titleCyberFarm,
   titleMiniGames,
   titleRPG,
   titleStrategy,
@@ -70,7 +70,7 @@ type Option = {
 const options: Option[] = [
   {
     icon: <CyberFarmIcon />,
-    titleKey: "titleTonCyberFarm",
+    titleKey: "titleCyberFarm",
     link: cyberFarmPagePath,
     smallText: pay2EarnText,
     gameModeKey: "ton_cyber_farm",
