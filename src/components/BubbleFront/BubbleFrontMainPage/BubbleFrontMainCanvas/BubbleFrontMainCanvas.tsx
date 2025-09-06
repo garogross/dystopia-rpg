@@ -11,7 +11,6 @@ import {
   SVGResource,
   Texture,
 } from "pixi.js";
-import { getHexSvg } from "../../../../utils/influence/getHexSvg";
 import {
   lightingBallSpriteImage,
   chemicalBombSpriteImage,
@@ -800,13 +799,10 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
 
     const spriteBatch: Sprite[] = [];
 
-    const graphicsBatch: Sprite[] = [];
-
     const containerWidth = pixiContainer.current.getBoundingClientRect().width;
 
     // Calculate hex size to fit both width and height
     const hexSize = containerWidth / HEX_IN_LINE;
-    const halfHexSize = hexSize / 2;
     // Calculate the total width and height of the hex grid
     setHexSize(hexSize);
     const updatingHexes = [...hexes];
@@ -831,29 +827,42 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
           sprite.height = hexSize;
           spriteBatch.push(sprite);
         }
-
-        // load hex texture
-        const svgString = getHexSvg(halfHexSize, undefined, "#3D2B7E", [2, 4]);
-        const texture = Texture.from(svgString, {
-          resourceOptions: { scale: 1, resource: SVGResource }, // Important
-        });
-        const textureSprite = new Sprite(texture);
-
-        textureSprite.x = x;
-        textureSprite.y = y;
-
-        graphicsBatch.push(textureSprite);
       }
     }
+
+    // Add dashed line after last line
+    // Calculate the y position just below the last line of hexes
+    const lastLine = LINES_COUNT - 1;
+    const lastLineHexesInRow = hexes[lastLine].length;
+    const isLastLineOdd = lastLineHexesInRow < HEX_IN_LINE;
+    const yDashed = lastLine * hexSize * 0.8 + hexSize * 0.9; // slightly below last row
+
+    // Calculate start and end x for the dashed line
+    const xStart = isLastLineOdd ? hexSize / 2 : 0;
+    const xEnd =
+      (lastLineHexesInRow - 1) * hexSize +
+      (isLastLineOdd ? hexSize / 2 : 0) +
+      hexSize;
+
+    // Create SVG for dashed line
+    const dashedLineSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${
+      xEnd - xStart
+    }" height="4" viewBox="0 0 ${xEnd - xStart} 4">
+      <line x1="0" y1="2" x2="${
+        xEnd - xStart
+      }" y2="2" stroke="#3D2B7E" stroke-width="3" stroke-dasharray="8,8" />
+    </svg>`;
+    const dashedLineTexture = Texture.from(dashedLineSvg, {
+      resourceOptions: { scale: 1, resource: SVGResource },
+    });
+    const dashedLineSprite = new Sprite(dashedLineTexture);
+    dashedLineSprite.x = xStart;
+    dashedLineSprite.y = yDashed;
 
     setHexes(updatingHexes);
     // Add ball sprites to the layer
     spriteBatch.forEach((sprite) => hexLayerRef.current?.addChild(sprite));
-
-    // Add hex graphics to the layer
-    graphicsBatch.forEach((graphics) =>
-      hexLayerRef.current?.addChild(graphics)
-    );
+    hexLayerRef.current?.addChild(dashedLineSprite);
   };
 
   useEffect(() => {
