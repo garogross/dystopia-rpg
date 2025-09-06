@@ -1,1 +1,1 @@
-export { MissesIcon } from "./MissesIcon";
+export { DifficultyIcon } from "./DifficultyIcon";

@@ -38,6 +38,11 @@
       fill: $color-black;
     }
 
+    &:disabled {
+      color: $color-primary;
+      fill: $color-primary;
+    }
+
     & svg {
       fill: inherit;
       transition: $transition;
@@ -55,19 +60,6 @@
       width: 100%;
       height: 100%;
     }
-  }
-
-  &__gun {
-    width: 90px;
-    position: relative;
-    height: 100%;
-  }
-  &__gunImg {
-    width: 100%;
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
   }
 
   &__bottowmWings {

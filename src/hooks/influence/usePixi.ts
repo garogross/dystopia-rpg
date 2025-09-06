@@ -4,7 +4,8 @@ import { Application, Container, ICanvas } from "pixi.js";
 import { getPlatformType } from "../../utils/getPlatformType";
 
 export const usePixi = (
-  onInit?: (app: Application<ICanvas>, hexLayer: Container) => void
+  onInit?: (app: Application<ICanvas>, hexLayer: Container) => void,
+  centered?: boolean
 ) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -50,8 +51,10 @@ export const usePixi = (
       app.stage.addChild(hexLayer);
       hexLayerRef.current = hexLayer;
 
-      hexLayer.x = app.screen.width / 2;
-      hexLayer.y = app.screen.height / 2;
+      if (centered) {
+        hexLayer.x = app.screen.width / 2;
+        hexLayer.y = app.screen.height / 2;
+      }
 
       // Perf: avoid event crawling
       // hexLayer.interactiveChildren = false;
@@ -69,7 +72,11 @@ export const usePixi = (
           view.replaceWith(view.cloneNode(true));
           // Quick hack: clears all attached listeners
         }
-        appRef.current.destroy(true, { children: true, texture: true });
+        appRef.current.destroy(true, {
+          children: true,
+          texture: false,
+          baseTexture: false,
+        });
         appRef.current = undefined;
       }
       if (canvas && canvas.parentNode) {

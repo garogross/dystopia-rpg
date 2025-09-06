@@ -1,0 +1,79 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.bubbleFrontLevelDifficultyModal {
+  @include flexCol();
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 10px;
+
+  &__title {
+    @include setFont(12px, 400, $font-fam-bowler);
+    text-align: center;
+  }
+  &__text {
+    @include setFont(12px, 400);
+    max-width: 250px;
+    text-align: center;
+  }
+
+  &__optionsList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  &__option {
+    width: 100%;
+    @include button(
+      linear-gradient(90deg, #2e147f 0%, #090419 25.96%),
+      1px solid $color-primary
+    );
+    padding: 10px 12px;
+    @include flexCol();
+    gap: 12px;
+  }
+  &__optionMain {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    justify-content: flex-start;
+  }
+  &__optionHeader {
+    @include flexCol(space-between);
+    gap: 10px;
+  }
+  &__optionNameText {
+    @include setFont(14px, 400, $font-fam-bowler);
+  }
+  &__selectedMark {
+    padding: 1px;
+    @include flexCol();
+    background: $color-primary;
+  }
+  &__selectedMarkInner {
+    padding: 4px 10px;
+    background: $color-black;
+    @include setFont(14px, 400, $font-fam-lcdnova, $color-primary);
+  }
+
+  &__selectedMark,
+  &__selectedMarkInner {
+    clip-path: polygon(
+      100% 20%,
+      95.7% 0%,
+      5.9% 0%,
+      0% 20.5%,
+      0% 80.5%,
+      5.9% 100%,
+      95.7% 100%,
+      100% 80.5%,
+      100% 20%
+    );
+  }
+  &__optionDescription {
+    @include setFont(14px, 200);
+    text-align: left;
+  }
+}
