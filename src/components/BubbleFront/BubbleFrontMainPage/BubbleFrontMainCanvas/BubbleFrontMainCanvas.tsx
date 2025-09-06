@@ -30,8 +30,7 @@ import { Rectangle } from "pixi.js";
 import { getAngle } from "../../../../utils/bubbleFront/getAngle";
 import { BUBBLE_FRONT_LEVELS_SETTINGS } from "../../../../constants/bubbleFront/BubbleFrontLevelsSettings";
 import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
-import { useSoltAd } from "../../../../hooks/useSlotAd";
-import { EAdSlots } from "../../../../constants/EAdSlots";
+import { useSessionAd } from "../../../../hooks/miniGames/useSessionAd";
 
 const HEX_IN_LINE = 15;
 const LINES_COUNT = 17;
@@ -210,9 +209,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const [played, setPlayed] = useState(false);
   const [miniNecroBallOrder, setMiniNecroBallOrder] = useState(1);
 
-  const { onShow: onShowAd, loading } = useSoltAd(
-    EAdSlots.MiniGamesSessionSlot
-  );
+  const { onShowAd, loading } = useSessionAd();
   const hexSizeRef = useCopyRef(hexSize);
   const hexesRef = useCopyRef(hexes);
   const readyBallsRef = useCopyRef(readyBalls);
