@@ -35,7 +35,7 @@ import { EAdSlots } from "../../../../constants/EAdSlots";
 
 const HEX_IN_LINE = 15;
 const LINES_COUNT = 17;
-const DEFAULT_HEX_LINES_COUNT = 3;
+const DEFAULT_HEX_LINES_COUNT = 8;
 const MOVE_SPEED = 15; // Adjust speed as needed
 const SCALE_SPEED = 0.03; // Adjust speed as needed (0..1 per frame)
 const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
