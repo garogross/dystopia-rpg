@@ -42,9 +42,9 @@ const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
 const MIN_CLUSTERS = 3;
 const NECRO_BALL_RADIUSES = {
   [EBubbleFrontBalls.NEKRO_BALL]: 3,
-  [EBubbleFrontBalls.MINI_NEKRO_BALL]: 1,
+  [EBubbleFrontBalls.MINI_NEKRO_BALL]: 2,
 };
-const MINI_NEKRO_BALL_SHOW_FROM = 15;
+const MINI_NEKRO_BALL_SHOW_FROM = 10;
 const SCORE_PER_BALL = 100;
 const BALL_ANIMATION_DURATION_MS = 500;
 
