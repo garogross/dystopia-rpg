@@ -12,7 +12,10 @@ import {
   iceBallImageWebp,
   lightingBallImage,
   lightingBallImageWebp,
+  miniNecroBallImage,
+  miniNecroBallImageWebp,
   nekroBallImage,
+  nekroBallImageWebp,
   nuclearBallImage,
   nuclearBallImageWebp,
 } from "../../../../assets/imageMaps";
@@ -29,7 +32,11 @@ const BALLS = {
   [EBubbleFrontBalls.ICE_BALL]: [iceBallImage, iceBallImageWebp],
   [EBubbleFrontBalls.LIGHTING_BALL]: [lightingBallImage, lightingBallImageWebp],
   [EBubbleFrontBalls.NUCLEAR_BALL]: [nuclearBallImage, nuclearBallImageWebp],
-  [EBubbleFrontBalls.NEKRO_BALL]: [nekroBallImage, nekroBallImage],
+  [EBubbleFrontBalls.NEKRO_BALL]: [nekroBallImage, nekroBallImageWebp],
+  [EBubbleFrontBalls.MINI_NEKRO_BALL]: [
+    miniNecroBallImage,
+    miniNecroBallImageWebp,
+  ],
 };
 
 const BubbleFrontGun = () => {

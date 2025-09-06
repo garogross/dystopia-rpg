@@ -11,7 +11,6 @@ import {
   SVGResource,
   Texture,
 } from "pixi.js";
-import { getHexSvg } from "../../../../utils/influence/getHexSvg";
 import {
   lightingBallSpriteImage,
   chemicalBombSpriteImage,
@@ -19,6 +18,7 @@ import {
   iceBallSpriteImage,
   nuclearBallSpriteImage,
   nekroBallSpriteImage,
+  miniNecroBallSpriteImage,
 } from "../../../../assets/imageMaps";
 import { BUBBLE_FRONT_GUN_ID } from "../../../../constants/bubbleFront/bubbleFrontGunId";
 import { useCopyRef } from "../../../../hooks/useCopyRef";
@@ -29,16 +29,22 @@ import BubbleFrontMainGameOverModal from "../BubbleFrontMainGameOverModal/Bubble
 import { Rectangle } from "pixi.js";
 import { getAngle } from "../../../../utils/bubbleFront/getAngle";
 import { BUBBLE_FRONT_LEVELS_SETTINGS } from "../../../../constants/bubbleFront/BubbleFrontLevelsSettings";
+import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
+import { useSessionAd } from "../../../../hooks/miniGames/useSessionAd";
 
 const HEX_IN_LINE = 15;
-const LINES_COUNT = 10;
-const DEFAULT_HEX_LINES_COUNT = 3;
+const LINES_COUNT = 17;
+const DEFAULT_HEX_LINES_COUNT = 8;
 const MOVE_SPEED = 15; // Adjust speed as needed
 const SCALE_SPEED = 0.03; // Adjust speed as needed (0..1 per frame)
 const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
 // Minimum number of connected balls required to form a cluster for removal
 const MIN_CLUSTERS = 3;
-const NEKRO_BALL_RADIUS = 3;
+const NECRO_BALL_RADIUSES = {
+  [EBubbleFrontBalls.NEKRO_BALL]: 3,
+  [EBubbleFrontBalls.MINI_NEKRO_BALL]: 1,
+};
+const MINI_NEKRO_BALL_SHOW_FROM = 15;
 const SCORE_PER_BALL = 100;
 const BALL_ANIMATION_DURATION_MS = 500;
 
@@ -56,12 +62,13 @@ const BALLS = {
   [EBubbleFrontBalls.NUCLEAR_BALL]: Texture.from(nuclearBallSpriteImage),
   // NEKRO_BALL always need to be end
   [EBubbleFrontBalls.NEKRO_BALL]: Texture.from(nekroBallSpriteImage),
+  [EBubbleFrontBalls.MINI_NEKRO_BALL]: Texture.from(miniNecroBallSpriteImage),
 };
 const ballKeys = Object.keys(BALLS) as (keyof typeof BALLS)[];
 
 const getRandomBall = () =>
   ballKeys[
-    Math.floor(Math.random() * (ballKeys.length - 1)) // -1 for not select NEKRO_BALL
+    Math.floor(Math.random() * (ballKeys.length - 2)) // -1 for not select NEKRO_BALL and MINI_NEKRO_BALL
   ];
 
 // Generic spritesheet slicer (horizontal strip). Frame size is fixed to 82x82.
@@ -200,11 +207,14 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isStriking, setIsStriking] = useState(false);
   const [played, setPlayed] = useState(false);
+  const [miniNecroBallOrder, setMiniNecroBallOrder] = useState(1);
 
+  const { onShowAd, loading } = useSessionAd();
   const hexSizeRef = useCopyRef(hexSize);
   const hexesRef = useCopyRef(hexes);
   const readyBallsRef = useCopyRef(readyBalls);
   const isStrikingRef = useCopyRef(isStriking);
+  const miniNecroBallOrderRef = useCopyRef(miniNecroBallOrder);
   const hexesWithBalls = hexes.flat().filter((item) => item.ball);
 
   const maxTurnCounter = BUBBLE_FRONT_LEVELS_SETTINGS[curDifficultylevel];
@@ -444,10 +454,15 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
 
     // 1) Decide which tiles are initially removed
     let initialRemovals: IHex[] = [];
-    if (ballType === EBubbleFrontBalls.NEKRO_BALL) {
+    if (
+      [
+        EBubbleFrontBalls.NEKRO_BALL,
+        EBubbleFrontBalls.MINI_NEKRO_BALL,
+      ].includes(ballType)
+    ) {
       initialRemovals = getHexesWithinRadius(
         closestHex,
-        NEKRO_BALL_RADIUS,
+        NECRO_BALL_RADIUSES[ballType as keyof typeof NECRO_BALL_RADIUSES],
         updatingHexes
       ).filter((h) => h.ball) as IHex[];
     } else {
@@ -517,8 +532,16 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   ) => {
     const updatingReadyBalls = [...readyBalls] as typeof readyBalls;
     updatingReadyBalls.shift();
-    updatingReadyBalls.push(getRandomBall());
+
+    const nextBall =
+      miniNecroBallOrderRef.current === MINI_NEKRO_BALL_SHOW_FROM - 1
+        ? EBubbleFrontBalls.MINI_NEKRO_BALL
+        : getRandomBall();
+    updatingReadyBalls.push(nextBall);
     dispatch(setNextBalls(updatingReadyBalls));
+    setMiniNecroBallOrder((prev) =>
+      prev >= MINI_NEKRO_BALL_SHOW_FROM ? 0 : prev + 1
+    );
   };
 
   // Helper function to place ball in hex grid
@@ -779,13 +802,10 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
 
     const spriteBatch: Sprite[] = [];
 
-    const graphicsBatch: Sprite[] = [];
-
     const containerWidth = pixiContainer.current.getBoundingClientRect().width;
 
     // Calculate hex size to fit both width and height
     const hexSize = containerWidth / HEX_IN_LINE;
-    const halfHexSize = hexSize / 2;
     // Calculate the total width and height of the hex grid
     setHexSize(hexSize);
     const updatingHexes = [...hexes];
@@ -810,29 +830,42 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
           sprite.height = hexSize;
           spriteBatch.push(sprite);
         }
-
-        // load hex texture
-        const svgString = getHexSvg(halfHexSize, undefined, "#3D2B7E", [2, 4]);
-        const texture = Texture.from(svgString, {
-          resourceOptions: { scale: 1, resource: SVGResource }, // Important
-        });
-        const textureSprite = new Sprite(texture);
-
-        textureSprite.x = x;
-        textureSprite.y = y;
-
-        graphicsBatch.push(textureSprite);
       }
     }
+
+    // Add dashed line after last line
+    // Calculate the y position just below the last line of hexes
+    const lastLine = LINES_COUNT - 1;
+    const lastLineHexesInRow = hexes[lastLine].length;
+    const isLastLineOdd = lastLineHexesInRow < HEX_IN_LINE;
+    const yDashed = lastLine * hexSize * 0.8 + hexSize * 0.9; // slightly below last row
+
+    // Calculate start and end x for the dashed line
+    const xStart = isLastLineOdd ? hexSize / 2 : 0;
+    const xEnd =
+      (lastLineHexesInRow - 1) * hexSize +
+      (isLastLineOdd ? hexSize / 2 : 0) +
+      hexSize;
+
+    // Create SVG for dashed line
+    const dashedLineSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${
+      xEnd - xStart
+    }" height="4" viewBox="0 0 ${xEnd - xStart} 4">
+      <line x1="0" y1="2" x2="${
+        xEnd - xStart
+      }" y2="2" stroke="#3D2B7E" stroke-width="3" stroke-dasharray="8,8" />
+    </svg>`;
+    const dashedLineTexture = Texture.from(dashedLineSvg, {
+      resourceOptions: { scale: 1, resource: SVGResource },
+    });
+    const dashedLineSprite = new Sprite(dashedLineTexture);
+    dashedLineSprite.x = xStart;
+    dashedLineSprite.y = yDashed;
 
     setHexes(updatingHexes);
     // Add ball sprites to the layer
     spriteBatch.forEach((sprite) => hexLayerRef.current?.addChild(sprite));
-
-    // Add hex graphics to the layer
-    graphicsBatch.forEach((graphics) =>
-      hexLayerRef.current?.addChild(graphics)
-    );
+    hexLayerRef.current?.addChild(dashedLineSprite);
   };
 
   useEffect(() => {
@@ -844,6 +877,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         LINES_COUNT
       ) {
         setGameOver(true);
+        onShowAd();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -877,6 +911,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         onReset={onReset}
         score={score}
       />
+      <LoadingOverlay loading={loading} />
     </div>
   );
 };

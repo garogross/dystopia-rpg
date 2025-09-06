@@ -33,6 +33,7 @@ import { initInfluence, restoreAP } from "./influence/influenceSlice";
 import { initSettings } from "./influence/settingsSlice";
 import { initMap } from "./influence/mapSlice";
 import { initMail, receiveMailReward } from "./influence/mailSlice";
+import { EAdSlots } from "../../constants/EAdSlots";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -402,7 +403,8 @@ export const profileSlice = createSlice({
       if (
         +payload.reward &&
         payload.status === "ok" &&
-        !payload.bonus_distribution
+        !payload.bonus_distribution &&
+        payload.slot_id !== EAdSlots.MiniGamesSessionSlot
       ) {
         state.stats.cp += +payload.reward;
       }

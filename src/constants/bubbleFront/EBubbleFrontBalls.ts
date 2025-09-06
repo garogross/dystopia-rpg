@@ -5,4 +5,5 @@ export enum EBubbleFrontBalls {
   LIGHTING_BALL = "lightingBall",
   NUCLEAR_BALL = "nuclearBall",
   NEKRO_BALL = "nekroBall",
+  MINI_NEKRO_BALL = "miniNekroBall",
 }

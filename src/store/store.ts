@@ -6,6 +6,7 @@ import duelsReducer from "./slices/duelsSlice";
 import refferencesReducer from "./slices/refferencesSlice";
 import clanReducer from "./slices/clanSlice";
 import tasksSlice from "./slices/tasksSlice";
+import miniGamesReducer from "./slices/miniGamesSlice";
 import { cyberfarmReducer } from "./slices/cyberFarm";
 import { hackterminalReducer } from "./slices/hackTerminal";
 import { puzzleReducer } from "./slices/puzzle";
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   puzzle: puzzleReducer,
   influence: influenceReducer,
   bubbleFront: bubbleFrontReducer,
+  miniGames: miniGamesReducer,
 });
 
 export const store = () => {

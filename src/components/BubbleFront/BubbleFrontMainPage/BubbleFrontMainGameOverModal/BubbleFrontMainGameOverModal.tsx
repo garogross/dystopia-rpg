@@ -32,7 +32,7 @@ const BubbleFrontMainGameOverModal: React.FC<Props> = ({
     >
       <div className={styles.bubbleFrontMainGameOverModal}>
         <p className={styles.bubbleFrontMainGameOverModal__scoreText}>
-          {collectedScoreText[language]}: {score} (10 CP)
+          {collectedScoreText[language]}: {score}
         </p>
         <MainBtn
           innerClass={styles.bubbleFrontMainGameOverModal__btn}
