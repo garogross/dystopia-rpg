@@ -2109,8 +2109,8 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Набрано очков",
         },
         restartButtonText: {
-          [ELanguages.en]: "Restart",
-          [ELanguages.ru]: "Перезапустить",
+          [ELanguages.en]: "Play again",
+          [ELanguages.ru]: "Играть еще раз",
         },
       },
     },
