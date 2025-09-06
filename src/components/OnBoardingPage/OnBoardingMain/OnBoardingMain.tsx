@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 
 import styles from "./OnBoardingMain.module.scss";
-import { CyberFarmIcon, InfluenceIcon } from "../../layout/icons/OnBoarding";
+import {
+  CyberFarmIcon,
+  InfluenceIcon,
+  MiniGamesIcon,
+} from "../../layout/icons/OnBoarding";
 import {
   cyberFarmPagePath,
   influencePagePath,
+  miniGamesPagePath,
 } from "../../../router/constants";
 import { Link } from "react-router-dom";
 import { onBoardingGirl2Video } from "../../../assets/videos";
@@ -78,13 +83,13 @@ const options: Option[] = [
     link: influencePagePath,
     // gameModeKey: "mini_games",
   },
-  // {
-  //   icon: <MiniGamesIcon />,
-  //   titleKey: "titleMiniGames",
-  //   smallText: comingSoonText,
-  //   link: miniGamesPagePath,
-  //   // gameModeKey: "mini_games",
-  // },
+  {
+    icon: <MiniGamesIcon />,
+    titleKey: "titleMiniGames",
+    smallText: comingSoonText,
+    link: miniGamesPagePath,
+    // gameModeKey: "mini_games",
+  },
   // {
   //   icon: <RPGIcon />,
   //   titleKey: "titleRPG",

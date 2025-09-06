@@ -10,7 +10,7 @@ import { ELanguages } from "../../constants/ELanguages";
 import { useTelegram } from "../../hooks/useTelegram";
 import { setLSItem } from "../../helpers/localStorage";
 import { ELSProps } from "../../constants/ELSProps";
-import { useSoltAd } from "../../hooks/useSlotId";
+import { useSoltAd } from "../../hooks/useSlotAd";
 import Tooltip from "../layout/Tooltip/Tooltip";
 
 interface Props {

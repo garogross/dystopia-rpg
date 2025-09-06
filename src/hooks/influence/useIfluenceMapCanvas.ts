@@ -157,7 +157,10 @@ export const useIfluenceMapCanvas = () => {
     );
   };
 
-  const { isInitialized, pixiContainer, appRef, hexLayerRef } = usePixi(onInit);
+  const { isInitialized, pixiContainer, appRef, hexLayerRef } = usePixi(
+    onInit,
+    true
+  );
 
   return {
     isInitialized,

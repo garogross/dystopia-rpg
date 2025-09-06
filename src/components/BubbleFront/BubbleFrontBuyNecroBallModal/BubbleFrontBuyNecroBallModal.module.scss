@@ -1,0 +1,68 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.bubbleFrontBuyNecroBallModal {
+  @include flexCol();
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 10px;
+
+  &__title {
+    @include setFont(12px, 400, $font-fam-bowler);
+    text-align: center;
+  }
+  &__text {
+    @include setFont(12px, 400);
+    max-width: 250px;
+    text-align: center;
+  }
+
+  &__img {
+    max-width: 100%;
+  }
+  &__btnsWrapper {
+    @include flexCol();
+    gap: 10px;
+    width: 100%;
+  }
+  &__btn {
+    @include button($color-primary);
+    padding: 1px;
+    width: 100%;
+    height: 32px;
+  }
+  &__btnInner {
+    width: 100%;
+    height: 100%;
+    @include flexCol();
+    gap: 5px;
+    background: $color-primary-dark-radial-gradient;
+    @include setFont(12px, 400);
+  }
+
+  &__btn:first-child,
+  &__btn:first-child &__btnInner {
+    clip-path: polygon(
+      0% 15%,
+      5% 0%,
+      100% 0%,
+      100% 100%,
+      5% 100%,
+      0% 85%,
+      0% 15%
+    );
+  }
+
+  &__btn:last-child,
+  &__btn:last-child &__btnInner {
+    clip-path: polygon(
+      100% 15%,
+      100% 85%,
+      95% 100%,
+      0% 100%,
+      0% 0%,
+      95% 0%,
+      100% 15%
+    );
+  }
+}
