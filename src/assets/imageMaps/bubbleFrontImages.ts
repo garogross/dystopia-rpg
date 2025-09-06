@@ -24,6 +24,9 @@ import gunFireImageWebp from "../images/BubbleFront/BottomNavbar/gunFire.webp";
 
 import buyNecroballImage from "../images/BubbleFront/BubbleFrontMainBuyNecroBallModal/buyNecroball.png";
 import buyNecroballImageWebp from "../images/BubbleFront/BubbleFrontMainBuyNecroBallModal/buyNecroball.webp";
+import miniNecroBallImage from "../images/BubbleFront/balls/miniNecroBall.png";
+import miniNecroBallImageWebp from "../images/BubbleFront/balls/miniNecroBall.webp";
+import miniNecroBallSpriteImage from "../images/BubbleFront/balls/miniNecroBallSprite.png";
 
 export {
   chemicalBombImage,
@@ -48,6 +51,9 @@ export {
   nekroBallImage,
   nekroBallImageWebp,
   nekroBallSpriteImage,
+  miniNecroBallImage,
+  miniNecroBallImageWebp,
+  miniNecroBallSpriteImage,
   buyNecroballImage,
   buyNecroballImageWebp,
 };

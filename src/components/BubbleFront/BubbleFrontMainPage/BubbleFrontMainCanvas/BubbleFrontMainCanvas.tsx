@@ -19,6 +19,7 @@ import {
   iceBallSpriteImage,
   nuclearBallSpriteImage,
   nekroBallSpriteImage,
+  miniNecroBallSpriteImage,
 } from "../../../../assets/imageMaps";
 import { BUBBLE_FRONT_GUN_ID } from "../../../../constants/bubbleFront/bubbleFrontGunId";
 import { useCopyRef } from "../../../../hooks/useCopyRef";
@@ -38,7 +39,11 @@ const SCALE_SPEED = 0.03; // Adjust speed as needed (0..1 per frame)
 const TOUCHABLE_RADIUS = 0.6; // 1 - width size, min value 0.1
 // Minimum number of connected balls required to form a cluster for removal
 const MIN_CLUSTERS = 3;
-const NEKRO_BALL_RADIUS = 3;
+const NECRO_BALL_RADIUSES = {
+  [EBubbleFrontBalls.NEKRO_BALL]: 3,
+  [EBubbleFrontBalls.MINI_NEKRO_BALL]: 1,
+};
+const MINI_NEKRO_BALL_SHOW_FROM = 15;
 const SCORE_PER_BALL = 100;
 const BALL_ANIMATION_DURATION_MS = 500;
 
@@ -56,12 +61,13 @@ const BALLS = {
   [EBubbleFrontBalls.NUCLEAR_BALL]: Texture.from(nuclearBallSpriteImage),
   // NEKRO_BALL always need to be end
   [EBubbleFrontBalls.NEKRO_BALL]: Texture.from(nekroBallSpriteImage),
+  [EBubbleFrontBalls.MINI_NEKRO_BALL]: Texture.from(miniNecroBallSpriteImage),
 };
 const ballKeys = Object.keys(BALLS) as (keyof typeof BALLS)[];
 
 const getRandomBall = () =>
   ballKeys[
-    Math.floor(Math.random() * (ballKeys.length - 1)) // -1 for not select NEKRO_BALL
+    Math.floor(Math.random() * (ballKeys.length - 2)) // -1 for not select NEKRO_BALL and MINI_NEKRO_BALL
   ];
 
 // Generic spritesheet slicer (horizontal strip). Frame size is fixed to 82x82.
@@ -200,11 +206,13 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isStriking, setIsStriking] = useState(false);
   const [played, setPlayed] = useState(false);
+  const [miniNecroBallOrder, setMiniNecroBallOrder] = useState(1);
 
   const hexSizeRef = useCopyRef(hexSize);
   const hexesRef = useCopyRef(hexes);
   const readyBallsRef = useCopyRef(readyBalls);
   const isStrikingRef = useCopyRef(isStriking);
+  const miniNecroBallOrderRef = useCopyRef(miniNecroBallOrder);
   const hexesWithBalls = hexes.flat().filter((item) => item.ball);
 
   const maxTurnCounter = BUBBLE_FRONT_LEVELS_SETTINGS[curDifficultylevel];
@@ -444,10 +452,15 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
 
     // 1) Decide which tiles are initially removed
     let initialRemovals: IHex[] = [];
-    if (ballType === EBubbleFrontBalls.NEKRO_BALL) {
+    if (
+      [
+        EBubbleFrontBalls.NEKRO_BALL,
+        EBubbleFrontBalls.MINI_NEKRO_BALL,
+      ].includes(ballType)
+    ) {
       initialRemovals = getHexesWithinRadius(
         closestHex,
-        NEKRO_BALL_RADIUS,
+        NECRO_BALL_RADIUSES[ballType as keyof typeof NECRO_BALL_RADIUSES],
         updatingHexes
       ).filter((h) => h.ball) as IHex[];
     } else {
@@ -517,8 +530,16 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   ) => {
     const updatingReadyBalls = [...readyBalls] as typeof readyBalls;
     updatingReadyBalls.shift();
-    updatingReadyBalls.push(getRandomBall());
+
+    const nextBall =
+      miniNecroBallOrderRef.current === MINI_NEKRO_BALL_SHOW_FROM - 1
+        ? EBubbleFrontBalls.MINI_NEKRO_BALL
+        : getRandomBall();
+    updatingReadyBalls.push(nextBall);
     dispatch(setNextBalls(updatingReadyBalls));
+    setMiniNecroBallOrder((prev) =>
+      prev >= MINI_NEKRO_BALL_SHOW_FROM ? 0 : prev + 1
+    );
   };
 
   // Helper function to place ball in hex grid
