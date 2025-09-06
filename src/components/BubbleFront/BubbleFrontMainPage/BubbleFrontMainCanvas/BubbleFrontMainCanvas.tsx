@@ -31,7 +31,7 @@ import { getAngle } from "../../../../utils/bubbleFront/getAngle";
 import { BUBBLE_FRONT_LEVELS_SETTINGS } from "../../../../constants/bubbleFront/BubbleFrontLevelsSettings";
 
 const HEX_IN_LINE = 15;
-const LINES_COUNT = 10;
+const LINES_COUNT = 17;
 const DEFAULT_HEX_LINES_COUNT = 3;
 const MOVE_SPEED = 15; // Adjust speed as needed
 const SCALE_SPEED = 0.03; // Adjust speed as needed (0..1 per frame)
