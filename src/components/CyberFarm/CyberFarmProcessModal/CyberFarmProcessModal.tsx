@@ -19,8 +19,9 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { useFarmFieldProgress } from "../../../hooks/useFarmFieldProgress";
-import { useSoltAd } from "../../../hooks/useSlotId";
+import { useSoltAd } from "../../../hooks/useSlotAd";
 import { ClaimAdRewardActionType } from "../../../types/tasks/ClaimAdRewardActionType";
+import { EAdSlots } from "../../../constants/EAdSlots";
 
 interface Props {
   show: boolean;
@@ -72,7 +73,7 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
     tooltipText: adTooltipText,
     loading: adLoading,
   } = useSoltAd(
-    "slot_1",
+    EAdSlots.CyberfarmActionSlot,
     gameAction,
     item.id,
     onHarvest,

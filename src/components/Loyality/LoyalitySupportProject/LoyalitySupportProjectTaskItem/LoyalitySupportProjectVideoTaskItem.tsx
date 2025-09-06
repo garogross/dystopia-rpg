@@ -6,7 +6,8 @@ import TransitionProvider, {
 } from "../../../../providers/TransitionProvider";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import styles from "./LoyalitySupportProjectTaskItem.module.scss";
-import { useSoltAd } from "../../../../hooks/useSlotId";
+import { useSoltAd } from "../../../../hooks/useSlotAd";
+import { EAdSlots } from "../../../../constants/EAdSlots";
 
 const { watchAdAndGetCpText, watchAdText } = TRANSLATIONS.common;
 
@@ -21,7 +22,9 @@ const LoyalitySupportProjectVideoTaskItem = ({
   onLoadingUpdate: (loading: boolean) => void;
   disabled: boolean;
 }) => {
-  const { onShow, showTooltip, tooltipText, loading } = useSoltAd("slot_2");
+  const { onShow, showTooltip, tooltipText, loading } = useSoltAd(
+    EAdSlots.SupportProjectSlot
+  );
 
   useEffect(() => {
     onLoadingUpdate(loading);
