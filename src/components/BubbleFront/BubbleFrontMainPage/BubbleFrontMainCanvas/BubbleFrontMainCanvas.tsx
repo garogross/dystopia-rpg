@@ -907,7 +907,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
 
   useEffect(() => {
     if (readyBalls?.length) {
-      // onReset();
+      onReset();
       if (!played) updateCanvas(); // update manulay becouse it will not work if length of hexes not changed
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
