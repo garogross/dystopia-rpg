@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { usePixi } from "../../../../hooks/influence/usePixi";
 
 import styles from "./BubbleFrontMainCanvas.module.scss";
@@ -196,6 +196,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const readyBalls = useAppSelector(
     (state) => state.bubbleFront.global.nextBalls
   );
+
   const curDifficultylevel = useAppSelector(
     (state) => state.bubbleFront.global.curDifficultylevel
   );
@@ -216,6 +217,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const isStrikingRef = useCopyRef(isStriking);
   const miniNecroBallOrderRef = useCopyRef(miniNecroBallOrder);
   const hexesWithBalls = hexes.flat().filter((item) => item.ball);
+  const strikeLockRef = useRef(false);
 
   const maxTurnCounter = BUBBLE_FRONT_LEVELS_SETTINGS[curDifficultylevel];
 
@@ -560,7 +562,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     });
   };
 
-  const onStikeBubbleTouch = (
+  const onStikeBubbleTouch = async (
     ballSprite: Sprite,
     emptyFirstRow: IHex[],
     ballType: EBubbleFrontBalls,
@@ -576,7 +578,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
       // Place the ball in the closest empty first-row hex
       placeBallInHex(closestHex, ballType, setHexes);
 
-      removeClustersAndUpdateScore(
+      await removeClustersAndUpdateScore(
         // clusters,
         // floatingClusters,
         // updatingHexes,
@@ -591,9 +593,8 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
 
     hexLayer.removeChild(ballSprite);
     ballSprite.destroy();
-    setTimeout(() => {
-      setIsStriking(false);
-    }, 400);
+    setIsStriking(false);
+    strikeLockRef.current = false;
   };
 
   const strikeBall = (
@@ -601,7 +602,8 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
     hexLayer: Container,
     clientPosition: { clientX: number; clientY: number }
   ) => {
-    if (isStrikingRef.current) return;
+    if (isStrikingRef.current || strikeLockRef.current) return;
+    strikeLockRef.current = true;
     setIsStriking(true);
     setPlayed(true);
     const { centerX, centerY, rotation } = getGunSettings(
@@ -622,6 +624,7 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
       ballSprite.scale.set(0);
       ballSprite.x = centerX - (canvasRect?.x || 0);
       ballSprite.y = centerY - (canvasRect?.y || 0);
+      ballSprite.name = "projectile";
 
       // Add ball to the hex layer
       hexLayer.addChild(ballSprite);
@@ -650,7 +653,16 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
 
       // Animation function
       const animateBall = () => {
-        if (!ballSprite) return;
+        // If sprite has been destroyed or detached, stop the loop safely
+        if (
+          !ballSprite ||
+          (ballSprite as any).destroyed ||
+          !ballSprite.parent
+        ) {
+          setIsStriking(false);
+          strikeLockRef.current = false;
+          return;
+        }
 
         ballSprite.x -= velocityX;
         ballSprite.y -= velocityY;
@@ -672,6 +684,11 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         } else if (ballSprite.x + currentRadius >= app.screen.width) {
           ballSprite.x = app.screen.width - currentRadius;
           velocityX = -velocityX;
+        }
+
+        if (ballSprite.destroyed || !!ballSprite.parent) {
+          // for test
+          console.log("ballSprite", ballSprite.destroyed, !!ballSprite.parent);
         }
 
         // If hits top (y <= 0), snap to closest empty hex in the first row
