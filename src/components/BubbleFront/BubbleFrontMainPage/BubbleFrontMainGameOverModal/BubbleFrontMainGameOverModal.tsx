@@ -21,11 +21,14 @@ const BubbleFrontMainGameOverModal: React.FC<Props> = ({
   onReset,
 }) => {
   const language = useAppSelector((state) => state.ui.language);
-
+  const handleRestart = () => {
+    if (!show) return;
+    onReset();
+  };
   return (
     <ModalWithAdd
       show={show}
-      onClose={onReset}
+      onClose={handleRestart}
       title={titleText[language]}
       hideAd
       titleClass={styles.bubbleFrontMainGameOverModal__title}
@@ -36,7 +39,7 @@ const BubbleFrontMainGameOverModal: React.FC<Props> = ({
         </p>
         <MainBtn
           innerClass={styles.bubbleFrontMainGameOverModal__btn}
-          onClick={onReset}
+          onClick={handleRestart}
         >
           {restartButtonText[language]}
         </MainBtn>
