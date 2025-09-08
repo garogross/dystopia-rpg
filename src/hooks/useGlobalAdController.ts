@@ -112,10 +112,41 @@ export const useGlobalAdController = (
         }
         case EadProviders.Taddy: {
           if (type === EAdActionTypes.Video) {
-            const success = await window.Taddy.ads().interstitial({
+            // Workaround for Taddy SDK bug: check for iframe after 5s, reject if not found
+            let iframeCheckTimeout: NodeJS.Timeout | number | undefined;
+            let didTimeout = false;
+
+            const interstitialPromise = window.Taddy.ads().interstitial({
               onClosed: () => console.dir("Объявление закрыто"),
               onViewThrough: (id: string) => scsClb?.(id || "id"),
             });
+
+            // Create a race between the ad promise and our iframe check
+            const success = await Promise.race([
+              interstitialPromise,
+              new Promise((_, reject) => {
+                iframeCheckTimeout = setTimeout(() => {
+                  const hasIframe = [
+                    ...(document.querySelector("html")?.children || []),
+                  ].find((item) => item.tagName.toLowerCase() === "iframe");
+                  console.log({ hasIframe });
+
+                  if (!hasIframe) {
+                    didTimeout = true;
+                    reject(new Error("Taddy ad did not show iframe in time"));
+                  }
+                }, 6000);
+              }),
+            ]).catch((err) => {
+              // If we rejected due to missing iframe, call error callback
+              if (didTimeout) {
+                errClb?.(true);
+              }
+              return false;
+            });
+
+            // Clean up timeout if ad resolved first
+            if (iframeCheckTimeout) clearTimeout(iframeCheckTimeout);
             if (!success) errClb?.(true);
           }
           break;

@@ -29,14 +29,14 @@ export const useSoltAd = (slotId: string) => {
   const { show: showTooltip, openTooltip } = useTooltip();
 
   const curSlotDetails = mediation?.[slotId];
-  const adType =
-    curSlotDetails && "ad_type" in curSlotDetails
-      ? curSlotDetails.ad_type
-      : EAdActionTypes.Video;
-  const provider =
-    curSlotDetails && "provider" in curSlotDetails
-      ? curSlotDetails.provider
-      : EadProviders.Gigapub;
+  const adType = EAdActionTypes.Video;
+  // curSlotDetails && "ad_type" in curSlotDetails
+  //   ? curSlotDetails.ad_type
+  //   : EAdActionTypes.Video;
+  const provider = EadProviders.Taddy;
+  // curSlotDetails && "provider" in curSlotDetails
+  //   ? curSlotDetails.provider
+  //   : EadProviders.Gigapub;
 
   const onSuccess = async () => {
     try {
