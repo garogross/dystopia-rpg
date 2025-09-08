@@ -22,13 +22,13 @@ const { rewardReceivedText } = TRANSLATIONS.loyality.tabs.supportProject;
 export const useSoltAd = (slotId: string) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const mediation = useAppSelector((state) => state.tasks.mediation);
+  // const mediation = useAppSelector((state) => state.tasks.mediation);
   const [tooltipText, setTooltipText] = useState(rewardReceivedText[language]);
   const [loading, setLoading] = useState(false);
 
   const { show: showTooltip, openTooltip } = useTooltip();
 
-  const curSlotDetails = mediation?.[slotId];
+  // const curSlotDetails = mediation?.[slotId];
   const adType = EAdActionTypes.Video;
   // curSlotDetails && "ad_type" in curSlotDetails
   //   ? curSlotDetails.ad_type
