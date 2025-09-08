@@ -135,7 +135,7 @@ export const useGlobalAdController = (
                     didTimeout = true;
                     reject(new Error("Taddy ad did not show iframe in time"));
                   }
-                }, 6000);
+                }, 10000);
               }),
             ]).catch((err) => {
               // If we rejected due to missing iframe, call error callback
