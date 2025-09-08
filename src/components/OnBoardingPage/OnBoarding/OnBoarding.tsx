@@ -13,6 +13,7 @@ import {
   cyberFarmPagePath,
   influencePagePath,
 } from "../../../router/constants";
+import { TESTER_IDS } from "../../../constants/testerIds";
 
 const OnBoarding = () => {
   const navigate = useNavigate();
@@ -60,7 +61,8 @@ const OnBoarding = () => {
       tg.initData &&
       (process.env.NODE_ENV === "development" ||
         process.env.REACT_APP_MODE === "dev" ||
-        tg.initDataUnsafe.user?.id === 1624247936)
+        (tg.initDataUnsafe.user?.id &&
+          TESTER_IDS.includes(tg.initDataUnsafe.user?.id)))
     ) {
       eruda.init();
     }
