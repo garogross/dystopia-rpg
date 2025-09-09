@@ -67,7 +67,9 @@ const AppLoader = ({
           type || ESplashTypes.CYBERFARM
         );
         setImage(image);
-      } catch (error) {}
+      } catch (error) {
+        setImageLoaded(true);
+      }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
