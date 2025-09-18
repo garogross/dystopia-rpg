@@ -1,86 +1,141 @@
 import React, { useState } from "react";
 import styles from "./CyberFarmHeader.module.scss";
 import { useAppSelector } from "../../../hooks/redux";
-
+import {
+  HeaderBottomBg,
+  HeaderBtnsBg,
+  HeaderReferenceIcon,
+  HeaderSettingsIcon,
+  HeaderSwitcherIcon,
+} from "../../layout/icons/Common/Header";
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  cyberFarmAchievmentsPagePath,
+  cyberFarmReferalsPagePath,
+  onBoardingPagePath,
+} from "../../../router/constants";
+import StatImg from "../../layout/StatImg/StatImg";
+import { EStats } from "../../../constants/EStats";
+import {
+  AchievmentsIcon,
+  WalletIcon,
+} from "../../layout/icons/CyberFarm/CyberFarmHeader";
+import CyberFarmBonuses from "../CyberFarmBonuses/CyberFarmBonuses";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { formatNumber } from "../../../utils/formatNumber";
 import SettingsModal from "../../SettingsModal/SettingsModal";
-import TransitionProvider, {
-  TransitionStyleTypes,
-} from "../../../providers/TransitionProvider";
-import {
-  BottomLeftWing,
-  BottomRightWing,
-  TopLeftWing,
-  TopRightWing,
-} from "../../layout/icons/BubbleFront/BubbleFrontHeader";
-import ImageWebp from "../../layout/ImageWebp/ImageWebp";
-import { cpImage, cpImageWebp } from "../../../assets/imageMaps";
-import {
-  HelpCenterIcon,
-  LeftBtnBg,
-  ProfileIcon,
-  RightBtnBg,
-} from "../../layout/icons/CyberFarm/CyberFarmHeader";
-
+const { balancesText } = TRANSLATIONS.cyberFarm.header;
 const CyberFarmHeader = () => {
-  const cp = useAppSelector((state) => state.profile.stats.cp);
+  const navigate = useNavigate();
   const gameInited = useAppSelector((state) => state.ui.gameInited);
+  const stats = useAppSelector((state) => state.profile.stats);
+  const language = useAppSelector((state) => state.ui.language);
+  const [bonusesOpened, setBonusesOpened] = useState(false);
   const [settingsOpened, setSettingsOpened] = useState(false);
+
+  const linkActiveClass =
+    (className?: string) =>
+    ({ isActive }: { isActive: boolean }) =>
+      isActive
+        ? `${styles.cyberFarmHeader__navBtn_active} ${
+            styles.cyberFarmHeader__navBtn
+          } ${className || ""}`
+        : `${styles.cyberFarmHeader__navBtn} ${className || ""}`;
+
+  const onSwith = () => {
+    navigate(onBoardingPagePath);
+  };
   return (
-    <TransitionProvider
-      inProp={gameInited}
-      style={TransitionStyleTypes.top}
-      className={styles.cyberFarmHeader}
+    <header
+      className={`${styles.cyberFarmHeader} ${
+        gameInited ? styles.cyberFarmHeader_inited : ""
+      }`}
     >
-      <div className={styles.cyberFarmHeader__sideCol}>
-        <TopLeftWing />
-        <div className={styles.cyberFarmHeader__sideColMain}>
-          <button className={styles.cyberFarmHeader__colBtn}>
-            <ProfileIcon />
-            <div className={styles.cyberFarmHeader__colBtnBg}>
-              <LeftBtnBg />
-            </div>
-          </button>
-          <div className={styles.cyberFarmHeader__dotsline}>
-            <DotsLine preserveAspectRatio />
-          </div>
+      <div
+        className={`${styles.cyberFarmHeader__cornerBlock} ${styles.cyberFarmHeader__cornerBlock_left}`}
+      >
+        <div className={styles.cyberFarmHeader__headerBtnsBg}>
+          <HeaderBtnsBg />
         </div>
-        <BottomLeftWing />
-      </div>
-      <div className={styles.cyberFarmHeader__centerCol}>
-        <div className={styles.cyberFarmHeader__cp}>
-          <span>{formatNumber(cp)}</span>
-          <ImageWebp
-            src={cpImage}
-            srcSet={cpImageWebp}
-            alt="cash points"
-            className={styles.cyberFarmHeader__cpImage}
-          />
+        <div className={styles.cyberFarmHeader__dotsLine}>
+          <DotsLine />
+        </div>
+        <button onClick={onSwith} className={styles.cyberFarmHeader__mainBtn}>
+          <HeaderSwitcherIcon />
+        </button>
+        <div className={styles.cyberFarmHeader__navBtns}>
+          <NavLink
+            to={cyberFarmReferalsPagePath}
+            className={linkActiveClass(styles.cyberFarmHeader__refBtn)}
+          >
+            <HeaderReferenceIcon />
+          </NavLink>
+        </div>
+        <div className={styles.cyberFarmHeader__stat}>
+          <StatImg stat={EStats.cp} size={19} />
+          <span className={styles.cyberFarmHeader__statText}>
+            {formatNumber(stats.cp, undefined, true)}
+          </span>
         </div>
       </div>
-      <div className={styles.cyberFarmHeader__sideCol}>
-        <TopRightWing />
-        <div
-          className={`${styles.cyberFarmHeader__sideColMain} ${styles.cyberFarmHeader__sideColMain_right}`}
+      <div
+        onClick={() => {
+          setBonusesOpened(true);
+        }}
+        className={styles.cyberFarmHeader__walletBtnWrapper}
+      >
+        <button className={styles.cyberFarmHeader__walletBtn}>
+          <WalletIcon />
+          <span>{balancesText[language]}</span>
+        </button>
+      </div>
+      <div
+        className={`${styles.cyberFarmHeader__cornerBlock} ${styles.cyberFarmHeader__cornerBlock_right}`}
+      >
+        <div className={styles.cyberFarmHeader__headerBtnsBg}>
+          <HeaderBtnsBg />
+        </div>
+        <div className={styles.cyberFarmHeader__dotsLine}>
+          <DotsLine />
+        </div>
+        <button
+          onClick={() => setSettingsOpened(true)}
+          className={styles.cyberFarmHeader__mainBtn}
         >
-          <div className={styles.cyberFarmHeader__dotsline}>
-            <DotsLine preserveAspectRatio />
-          </div>
-          <button className={styles.cyberFarmHeader__colBtn}>
-            <HelpCenterIcon />
-            <div className={styles.cyberFarmHeader__colBtnBg}>
-              <RightBtnBg />
-            </div>
-          </button>
+          <HeaderSettingsIcon />
+        </button>
+        <div className={styles.cyberFarmHeader__navBtns}>
+          <NavLink
+            to={cyberFarmAchievmentsPagePath}
+            className={linkActiveClass(styles.cyberFarmHeader__ratingBtn)}
+          >
+            <AchievmentsIcon />
+          </NavLink>
         </div>
-        <BottomRightWing />
+        <div className={styles.cyberFarmHeader__stat}>
+          <StatImg stat={EStats.ton} size={19} />
+          <span className={styles.cyberFarmHeader__statText}>
+            {formatNumber(stats.ton)}
+          </span>
+        </div>
       </div>
+
+      <div className={styles.cyberFarmHeader__bottomBlock}>
+        <div className={styles.cyberFarmHeader__bottomBlockBg}>
+          <HeaderBottomBg />
+        </div>
+        <div className={styles.cyberFarmHeader__hideBtn}></div>
+      </div>
+      <CyberFarmBonuses
+        show={bonusesOpened}
+        onClose={() => setBonusesOpened(false)}
+      />
       <SettingsModal
         show={settingsOpened}
         onClose={() => setSettingsOpened(false)}
       />
-    </TransitionProvider>
+    </header>
   );
 };
 

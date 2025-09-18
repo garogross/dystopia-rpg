@@ -58,6 +58,7 @@ import {
   bubbleFrontRatingsPagePath,
   bubbleFrontPagePath,
   bubbleFrontAchievmentsPagePath,
+  cyberFarmEvoPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -110,6 +111,13 @@ import BubbleFrontPage from "../pages/BubbleFront/BubbleFrontPage";
 import BubbleFrontMainPage from "../pages/BubbleFront/BubbleFrontMainPage";
 import BubbleFrontAchievmentsPage from "../pages/BubbleFront/BubbleFrontAchievmentsPage";
 import BubbleFrontRatingsPage from "../pages/BubbleFront/BubbleFrontRatingsPage";
+import CyberFarmEvoPage from "../pages/CyberFarmEvo/CyberFarmEvoPage";
+import CyberFarmEvoWarehousePage from "../pages/CyberFarmEvo/CyberFarmEvoWarehousePage";
+import CyberFarmEvoSupportPage from "../pages/CyberFarmEvo/CyberFarmEvoSupportPage";
+import CyberFarmEvoReferalsPage from "../pages/CyberFarmEvo/CyberFarmEvoReferalsPage";
+import CyberFarmEvoAchievmentsPage from "../pages/CyberFarmEvo/CyberFarmEvoAchievmentsPage";
+import CyberFarmEvoMapPage from "../pages/CyberFarmEvo/CyberFarmEvoMapPage";
+import CyberFarmEvoFarmsPage from "../pages/CyberFarmEvo/CyberFarmEvoFarmsPage";
 
 export const homePagePath = "/";
 
@@ -213,6 +221,34 @@ export const routes: IRoute[] = [
       {
         path: cyberFarmAchievmentsPagePath,
         component: <CyberFarmAchievmentsPage />,
+      },
+    ],
+  },
+  // cyberfarm evo
+  {
+    path: cyberFarmEvoPagePath,
+    component: <CyberFarmEvoPage />,
+    indexComponent: <CyberFarmEvoMapPage />,
+    children: [
+      {
+        path: cyberFarmFarmsPagePath,
+        component: <CyberFarmEvoFarmsPage />,
+      },
+      {
+        path: cyberFarmWarehousePagePath,
+        component: <CyberFarmEvoWarehousePage />,
+      },
+      {
+        path: cyberFarmSupportPagePath,
+        component: <CyberFarmEvoSupportPage />,
+      },
+      {
+        path: cyberFarmReferalsPagePath,
+        component: <CyberFarmEvoReferalsPage />,
+      },
+      {
+        path: cyberFarmAchievmentsPagePath,
+        component: <CyberFarmEvoAchievmentsPage />,
       },
     ],
   },

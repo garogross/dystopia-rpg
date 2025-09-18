@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface CyberfarmState {
   dataReceived: boolean;
+  appMode: "classic" | "evo";
 }
 
 const initialState: CyberfarmState = {
   dataReceived: false,
+  appMode: "evo",
 };
 
 export const cyberfarmSlice = createSlice({

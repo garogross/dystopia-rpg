@@ -1,4 +1,2 @@
-export { ProfileIcon } from "./ProfileIcon";
-export { HelpCenterIcon } from "./HelpCenterIcon";
-export { LeftBtnBg } from "./LeftBtnBg";
-export { RightBtnBg } from "./RightBtnBg";
+export { WalletIcon } from "./WalletIcon";
+export { AchievmentsIcon } from "./AchievmentsIcon";

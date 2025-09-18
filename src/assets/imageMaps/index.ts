@@ -3,6 +3,7 @@ export * from "./langingPageImages";
 export * from "./rpgGameImages";
 export * from "./onBoardingImages";
 export * from "./cyberfarmImages";
+export * from "./cyberfarmEvoImages";
 export * from "./miniGamesImages";
 export * from "./puzzleImages";
 export * from "./bubbleFrontImages";

@@ -1,0 +1,46 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.cyberFarmEvoMap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  @include bgWebp(
+    "../../../assets/images/CyberFarmEvo//Map/farmMapBg.jpg",
+    "../../../assets/images/CyberFarmEvo//Map/farmMapBg.webp"
+  );
+  background-size: cover;
+  background-position: top;
+
+  &__btn {
+    @include button();
+    position: absolute;
+    @include flexCol();
+    flex-direction: column;
+    @include setFont(16px, 400, $font-fam-retrogaming, #c7fffe);
+    -webkit-text-stroke: 1px #005c89;
+    text-stroke: 1px #005c89;
+
+    &_tasks {
+      left: 4%;
+      bottom: 31%;
+    }
+    &_warehouse {
+      bottom: 36%;
+      right: 10%;
+    }
+    &_farm {
+      bottom: 10%;
+      right: 16%;
+    }
+    &_city {
+      img {
+        width: clamp(30px, 30vw, 150px);
+      }
+    }
+
+    & img {
+      width: clamp(30px, 30vw, 150px);
+    }
+  }
+}
