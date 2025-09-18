@@ -8,7 +8,8 @@ type TraffyTask = {
 export const initTraffyTasks = (
   traffyTasksVal: HTMLElement | null,
   onReward: (signedToken: string, id: string) => void,
-  onReject: () => void
+  onReject: () => void,
+  bonus: number
 ) => {
   if (traffyTasksVal && window.Traffy) {
     function onTaskLoad(tasks: TraffyTask[]) {}
@@ -18,7 +19,7 @@ export const initTraffyTasks = (
       changeDescription: (str: string) => void,
       changeButtonCheckText: (str: string) => void
     ) {
-      changeReward("15");
+      changeReward(bonus.toString());
       changeCardTitle("Subscribe on: ");
       changeButtonCheckText("Check");
     }

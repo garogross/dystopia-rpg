@@ -16,6 +16,10 @@ const { taskNotCompletedText } = TRANSLATIONS.loyality.supportProject;
 
 const LoyalitySupportProjectTraffyContainer = () => {
   const dispatch = useAppDispatch();
+  const adRewardSettings = useAppSelector(
+    (state) => state.tasks.adRewardSettings
+  );
+
   const traffyTasks = useRef<HTMLDivElement | null>(null);
   const { show: showTooltip, openTooltip } = useTooltip();
   const language = useAppSelector((state) => state.ui.language);
@@ -61,7 +65,8 @@ const LoyalitySupportProjectTraffyContainer = () => {
           setHidden(true);
           setTimeout(() => setHidden(false), 60 * 60 * 1000);
         },
-        openTooltip
+        openTooltip,
+        adRewardSettings?.traffy?.boost.amount || 0
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
