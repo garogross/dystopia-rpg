@@ -21,6 +21,8 @@
     -webkit-text-stroke: 1px #005c89;
     text-shadow: 1px #005c89;
     transition: $transition;
+    text-decoration: none;
+
     &_tasks {
       left: 4%;
       bottom: 31%;

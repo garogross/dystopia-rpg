@@ -1,8 +1,8 @@
 import React from "react";
-import CyberFarmFields from "../../components/CyberFarm/CyberFarmFieldsPage/CyberFarmFields/CyberFarmFields";
+import CyberFarmEvoFarms from "../../components/CyberFarmEvo/CyberFarmEvoFarms/CyberFarmEvoFarms";
 
 const CyberFarmEvoFarmsPage = () => {
-  return <CyberFarmFields />;
+  return <CyberFarmEvoFarms />;
 };
 
 export default CyberFarmEvoFarmsPage;

@@ -9,11 +9,19 @@ import {
   farmMapTasksBuildWebpImage,
 } from "../../../assets/imageMaps";
 import styles from "./CyberFarmEvoMap.module.scss";
+import { Link } from "react-router-dom";
+import {
+  cyberFarmEvoPagePath,
+  cyberFarmFarmsPagePath,
+  cyberFarmSupportPagePath,
+  cyberFarmWarehousePagePath,
+} from "../../../router/constants";
 
 const CyberFarmEvoMap = () => {
   return (
     <section className={styles.cyberFarmEvoMap}>
-      <button
+      <Link
+        to={`${cyberFarmEvoPagePath}/${cyberFarmSupportPagePath}`}
         className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_tasks}`}
       >
         <ImageWebp
@@ -22,8 +30,9 @@ const CyberFarmEvoMap = () => {
           alt={"tasks"}
         />
         <span>Задания</span>
-      </button>
-      <button
+      </Link>
+      <Link
+        to={`${cyberFarmEvoPagePath}/${cyberFarmWarehousePagePath}`}
         className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_warehouse}`}
       >
         <ImageWebp
@@ -32,8 +41,9 @@ const CyberFarmEvoMap = () => {
           alt={"warehouse"}
         />
         <span>Склад</span>
-      </button>
-      <button
+      </Link>
+      <Link
+        to={`${cyberFarmEvoPagePath}/${cyberFarmFarmsPagePath}`}
         className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_farm}`}
       >
         <ImageWebp
@@ -42,7 +52,7 @@ const CyberFarmEvoMap = () => {
           alt={"farm"}
         />
         <span>Ферма</span>
-      </button>
+      </Link>
     </section>
   );
 };
