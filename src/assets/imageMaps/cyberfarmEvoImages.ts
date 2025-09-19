@@ -10,16 +10,10 @@ import cybefarmEvoFieldWebpImage from "../images/CyberFarmEvo/Farms/cybefarmEvoF
 import cybefarmEvoFieldImage from "../images/CyberFarmEvo/Farms/cybefarmEvoField.png";
 import farmMapCityWebpImage from "../images/CyberFarmEvo/Map/farmMapCity.webp";
 import farmMapCityImage from "../images/CyberFarmEvo/Map/farmMapCity.jpg";
-import farmMapMainBgImage from "../images/CyberFarmEvo/Map/farmMapMainBg.jpg";
-import farmMapMainBgWebpImage from "../images/CyberFarmEvo/Map/farmMapMainBg.webp";
 
 export {
   farmMapBgImage,
   farmMapBgWebpImage,
-  farmMapCityWebpImage,
-  farmMapCityImage,
-  farmMapMainBgImage,
-  farmMapMainBgWebpImage,
   farmMapCityWareHouseImage,
   farmMapCityWareHouseWebpImage,
   farmMapFarmBuildImage,
@@ -28,4 +22,6 @@ export {
   farmMapTasksBuildWebpImage,
   cybefarmEvoFieldWebpImage,
   cybefarmEvoFieldImage,
+  farmMapCityWebpImage,
+  farmMapCityImage,
 };
