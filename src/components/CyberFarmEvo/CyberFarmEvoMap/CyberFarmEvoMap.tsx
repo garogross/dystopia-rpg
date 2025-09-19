@@ -1,7 +1,6 @@
 import React from "react";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
-  farmMapCityBuildWebpImage,
   farmMapCityWareHouseImage,
   farmMapCityWareHouseWebpImage,
   farmMapFarmBuildImage,
@@ -44,16 +43,6 @@ const CyberFarmEvoMap = () => {
         />
         <span>Ферма</span>
       </button>
-      {/* <button
-        className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_city}`}
-      >
-        <ImageWebp
-          srcSet={farmMapCityBuildWebpImage}
-          src={farmMapCityBuildWebpImage}
-          alt={"city"}
-        />
-        <span>Город</span>
-      </button> */}
     </section>
   );
 };

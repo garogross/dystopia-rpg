@@ -19,8 +19,8 @@
     flex-direction: column;
     @include setFont(16px, 400, $font-fam-retrogaming, #c7fffe);
     -webkit-text-stroke: 1px #005c89;
-    text-stroke: 1px #005c89;
-
+    text-shadow: 1px #005c89;
+    transition: $transition;
     &_tasks {
       left: 4%;
       bottom: 31%;
@@ -39,8 +39,18 @@
       }
     }
 
+    &:active {
+      transform: scale(0.9);
+    }
+
     & img {
       width: clamp(30px, 30vw, 150px);
+      transition: $transition;
+    }
+
+    &:hover,
+    &:active img {
+      filter: drop-shadow(0 6px 15px #00abff);
     }
   }
 }
