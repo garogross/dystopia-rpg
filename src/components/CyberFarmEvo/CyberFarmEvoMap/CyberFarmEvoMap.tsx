@@ -20,41 +20,49 @@ import {
 const CyberFarmEvoMap = () => {
   return (
     <section className={styles.cyberFarmEvoMap}>
-      <div className={styles.cyberFarmEvoMap__city}></div>
+      <div className={styles.cyberFarmEvoMap__sky}></div>
       <div className={styles.cyberFarmEvoMap__main}>
-        <Link
-          to={`${cyberFarmEvoPagePath}/${cyberFarmSupportPagePath}`}
-          className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_tasks}`}
-        >
-          <ImageWebp
-            srcSet={farmMapTasksBuildWebpImage}
-            src={farmMapTasksBuildImage}
-            alt={"tasks"}
-          />
-          <span>Задания</span>
-        </Link>
-        <Link
-          to={`${cyberFarmEvoPagePath}/${cyberFarmWarehousePagePath}`}
-          className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_warehouse}`}
-        >
-          <ImageWebp
-            srcSet={farmMapCityWareHouseWebpImage}
-            src={farmMapCityWareHouseImage}
-            alt={"warehouse"}
-          />
-          <span>Склад</span>
-        </Link>
-        <Link
-          to={`${cyberFarmEvoPagePath}/${cyberFarmFarmsPagePath}`}
-          className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_farm}`}
-        >
-          <ImageWebp
-            srcSet={farmMapFarmBuildWebpImage}
-            src={farmMapFarmBuildImage}
-            alt={"farm"}
-          />
-          <span>Ферма</span>
-        </Link>
+        <div className={styles.cyberFarmEvoMap__mainInner}>
+          {/* <ImageWebp
+            srcSet={farmMapMainBgWebpImage}
+            src={farmMapMainBgImage}
+            alt={"map"}
+            className={styles.cyberFarmEvoMap__mainImg}
+          /> */}
+          <Link
+            to={`${cyberFarmEvoPagePath}/${cyberFarmSupportPagePath}`}
+            className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_tasks}`}
+          >
+            <ImageWebp
+              srcSet={farmMapTasksBuildWebpImage}
+              src={farmMapTasksBuildImage}
+              alt={"tasks"}
+            />
+            <span>Задания</span>
+          </Link>
+          <Link
+            to={`${cyberFarmEvoPagePath}/${cyberFarmWarehousePagePath}`}
+            className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_warehouse}`}
+          >
+            <ImageWebp
+              srcSet={farmMapCityWareHouseWebpImage}
+              src={farmMapCityWareHouseImage}
+              alt={"warehouse"}
+            />
+            <span>Склад</span>
+          </Link>
+          <Link
+            to={`${cyberFarmEvoPagePath}/${cyberFarmFarmsPagePath}`}
+            className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_farm}`}
+          >
+            <ImageWebp
+              srcSet={farmMapFarmBuildWebpImage}
+              src={farmMapFarmBuildImage}
+              alt={"farm"}
+            />
+            <span>Ферма</span>
+          </Link>
+        </div>
       </div>
     </section>
   );

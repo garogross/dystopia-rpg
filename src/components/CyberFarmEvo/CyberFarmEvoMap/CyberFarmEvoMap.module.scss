@@ -6,15 +6,12 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  &__city {
+  &__sky {
     flex: 1;
-    @include bgWebp(
-      "../../../assets/images/CyberFarmEvo//Map/farmMapCity.jpg",
-      "../../../assets/images/CyberFarmEvo//Map/farmMapCity.webp"
-    );
-    background-size: cover;
-    background-position: bottom;
+    background-color: #17253e;
     margin-bottom: -1px;
+    z-index: 2;
+
     position: relative;
 
     &::after {
@@ -23,7 +20,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background-color: #436d8d;
+      background-color: #17253e;
       height: 30px;
       transform: translateY(50%);
       z-index: 3;
@@ -33,13 +30,22 @@
   &__main {
     position: relative;
     width: 100%;
+    aspect-ratio: 636/1095;
+    max-height: 100%;
+  }
+
+  &__mainInner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 636/1095;
     @include bgWebp(
       "../../../assets/images/CyberFarmEvo//Map/farmMapMainBg.jpg",
       "../../../assets/images/CyberFarmEvo//Map/farmMapMainBg.webp"
     );
     background-size: cover;
     background-position: bottom;
-    aspect-ratio: 488/612;
   }
 
   &__btn {
@@ -55,15 +61,15 @@
 
     &_tasks {
       left: 4%;
-      bottom: 52%;
+      bottom: 36%;
     }
     &_warehouse {
-      bottom: 52%;
+      bottom: 34%;
       right: 0%;
     }
     &_farm {
-      bottom: 20%;
-      right: 26%;
+      bottom: 7%;
+      right: 20%;
     }
 
     &:active {
@@ -78,15 +84,19 @@
     }
 
     &_warehouse img {
-      width: clamp(30px, 20vw, 120px);
+      width: clamp(30px, 30vw, 120px);
     }
     &_farm img {
-      width: clamp(30px, 32vw, 180px);
+      width: clamp(30px, 46vw, 180px);
     }
 
     &:hover,
     &:active img {
       filter: drop-shadow(0 6px 15px #00abff);
+    }
+
+    & span {
+      transform: translateY(-100%);
     }
   }
 }
