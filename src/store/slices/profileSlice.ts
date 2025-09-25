@@ -159,7 +159,6 @@ export const getAccountDetails =
           resData?.ton_cyber_farm?.timers?.daily_login_claimed || null,
       })
     );
-    console.log("resData.ton_cyber_farm", resData.ton_cyber_farm);
 
     if (resData.ton_cyber_farm && resData.mode === "ton_cyber_farm") {
       dispatch(initCyberFarm());

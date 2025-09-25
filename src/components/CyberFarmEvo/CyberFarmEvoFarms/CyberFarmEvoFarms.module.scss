@@ -29,8 +29,8 @@
   &__field {
     position: absolute;
     @include bgWebp(
-      "../../../assets/images//CyberFarmEvo/Farms/cybefarmEvoField.png",
-      "../../../assets/images//CyberFarmEvo/Farms/cybefarmEvoField.webp"
+      "../../../assets/images//CyberFarmEvo/Farms/common/cybefarmEvoField.png",
+      "../../../assets/images//CyberFarmEvo/Farms/common/cybefarmEvoField.webp"
     );
     width: calc(100% / 3);
     aspect-ratio: 236 / 144;

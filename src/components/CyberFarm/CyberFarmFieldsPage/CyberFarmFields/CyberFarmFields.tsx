@@ -29,9 +29,7 @@ const CyberFarmFields = () => {
   const slots = useAppSelector((state) => state.cyberfarm.slots.slots);
   const slotCosts = useAppSelector((state) => state.cyberfarm.slots.slotCosts);
 
-  console.log({ slots });
   const fields = getFarmFieldsFromSlots(slots);
-  console.log({ fields });
 
   const maxSlotCount =
     slotCosts && slotCosts.fields[slotCosts.fields.length - 1].range[1];

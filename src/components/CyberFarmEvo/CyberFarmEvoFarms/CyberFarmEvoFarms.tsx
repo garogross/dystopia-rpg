@@ -1,12 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import MainBtn from "../../layout/MainBtn/MainBtn";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
-import {
-  adImage,
-  adImageWebp,
-  evoPlasmaMushroomOnFieldImage,
-  evoPlasmaMushroomOnFieldWebpImage,
-} from "../../../assets/imageMaps";
+import { adImage, adImageWebp } from "../../../assets/imageMaps";
 import { MapIcon } from "../../layout/icons/CyberFarmEvo/Farms";
 
 import styles from "./CyberFarmEvoFarms.module.scss";
@@ -15,7 +10,9 @@ import { v4 } from "uuid";
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import { useAppSelector } from "../../../hooks/redux";
 import { getFarmFieldsFromSlots } from "../../../utils/getFarmFieldsFromSlots";
-import { products } from "../../../constants/cyberfarm/products";
+import { evoPlantImages } from "../../../constants/cyberfarm/evoPlantImages";
+import CyberFarmEvoFarmsProgress from "./CyberFarmEvoFarmsProgress/CyberFarmEvoFarmsProgress";
+import { useFarmFieldsProgressCheck } from "../../../hooks/useFarmFieldsProgressCheck";
 
 const FIELD_HEIGHT_ASPECT_RATIO = 3.4;
 
@@ -29,18 +26,17 @@ const CyberFarmEvoFarms = () => {
   const fieldHeight = fieldWidth / FIELD_HEIGHT_ASPECT_RATIO;
 
   const slotFields = getFarmFieldsFromSlots(slots);
+  useFarmFieldsProgressCheck(slotFields);
 
   useEffect(() => {
     if (wrapperRef.current) {
       const wrapperRect = wrapperRef.current.getBoundingClientRect();
-      console.log("wrapperRef.current", wrapperRef.current, wrapperRect);
 
       const wrapperHeight = wrapperRect.height;
       const wrapperWidth = wrapperRect.width;
       const fieldWidth = wrapperWidth / 3;
       setFieldWidth(fieldWidth);
       const fieldHeight = fieldWidth / FIELD_HEIGHT_ASPECT_RATIO || 0;
-      console.log({ wrapperHeight, fieldHeight });
 
       const colsLength = Math.ceil(wrapperHeight / fieldHeight);
       let globalSlotIndex = 0;
@@ -50,9 +46,10 @@ const CyberFarmEvoFarms = () => {
           const rowLength = isOdd(colIndex) ? 4 : 3;
           return Array.from({ length: rowLength }, (_, index) => {
             const curSlot = slotFields[globalSlotIndex];
+
             if (
-              !curSlot ||
-              !colIndex ||
+              !curSlot?.plant ||
+              colIndex < 2 ||
               colIndex === colsLength - 1 ||
               (isOdd(colIndex) && (!index || index === rowLength - 1))
             )
@@ -61,6 +58,7 @@ const CyberFarmEvoFarms = () => {
                 type: EFarmSlotTypes.FIELDS,
               };
             else {
+              globalSlotIndex++;
               return curSlot;
             }
           });
@@ -70,8 +68,7 @@ const CyberFarmEvoFarms = () => {
       setFields(initialFields);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  console.log({ fields });
+  }, [slots]);
 
   return (
     <div className={styles.cyberFarmEvoFarms}>
@@ -85,7 +82,11 @@ const CyberFarmEvoFarms = () => {
         <div className={styles.cyberFarmEvoFarms__fieldsContainer}>
           {fields.map((col, colIndex) =>
             col.map((field, fieldIndex) => {
-              const imageObj = field.plant && products[field.plant]?.evo;
+              const imageObj =
+                field.plant &&
+                evoPlantImages[field.plant]?.[
+                  field.type === "farm" ? "inFarm" : "onField"
+                ];
               return (
                 <div
                   key={`${colIndex}-${fieldIndex}`}
@@ -97,6 +98,9 @@ const CyberFarmEvoFarms = () => {
                   }}
                   className={styles.cyberFarmEvoFarms__field}
                 >
+                  {field.process && (
+                    <CyberFarmEvoFarmsProgress process={field.process} />
+                  )}
                   {imageObj && (
                     <ImageWebp
                       srcSet={imageObj.srcSet}
