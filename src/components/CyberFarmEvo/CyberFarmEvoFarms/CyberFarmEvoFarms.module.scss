@@ -38,6 +38,15 @@
     background-size: contain;
     transform: translate(-50%, -50%);
   }
+
+  &__fieldPlantImg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 118/81;
+  }
+
   &__footer {
     padding-block: 16px;
     background: linear-gradient(180deg, #0c0620 26.6%, #362670 100%);

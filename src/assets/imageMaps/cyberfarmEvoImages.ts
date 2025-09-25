@@ -7,6 +7,10 @@ import farmMapTasksBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapTasksB
 import cybefarmEvoFieldWebpImage from "../images/CyberFarmEvo/Farms/cybefarmEvoField.webp";
 import cybefarmEvoFieldImage from "../images/CyberFarmEvo/Farms/cybefarmEvoField.png";
 
+// plants
+import evoPlasmaMushroomOnFieldImage from "../images/CyberFarmEvo/Farms/plants/evoPlasmaMushroomOnField.png";
+import evoPlasmaMushroomOnFieldWebpImage from "../images/CyberFarmEvo/Farms/plants/evoPlasmaMushroomOnField.webp";
+
 export {
   farmMapCityWareHouseImage,
   farmMapCityWareHouseWebpImage,
@@ -16,4 +20,6 @@ export {
   farmMapTasksBuildWebpImage,
   cybefarmEvoFieldWebpImage,
   cybefarmEvoFieldImage,
+  evoPlasmaMushroomOnFieldImage,
+  evoPlasmaMushroomOnFieldWebpImage,
 };

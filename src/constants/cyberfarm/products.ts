@@ -25,6 +25,8 @@ import {
   algaeImageWebp,
   insectsImage,
   insectsImageWebp,
+  evoPlasmaMushroomOnFieldImage,
+  evoPlasmaMushroomOnFieldWebpImage,
 } from "../../assets/imageMaps";
 import { EPlants } from "./EPlants";
 import { TRANSLATIONS } from "../TRANSLATIONS";
@@ -64,6 +66,10 @@ export const products: {
   [key in EFactoryProducts | EPlants]: {
     src: string;
     srcSet: string;
+    evo?: {
+      src: string;
+      srcSet: string;
+    };
     name: TranslationItemType;
     twistedName: TranslationItemType;
     type: "factory" | "plant";
@@ -73,6 +79,7 @@ export const products: {
   [EFactoryProducts.Metal]: {
     src: metalImage,
     srcSet: metalImageWebp,
+
     name: metal,
     twistedName: metalTwisted,
     type: "factory",
@@ -118,6 +125,10 @@ export const products: {
   [EFactoryProducts.Plasma]: {
     src: plasmaImage,
     srcSet: plasmaImageWebp,
+    evo: {
+      src: evoPlasmaMushroomOnFieldImage,
+      srcSet: evoPlasmaMushroomOnFieldWebpImage,
+    },
     name: plasma,
     twistedName: plasmaTwisted,
     type: "factory",
