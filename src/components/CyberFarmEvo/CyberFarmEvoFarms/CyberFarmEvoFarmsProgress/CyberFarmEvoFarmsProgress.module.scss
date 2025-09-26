@@ -11,6 +11,7 @@
   box-shadow: 0px 2px 4px 0px #00000040;
   height: 3px;
   z-index: 3;
+  pointer-events: none;
 
   &__completed {
     position: absolute;

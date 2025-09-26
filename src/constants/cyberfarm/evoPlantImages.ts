@@ -12,6 +12,8 @@ import {
   evoBioBacteriaInFarmWebpImage,
   evoBioBacteriaOnFieldImage,
   evoBioBacteriaOnFieldWebpImage,
+  evoInsectsInFarmImage,
+  evoInsectsInFarmWebpImage,
   evoInsectsOnFieldImage,
   evoInsectsOnFieldWebpImage,
   evoMetalCactusInFarmImage,
@@ -24,8 +26,6 @@ import {
   evoPlasmaMushroomOnFieldWebpImage,
   insectsImage,
   insectsImageWebp,
-  insectsInFarmImage,
-  insectsInFarmImageWebp,
   metalCactusImage,
   metalCactusImageWebp,
   plasmaMushroomImage,
@@ -99,8 +99,8 @@ export const evoPlantImages = {
       srcSet: evoInsectsOnFieldWebpImage,
     },
     inFarm: {
-      src: insectsInFarmImage,
-      srcSet: insectsInFarmImageWebp,
+      src: evoInsectsInFarmImage,
+      srcSet: evoInsectsInFarmWebpImage,
     },
   },
 };

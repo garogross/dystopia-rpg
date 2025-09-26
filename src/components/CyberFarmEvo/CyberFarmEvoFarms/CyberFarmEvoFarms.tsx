@@ -1,8 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import MainBtn from "../../layout/MainBtn/MainBtn";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
-import { adImage, adImageWebp } from "../../../assets/imageMaps";
-import { MapIcon } from "../../layout/icons/CyberFarmEvo/Farms";
+import {
+  adImage,
+  adImageWebp,
+  evoFactoryImage,
+  evoFactoryWebpImage,
+  evoFactoryWorkingImage,
+  evoFactoryWorkingWebpImage,
+  evoFarmImage,
+  evoFarmWebpImage,
+} from "../../../assets/imageMaps";
+import {
+  BlockedSlotIcon,
+  MapIcon,
+} from "../../layout/icons/CyberFarmEvo/Farms";
 
 import styles from "./CyberFarmEvoFarms.module.scss";
 import { IFarmField } from "../../../models/CyberFarm/IFarmField";
@@ -16,6 +28,20 @@ import { useFarmFieldsProgressCheck } from "../../../hooks/useFarmFieldsProgress
 
 const FIELD_HEIGHT_ASPECT_RATIO = 3.4;
 
+function countRows(items: number): number {
+  const cycles = Math.floor(items / 5);
+  let rows = cycles * 2;
+  const remaining = items % 5;
+
+  if (remaining === 0) {
+    return rows;
+  } else if (remaining <= 2) {
+    return rows + 1;
+  } else {
+    return rows + 2;
+  }
+}
+
 const isOdd = (i: number) => !(i % 2);
 
 const CyberFarmEvoFarms = () => {
@@ -26,6 +52,11 @@ const CyberFarmEvoFarms = () => {
   const fieldHeight = fieldWidth / FIELD_HEIGHT_ASPECT_RATIO;
 
   const slotFields = getFarmFieldsFromSlots(slots);
+  slotFields.push({
+    type: EFarmSlotTypes.FIELDS,
+    id: v4(),
+    blocked: true,
+  });
   useFarmFieldsProgressCheck(slotFields);
 
   useEffect(() => {
@@ -38,25 +69,36 @@ const CyberFarmEvoFarms = () => {
       setFieldWidth(fieldWidth);
       const fieldHeight = fieldWidth / FIELD_HEIGHT_ASPECT_RATIO || 0;
 
-      const colsLength = Math.ceil(wrapperHeight / fieldHeight);
+      let colsLength = Math.ceil(wrapperHeight / fieldHeight);
+      const UNUSABLE_COLS_COUNT = 4; // first 2 cols and last
+      const usableCols = colsLength - UNUSABLE_COLS_COUNT;
+      const totalSlotsCols = countRows(slotFields.length);
+
+      const totalItemsInScreen =
+        Math.ceil(usableCols / 2) * 2 + Math.floor(usableCols / 2) * 3;
+
+      if (totalItemsInScreen < slotFields.length) {
+      }
+
       let globalSlotIndex = 0;
       const initialFields = Array.from(
-        { length: colsLength },
+        { length: Math.max(colsLength, totalSlotsCols + UNUSABLE_COLS_COUNT) },
         (_, colIndex) => {
           const rowLength = isOdd(colIndex) ? 4 : 3;
           return Array.from({ length: rowLength }, (_, index) => {
             const curSlot = slotFields[globalSlotIndex];
 
             if (
-              !curSlot?.plant ||
+              !curSlot ||
               colIndex < 2 ||
-              colIndex === colsLength - 1 ||
+              colIndex === colsLength ||
               (isOdd(colIndex) && (!index || index === rowLength - 1))
             )
               return {
                 id: v4(),
                 type: EFarmSlotTypes.FIELDS,
-              };
+                disabled: true,
+              } as IFarmField;
             else {
               globalSlotIndex++;
               return curSlot;
@@ -82,16 +124,37 @@ const CyberFarmEvoFarms = () => {
         <div className={styles.cyberFarmEvoFarms__fieldsContainer}>
           {fields.map((col, colIndex) =>
             col.map((field, fieldIndex) => {
-              const imageObj =
-                field.plant &&
-                evoPlantImages[field.plant]?.[
-                  field.type === "farm" ? "inFarm" : "onField"
-                ];
+              let curImage: {
+                src: string;
+                srcSet: string;
+              } | null = null;
+
+              if (field.type === "factory") {
+                curImage = {
+                  src: field.process ? evoFactoryWorkingImage : evoFactoryImage,
+                  srcSet: field.process
+                    ? evoFactoryWorkingWebpImage
+                    : evoFactoryWebpImage,
+                };
+              } else if (field.plant) {
+                curImage =
+                  evoPlantImages[field.plant][
+                    field.type === "farm" ? "inFarm" : "onField"
+                  ];
+              } else if (field.type === "farm" && !field.plant) {
+                curImage = {
+                  src: evoFarmImage,
+                  srcSet: evoFarmWebpImage,
+                };
+              }
+
               return (
-                <div
+                <button
+                  disabled={field.disabled}
                   key={`${colIndex}-${fieldIndex}`}
                   style={{
                     top: colIndex * fieldHeight,
+                    zIndex: colIndex,
                     left:
                       fieldIndex * fieldWidth +
                       (isOdd(colIndex) ? 0 : fieldWidth / 2),
@@ -101,15 +164,20 @@ const CyberFarmEvoFarms = () => {
                   {field.process && (
                     <CyberFarmEvoFarmsProgress process={field.process} />
                   )}
-                  {imageObj && (
+                  {curImage && (
                     <ImageWebp
-                      srcSet={imageObj.srcSet}
-                      src={imageObj.src}
+                      srcSet={curImage.srcSet}
+                      src={curImage.src}
                       alt={field.plant || ""}
                       className={styles.cyberFarmEvoFarms__fieldPlantImg}
                     />
                   )}
-                </div>
+                  {field.blocked && (
+                    <BlockedSlotIcon
+                      className={styles.cyberFarmEvoFarms__blockedIcon}
+                    />
+                  )}
+                </button>
               );
             })
           )}
