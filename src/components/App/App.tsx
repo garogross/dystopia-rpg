@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../hooks/redux";
 import { setLanguage } from "../../store/slices/uiSlice";
 import { postLog } from "../../api/logs";
 import { useStoreFreshDate } from "../../hooks/useStoreFreshDate";
+import { getUserIp } from "../../utils/getUserIp";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -203,6 +204,15 @@ export const App = () => {
   // useNotificationAd();
 
   useEffect(() => {
+    (async () => {
+      const ip = await getUserIp();
+
+      postLog({
+        tgId: tg?.initDataUnsafe.user?.id,
+        ip,
+      });
+    })();
+
     if (!tg) return;
     // open fullscreen
 
@@ -221,6 +231,7 @@ export const App = () => {
       window.scrollTo(0, overflow);
     }
     tg.ready();
+
     window.onerror = function (message, source, lineno, colno, error) {
       postLog({
         tgId: tg?.initDataUnsafe.user?.id,
