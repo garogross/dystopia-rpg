@@ -31,6 +31,7 @@ interface Props {
   show: boolean;
   onClose: () => void;
   slotId: string;
+  evoMode?: boolean;
 }
 
 const {
@@ -45,6 +46,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   show,
   onClose,
   slotId,
+  evoMode,
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -103,6 +105,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
       loading={loading}
       errored={errored || !!errorText}
       errorText={errorText}
+      evoMode={evoMode}
     >
       <div className={styles.cyberFarmFieldsBuildOptionsModal}>
         <div className={styles.cyberFarmFieldsBuildOptionsModal__col}>

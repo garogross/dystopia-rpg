@@ -480,10 +480,7 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Buy by CP",
           [ELanguages.ru]: "Купить за CP",
         },
-        buyByMetalButtonText: {
-          [ELanguages.en]: "Buy by Metal",
-          [ELanguages.ru]: "Купить за Металл",
-        },
+
         cancelButtonText: {
           [ELanguages.en]: "Cancel",
           [ELanguages.ru]: "Отмена",
@@ -665,13 +662,14 @@ export const TRANSLATIONS = {
     },
     optionsModal: {
       titleText: {
-        [ELanguages.en]: "Choose what to process",
-        [ELanguages.ru]: "Выберите что переработать",
+        [ELanguages.en]: "Choose item to process",
+        [ELanguages.ru]: "Выберите предмет переработки",
       },
       plantTitleText: {
-        [ELanguages.en]: "Choose what to plant",
-        [ELanguages.ru]: "Выберите что посадить",
+        [ELanguages.en]: "Choose seed type",
+        [ELanguages.ru]: "Выберите тип семян",
       },
+
       successText: {
         [ELanguages.en]: "Processing started successfully!",
         [ELanguages.ru]: "Переработка выполнена успешно!",
@@ -983,6 +981,18 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Get NUMBER products from factories",
           [ELanguages.ru]: "Получить NUMBER продукции с заводов",
         },
+      },
+    },
+  },
+  cyberfarmEvo: {
+    optionsModal: {
+      evoTitleText: {
+        [ELanguages.en]: "Choose item to process",
+        [ELanguages.ru]: "Выберите предмет переработки",
+      },
+      evoPlantTitleText: {
+        [ELanguages.en]: "Choose seed type",
+        [ELanguages.ru]: "Выберите тип семян",
       },
     },
   },

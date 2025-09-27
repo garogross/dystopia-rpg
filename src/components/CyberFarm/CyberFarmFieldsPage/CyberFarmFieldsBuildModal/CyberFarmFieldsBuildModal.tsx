@@ -14,24 +14,24 @@ interface Props {
   onClose: () => void;
   onBuild: () => void;
   onPlant: () => void;
+  evoMode?: boolean;
 }
 
-const {
-  titleText,
-plantButtonText,
-buildButtonText,
-} = TRANSLATIONS.cyberFarm.fields.buildModal
+const { titleText, plantButtonText, buildButtonText } =
+  TRANSLATIONS.cyberFarm.fields.buildModal;
 
 const CyberFarmFieldsBuildModal: React.FC<Props> = ({
   show,
   onClose,
   onBuild,
   onPlant,
+  evoMode,
 }) => {
-    const language = useAppSelector(state => state.ui.language)
+  const language = useAppSelector((state) => state.ui.language);
 
   return (
     <ModalWithAdd
+      evoMode={evoMode}
       show={show}
       onClose={onClose}
       title={titleText[language]}

@@ -25,6 +25,10 @@ import { getFarmFieldsFromSlots } from "../../../utils/getFarmFieldsFromSlots";
 import { evoPlantImages } from "../../../constants/cyberfarm/evoPlantImages";
 import CyberFarmEvoFarmsProgress from "./CyberFarmEvoFarmsProgress/CyberFarmEvoFarmsProgress";
 import { useFarmFieldsProgressCheck } from "../../../hooks/useFarmFieldsProgressCheck";
+import CyberFarmFieldsBuildModal from "../../CyberFarm/CyberFarmFieldsPage/CyberFarmFieldsBuildModal/CyberFarmFieldsBuildModal";
+import CyberFarmFieldsBuildOptionsModal from "../../CyberFarm/CyberFarmFieldsPage/CyberFarmFieldsBuildOptionsModal/CyberFarmFieldsBuildOptionsModal";
+import CyberFarmFieldsBuyModal from "../../CyberFarm/CyberFarmFieldsPage/CyberFarmFieldsBuyModal/CyberFarmFieldsBuyModal";
+import CyberFarmEvoOptionsModal from "./CyberFarmEvoOptionsModal/CyberFarmEvoOptionsModal";
 
 const FIELD_HEIGHT_ASPECT_RATIO = 3.4;
 
@@ -50,13 +54,37 @@ const CyberFarmEvoFarms = () => {
   const [fields, setFields] = useState<IFarmField[][]>([]);
   const [fieldWidth, setFieldWidth] = useState(0);
   const fieldHeight = fieldWidth / FIELD_HEIGHT_ASPECT_RATIO;
+  const [buyModalOpened, setBuyModalOpened] = useState(false);
+  const [buyingSlotId, setBuyingSlotId] = useState<string | null>(null);
+  const [buildSlotId, setBuildSlotId] = useState<string | null>(null);
+  const [buildModalOpened, setBuildModalOpened] = useState(false);
+  const [buildOptionsModalOpened, setBuildOptionsModalOpened] = useState(false);
+  const [progressModalOpened, setProgressModalOpened] = useState(false);
+  const [activeProgresModalItemId, setActiveProgresModalItemId] = useState<
+    IFarmField["id"] | null
+  >(null);
+  const [optionsModalOpened, setOptionsModalOpened] = useState(false);
+  const [producingSlotId, setProducingSlotId] = useState<string | null>(null);
 
-  const slotFields = getFarmFieldsFromSlots(slots);
+  const slotFields = getFarmFieldsFromSlots(slots).sort((a, b) => {
+    const order = {
+      [EFarmSlotTypes.FIELDS]: 2,
+      [EFarmSlotTypes.FARM]: 1,
+      [EFarmSlotTypes.FACTORY]: 0,
+    };
+    return order[a.type] - order[b.type];
+  });
+
   slotFields.push({
     type: EFarmSlotTypes.FIELDS,
     id: v4(),
     blocked: true,
   });
+
+  const producingSlot =
+    producingSlotId && slotFields.find((item) => item.id === producingSlotId);
+  console.log({ producingSlot, producingSlotId });
+
   useFarmFieldsProgressCheck(slotFields);
 
   useEffect(() => {
@@ -112,6 +140,26 @@ const CyberFarmEvoFarms = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slots]);
 
+  const onClickSlot = (field: IFarmField) => {
+    console.log("onClickSlot", field);
+
+    if (field.blocked) {
+      setBuyingSlotId(field.id);
+      setBuyModalOpened(true);
+    } else if (field.process) {
+      setActiveProgresModalItemId(field.id);
+      setProgressModalOpened(true);
+    } else {
+      if (field.type === EFarmSlotTypes.FIELDS) {
+        setBuildSlotId(field.id);
+        setBuildModalOpened(true);
+      } else {
+        setProducingSlotId(field.id);
+        setOptionsModalOpened(true);
+      }
+    }
+  };
+
   return (
     <div className={styles.cyberFarmEvoFarms}>
       <div className={`container ${styles.cyberFarmEvoFarms__header}`}>
@@ -150,6 +198,7 @@ const CyberFarmEvoFarms = () => {
 
               return (
                 <button
+                  onClick={() => onClickSlot(field)}
                   disabled={field.disabled}
                   key={`${colIndex}-${fieldIndex}`}
                   style={{
@@ -189,6 +238,40 @@ const CyberFarmEvoFarms = () => {
           <span>ВЕРНУТСЯ НА КАРТУ</span>
         </MainBtn>
       </div>
+      {buyingSlotId && (
+        <CyberFarmFieldsBuyModal
+          evoMode
+          buyingSlotId={buyingSlotId}
+          show={buyModalOpened}
+          onClose={() => setBuyModalOpened(false)}
+        />
+      )}
+      <CyberFarmFieldsBuildModal
+        evoMode
+        show={buildModalOpened}
+        onClose={() => setBuildModalOpened(false)}
+        onBuild={() => setBuildOptionsModalOpened(true)}
+        onPlant={() => {
+          setProducingSlotId(buildSlotId);
+          setOptionsModalOpened(true);
+        }}
+      />
+      {buildSlotId && (
+        <CyberFarmFieldsBuildOptionsModal
+          evoMode
+          show={buildOptionsModalOpened}
+          slotId={buildSlotId}
+          onClose={() => setBuildOptionsModalOpened(false)}
+        />
+      )}
+      {producingSlot && (
+        <CyberFarmEvoOptionsModal
+          show={optionsModalOpened}
+          onClose={() => setOptionsModalOpened(false)}
+          type={producingSlot.type}
+          slotId={producingSlotId}
+        />
+      )}
     </div>
   );
 };

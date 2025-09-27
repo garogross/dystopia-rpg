@@ -35,23 +35,36 @@ import evoInsectsOnFieldWebpImage from "../images/CyberFarmEvo/Farms/plants/evoI
 import evoInsectsInFarmImage from "../images/CyberFarmEvo/Farms/plants/evoInsectsInFarm.png";
 import evoInsectsInFarmWebpImage from "../images/CyberFarmEvo/Farms/plants/evoInsectsInFarm.webp";
 
-// factories
-// import evoBioGelOnFieldImage from "../images/CyberFarmEvo/Farms/factories/evoBioGelOnField.png";
-// import evoBioGelOnFieldWebpImage from "../images/CyberFarmEvo/Farms/factories/evoBioGelOnField.webp";
-// import evoEdibleBrickOnFieldImage from "../images/CyberFarmEvo/Farms/factories/evoEdibleBrickOnField.png";
-// import evoEdibleBrickOnFieldWebpImage from "../images/CyberFarmEvo/Farms/factories/evoEdibleBrickOnField.webp";
-// import evoEnergyOnFieldImage from "../images/CyberFarmEvo/Farms/factories/evoEnergyOnField.png";
-// import evoEnergyOnFieldWebpImage from "../images/CyberFarmEvo/Farms/factories/evoEnergyOnField.webp";
-// import evoEnergyCoreOnFieldImage from "../images/CyberFarmEvo/Farms/factories/evoEnergyCoreOnField.png";
-// import evoEnergyCoreOnFieldWebpImage from "../images/CyberFarmEvo/Farms/factories/evoEnergyCoreOnField.webp";
-// import evoMetalOnFieldImage from "../images/CyberFarmEvo/Farms/factories/evoMetalOnField.png";
-// import evoMetalOnFieldWebpImage from "../images/CyberFarmEvo/Farms/factories/evoMetalOnField.webp";
-// import evoOrganicMeatOnFieldImage from "../images/CyberFarmEvo/Farms/factories/evoOrganicMeatOnField.png";
-// import evoOrganicMeatOnFieldWebpImage from "../images/CyberFarmEvo/Farms/factories/evoOrganicMeatOnField.webp";
-// import evoPlasmaOnFieldImage from "../images/CyberFarmEvo/Farms/factories/evoPlasmaOnField.png";
-// import evoPlasmaOnFieldWebpImage from "../images/CyberFarmEvo/Farms/factories/evoPlasmaOnField.webp";
-// import evoRepairKitOnFieldImage from "../images/CyberFarmEvo/Farms/factories/evoRepairKitOnField.png";
-// import evoRepairKitOnFieldWebpImage from "../images/CyberFarmEvo/Farms/factories/evoRepairKitOnField.webp";
+// products
+import bioGelEvoImage from "../images/CyberFarmEvo/products/factoryProducts/bioGelEvo.png";
+import bioGelEvoWebpImage from "../images/CyberFarmEvo/products/factoryProducts/bioGelEvo.webp";
+import edibleBrickEvoImage from "../images/CyberFarmEvo/products/factoryProducts/edibleBrickEvo.png";
+import edibleBrickEvoWebpImage from "../images/CyberFarmEvo/products/factoryProducts/edibleBrickEvo.webp";
+import energyCoreEvoImage from "../images/CyberFarmEvo/products/factoryProducts/energyCoreEvo.png";
+import energyCoreEvoWebpImage from "../images/CyberFarmEvo/products/factoryProducts/energyCoreEvo.webp";
+import energyEvoImage from "../images/CyberFarmEvo/products/factoryProducts/energyEvo.png";
+import energyEvoWebpImage from "../images/CyberFarmEvo/products/factoryProducts/energyEvo.webp";
+import insectsEvoFactoryWebpImage from "../images/CyberFarmEvo/products/factoryProducts/insectsEvo.webp";
+import metalCactusEvoFactoryWebpImage from "../images/CyberFarmEvo/products/factoryProducts/metalCactusEvo.webp";
+import metalEvoImage from "../images/CyberFarmEvo/products/factoryProducts/metalEvo.png";
+import metalEvoWebpImage from "../images/CyberFarmEvo/products/factoryProducts/metalEvo.webp";
+import organicMeatEvoImage from "../images/CyberFarmEvo/products/factoryProducts/organicMeatEvo.png";
+import organicMeatEvoWebpImage from "../images/CyberFarmEvo/products/factoryProducts/organicMeatEvo.webp";
+import plasmaEvoImage from "../images/CyberFarmEvo/products/factoryProducts/plasma.png";
+import plasmaEvoWebpImage from "../images/CyberFarmEvo/products/factoryProducts/plasma.webp";
+import repairKitEvoImage from "../images/CyberFarmEvo/products/factoryProducts/repairKitEvo.png";
+import repairKitEvoWebpImage from "../images/CyberFarmEvo/products/factoryProducts/repairKitEvo.webp";
+
+import bioBacteriaEvoImage from "../images/CyberFarmEvo/products/plantProducts/bioBacteriaEvo.png";
+import bioBacteriaEvoWebpImage from "../images/CyberFarmEvo/products/plantProducts/bioBacteriaEvo.webp";
+import insectsEvoPlantImage from "../images/CyberFarmEvo/products/plantProducts/insectsEvo.png";
+import insectsEvoPlantWebpImage from "../images/CyberFarmEvo/products/plantProducts/insectsEvo.webp";
+import metalCactusEvoPlantImage from "../images/CyberFarmEvo/products/plantProducts/metalCactusEvo.png";
+import metalCactusEvoPlantWebpImage from "../images/CyberFarmEvo/products/plantProducts/metalCactusEvo.webp";
+import plasmaMushroomEvoImage from "../images/CyberFarmEvo/products/plantProducts/plasmaMushroomEvo.png";
+import plasmaMushroomEvoWebpImage from "../images/CyberFarmEvo/products/plantProducts/plasmaMushroomEvo.webp";
+import algaeEvoImage from "../images/CyberFarmEvo/products/plantProducts/аlgaeEvo.png";
+import algaeEvoWebpImage from "../images/CyberFarmEvo/products/plantProducts/аlgaeEvo.webp";
 
 export {
   farmMapCityWareHouseImage,
@@ -88,4 +101,32 @@ export {
   evoInsectsInFarmImage,
   evoInsectsInFarmWebpImage,
   evoBioBacteriaInFarmImage,
+  bioGelEvoImage,
+  bioGelEvoWebpImage,
+  edibleBrickEvoImage,
+  edibleBrickEvoWebpImage,
+  energyCoreEvoImage,
+  energyCoreEvoWebpImage,
+  energyEvoImage,
+  energyEvoWebpImage,
+  insectsEvoFactoryWebpImage,
+  metalCactusEvoFactoryWebpImage,
+  metalEvoImage,
+  metalEvoWebpImage,
+  organicMeatEvoImage,
+  organicMeatEvoWebpImage,
+  plasmaEvoImage,
+  plasmaEvoWebpImage,
+  repairKitEvoImage,
+  repairKitEvoWebpImage,
+  bioBacteriaEvoImage,
+  bioBacteriaEvoWebpImage,
+  insectsEvoPlantImage,
+  insectsEvoPlantWebpImage,
+  metalCactusEvoPlantImage,
+  metalCactusEvoPlantWebpImage,
+  plasmaMushroomEvoImage,
+  plasmaMushroomEvoWebpImage,
+  algaeEvoImage,
+  algaeEvoWebpImage,
 };

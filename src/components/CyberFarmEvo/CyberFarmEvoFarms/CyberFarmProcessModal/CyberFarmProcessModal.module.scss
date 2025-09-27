@@ -1,0 +1,134 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.cyberFarmProcessModal {
+  width: 100%;
+  padding: 1px;
+  background-color: $color-primary;
+  margin-top: 12px;
+
+  &__inner {
+    width: 100%;
+    background: linear-gradient(90deg, #2e147f 0%, #090419 25.96%);
+    padding: 7px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+  }
+
+  &,
+  &__inner {
+    clip-path: polygon(
+      98.5% 0%,
+      100% 5%,
+      100% 95%,
+      98.5% 100%,
+      1% 100%,
+      0% 95%,
+      0% 5%,
+      1% 0%
+    );
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  &__img {
+    width: 70px;
+    object-fit: contain;
+  }
+  &__infoMain {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+  &__text {
+    @include setFont(11px, 400);
+  }
+  &__progressBar {
+    width: 100%;
+    padding: 1px;
+    background-color: $color-primary;
+    height: 15px;
+  }
+  &__progressBarWrapper {
+    width: 100%;
+    padding: 1px;
+    background-color: $color-bg;
+    height: 100%;
+  }
+  &__progressBarinner {
+    height: 100%;
+    background-color: $color-primary;
+  }
+
+  &__progressBar,
+  &__progressBarWrapper,
+  &__progressBarinner {
+    clip-path: polygon(
+      98.5% 0%,
+      100% 5%,
+      100% 95%,
+      98.5% 100%,
+      1% 100%,
+      0% 95%,
+      0% 5%,
+      1% 0%
+    );
+  }
+  &__infoCol {
+    @include flexCol(space-between);
+    gap: 10px;
+    width: 100%;
+  }
+  &__actions {
+    @include flexCol();
+    gap: 12px;
+  }
+  &__btn {
+    flex: 1;
+    padding: 1px;
+    max-width: 150px;
+    @include button($color-primary);
+  }
+  &__btnInner {
+    width: 100%;
+    padding: 3px 5px;
+    @include flexCol();
+    gap: 3px;
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      rgb(61, 43, 126) 0%,
+      rgb(4, 0, 16) 100%
+    );
+    @include setFont(11px, 400);
+  }
+
+  &__btn,
+  &__btnInner {
+    clip-path: polygon(
+      96.2% 2.3%,
+      100% 15%,
+      100% 85%,
+      96.2% 97.7%,
+      3.8% 97.7%,
+      0% 85%,
+      0% 15%,
+      3.8% 2.3%
+    );
+  }
+
+  &__btnImg {
+    height: 16px;
+  }
+
+  &__error {
+    @include flexCol();
+    @include setFont(14px, 400, $font-fam-main, $color-red);
+    text-align: center;
+  }
+}
