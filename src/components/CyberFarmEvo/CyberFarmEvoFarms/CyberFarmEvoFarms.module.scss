@@ -72,16 +72,6 @@
   }
 
   &__footer {
-    padding-block: 16px;
-    background: linear-gradient(180deg, #0c0620 26.6%, #362670 100%);
-    @include flexCol();
     margin-top: -100px;
-    position: relative;
-    z-index: 100;
-  }
-  &__goBackBtn {
-    height: 30px;
-    width: 100%;
-    max-width: 240px;
   }
 }

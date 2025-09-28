@@ -1,0 +1,15 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.cyberFarmEvoFooter {
+  padding-block: 16px;
+  background: linear-gradient(180deg, #0c0620 26.6%, #362670 100%);
+  @include flexCol();
+  position: relative;
+  z-index: 100;
+  &__goBackBtn {
+    height: 30px;
+    width: 100%;
+    max-width: 240px;
+  }
+}
