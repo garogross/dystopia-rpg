@@ -480,10 +480,7 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Buy by CP",
           [ELanguages.ru]: "Купить за CP",
         },
-        buyByMetalButtonText: {
-          [ELanguages.en]: "Buy by Metal",
-          [ELanguages.ru]: "Купить за Металл",
-        },
+
         cancelButtonText: {
           [ELanguages.en]: "Cancel",
           [ELanguages.ru]: "Отмена",
@@ -525,12 +522,8 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Постройка выполнена",
         },
         buildByCpButtonText: {
-          [ELanguages.en]: "Build by CP",
-          [ELanguages.ru]: "Построить за CP",
-        },
-        buildByMetalButtonText: {
-          [ELanguages.en]: "Build by Metal",
-          [ELanguages.ru]: "Построить за Металл",
+          [ELanguages.en]: "Build by",
+          [ELanguages.ru]: "Построить за",
         },
       },
     },
@@ -665,13 +658,14 @@ export const TRANSLATIONS = {
     },
     optionsModal: {
       titleText: {
-        [ELanguages.en]: "Choose what to process",
-        [ELanguages.ru]: "Выберите что переработать",
+        [ELanguages.en]: "Choose item to process",
+        [ELanguages.ru]: "Выберите предмет переработки",
       },
       plantTitleText: {
-        [ELanguages.en]: "Choose what to plant",
-        [ELanguages.ru]: "Выберите что посадить",
+        [ELanguages.en]: "Choose seed type",
+        [ELanguages.ru]: "Выберите тип семян",
       },
+
       successText: {
         [ELanguages.en]: "Processing started successfully!",
         [ELanguages.ru]: "Переработка выполнена успешно!",
@@ -685,7 +679,7 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "У вас недостаточно ресурсов для производства",
       },
       missingResourcesCostText: {
-        [ELanguages.en]: "Replenishing missing resources costs: ",
+        [ELanguages.en]: "Replenishing missing resources costs ",
         [ELanguages.ru]: "Пополнение недостающих ресурсов обойдется в ",
       },
       buyAllButtonText: {
@@ -983,6 +977,18 @@ export const TRANSLATIONS = {
           [ELanguages.en]: "Get NUMBER products from factories",
           [ELanguages.ru]: "Получить NUMBER продукции с заводов",
         },
+      },
+    },
+  },
+  cyberfarmEvo: {
+    optionsModal: {
+      evoTitleText: {
+        [ELanguages.en]: "Choose item to process",
+        [ELanguages.ru]: "Выберите предмет переработки",
+      },
+      evoPlantTitleText: {
+        [ELanguages.en]: "Choose seed type",
+        [ELanguages.ru]: "Выберите тип семян",
       },
     },
   },

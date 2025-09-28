@@ -10,6 +10,7 @@ import eruda from "eruda";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { authorizeUser } from "../../../store/slices/profileSlice";
 import {
+  cyberFarmEvoPagePath,
   cyberFarmPagePath,
   influencePagePath,
 } from "../../../router/constants";
@@ -20,6 +21,7 @@ const OnBoarding = () => {
   const accountDetailsReceived = useAppSelector(
     (state) => state.profile.accountDetailsReceived
   );
+  const appMode = useAppSelector((state) => state.cyberfarm.global.appMode);
   const [rememberSelect, setRememberSelect] = useState(false);
   const [loading, setLoading] = useState(true);
   const tg = useTelegram();
@@ -30,7 +32,9 @@ const OnBoarding = () => {
         const res = await dispatch(authorizeUser(initData));
         switch (res) {
           case "ton_cyber_farm": {
-            navigate(cyberFarmPagePath);
+            navigate(
+              appMode === "classic" ? cyberFarmPagePath : cyberFarmEvoPagePath
+            );
             // navigate(cyberFarmPagePath);
             break;
           }

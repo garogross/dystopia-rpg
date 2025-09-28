@@ -1,0 +1,87 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.cyberFarmEvoFarms {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  &__header {
+    padding-top: 10px;
+    padding-bottom: 5px;
+    @include flexCol();
+  }
+  &__collectAllBtn {
+    height: 30px;
+    width: 100%;
+    max-width: 200px;
+  }
+  &__fieldsWrapper {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &__fieldsContainer {
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+    overflow: hidden auto;
+  }
+  &__field {
+    @include button();
+    position: absolute;
+    @include bgWebp(
+      "../../../assets/images//CyberFarmEvo/Farms/common/cybefarmEvoField.png",
+      "../../../assets/images//CyberFarmEvo/Farms/common/cybefarmEvoField.webp"
+    );
+    width: calc(100% / 3);
+    aspect-ratio: 236 / 144;
+    background-position: center;
+    background-size: contain;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: $transition;
+    border-radius: 50%;
+
+    &:not(&:disabled) {
+      &:hover,
+      &:active {
+        filter: brightness(0.7);
+      }
+    }
+
+    &_empty {
+      filter: sepia(1);
+    }
+  }
+
+  &__fieldPlantImg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 118/81;
+    pointer-events: none;
+  }
+
+  &__blockedIcon {
+    width: 40%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__footer {
+    padding-block: 16px;
+    background: linear-gradient(180deg, #0c0620 26.6%, #362670 100%);
+    @include flexCol();
+    margin-top: -100px;
+    position: relative;
+    z-index: 100;
+  }
+  &__goBackBtn {
+    height: 30px;
+    width: 100%;
+    max-width: 240px;
+  }
+}

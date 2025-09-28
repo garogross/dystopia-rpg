@@ -128,9 +128,9 @@ export const getAccountDetails =
     dispatch(
       receiveAccountDetails({
         tonWithdrawCommission:
-          resData.game_settings_new.pools.ton_pool.amount || 0,
+          resData.game_settings_new.pools?.ton_pool?.amount || 0,
         usdtWithdrawCommission:
-          resData.game_settings_new.pools.usdt_pool.amount || 0,
+          resData.game_settings_new.pools?.usdt_pool?.amount || 0,
       })
     );
     dispatch(
@@ -159,6 +159,7 @@ export const getAccountDetails =
           resData?.ton_cyber_farm?.timers?.daily_login_claimed || null,
       })
     );
+
     if (resData.ton_cyber_farm && resData.mode === "ton_cyber_farm") {
       dispatch(initCyberFarm());
       // store slots

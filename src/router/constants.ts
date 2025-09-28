@@ -14,7 +14,9 @@ export const rpgGameReferalsPagePath = "referals";
 export const rpgGameSkinViewPagePath = "skin-view";
 export const rpgGamePlayAreaPagePath = `${rpgGamePagePath}/play-area`;
 
+// cyberfarm
 export const cyberFarmPagePath = onBoardingPagePath + "/cyberfarm";
+export const cyberFarmEvoPagePath = onBoardingPagePath + "/cyberfarm-evo";
 export const cyberFarmFarmsPagePath = "farms";
 export const cyberFarmFactoriesPagePath = "factories";
 export const cyberFarmWarehousePagePath = "warehouse";

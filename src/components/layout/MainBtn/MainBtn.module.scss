@@ -13,7 +13,6 @@
     width: 100%;
     height: 100%;
     @include setFont(12px, 400);
-    fill: $color-text;
     transition: $transition;
     background: $color-primary-dark-radial-gradient;
     padding: 4px;

@@ -14,7 +14,11 @@ import {
 
 const { titleText, emptyText } = TRANSLATIONS.cyberFarm.warehouse;
 
-const CyberFarmWarehouse = () => {
+interface Props {
+  evoMode?: boolean;
+}
+
+const CyberFarmWarehouse: React.FC<Props> = ({ evoMode }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
   const resources = useAppSelector(
@@ -53,12 +57,14 @@ const CyberFarmWarehouse = () => {
             setSelectedItemId(item.id);
             setInfoShow(true);
           }}
+          evoMode={evoMode}
         />
         {selectedItem && (
           <CyberFarmWarehouseProductInfo
             show={infoShow}
             item={selectedItem}
             onClose={() => setInfoShow(false)}
+            evoMode={evoMode}
           />
         )}
       </div>

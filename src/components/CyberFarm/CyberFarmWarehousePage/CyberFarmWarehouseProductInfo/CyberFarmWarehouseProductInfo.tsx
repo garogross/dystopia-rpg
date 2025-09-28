@@ -19,6 +19,7 @@ interface Props {
   show: boolean;
   item: IWarehouseProduct;
   onClose: () => void;
+  evoMode?: boolean;
 }
 
 const { somethingWentWrong } = TRANSLATIONS.errors;
@@ -35,6 +36,7 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
   show,
   item,
   onClose,
+  evoMode,
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
@@ -109,10 +111,10 @@ const CyberFarmWarehouseProductInfo: React.FC<Props> = ({
         />
         <div className={styles.cyberFarmWarehouseProductInfo__main}>
           <ImageWebp
-            src={product.src}
+            src={evoMode ? product.evo.src : product.src}
             alt={product.name[language]}
             className={styles.cyberFarmWarehouseProductInfo__mainImg}
-            srcSet={product.srcSet}
+            srcSet={evoMode ? product.evo.srcSet : product.srcSet}
           />
           <div className={styles.cyberFarmWarehouseProductInfo__infoTexts}>
             <p className={styles.cyberFarmWarehouseProductInfo__text}>
