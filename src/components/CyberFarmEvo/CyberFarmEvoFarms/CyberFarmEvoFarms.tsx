@@ -29,6 +29,9 @@ import CyberFarmFieldsBuildModal from "../../CyberFarm/CyberFarmFieldsPage/Cyber
 import CyberFarmFieldsBuildOptionsModal from "../../CyberFarm/CyberFarmFieldsPage/CyberFarmFieldsBuildOptionsModal/CyberFarmFieldsBuildOptionsModal";
 import CyberFarmFieldsBuyModal from "../../CyberFarm/CyberFarmFieldsPage/CyberFarmFieldsBuyModal/CyberFarmFieldsBuyModal";
 import CyberFarmEvoOptionsModal from "./CyberFarmEvoOptionsModal/CyberFarmEvoOptionsModal";
+import CyberFarmEvoProcessModal from "./CyberFarmEvoProcessModal/CyberFarmEvoProcessModal";
+import { useNavigate } from "react-router-dom";
+import { cyberFarmEvoPagePath } from "../../../router/constants";
 
 const FIELD_HEIGHT_ASPECT_RATIO = 3.4;
 
@@ -49,6 +52,7 @@ function countRows(items: number): number {
 const isOdd = (i: number) => !(i % 2);
 
 const CyberFarmEvoFarms = () => {
+  const navigate = useNavigate();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const slots = useAppSelector((state) => state.cyberfarm.slots.slots);
   const [fields, setFields] = useState<IFarmField[][]>([]);
@@ -83,7 +87,10 @@ const CyberFarmEvoFarms = () => {
 
   const producingSlot =
     producingSlotId && slotFields.find((item) => item.id === producingSlotId);
-  console.log({ producingSlot, producingSlotId });
+
+  const activeProgresModalItem = slotFields.find(
+    (field) => field.id === activeProgresModalItemId
+  );
 
   useFarmFieldsProgressCheck(slotFields);
 
@@ -134,6 +141,32 @@ const CyberFarmEvoFarms = () => {
           });
         }
       );
+      const lastFieldsColIndex = initialFields.findLastIndex((col) =>
+        col.find((item) => !item.disabled)
+      );
+
+      if (lastFieldsColIndex !== -1) {
+        const lastColFilledItemsCount = initialFields[
+          lastFieldsColIndex
+        ].filter((item) => !item.disabled).length;
+        const availableFilledCountInRow = isOdd(lastFieldsColIndex) ? 2 : 3;
+        const fillableItemIndex = initialFields[
+          lastFieldsColIndex
+        ].findLastIndex((item) => !item.disabled);
+        if (lastColFilledItemsCount < availableFilledCountInRow) {
+          for (
+            let i = 0;
+            i < availableFilledCountInRow - lastColFilledItemsCount;
+            i++
+          ) {
+            initialFields[lastFieldsColIndex][fillableItemIndex + i + 1] = {
+              type: EFarmSlotTypes.FIELDS,
+              id: v4(),
+              blocked: true,
+            };
+          }
+        }
+      }
 
       setFields(initialFields);
     }
@@ -141,8 +174,6 @@ const CyberFarmEvoFarms = () => {
   }, [slots]);
 
   const onClickSlot = (field: IFarmField) => {
-    console.log("onClickSlot", field);
-
     if (field.blocked) {
       setBuyingSlotId(field.id);
       setBuyModalOpened(true);
@@ -196,6 +227,13 @@ const CyberFarmEvoFarms = () => {
                 };
               }
 
+              const isEmpty =
+                field.type === EFarmSlotTypes.FIELDS &&
+                !field.plant &&
+                !field.factoryProduct &&
+                !field.blocked &&
+                !field.disabled;
+
               return (
                 <button
                   onClick={() => onClickSlot(field)}
@@ -208,7 +246,9 @@ const CyberFarmEvoFarms = () => {
                       fieldIndex * fieldWidth +
                       (isOdd(colIndex) ? 0 : fieldWidth / 2),
                   }}
-                  className={styles.cyberFarmEvoFarms__field}
+                  className={`${styles.cyberFarmEvoFarms__field} ${
+                    isEmpty ? styles.cyberFarmEvoFarms__field_empty : ""
+                  }`}
                 >
                   {field.process && (
                     <CyberFarmEvoFarmsProgress process={field.process} />
@@ -233,7 +273,10 @@ const CyberFarmEvoFarms = () => {
         </div>
       </div>
       <div className={`container ${styles.cyberFarmEvoFarms__footer}`}>
-        <MainBtn className={styles.cyberFarmEvoFarms__goBackBtn}>
+        <MainBtn
+          onClick={() => navigate(cyberFarmEvoPagePath)}
+          className={styles.cyberFarmEvoFarms__goBackBtn}
+        >
           <MapIcon />
           <span>ВЕРНУТСЯ НА КАРТУ</span>
         </MainBtn>
@@ -270,6 +313,13 @@ const CyberFarmEvoFarms = () => {
           onClose={() => setOptionsModalOpened(false)}
           type={producingSlot.type}
           slotId={producingSlotId}
+        />
+      )}
+      {activeProgresModalItem && !("count" in activeProgresModalItem) && (
+        <CyberFarmEvoProcessModal
+          show={progressModalOpened}
+          onClose={() => setProgressModalOpened(false)}
+          item={activeProgresModalItem as IFarmField}
         />
       )}
     </div>

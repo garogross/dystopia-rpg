@@ -19,20 +19,32 @@
     padding: 1px;
     @include button($color-primary);
     transition: $transition;
+    height: 58px;
 
     &:disabled {
       background: transparent;
     }
   }
 
+  &_evo &__typeBtn_active {
+    padding: 2px;
+  }
+  &_evo &__typeBtn {
+    height: 78px;
+  }
+
   &__typeBtnInner {
     width: 100%;
-    height: 58px;
+    height: 100%;
     padding: 5px;
     @include flexCol();
     flex-direction: column;
     gap: 5px;
-    background: radial-gradient(50% 50% at 50% 50%, #523ba6 0%, #170e35 100%);
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
     @include setFont(12px, 400);
     transition: $transition;
   }
@@ -41,7 +53,8 @@
     color: $color-disabledText;
   }
 
-  &__typeBtn_active &__typeBtnInner {
+  // Fix for :not selector with suffix: use class selector instead
+  &:not(&_evo) &__typeBtn_active &__typeBtnInner {
     background: radial-gradient(
       71.72% 71.72% at 50% 50%,
       #3d2b7e 0%,
@@ -49,9 +62,8 @@
     );
     color: $color-black;
   }
-
-  &__typeBtn:first-child,
-  &__typeBtn:first-child &__typeBtnInner {
+  &:not(&_evo) &__typeBtn:first-child,
+  &:not(&_evo) &__typeBtn:first-child &__typeBtnInner {
     clip-path: polygon(
       100% 0%,
       100% 0%,
@@ -63,8 +75,8 @@
       100% 0%
     );
   }
-  &__typeBtn:last-child,
-  &__typeBtn:last-child &__typeBtnInner {
+  &:not(&_evo) &__typeBtn:last-child,
+  &:not(&_evo) &__typeBtn:last-child &__typeBtnInner {
     clip-path: polygon(
       5.5% 0%,
       0% 0.6%,
@@ -93,8 +105,6 @@
   }
 
   &__btn {
-    max-width: 160px;
-    width: 100%;
     padding: 1px;
     @include button($color-primary);
     transition: $transition;
@@ -107,7 +117,7 @@
   &__btnInner {
     width: 100%;
     height: 100%;
-    padding: 5px;
+    padding: 7px 14px;
     flex-direction: column;
     @include flexCol();
     gap: 5px;
@@ -129,32 +139,18 @@
     }
   }
 
-  &__btn:nth-child(1),
-  &__btn:nth-child(1) &__btnInner {
+  &__btn,
+  &__btnInner {
     clip-path: polygon(
-      100% 0%,
-      100% 0%,
-      100% 100%,
+      94% 0%,
+      100% 10%,
+      100% 90%,
+      94% 100%,
       6% 100%,
       0% 90%,
       0% 10%,
       6% 0%,
-      100% 0%
-    );
-  }
-  &__btn:nth-child(2):not(&__btn_cancel),
-  &__btn:nth-child(2):not(&__btn_cancel) &__btnInner {
-    clip-path: polygon(
-      5.5% 0%,
-      0% 0.6%,
-      0% 100%,
-      95.2% 100%,
-      97.7% 94.9%,
-      100% 90%,
-      100% 10.1%,
-      97.6% 5.4%,
-      95.1% 0%,
-      5.5% 0%
+      94% 0%
     );
   }
 

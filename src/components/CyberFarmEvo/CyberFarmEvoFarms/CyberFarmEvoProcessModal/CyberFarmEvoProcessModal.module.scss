@@ -1,35 +1,13 @@
-@import "../../../styles/mixins";
-@import "../../../styles/vars";
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
 
-.cyberFarmProcessModal {
+.cyberFarmEvoProcessModal {
   width: 100%;
-  padding: 1px;
-  background-color: $color-primary;
   margin-top: 12px;
-
-  &__inner {
-    width: 100%;
-    background: linear-gradient(90deg, #2e147f 0%, #090419 25.96%);
-    padding: 7px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    position: relative;
-  }
-
-  &,
-  &__inner {
-    clip-path: polygon(
-      98.5% 0%,
-      100% 5%,
-      100% 95%,
-      98.5% 100%,
-      1% 100%,
-      0% 95%,
-      0% 5%,
-      1% 0%
-    );
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
 
   &__info {
     display: flex;
@@ -37,13 +15,13 @@
     gap: 12px;
   }
   &__img {
-    width: 70px;
+    width: 83px;
     object-fit: contain;
   }
   &__infoMain {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 16px;
     flex: 1;
   }
   &__text {
@@ -53,7 +31,7 @@
     width: 100%;
     padding: 1px;
     background-color: $color-primary;
-    height: 15px;
+    height: 21px;
   }
   &__progressBarWrapper {
     width: 100%;
@@ -63,21 +41,21 @@
   }
   &__progressBarinner {
     height: 100%;
-    background-color: $color-primary;
+    background: linear-gradient(90deg, #2a1e54 0%, #5d42ba 100%);
   }
 
   &__progressBar,
   &__progressBarWrapper,
   &__progressBarinner {
     clip-path: polygon(
-      98.5% 0%,
-      100% 5%,
-      100% 95%,
-      98.5% 100%,
-      1% 100%,
-      0% 95%,
-      0% 5%,
-      1% 0%
+      98.2% 2.3%,
+      100% 15%,
+      100% 85%,
+      98.2% 97.7%,
+      1.8% 97.7%,
+      0% 85%,
+      0% 15%,
+      1.8% 2.3%
     );
   }
   &__infoCol {
@@ -88,16 +66,16 @@
   &__actions {
     @include flexCol();
     gap: 12px;
+    width: 100%;
   }
   &__btn {
     flex: 1;
     padding: 1px;
-    max-width: 150px;
     @include button($color-primary);
   }
   &__btnInner {
     width: 100%;
-    padding: 3px 5px;
+    padding: 5px;
     @include flexCol();
     gap: 3px;
     background: radial-gradient(

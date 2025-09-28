@@ -48,6 +48,10 @@
         filter: brightness(0.7);
       }
     }
+
+    &_empty {
+      filter: sepia(1);
+    }
   }
 
   &__fieldPlantImg {

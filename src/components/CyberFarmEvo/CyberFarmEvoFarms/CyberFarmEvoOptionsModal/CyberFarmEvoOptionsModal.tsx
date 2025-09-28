@@ -14,7 +14,6 @@ import { FarmMissingResourcesType } from "../../../../types/FarmMissingResources
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
-import { cpImage, cpImageWebp } from "../../../../assets/imageMaps";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
@@ -29,6 +28,7 @@ import { EPlants } from "../../../../constants/cyberfarm/EPlants";
 import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
 import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
 import { ConfirmIcon } from "../../../layout/icons/Common";
+import MainBtn from "../../../layout/MainBtn/MainBtn";
 
 interface Props {
   show: boolean;
@@ -252,7 +252,7 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
         <TransitionProvider
           inProp={!!(selectedResource && curEstimate)}
           style={TransitionStyleTypes.height}
-          height={600}
+          height={650}
           className={styles.cyberFarmEvoOptionsModal__info}
         >
           <div className={styles.cyberFarmEvoOptionsModal__infoHeader}>
@@ -273,7 +273,7 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
 
             <span className={styles.cyberFarmEvoOptionsModal__infoText}>
               {productionText[language]}{" "}
-              {curEstimate ? curEstimate[type].final_production : 0}
+              {curEstimate ? curEstimate[type]?.final_production : 0}
             </span>
             <div className={styles.cyberFarmEvoOptionsModal__titleLine} />
           </div>
@@ -323,51 +323,45 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
                 );
               })}
           </div>
-        </TransitionProvider>
-        <TransitionProvider
-          inProp={isUnavailableForProduce}
-          style={TransitionStyleTypes.height}
-          height={20}
-          className={styles.cyberFarmEvoOptionsModal__notEnoghResText}
-        >
-          {notEnoughResourcesText[language]}
-        </TransitionProvider>
-        <TransitionProvider
-          inProp={isUnavailableForProduce}
-          style={TransitionStyleTypes.height}
-          height={26}
-          className={styles.cyberFarmEvoOptionsModal__missingResCost}
-        >
-          <span className={styles.cyberFarmEvoOptionsModal__missingResCostText}>
-            {missingResourcesCostText[language]}:{" "}
-            {totalPricyByCp ? +totalPricyByCp.toFixed(4) : 0}
-          </span>
-          <ImageWebp
-            src={cpImage}
-            srcSet={cpImageWebp}
-            alt="cp"
-            className={styles.cyberFarmEvoOptionsModal__cpImage}
-          />
-        </TransitionProvider>
-        <button
-          onClick={onProduce}
-          id={ECyberfarmTutorialActions.produceRes}
-          disabled={
-            !tutorialInProgress &&
-            (!selectedResource ||
-              (isUnavailableForProduce && totalPricyByCp > cp))
-          }
-          className={styles.cyberFarmEvoOptionsModal__acceptBtn}
-        >
-          <div className={styles.cyberFarmEvoOptionsModal__acceptBtnInner}>
+          <TransitionProvider
+            inProp={isUnavailableForProduce}
+            style={TransitionStyleTypes.height}
+            height={20}
+            className={styles.cyberFarmEvoOptionsModal__notEnoghResText}
+          >
+            {notEnoughResourcesText[language]}
+          </TransitionProvider>
+          <TransitionProvider
+            inProp={isUnavailableForProduce}
+            style={TransitionStyleTypes.height}
+            height={26}
+          >
+            <span
+              className={styles.cyberFarmEvoOptionsModal__missingResCostText}
+            >
+              {missingResourcesCostText[language]}:{" "}
+              {totalPricyByCp ? +totalPricyByCp.toFixed(4) : 0}
+            </span>
+          </TransitionProvider>
+          <MainBtn
+            onClick={onProduce}
+            id={ECyberfarmTutorialActions.produceRes}
+            disabled={
+              !tutorialInProgress &&
+              (!selectedResource ||
+                (isUnavailableForProduce && totalPricyByCp > cp))
+            }
+            innerClass={styles.cyberFarmEvoOptionsModal__acceptBtnInner}
+            className={styles.cyberFarmEvoOptionsModal__acceptBtn}
+          >
             {isUnavailableForProduce ? <BuyIcon /> : <ConfirmIcon />}
             <span>
               {isUnavailableForProduce
                 ? buyAllButtonText[language]
                 : confirmButtonText[language]}
             </span>
-          </div>
-        </button>
+          </MainBtn>
+        </TransitionProvider>
       </div>
       <Tooltip
         show={showTooltip}

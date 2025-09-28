@@ -40,6 +40,7 @@ interface Props<T extends IFarmField | IWarehouseProduct> {
   producingSlotIdArg?: string | null;
   productsType?: EFarmSlotTypes;
   subTitleBlock?: ReactNode;
+  evoMode?: boolean;
   sorts?: { header: ReactNode; filterBy: (item: T) => boolean }[];
 }
 const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
@@ -55,6 +56,7 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   onCloseOptionsModal,
   productsType,
   subTitleBlock,
+  evoMode,
   sorts,
 }: Props<T>) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
@@ -127,7 +129,9 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
 
         if ("count" in field) {
           // check if IWarehouseProduct
-          curImage = products[field.product];
+          curImage = evoMode
+            ? products[field.product].evo
+            : products[field.product];
         } else if (field.type === "factory") {
           curImage = {
             src: cyberFarmFactoryImage,

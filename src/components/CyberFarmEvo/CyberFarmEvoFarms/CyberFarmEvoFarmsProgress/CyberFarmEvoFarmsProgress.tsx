@@ -15,13 +15,16 @@ const CyberFarmEvoFarmsProgress: React.FC<Props> = ({ process }) => {
   return (
     <div
       style={{
-        background: `linear-gradient(90deg, #00FF88 ${Math.max(
-          0,
-          progressPercent === 100 ? 100 : (progressPercent || 0) - 2
-        )}%, rgba(15, 14, 16, 0.79) ${Math.min(
-          100,
-          (progressPercent || 0) + 2
-        )}%)`,
+        background:
+          progressPercent && progressPercent < 100
+            ? `linear-gradient(90deg, #00FF88 ${Math.max(
+                0,
+                progressPercent === 100 ? 100 : (progressPercent || 0) - 2
+              )}%, rgba(15, 14, 16, 0.79) ${Math.min(
+                100,
+                (progressPercent || 0) + 2
+              )}%)`
+            : "transparent",
       }}
       className={styles.cyberFarmEvoFarmsProgress}
     >

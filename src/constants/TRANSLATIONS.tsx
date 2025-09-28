@@ -522,12 +522,8 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Постройка выполнена",
         },
         buildByCpButtonText: {
-          [ELanguages.en]: "Build by CP",
-          [ELanguages.ru]: "Построить за CP",
-        },
-        buildByMetalButtonText: {
-          [ELanguages.en]: "Build by Metal",
-          [ELanguages.ru]: "Построить за Металл",
+          [ELanguages.en]: "Build by",
+          [ELanguages.ru]: "Построить за",
         },
       },
     },
@@ -683,7 +679,7 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "У вас недостаточно ресурсов для производства",
       },
       missingResourcesCostText: {
-        [ELanguages.en]: "Replenishing missing resources costs: ",
+        [ELanguages.en]: "Replenishing missing resources costs ",
         [ELanguages.ru]: "Пополнение недостающих ресурсов обойдется в ",
       },
       buyAllButtonText: {

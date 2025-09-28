@@ -106,47 +106,24 @@
   &__notEnoghResText {
     padding-top: 3px;
     text-align: center;
-    @include setFont(10px, 400, $font-fam-main, $color-red);
+    @include setFont(12px, 400, $font-fam-main, $color-red);
   }
-  &__missingResCost {
-    @include flexCol();
-    gap: 2px;
-    padding-top: 5px;
-  }
+
   &__missingResCostText {
-    @include setFont(12px, 400);
+    @include setFont(14px, 400);
+    font-style: italic;
+    text-align: center;
   }
   &__cpImage {
     width: 10px;
   }
   &__acceptBtn {
-    padding: 1px;
-    @include button($color-primary);
-    margin-top: 10px;
+    height: 31px;
   }
   &__acceptBtnInner {
-    padding: 4px 10px;
+    padding: 7px 16px;
     @include flexCol();
-    gap: 4px;
-    @include setFont(14px, 400);
-    background: radial-gradient(
-      88.89% 88.89% at 50% 50%,
-      rgb(61, 43, 126) 0%,
-      rgb(4, 0, 16) 100%
-    );
-  }
-
-  &__acceptBtn,
-  &__acceptBtnInner {
-    clip-path: polygon(
-      97% 0%,
-      100% 15%,
-      100% 85%,
-      97% 100%,
-      3% 100%,
-      0% 85%,
-      0% 15%,
-      3% 0%
-    );
+    gap: 8px;
+    @include setFont(16px, 400);
   }
 }
