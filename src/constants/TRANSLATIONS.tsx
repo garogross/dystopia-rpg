@@ -472,10 +472,14 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "У вас нет полей",
       },
       buyModal: {
-        titleText: {
-          [ELanguages.en]: "Are you sure you want to buy this field for",
-          [ELanguages.ru]: "Вы точно хотите купить этот участок за",
-        },
+        titleText: (value?: string) => ({
+          [ELanguages.en]: `Are you sure you want to buy this field for ${
+            value === undefined ? "free" : value
+          }`,
+          [ELanguages.ru]: `Вы точно хотите купить этот участок ${
+            value === undefined ? "бесплатно" : `за ${value}`
+          }`,
+        }),
         buyByCpButtonText: {
           [ELanguages.en]: "Buy by CP",
           [ELanguages.ru]: "Купить за CP",
