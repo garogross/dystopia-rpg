@@ -683,12 +683,12 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "У вас недостаточно ресурсов для производства",
       },
       missingResourcesCostText: {
-        [ELanguages.en]: "Replenishing missing resources costs ",
-        [ELanguages.ru]: "Пополнение недостающих ресурсов обойдется в ",
+        [ELanguages.en]: "Buy missing for",
+        [ELanguages.ru]: "Докупить недостающее за",
       },
       buyAllButtonText: {
         [ELanguages.en]: "Buy all",
-        [ELanguages.ru]: "Докупать всё",
+        [ELanguages.ru]: "Докупить всё",
       },
       confirmButtonText: {
         [ELanguages.en]: "Confirm",

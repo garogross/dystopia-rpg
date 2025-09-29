@@ -29,6 +29,7 @@ import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutor
 import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
 import { ConfirmIcon } from "../../../layout/icons/Common";
 import MainBtn from "../../../layout/MainBtn/MainBtn";
+import { cpImage, cpImageWebp } from "../../../../assets/imageMaps";
 
 interface Props {
   show: boolean;
@@ -312,7 +313,7 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
                         {resource.required}{" "}
                         {resource.isInsufficient ? (
                           <span className="redText">
-                            ({youHaveText[language]}:{resource.available})
+                            ({youHaveText[language]} {resource.available})
                           </span>
                         ) : (
                           ""
@@ -335,6 +336,7 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
             inProp={isUnavailableForProduce}
             style={TransitionStyleTypes.height}
             height={26}
+            className={styles.cyberFarmEvoOptionsModal__missingResCost}
           >
             <span
               className={styles.cyberFarmEvoOptionsModal__missingResCostText}
@@ -342,6 +344,12 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
               {missingResourcesCostText[language]}:{" "}
               {totalPricyByCp ? +totalPricyByCp.toFixed(4) : 0}
             </span>
+            <ImageWebp
+              src={cpImage}
+              srcSet={cpImageWebp}
+              alt="cp"
+              className={styles.cyberFarmEvoOptionsModal__cpImage}
+            />
           </TransitionProvider>
           <MainBtn
             onClick={onProduce}
