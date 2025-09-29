@@ -12,6 +12,8 @@ import {
 import { AdRewardSettingsType } from "../../types/tasks/AdRewardSettingsType";
 import { MediationType } from "../../types/tasks/MediationsType";
 import { AdRewardValidPairsType } from "../../types/tasks/AdRewardValidPairsType";
+import { EadProviders } from "../../constants/EadProviders";
+import { postLog } from "../../api/logs";
 
 export interface TasksState {
   promoTasks: IPromoTask[];
@@ -105,6 +107,12 @@ export const claimAdReward = createAsyncThunk<
 
     return resData;
   } catch (error: any) {
+    if (payload.provider === EadProviders.Traffy) {
+      postLog({
+        type: "traffy error",
+        error,
+      });
+    }
     console.error("error", error);
     return rejectWithValue(error);
   }
