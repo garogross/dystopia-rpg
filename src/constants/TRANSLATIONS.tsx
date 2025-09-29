@@ -991,6 +991,32 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Выберите тип семян",
       },
     },
+    profileMenuBar: {
+      changeLanguageText: {
+        [ELanguages.en]: "Change language",
+        [ELanguages.ru]: "Сменить язык",
+      },
+      uiSettingsText: {
+        [ELanguages.en]: "UI Settings",
+        [ELanguages.ru]: "Настройки UI",
+      },
+      referralSystemText: {
+        [ELanguages.en]: "Referral system",
+        [ELanguages.ru]: "Реферальная система",
+      },
+      achievementsText: {
+        [ELanguages.en]: "Achievements",
+        [ELanguages.ru]: "Достижения",
+      },
+      changeGameText: {
+        [ELanguages.en]: "Change game",
+        [ELanguages.ru]: "Смена игры",
+      },
+      othersText: {
+        [ELanguages.en]: "Others",
+        [ELanguages.ru]: "Прочее",
+      },
+    },
   },
   loyality: {
     header: {

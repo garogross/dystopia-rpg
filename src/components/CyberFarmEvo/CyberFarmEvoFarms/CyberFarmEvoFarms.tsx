@@ -27,7 +27,6 @@ import CyberFarmFieldsBuildOptionsModal from "../../CyberFarm/CyberFarmFieldsPag
 import CyberFarmFieldsBuyModal from "../../CyberFarm/CyberFarmFieldsPage/CyberFarmFieldsBuyModal/CyberFarmFieldsBuyModal";
 import CyberFarmEvoOptionsModal from "./CyberFarmEvoOptionsModal/CyberFarmEvoOptionsModal";
 import CyberFarmEvoProcessModal from "./CyberFarmEvoProcessModal/CyberFarmEvoProcessModal";
-import CyberFarmEvoFooter from "../CyberFarmEvoFooter/CyberFarmEvoFooter";
 
 const FIELD_HEIGHT_ASPECT_RATIO = 3.4;
 
@@ -267,7 +266,6 @@ const CyberFarmEvoFarms = () => {
           )}
         </div>
       </div>
-      <CyberFarmEvoFooter className={styles.cyberFarmEvoFarms__footer} />
       {buyingSlotId && (
         <CyberFarmFieldsBuyModal
           evoMode

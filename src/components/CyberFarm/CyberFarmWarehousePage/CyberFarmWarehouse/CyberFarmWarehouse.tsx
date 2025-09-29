@@ -7,7 +7,6 @@ import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { products } from "../../../../constants/cyberfarm/products";
 import { CyberFarmProductType } from "../../../../types/CyberFarmProductType";
-import CyberFarmEvoFooter from "../../../CyberFarmEvo/CyberFarmEvoFooter/CyberFarmEvoFooter";
 import {
   getProductPrices,
   getStorage,
@@ -68,7 +67,6 @@ const CyberFarmWarehouse: React.FC<Props> = ({ evoMode }) => {
             evoMode={evoMode}
           />
         )}
-        {evoMode && <CyberFarmEvoFooter />}
       </div>
     </main>
   );

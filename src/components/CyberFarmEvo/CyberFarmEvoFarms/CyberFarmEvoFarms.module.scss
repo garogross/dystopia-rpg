@@ -18,6 +18,7 @@
   &__fieldsWrapper {
     flex: 1;
     overflow: hidden;
+    margin-bottom: -30px;
   }
 
   &__fieldsContainer {
@@ -69,9 +70,5 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-  }
-
-  &__footer {
-    margin-top: -100px;
   }
 }

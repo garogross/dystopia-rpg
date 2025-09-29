@@ -4,8 +4,12 @@ import GameWrapper from "../../GameWrapper/GameWrapper";
 import { useEffect } from "react";
 import { closeCyberFarm } from "../../../store/slices/cyberFarm/cyberfarmSlice";
 import CyberFarmEvoHeader from "../CyberFarmEvoHeader/CyberFarmEvoHeader";
+import { useMatch } from "react-router-dom";
+import { cyberFarmEvoPagePath } from "../../../router/constants";
+import CyberFarmEvoFooter from "../CyberFarmEvoFooter/CyberFarmEvoFooter";
 
 const CyberFarmWrapper = () => {
+  const isMapPage = useMatch(cyberFarmEvoPagePath);
   const dispatch = useAppDispatch();
   const cyberFarmInited = useAppSelector(
     (state) => state.cyberfarm.global.dataReceived
@@ -22,10 +26,10 @@ const CyberFarmWrapper = () => {
     <>
       <GameWrapper
         header={<CyberFarmEvoHeader />}
-        bottomNavbar={<></>}
+        bottomNavbar={isMapPage ? <></> : <CyberFarmEvoFooter />}
         images={cyberfarmImages}
         gameInited={cyberFarmInited}
-        offsetSize={48}
+        offsetSize={isMapPage ? 48 : 113}
         mode={"ton_cyber_farm"}
       />
     </>

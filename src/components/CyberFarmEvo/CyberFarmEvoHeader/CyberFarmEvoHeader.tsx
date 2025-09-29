@@ -4,7 +4,6 @@ import { useAppSelector } from "../../../hooks/redux";
 
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { formatNumber } from "../../../utils/formatNumber";
-import SettingsModal from "../../SettingsModal/SettingsModal";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
@@ -22,11 +21,12 @@ import {
   ProfileIcon,
   RightBtnBg,
 } from "../../layout/icons/CyberFarmEvo/Header";
+import CyberFarmEvoProfileMenuBar from "../CyberFarmEvoProfileMenuBar/CyberFarmEvoProfileMenuBar";
 
 const CyberFarmEvoHeader = () => {
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
-  const [settingsOpened, setSettingsOpened] = useState(false);
+  const [profileModalOpened, setProfileModalOpened] = useState(false);
   return (
     <TransitionProvider
       inProp={gameInited}
@@ -36,7 +36,10 @@ const CyberFarmEvoHeader = () => {
       <div className={styles.cyberFarmEvoHeader__sideCol}>
         <TopLeftWing />
         <div className={styles.cyberFarmEvoHeader__sideColMain}>
-          <button className={styles.cyberFarmEvoHeader__colBtn}>
+          <button
+            onClick={() => setProfileModalOpened(true)}
+            className={styles.cyberFarmEvoHeader__colBtn}
+          >
             <ProfileIcon />
             <div className={styles.cyberFarmEvoHeader__colBtnBg}>
               <LeftBtnBg />
@@ -76,9 +79,9 @@ const CyberFarmEvoHeader = () => {
         </div>
         <BottomRightWing />
       </div>
-      <SettingsModal
-        show={settingsOpened}
-        onClose={() => setSettingsOpened(false)}
+      <CyberFarmEvoProfileMenuBar
+        show={profileModalOpened}
+        onClose={() => setProfileModalOpened(false)}
       />
     </TransitionProvider>
   );
