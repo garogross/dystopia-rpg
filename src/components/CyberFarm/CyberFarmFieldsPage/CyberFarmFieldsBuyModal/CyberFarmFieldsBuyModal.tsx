@@ -85,7 +85,7 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
     <ModalWithAdd
       show={show}
       onClose={onClose}
-      title={`${titleText[language]} ${costTextInCp}?`}
+      title={titleText(costTextInCp ? costTextInCp : undefined)[language]}
       loading={loading}
       errored={errored}
       errorText={errorText}

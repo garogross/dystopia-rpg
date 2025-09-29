@@ -34,25 +34,70 @@
     width: 48px;
     min-width: 48px;
     height: 28px;
-    @include flexCol();
+    display: flex;
+    align-items: center;
     fill: $color-black;
     position: relative;
+    transition: $transition;
+    overflow: hidden;
+    gap: 14px;
 
-    & svg {
+    &_right {
+      padding-right: 13px;
+      justify-content: flex-end;
+    }
+
+    &:not(&_right) {
+      padding-left: 13px;
+      justify-content: flex-start;
+    }
+
+    & > svg {
+      min-width: 21px;
       z-index: 1;
+    }
+
+    & span {
+      display: none;
+      z-index: 1;
+      @include setFont(14px, 400, $font-fam-main, $color-black);
+    }
+
+    &_active {
+      width: 94%;
+
+      & > span {
+        display: block;
+      }
     }
   }
 
   &__colBtnBg {
     position: absolute;
     top: 0;
+    transition: $transition;
+    width: 48px;
+
+    & svg {
+      width: 100%;
+    }
+  }
+  &__colBtn_right &__colBtnBg {
+    right: 0;
+  }
+  &__colBtn:not(&__colBtn_right) &__colBtnBg {
     left: 0;
+  }
+
+  &__colBtn_active &__colBtnBg {
+    width: 100%;
   }
   &__dotsline {
     & svg {
       width: 100%;
     }
   }
+
   &__centerCol {
     @include flexCol(space-between);
     padding-top: 9px;

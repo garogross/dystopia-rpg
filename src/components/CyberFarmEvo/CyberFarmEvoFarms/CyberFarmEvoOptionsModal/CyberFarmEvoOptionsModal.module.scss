@@ -88,7 +88,7 @@
   }
 
   &__infoText {
-    @include setFont(15px, 400);
+    @include setFont(13px, 400);
   }
   &__infoTable {
     display: flex;
@@ -108,9 +108,13 @@
     text-align: center;
     @include setFont(12px, 400, $font-fam-main, $color-red);
   }
+  &__missingResCost {
+    @include flexCol();
+    gap: 5px;
+  }
 
   &__missingResCostText {
-    @include setFont(14px, 400);
+    @include setFont(13px, 400);
     font-style: italic;
     text-align: center;
   }

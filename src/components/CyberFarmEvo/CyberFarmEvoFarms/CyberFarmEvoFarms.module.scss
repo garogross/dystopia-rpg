@@ -18,6 +18,7 @@
   &__fieldsWrapper {
     flex: 1;
     overflow: hidden;
+    margin-bottom: -30px;
   }
 
   &__fieldsContainer {
@@ -69,19 +70,5 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-  }
-
-  &__footer {
-    padding-block: 16px;
-    background: linear-gradient(180deg, #0c0620 26.6%, #362670 100%);
-    @include flexCol();
-    margin-top: -100px;
-    position: relative;
-    z-index: 100;
-  }
-  &__goBackBtn {
-    height: 30px;
-    width: 100%;
-    max-width: 240px;
   }
 }

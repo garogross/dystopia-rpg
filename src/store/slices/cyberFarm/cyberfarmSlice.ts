@@ -20,8 +20,12 @@ export const cyberfarmSlice = createSlice({
     closeCyberFarm: (state) => {
       state.dataReceived = false;
     },
+    setCyberfarmMode: (state, { payload }) => {
+      state.appMode = payload;
+    },
   },
 });
 
-export const { initCyberFarm, closeCyberFarm } = cyberfarmSlice.actions;
+export const { initCyberFarm, closeCyberFarm, setCyberfarmMode } =
+  cyberfarmSlice.actions;
 export default cyberfarmSlice.reducer;

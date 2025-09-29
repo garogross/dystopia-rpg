@@ -4,7 +4,6 @@ import { useAppSelector } from "../../../hooks/redux";
 
 import { DotsLine } from "../../layout/icons/RPGGame/Common";
 import { formatNumber } from "../../../utils/formatNumber";
-import SettingsModal from "../../SettingsModal/SettingsModal";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
@@ -22,11 +21,18 @@ import {
   ProfileIcon,
   RightBtnBg,
 } from "../../layout/icons/CyberFarmEvo/Header";
+import CyberFarmEvoProfileMenuBar from "../CyberFarmEvoProfileMenuBar/CyberFarmEvoProfileMenuBar";
+import CyberFarmEvoLanguageMenuBar from "../CyberFarmEvoLanguageMenuBar/CyberFarmEvoLanguageMenuBar";
+import CyberFarmEvoUiSettingsMenuBar from "../CyberFarmEvoUiSettingsMenuBar/CyberFarmEvoUiSettingsMenuBar";
+import CyberFarmEvoSupportMenuBar from "../CyberFarmEvoSupportMenuBar/CyberFarmEvoSupportMenuBar";
 
 const CyberFarmEvoHeader = () => {
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
-  const [settingsOpened, setSettingsOpened] = useState(false);
+  const [profileModalOpened, setProfileModalOpened] = useState(false);
+  const [languageModalOpened, setLanguageModalOpened] = useState(false);
+  const [uiSettingsModalOpened, setUiSettingsModalOpened] = useState(false);
+  const [supportModalOpened, setSupportModalOpened] = useState(false);
   return (
     <TransitionProvider
       inProp={gameInited}
@@ -36,15 +42,23 @@ const CyberFarmEvoHeader = () => {
       <div className={styles.cyberFarmEvoHeader__sideCol}>
         <TopLeftWing />
         <div className={styles.cyberFarmEvoHeader__sideColMain}>
-          <button className={styles.cyberFarmEvoHeader__colBtn}>
+          <button
+            onClick={() => setProfileModalOpened(true)}
+            className={`${styles.cyberFarmEvoHeader__colBtn} ${
+              profileModalOpened ? styles.cyberFarmEvoHeader__colBtn_active : ""
+            }`}
+          >
             <ProfileIcon />
+            <span>Профиль</span>
             <div className={styles.cyberFarmEvoHeader__colBtnBg}>
               <LeftBtnBg />
             </div>
           </button>
-          <div className={styles.cyberFarmEvoHeader__dotsline}>
-            <DotsLine preserveAspectRatio />
-          </div>
+          {!profileModalOpened && (
+            <div className={styles.cyberFarmEvoHeader__dotsline}>
+              <DotsLine preserveAspectRatio />
+            </div>
+          )}
         </div>
         <BottomLeftWing />
       </div>
@@ -64,11 +78,22 @@ const CyberFarmEvoHeader = () => {
         <div
           className={`${styles.cyberFarmEvoHeader__sideColMain} ${styles.cyberFarmEvoHeader__sideColMain_right}`}
         >
-          <div className={styles.cyberFarmEvoHeader__dotsline}>
-            <DotsLine preserveAspectRatio />
-          </div>
-          <button className={styles.cyberFarmEvoHeader__colBtn}>
+          {!supportModalOpened && (
+            <div className={styles.cyberFarmEvoHeader__dotsline}>
+              <DotsLine preserveAspectRatio />
+            </div>
+          )}
+          <button
+            onClick={() => setSupportModalOpened(true)}
+            className={`${styles.cyberFarmEvoHeader__colBtn} ${
+              styles.cyberFarmEvoHeader__colBtn_right
+            } ${
+              supportModalOpened ? styles.cyberFarmEvoHeader__colBtn_active : ""
+            }`}
+          >
+            <span>Справка</span>
             <HelpCenterIcon />
+
             <div className={styles.cyberFarmEvoHeader__colBtnBg}>
               <RightBtnBg />
             </div>
@@ -76,9 +101,23 @@ const CyberFarmEvoHeader = () => {
         </div>
         <BottomRightWing />
       </div>
-      <SettingsModal
-        show={settingsOpened}
-        onClose={() => setSettingsOpened(false)}
+      <CyberFarmEvoProfileMenuBar
+        show={profileModalOpened}
+        onClose={() => setProfileModalOpened(false)}
+        openUiSettings={() => setUiSettingsModalOpened(true)}
+        openLanguageMenu={() => setLanguageModalOpened(true)}
+      />
+      <CyberFarmEvoLanguageMenuBar
+        show={languageModalOpened}
+        onClose={() => setLanguageModalOpened(false)}
+      />
+      <CyberFarmEvoUiSettingsMenuBar
+        show={uiSettingsModalOpened}
+        onClose={() => setUiSettingsModalOpened(false)}
+      />
+      <CyberFarmEvoSupportMenuBar
+        show={supportModalOpened}
+        onClose={() => setSupportModalOpened(false)}
       />
     </TransitionProvider>
   );

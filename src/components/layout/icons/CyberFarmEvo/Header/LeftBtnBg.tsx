@@ -2,7 +2,7 @@ import React from "react";
 export const LeftBtnBg = () => {
   return (
     <svg
-      width="48"
+      preserveAspectRatio="none"
       height="28"
       viewBox="0 0 48 28"
       fill="none"

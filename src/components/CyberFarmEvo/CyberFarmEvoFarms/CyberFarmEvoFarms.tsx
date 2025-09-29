@@ -11,10 +11,7 @@ import {
   evoFarmImage,
   evoFarmWebpImage,
 } from "../../../assets/imageMaps";
-import {
-  BlockedSlotIcon,
-  MapIcon,
-} from "../../layout/icons/CyberFarmEvo/Farms";
+import { BlockedSlotIcon } from "../../layout/icons/CyberFarmEvo/Farms";
 
 import styles from "./CyberFarmEvoFarms.module.scss";
 import { IFarmField } from "../../../models/CyberFarm/IFarmField";
@@ -30,8 +27,6 @@ import CyberFarmFieldsBuildOptionsModal from "../../CyberFarm/CyberFarmFieldsPag
 import CyberFarmFieldsBuyModal from "../../CyberFarm/CyberFarmFieldsPage/CyberFarmFieldsBuyModal/CyberFarmFieldsBuyModal";
 import CyberFarmEvoOptionsModal from "./CyberFarmEvoOptionsModal/CyberFarmEvoOptionsModal";
 import CyberFarmEvoProcessModal from "./CyberFarmEvoProcessModal/CyberFarmEvoProcessModal";
-import { useNavigate } from "react-router-dom";
-import { cyberFarmEvoPagePath } from "../../../router/constants";
 
 const FIELD_HEIGHT_ASPECT_RATIO = 3.4;
 
@@ -52,7 +47,6 @@ function countRows(items: number): number {
 const isOdd = (i: number) => !(i % 2);
 
 const CyberFarmEvoFarms = () => {
-  const navigate = useNavigate();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const slots = useAppSelector((state) => state.cyberfarm.slots.slots);
   const [fields, setFields] = useState<IFarmField[][]>([]);
@@ -271,15 +265,6 @@ const CyberFarmEvoFarms = () => {
             })
           )}
         </div>
-      </div>
-      <div className={`container ${styles.cyberFarmEvoFarms__footer}`}>
-        <MainBtn
-          onClick={() => navigate(cyberFarmEvoPagePath)}
-          className={styles.cyberFarmEvoFarms__goBackBtn}
-        >
-          <MapIcon />
-          <span>ВЕРНУТСЯ НА КАРТУ</span>
-        </MainBtn>
       </div>
       {buyingSlotId && (
         <CyberFarmFieldsBuyModal

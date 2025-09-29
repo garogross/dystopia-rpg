@@ -472,10 +472,14 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "У вас нет полей",
       },
       buyModal: {
-        titleText: {
-          [ELanguages.en]: "Are you sure you want to buy this field for",
-          [ELanguages.ru]: "Вы точно хотите купить этот участок за",
-        },
+        titleText: (value?: string) => ({
+          [ELanguages.en]: `Are you sure you want to buy this field for ${
+            value === undefined ? "free" : value
+          }`,
+          [ELanguages.ru]: `Вы точно хотите купить этот участок ${
+            value === undefined ? "бесплатно" : `за ${value}`
+          }`,
+        }),
         buyByCpButtonText: {
           [ELanguages.en]: "Buy by CP",
           [ELanguages.ru]: "Купить за CP",
@@ -679,12 +683,12 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "У вас недостаточно ресурсов для производства",
       },
       missingResourcesCostText: {
-        [ELanguages.en]: "Replenishing missing resources costs ",
-        [ELanguages.ru]: "Пополнение недостающих ресурсов обойдется в ",
+        [ELanguages.en]: "Buy missing for",
+        [ELanguages.ru]: "Докупить недостающее за",
       },
       buyAllButtonText: {
         [ELanguages.en]: "Buy all",
-        [ELanguages.ru]: "Докупать всё",
+        [ELanguages.ru]: "Докупить всё",
       },
       confirmButtonText: {
         [ELanguages.en]: "Confirm",
@@ -989,6 +993,82 @@ export const TRANSLATIONS = {
       evoPlantTitleText: {
         [ELanguages.en]: "Choose seed type",
         [ELanguages.ru]: "Выберите тип семян",
+      },
+    },
+    profileMenuBar: {
+      titleText: {
+        [ELanguages.en]: "PROFILE",
+        [ELanguages.ru]: "ПРОФИЛЬ",
+      },
+      changeLanguageText: {
+        [ELanguages.en]: "Change language",
+        [ELanguages.ru]: "Сменить язык",
+      },
+      uiSettingsText: {
+        [ELanguages.en]: "UI Settings",
+        [ELanguages.ru]: "Настройки UI",
+      },
+      referralSystemText: {
+        [ELanguages.en]: "Referral system",
+        [ELanguages.ru]: "Реферальная система",
+      },
+      achievementsText: {
+        [ELanguages.en]: "Achievements",
+        [ELanguages.ru]: "Достижения",
+      },
+      changeGameText: {
+        [ELanguages.en]: "Change game",
+        [ELanguages.ru]: "Смена игры",
+      },
+      othersText: {
+        [ELanguages.en]: "Others",
+        [ELanguages.ru]: "Прочее",
+      },
+    },
+    languageMenubar: {
+      titleText: {
+        [ELanguages.en]: "LANGUAGE",
+        [ELanguages.ru]: "ЯЗЫК",
+      },
+      englishText: {
+        [ELanguages.en]: "English",
+        [ELanguages.ru]: "Английский",
+      },
+      russianText: {
+        [ELanguages.en]: "Russian",
+        [ELanguages.ru]: "Русский",
+      },
+    },
+    uiSettingsmenuBar: {
+      titleText: {
+        [ELanguages.en]: "UI Settings",
+        [ELanguages.ru]: "Настройки UI",
+      },
+      classicModeText: {
+        [ELanguages.en]: "Classic",
+        [ELanguages.ru]: "Классик",
+      },
+      evoModeText: {
+        [ELanguages.en]: "Evo mode (new)",
+        [ELanguages.ru]: "Эво режим (новый)",
+      },
+    },
+    supportMenuBar: {
+      titleText: {
+        [ELanguages.en]: "SUPPORT",
+        [ELanguages.ru]: "СПРАВКА",
+      },
+      productionText: {
+        [ELanguages.en]: "Production",
+        [ELanguages.ru]: "Производства",
+      },
+      trainingText: {
+        [ELanguages.en]: "Training",
+        [ELanguages.ru]: "Обучение",
+      },
+      videoGuidesText: {
+        [ELanguages.en]: "Video guides",
+        [ELanguages.ru]: "Видео гайды",
       },
     },
   },
