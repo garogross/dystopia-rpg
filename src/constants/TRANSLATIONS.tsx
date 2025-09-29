@@ -992,6 +992,10 @@ export const TRANSLATIONS = {
       },
     },
     profileMenuBar: {
+      titleText: {
+        [ELanguages.en]: "PROFILE",
+        [ELanguages.ru]: "ПРОФИЛЬ",
+      },
       changeLanguageText: {
         [ELanguages.en]: "Change language",
         [ELanguages.ru]: "Сменить язык",
@@ -1015,6 +1019,52 @@ export const TRANSLATIONS = {
       othersText: {
         [ELanguages.en]: "Others",
         [ELanguages.ru]: "Прочее",
+      },
+    },
+    languageMenubar: {
+      titleText: {
+        [ELanguages.en]: "LANGUAGE",
+        [ELanguages.ru]: "ЯЗЫК",
+      },
+      englishText: {
+        [ELanguages.en]: "English",
+        [ELanguages.ru]: "Английский",
+      },
+      russianText: {
+        [ELanguages.en]: "Russian",
+        [ELanguages.ru]: "Русский",
+      },
+    },
+    uiSettingsmenuBar: {
+      titleText: {
+        [ELanguages.en]: "UI Settings",
+        [ELanguages.ru]: "Настройки UI",
+      },
+      classicModeText: {
+        [ELanguages.en]: "Classic",
+        [ELanguages.ru]: "Классик",
+      },
+      evoModeText: {
+        [ELanguages.en]: "Evo mode (new)",
+        [ELanguages.ru]: "Эво режим (новый)",
+      },
+    },
+    supportMenuBar: {
+      titleText: {
+        [ELanguages.en]: "SUPPORT",
+        [ELanguages.ru]: "СПРАВКА",
+      },
+      productionText: {
+        [ELanguages.en]: "Production",
+        [ELanguages.ru]: "Производства",
+      },
+      trainingText: {
+        [ELanguages.en]: "Training",
+        [ELanguages.ru]: "Обучение",
+      },
+      videoGuidesText: {
+        [ELanguages.en]: "Video guides",
+        [ELanguages.ru]: "Видео гайды",
       },
     },
   },

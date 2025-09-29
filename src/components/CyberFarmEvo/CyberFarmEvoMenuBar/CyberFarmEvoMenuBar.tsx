@@ -16,17 +16,23 @@ import { useAppSelector } from "../../../hooks/redux";
 
 interface MenuItem {
   name: TranslationItemType;
-  icon: ReactNode;
+  icon?: ReactNode;
   onClick?: () => void;
 }
 
 interface Props {
+  title: TranslationItemType;
   show: boolean;
   onClose: () => void;
   items: MenuItem[];
 }
 
-const CyberFarmEvoMenuBar: React.FC<Props> = ({ show, onClose, items }) => {
+const CyberFarmEvoMenuBar: React.FC<Props> = ({
+  show,
+  onClose,
+  items,
+  title,
+}) => {
   const language = useAppSelector((state) => state.ui.language);
   return (
     <>
@@ -40,7 +46,7 @@ const CyberFarmEvoMenuBar: React.FC<Props> = ({ show, onClose, items }) => {
           <div className={styles.cyberFarmEvoMenuBar__header}>
             <TopWings />
             <span className={styles.cyberFarmEvoMenuBar__headerText}>
-              ПРОФИЛЬ
+              {title[language]}
             </span>
           </div>
           <div className={styles.cyberFarmEvoMenuBar__main}>

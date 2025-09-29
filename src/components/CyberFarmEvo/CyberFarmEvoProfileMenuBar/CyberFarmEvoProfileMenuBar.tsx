@@ -22,18 +22,30 @@ const {
   achievementsText,
   changeGameText,
   othersText,
+  titleText,
 } = TRANSLATIONS.cyberfarmEvo.profileMenuBar;
 
 interface Props {
   show: boolean;
   onClose: () => void;
+  openUiSettings: () => void;
+  openLanguageMenu: () => void;
 }
 
-const CyberFarmEvoProfileMenuBar: React.FC<Props> = ({ show, onClose }) => {
+const CyberFarmEvoProfileMenuBar: React.FC<Props> = ({
+  show,
+  onClose,
+  openUiSettings,
+  openLanguageMenu,
+}) => {
   const navigate = useNavigate();
   const items = [
-    { name: changeLanguageText, icon: <LanguageIcon /> },
-    { name: uiSettingsText, icon: <UISettingsIcon /> },
+    {
+      name: changeLanguageText,
+      icon: <LanguageIcon />,
+      onClick: openLanguageMenu,
+    },
+    { name: uiSettingsText, icon: <UISettingsIcon />, onClick: openUiSettings },
     {
       name: referralSystemText,
       icon: <RefferalsIcon />,
@@ -52,7 +64,14 @@ const CyberFarmEvoProfileMenuBar: React.FC<Props> = ({ show, onClose }) => {
     { name: othersText, icon: <OthersIcon /> },
   ];
 
-  return <CyberFarmEvoMenuBar items={items} show={show} onClose={onClose} />;
+  return (
+    <CyberFarmEvoMenuBar
+      items={items}
+      show={show}
+      onClose={onClose}
+      title={titleText}
+    />
+  );
 };
 
 export default CyberFarmEvoProfileMenuBar;
