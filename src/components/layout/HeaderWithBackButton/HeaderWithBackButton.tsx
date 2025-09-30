@@ -3,7 +3,7 @@ import styles from "./HeaderWithBackButton.module.scss";
 import { BackIcon } from "../icons/Common";
 import { DotsLine } from "../icons/RPGGame/Common";
 interface Props {
-  onClose: () => void;
+  onClose?: () => void;
   className?: string;
   title?: string;
   withDotlines?: boolean;
@@ -22,13 +22,14 @@ const HeaderWithBackButton: React.FC<Props> = ({
   return (
     <div className={`${styles.headerWithBackButton} ${className}`}>
       <button
+        disabled={!onClose}
         className={`${styles.headerWithBackButton__btn} ${styles.headerWithBackButton__backBtn}`}
         onClick={onClose}
       >
         <div
           className={`${styles.headerWithBackButton__btnInner} ${styles.headerWithBackButton__backBtnInner}`}
         >
-          <BackIcon />
+          {!!onClose && <BackIcon />}
         </div>
       </button>
       {title && (

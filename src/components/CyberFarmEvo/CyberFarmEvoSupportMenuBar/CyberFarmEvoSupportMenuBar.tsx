@@ -6,6 +6,11 @@ import {
   VideoGuidesIcon,
 } from "../../layout/icons/CyberFarmEvo/SupportMenuBar";
 import CyberFarmEvoMenuBar from "../CyberFarmEvoMenuBar/CyberFarmEvoMenuBar";
+import { useNavigate } from "react-router-dom";
+import {
+  cyberFarmEvoPagePath,
+  cyberFarmProductionPagePath,
+} from "../../../router/constants";
 
 const { titleText, productionText, trainingText, videoGuidesText } =
   TRANSLATIONS.cyberfarmEvo.supportMenuBar;
@@ -16,10 +21,14 @@ interface Props {
 }
 
 const CyberFarmEvoSupportMenuBar: React.FC<Props> = ({ show, onClose }) => {
+  const navigate = useNavigate();
+
   const items = [
     {
       name: productionText,
       icon: <ProductionIcon />,
+      onClick: () =>
+        navigate(`${cyberFarmEvoPagePath}/${cyberFarmProductionPagePath}`),
     },
     { name: trainingText, icon: <TrainingIcon /> },
     {
