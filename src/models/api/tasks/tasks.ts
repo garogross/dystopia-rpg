@@ -1,6 +1,7 @@
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import { EAdActionTypes } from "../../../constants/EadActionTypes";
 import { EadProviders } from "../../../constants/EadProviders";
+import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import { AdRewardSettingsType } from "../../../types/tasks/AdRewardSettingsType";
 
 export interface ClaimAdRewardResponse {
@@ -20,6 +21,15 @@ export interface ClaimAdRewardResponse {
     ad_production_bonus_received: boolean;
   };
   final_production?: number;
+  collect_info?: {
+    collected_slots: string[];
+    collected_by_product: {
+      [key in CyberFarmProductType]: number;
+    };
+    ref_amount: number;
+    start_production_pool_add: number;
+    start_production_pool_left: number;
+  };
 }
 
 export interface GetAdRewardSettingsResponse {

@@ -4,13 +4,19 @@ import styles from "./CyberFarmEvoFooter.module.scss";
 import { useNavigate } from "react-router-dom";
 import MainBtn from "../../layout/MainBtn/MainBtn";
 import { MapIcon } from "../../layout/icons/CyberFarmEvo/Footer";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../hooks/redux";
 
 interface Props {
   className?: string;
 }
 
+const { goBackToMapText } = TRANSLATIONS.cyberfarmEvo.footer;
+
 const CyberFarmEvoFooter: React.FC<Props> = ({ className }) => {
   const navigate = useNavigate();
+  const language = useAppSelector((state) => state.ui.language);
+
   return (
     <div
       className={`container ${styles.cyberFarmEvoFooter} ${className || ""}`}
@@ -20,7 +26,7 @@ const CyberFarmEvoFooter: React.FC<Props> = ({ className }) => {
         className={styles.cyberFarmEvoFooter__goBackBtn}
       >
         <MapIcon />
-        <span>ВЕРНУТСЯ НА КАРТУ</span>
+        <span>{goBackToMapText[language]}</span>
       </MainBtn>
     </div>
   );

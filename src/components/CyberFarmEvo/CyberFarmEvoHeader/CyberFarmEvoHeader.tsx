@@ -25,8 +25,12 @@ import CyberFarmEvoProfileMenuBar from "../CyberFarmEvoProfileMenuBar/CyberFarmE
 import CyberFarmEvoLanguageMenuBar from "../CyberFarmEvoLanguageMenuBar/CyberFarmEvoLanguageMenuBar";
 import CyberFarmEvoUiSettingsMenuBar from "../CyberFarmEvoUiSettingsMenuBar/CyberFarmEvoUiSettingsMenuBar";
 import CyberFarmEvoSupportMenuBar from "../CyberFarmEvoSupportMenuBar/CyberFarmEvoSupportMenuBar";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+
+const { profileText, helpText } = TRANSLATIONS.cyberfarmEvo.header;
 
 const CyberFarmEvoHeader = () => {
+  const language = useAppSelector((state) => state.ui.language);
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const [profileModalOpened, setProfileModalOpened] = useState(false);
@@ -49,7 +53,7 @@ const CyberFarmEvoHeader = () => {
             }`}
           >
             <ProfileIcon />
-            <span>Профиль</span>
+            <span>{[profileText[language]]}</span>
             <div className={styles.cyberFarmEvoHeader__colBtnBg}>
               <LeftBtnBg />
             </div>
@@ -91,7 +95,7 @@ const CyberFarmEvoHeader = () => {
               supportModalOpened ? styles.cyberFarmEvoHeader__colBtn_active : ""
             }`}
           >
-            <span>Справка</span>
+            <span>{helpText[language]}</span>
             <HelpCenterIcon />
 
             <div className={styles.cyberFarmEvoHeader__colBtnBg}>

@@ -154,15 +154,39 @@ export const slotsSlice = createSlice({
     });
     builder.addCase(claimAdReward.fulfilled, (state, { payload }) => {
       const slotId = payload.bonus_distribution?.farm_slot;
-      if (state.slots && slotId && payload.game_action) {
-        state.slots = {
-          ...state.slots,
-          [slotId]: {
-            ...state.slots?.[slotId],
-            ad_production_bonus_received: true,
-            final_production: payload?.final_production || 0,
-          },
-        };
+
+      // update bonus statuses
+      if (state.slots) {
+        if (slotId && payload.game_action) {
+          state.slots = {
+            ...state.slots,
+            [slotId]: {
+              ...state.slots?.[slotId],
+              ad_production_bonus_received: true,
+              final_production: payload?.final_production || 0,
+            },
+          };
+        }
+
+        if (payload.collect_info) {
+          const updatedSots = payload.collect_info.collected_slots.reduce(
+            (acc, cur) => {
+              if (state.slots && state.slots[cur]) {
+                acc[cur] = {
+                  ...state.slots[cur],
+                  product: undefined,
+                  start_time: undefined,
+                  finish_time: undefined,
+                  ad_production_bonus_received: false,
+                };
+              }
+              return acc;
+            },
+            {} as Record<string, IFarmSlot>
+          );
+
+          state.slots = { ...state.slots, ...updatedSots };
+        }
       }
     });
   },

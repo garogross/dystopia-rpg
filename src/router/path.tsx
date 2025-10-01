@@ -60,6 +60,7 @@ import {
   bubbleFrontAchievmentsPagePath,
   cyberFarmEvoPagePath,
   cyberFarmProductionPagePath,
+  cyberFarmRatingsPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -120,6 +121,7 @@ import CyberFarmEvoAchievmentsPage from "../pages/CyberFarmEvo/CyberFarmEvoAchie
 import CyberFarmEvoMapPage from "../pages/CyberFarmEvo/CyberFarmEvoMapPage";
 import CyberFarmEvoFarmsPage from "../pages/CyberFarmEvo/CyberFarmEvoFarmsPage";
 import CyberFarmEvoProductionPage from "../pages/CyberFarmEvo/CyberFarmEvoProductionPage";
+import CyberFarmEvoRatingsPage from "../pages/CyberFarmEvo/CyberFarmEvoRatingsPage";
 
 export const homePagePath = "/";
 
@@ -255,6 +257,10 @@ export const routes: IRoute[] = [
       {
         path: cyberFarmProductionPagePath,
         component: <CyberFarmEvoProductionPage />,
+      },
+      {
+        path: cyberFarmRatingsPagePath,
+        component: <CyberFarmEvoRatingsPage />,
       },
     ],
   },

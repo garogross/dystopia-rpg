@@ -983,8 +983,75 @@ export const TRANSLATIONS = {
         },
       },
     },
+    ratings: {
+      titleText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
+      },
+      searchPlaceholder: {
+        [ELanguages.en]: "Search by player name",
+        [ELanguages.ru]: "Поиск по имени игрока",
+      },
+
+      playerTabText: {
+        [ELanguages.en]: "Player",
+        [ELanguages.ru]: "Игрок",
+      },
+      realEstateTabText: {
+        [ELanguages.en]: "Real Estate",
+        [ELanguages.ru]: "Недвиж.",
+      },
+      technologyTabText: {
+        [ELanguages.en]: "Technology",
+        [ELanguages.ru]: "Техно.",
+      },
+      overallTabText: {
+        [ELanguages.en]: "Overall",
+        [ELanguages.ru]: "Общая",
+      },
+    },
   },
   cyberfarmEvo: {
+    header: {
+      profileText: {
+        [ELanguages.en]: "Profile",
+        [ELanguages.ru]: "Профиль",
+      },
+      helpText: {
+        [ELanguages.en]: "Help",
+        [ELanguages.ru]: "Справка",
+      },
+    },
+    footer: {
+      goBackToMapText: {
+        [ELanguages.en]: "GO BACK TO MAP",
+        [ELanguages.ru]: "ВЕРНУТСЯ НА КАРТУ",
+      },
+    },
+    map: {
+      tasksText: {
+        [ELanguages.en]: "Tasks",
+        [ELanguages.ru]: "Задания",
+      },
+      warehouseText: {
+        [ELanguages.en]: "Warehouse",
+        [ELanguages.ru]: "Склад",
+      },
+      farmText: {
+        [ELanguages.en]: "Farm",
+        [ELanguages.ru]: "Ферма",
+      },
+    },
+    farms: {
+      collectAllText: {
+        [ELanguages.en]: "Collect all",
+        [ELanguages.ru]: "Собрать всё",
+      },
+      productionCollectedText: {
+        [ELanguages.en]: "Production collected",
+        [ELanguages.ru]: "Производство собрано",
+      },
+    },
     optionsModal: {
       evoTitleText: {
         [ELanguages.en]: "Choose item to process",
@@ -1020,9 +1087,9 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Change game",
         [ELanguages.ru]: "Смена игры",
       },
-      othersText: {
-        [ELanguages.en]: "Others",
-        [ELanguages.ru]: "Прочее",
+      ratingsText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
       },
     },
     languageMenubar: {

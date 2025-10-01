@@ -15,6 +15,7 @@ import { FarmProductionEstimateType } from "../../../types/FarmProductionEstimat
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import { ExchangeResponse } from "../../../models/api/CyberFarm/Resources";
 import { FarmProductsSettingsType } from "../../../types/FarmProductsSettingsType";
+import { claimAdReward } from "../tasksSlice";
 
 export interface ResourcesState {
   resources: Record<CyberFarmProductType, number>;
@@ -259,6 +260,14 @@ export const resourcesSlice = createSlice({
             (state.resources[payload.product] ?? 0) +
               (payload.operation === "sell" ? -amount : amount)
           ),
+        };
+      }
+    });
+    builder.addCase(claimAdReward.fulfilled, (state, { payload }) => {
+      if (payload.collect_info) {
+        state.resources = {
+          ...state.resources,
+          ...payload.collect_info.collected_by_product,
         };
       }
     });

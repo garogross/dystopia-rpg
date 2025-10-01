@@ -4,6 +4,8 @@ import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
   adImage,
   adImageWebp,
+  evoBlockedSlotImage,
+  evoBlockedSlotWebpImage,
   evoFactoryImage,
   evoFactoryWebpImage,
   evoFactoryWorkingImage,
@@ -11,7 +13,6 @@ import {
   evoFarmImage,
   evoFarmWebpImage,
 } from "../../../assets/imageMaps";
-import { BlockedSlotIcon } from "../../layout/icons/CyberFarmEvo/Farms";
 
 import styles from "./CyberFarmEvoFarms.module.scss";
 import { IFarmField } from "../../../models/CyberFarm/IFarmField";
@@ -27,6 +28,11 @@ import CyberFarmFieldsBuildOptionsModal from "../../CyberFarm/CyberFarmFieldsPag
 import CyberFarmFieldsBuyModal from "../../CyberFarm/CyberFarmFieldsPage/CyberFarmFieldsBuyModal/CyberFarmFieldsBuyModal";
 import CyberFarmEvoOptionsModal from "./CyberFarmEvoOptionsModal/CyberFarmEvoOptionsModal";
 import CyberFarmEvoProcessModal from "./CyberFarmEvoProcessModal/CyberFarmEvoProcessModal";
+import { EAdSlots } from "../../../constants/EAdSlots";
+import { useSoltAd } from "../../../hooks/useSlotAd";
+import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
+import Tooltip from "../../layout/Tooltip/Tooltip";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 
 const FIELD_HEIGHT_ASPECT_RATIO = 3.4;
 
@@ -43,12 +49,15 @@ function countRows(items: number): number {
     return rows + 2;
   }
 }
-
 const isOdd = (i: number) => !(i % 2);
+
+const { collectAllText, productionCollectedText } =
+  TRANSLATIONS.cyberfarmEvo.farms;
 
 const CyberFarmEvoFarms = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const slots = useAppSelector((state) => state.cyberfarm.slots.slots);
+  const language = useAppSelector((state) => state.ui.language);
   const [fields, setFields] = useState<IFarmField[][]>([]);
   const [fieldWidth, setFieldWidth] = useState(0);
   const fieldHeight = fieldWidth / FIELD_HEIGHT_ASPECT_RATIO;
@@ -87,6 +96,13 @@ const CyberFarmEvoFarms = () => {
   );
 
   useFarmFieldsProgressCheck(slotFields);
+  const { onShow, loading, tooltipText, showTooltip } = useSoltAd(
+    EAdSlots.CollectFarmProductionSlot,
+    "farm_collect_ready",
+    undefined,
+    () => {},
+    productionCollectedText[language]
+  );
 
   useEffect(() => {
     if (wrapperRef.current) {
@@ -188,9 +204,12 @@ const CyberFarmEvoFarms = () => {
   return (
     <div className={styles.cyberFarmEvoFarms}>
       <div className={`container ${styles.cyberFarmEvoFarms__header}`}>
-        <MainBtn className={styles.cyberFarmEvoFarms__collectAllBtn}>
+        <MainBtn
+          onClick={onShow}
+          className={styles.cyberFarmEvoFarms__collectAllBtn}
+        >
           <ImageWebp srcSet={adImage} src={adImageWebp} alt={"watch ad"} />
-          <span>Собрать всё</span>
+          <span>{collectAllText[language]}</span>
         </MainBtn>
       </div>
       <div className={styles.cyberFarmEvoFarms__fieldsWrapper} ref={wrapperRef}>
@@ -256,8 +275,11 @@ const CyberFarmEvoFarms = () => {
                     />
                   )}
                   {field.blocked && (
-                    <BlockedSlotIcon
-                      className={styles.cyberFarmEvoFarms__blockedIcon}
+                    <ImageWebp
+                      srcSet={evoBlockedSlotImage}
+                      src={evoBlockedSlotWebpImage}
+                      alt={field.plant || ""}
+                      className={styles.cyberFarmEvoFarms__blockedImg}
                     />
                   )}
                 </button>
@@ -307,6 +329,8 @@ const CyberFarmEvoFarms = () => {
           item={activeProgresModalItem as IFarmField}
         />
       )}
+      <LoadingOverlay loading={loading} />
+      <Tooltip show={showTooltip} text={tooltipText} />
     </div>
   );
 };

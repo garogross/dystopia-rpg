@@ -12,6 +12,8 @@ import CyberFarmEvoMenuBar from "../CyberFarmEvoMenuBar/CyberFarmEvoMenuBar";
 import { useNavigate } from "react-router-dom";
 import {
   cyberFarmAchievmentsPagePath,
+  cyberFarmEvoPagePath,
+  cyberFarmRatingsPagePath,
   cyberFarmReferalsPagePath,
   onBoardingPagePath,
 } from "../../../router/constants";
@@ -21,7 +23,7 @@ const {
   referralSystemText,
   achievementsText,
   changeGameText,
-  othersText,
+  ratingsText,
   titleText,
 } = TRANSLATIONS.cyberfarmEvo.profileMenuBar;
 
@@ -61,7 +63,12 @@ const CyberFarmEvoProfileMenuBar: React.FC<Props> = ({
       icon: <ChangeGameIcon />,
       onClick: () => navigate(onBoardingPagePath),
     },
-    { name: othersText, icon: <OthersIcon /> },
+    {
+      name: ratingsText,
+      icon: <OthersIcon />,
+      onClick: () =>
+        navigate(`${cyberFarmEvoPagePath}/${cyberFarmRatingsPagePath}`),
+    },
   ];
 
   return (
