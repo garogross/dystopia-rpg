@@ -13,7 +13,10 @@ import {
 } from "../../layout/icons/CyberFarmEvo/Production";
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { getResourcesDeflict } from "../../../store/slices/cyberFarm/resourcesSlice";
+import {
+  getProductionEstimate,
+  getResourcesDeflict,
+} from "../../../store/slices/cyberFarm/resourcesSlice";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import { products } from "../../../constants/cyberfarm/products";
@@ -48,6 +51,9 @@ const CyberFarmEvoProduction = () => {
   const resourceDeflict = useAppSelector(
     (state) => state.cyberfarm.resources.resourceDeficit
   );
+  const productionEstimate = useAppSelector(
+    (state) => state.cyberfarm.resources.productionEstimate
+  );
   const language = useAppSelector((state) => state.ui.language);
   const [activeTab, setActiveTab] = useState(tabs[0].key);
   const [selectedProduct, setSelectedProduct] =
@@ -57,6 +63,7 @@ const CyberFarmEvoProduction = () => {
 
   useEffect(() => {
     dispatch(getResourcesDeflict());
+    dispatch(getProductionEstimate());
   }, [dispatch]);
 
   return (
@@ -101,6 +108,10 @@ const CyberFarmEvoProduction = () => {
                 const requiredResources = Object.entries(deflict).filter(
                   ([key]) => key !== "total_price"
                 );
+
+                const finalProduction =
+                  productionEstimate?.[product]?.[activeTab]
+                    ?.final_production || 0;
                 return (
                   <div
                     key={product}
@@ -179,7 +190,7 @@ const CyberFarmEvoProduction = () => {
                                   styles.cyberFarmEvoProduction__listItemDropdownProductBoxCountText
                                 }
                               >
-                                1
+                                {finalProduction}
                               </span>
                             </div>
                           </div>
