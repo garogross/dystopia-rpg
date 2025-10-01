@@ -983,6 +983,33 @@ export const TRANSLATIONS = {
         },
       },
     },
+    ratings: {
+      titleText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
+      },
+      searchPlaceholder: {
+        [ELanguages.en]: "Search by player name",
+        [ELanguages.ru]: "Поиск по имени игрока",
+      },
+
+      playerTabText: {
+        [ELanguages.en]: "Player",
+        [ELanguages.ru]: "Игрок",
+      },
+      realEstateTabText: {
+        [ELanguages.en]: "Real Estate",
+        [ELanguages.ru]: "Недвиж.",
+      },
+      technologyTabText: {
+        [ELanguages.en]: "Technology",
+        [ELanguages.ru]: "Техно.",
+      },
+      overallTabText: {
+        [ELanguages.en]: "Overall",
+        [ELanguages.ru]: "Общая",
+      },
+    },
   },
   cyberfarmEvo: {
     optionsModal: {
@@ -1020,9 +1047,9 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Change game",
         [ELanguages.ru]: "Смена игры",
       },
-      othersText: {
-        [ELanguages.en]: "Others",
-        [ELanguages.ru]: "Прочее",
+      ratingsText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
       },
     },
     languageMenubar: {
