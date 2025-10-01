@@ -409,7 +409,7 @@ export const profileSlice = createSlice({
         +payload.reward &&
         payload.status === "ok" &&
         !payload.bonus_distribution &&
-        slotsWithoutReward.includes(payload.slot_id as EAdSlots)
+        !slotsWithoutReward.includes(payload.slot_id as EAdSlots)
       ) {
         state.stats.cp += +payload.reward;
       }
