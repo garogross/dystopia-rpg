@@ -191,6 +191,40 @@ const getLanguage = async (language_code: string | undefined) => {
   return ELanguages.en;
 };
 
+// Utility function to disable access to inspect elements
+const disableInspect = () => {
+  // Disable right-click context menu
+  document.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
+
+  // Disable F12, Ctrl+Shift+I/J/C/U, Cmd+Opt+I/J/C/U, and Ctrl+U
+  document.addEventListener("keydown", (e) => {
+    // F12
+    if (e.key === "F12") {
+      e.preventDefault();
+    }
+    // Ctrl+Shift+I/J/C/U
+    if (
+      (e.ctrlKey &&
+        e.shiftKey &&
+        ["I", "J", "C"].includes(e.key.toUpperCase())) ||
+      (e.ctrlKey && e.key.toUpperCase() === "U")
+    ) {
+      e.preventDefault();
+    }
+    // Cmd+Opt+I/J/C/U (for Mac)
+    if (
+      (e.metaKey &&
+        e.altKey &&
+        ["I", "J", "C"].includes(e.key.toUpperCase())) ||
+      (e.metaKey && e.key.toUpperCase() === "U")
+    ) {
+      e.preventDefault();
+    }
+  });
+};
+
 export const App = () => {
   const tg = useTelegram();
   const dispatch = useAppDispatch();
@@ -248,6 +282,7 @@ export const App = () => {
 
   useEffect(() => {
     loadScripts(tg);
+    disableInspect();
     initOfferwall();
     (async () => {
       const code = tg.initDataUnsafe?.user?.language_code;
