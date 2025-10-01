@@ -25,21 +25,25 @@ import styles from "./CyberFarmEvoProduction.module.scss";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+
+const { helpText, branchText, tabsTexts } =
+  TRANSLATIONS.cyberfarmEvo.production;
 
 const tabs = [
   {
     key: EFarmSlotTypes.FIELDS,
-    name: "Поля",
+    name: tabsTexts.fields,
     icon: <FieldsIcon />,
   },
   {
     key: EFarmSlotTypes.FARM,
-    name: "Фермы",
+    name: tabsTexts.farms,
     icon: <FarmsIcon />,
   },
   {
     key: EFarmSlotTypes.FACTORY,
-    name: "Заводы",
+    name: tabsTexts.factories,
     icon: <FactoriesIcon />,
   },
 ];
@@ -68,7 +72,7 @@ const CyberFarmEvoProduction = () => {
 
   return (
     <div className={`container ${styles.cyberFarmEvoProduction}`}>
-      <HeaderWithBackButton withDotlines title="Справка" />
+      <HeaderWithBackButton withDotlines title={helpText[language]} />
       <div className={styles.cyberFarmEvoProduction__main}>
         <div className={styles.cyberFarmEvoProduction__mainInner}>
           <div className={styles.cyberFarmEvoProduction__headerBlock}>
@@ -76,7 +80,7 @@ const CyberFarmEvoProduction = () => {
               <DotsLine />
             </div>
             <div className={styles.cyberFarmEvoProduction__headerMain}>
-              <span>Ветва производства</span>
+              <span>{branchText[language]}</span>
               <ProductionBranchicon />
             </div>
             <div className={styles.cyberFarmEvoProduction__dotsline}>
@@ -95,7 +99,7 @@ const CyberFarmEvoProduction = () => {
                 }`}
               >
                 <span className={styles.cyberFarmEvoProduction__tabBtnInner}>
-                  {tab.name} {tab.icon}
+                  {tab.name[language]} {tab.icon}
                 </span>
               </button>
             ))}
@@ -195,7 +199,7 @@ const CyberFarmEvoProduction = () => {
                             </div>
                           </div>
                           {Array.from({
-                            length: Math.ceil(requiredResources.length / 2),
+                            length: 2,
                           }).map((_, colIndex) => {
                             const colData = requiredResources.slice(
                               colIndex * BOX_PER_COL,

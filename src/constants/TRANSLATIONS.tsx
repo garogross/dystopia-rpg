@@ -1138,6 +1138,30 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Видео гайды",
       },
     },
+    production: {
+      helpText: {
+        [ELanguages.en]: "Help",
+        [ELanguages.ru]: "Справка",
+      },
+      branchText: {
+        [ELanguages.en]: "Production branch",
+        [ELanguages.ru]: "Ветва производства",
+      },
+      tabsTexts: {
+        fields: {
+          [ELanguages.en]: "Fields",
+          [ELanguages.ru]: "Поля",
+        },
+        farms: {
+          [ELanguages.en]: "Farms",
+          [ELanguages.ru]: "Фермы",
+        },
+        factories: {
+          [ELanguages.en]: "Factories",
+          [ELanguages.ru]: "Заводы",
+        },
+      },
+    },
   },
   loyality: {
     header: {
