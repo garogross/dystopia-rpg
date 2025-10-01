@@ -53,7 +53,7 @@
     position: absolute;
     @include flexCol();
     flex-direction: column;
-    @include setFont(16px, 400, $font-fam-retrogaming, #c7fffe);
+    @include setFont(20px, 400, $font-fam-russo-one, #c7fffe);
     -webkit-text-stroke: 1px #005c89;
     text-shadow: 1px #005c89;
     transition: $transition;
