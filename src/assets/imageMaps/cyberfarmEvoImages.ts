@@ -12,6 +12,8 @@ import evoFactoryWorkingImage from "../images/CyberFarmEvo/Farms/common/evoFacto
 import evoFactoryWorkingWebpImage from "../images/CyberFarmEvo/Farms/common/evoFactoryWorking.webp";
 import evoFarmImage from "../images/CyberFarmEvo/Farms/common/evoFarm.png";
 import evoFarmWebpImage from "../images/CyberFarmEvo/Farms/common/evoFarm.webp";
+import evoBlockedSlotImage from "../images/CyberFarmEvo/Farms/common/evoBlockedSlot.png";
+import evoBlockedSlotWebpImage from "../images/CyberFarmEvo/Farms/common/evoBlockedSlot.webp";
 
 // plants
 import evoPlasmaMushroomOnFieldImage from "../images/CyberFarmEvo/Farms/plants/evoPlasmaMushroomOnField.png";
@@ -129,4 +131,6 @@ export {
   plasmaMushroomEvoWebpImage,
   algaeEvoImage,
   algaeEvoWebpImage,
+  evoBlockedSlotImage,
+  evoBlockedSlotWebpImage,
 };

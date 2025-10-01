@@ -1012,6 +1012,16 @@ export const TRANSLATIONS = {
     },
   },
   cyberfarmEvo: {
+    farms: {
+      collectAllText: {
+        [ELanguages.en]: "Collect all",
+        [ELanguages.ru]: "Собрать всё",
+      },
+      productionCollectedText: {
+        [ELanguages.en]: "Production collected",
+        [ELanguages.ru]: "Производство собрано",
+      },
+    },
     optionsModal: {
       evoTitleText: {
         [ELanguages.en]: "Choose item to process",
