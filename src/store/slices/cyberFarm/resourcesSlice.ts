@@ -68,7 +68,7 @@ export const buyResourceDeflict = createAsyncThunk<
       {
         product: payload.product,
         slot_type: payload.slot_type,
-        tutorial: payload.tutorial,
+        // tutorial: payload.tutorial,
       }
     );
 

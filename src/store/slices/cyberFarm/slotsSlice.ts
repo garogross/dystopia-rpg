@@ -38,7 +38,7 @@ export const buySlot = createAsyncThunk<
     const resData = await fetchRequest<BuySlotResponse>(buySlotUrl, "POST", {
       slot_id: payload.id,
       action: payload.type,
-      tutorial: payload.tutorial,
+      // tutorial: payload.tutorial,
       payment_method: payload.byCp ? "cash_point" : "metal",
     });
 
@@ -99,7 +99,7 @@ export const speedUp = createAsyncThunk<
   try {
     const resData = await fetchRequest<SpeedUpResponse>(speedUpUrl, "POST", {
       slot_id: payload.id,
-      tutorial: payload.tutorial,
+      // tutorial: payload.tutorial,
       payment_method: payload.byAd ? "ad" : "cash_point",
     });
     await payload.clb?.();
