@@ -1012,6 +1012,36 @@ export const TRANSLATIONS = {
     },
   },
   cyberfarmEvo: {
+    header: {
+      profileText: {
+        [ELanguages.en]: "Profile",
+        [ELanguages.ru]: "Профиль",
+      },
+      helpText: {
+        [ELanguages.en]: "Help",
+        [ELanguages.ru]: "Справка",
+      },
+    },
+    footer: {
+      goBackToMapText: {
+        [ELanguages.en]: "GO BACK TO MAP",
+        [ELanguages.ru]: "ВЕРНУТСЯ НА КАРТУ",
+      },
+    },
+    map: {
+      tasksText: {
+        [ELanguages.en]: "Tasks",
+        [ELanguages.ru]: "Задания",
+      },
+      warehouseText: {
+        [ELanguages.en]: "Warehouse",
+        [ELanguages.ru]: "Склад",
+      },
+      farmText: {
+        [ELanguages.en]: "Farm",
+        [ELanguages.ru]: "Ферма",
+      },
+    },
     farms: {
       collectAllText: {
         [ELanguages.en]: "Collect all",

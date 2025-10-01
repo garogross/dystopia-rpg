@@ -16,8 +16,14 @@ import {
   cyberFarmSupportPagePath,
   cyberFarmWarehousePagePath,
 } from "../../../router/constants";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../hooks/redux";
+
+const { tasksText, warehouseText, farmText } = TRANSLATIONS.cyberfarmEvo.map;
 
 const CyberFarmEvoMap = () => {
+  const language = useAppSelector((state) => state.ui.language);
+
   return (
     <section className={styles.cyberFarmEvoMap}>
       <div className={styles.cyberFarmEvoMap__sky}></div>
@@ -38,7 +44,7 @@ const CyberFarmEvoMap = () => {
               src={farmMapTasksBuildImage}
               alt={"tasks"}
             />
-            <span>Задания</span>
+            <span>{tasksText[language]}</span>
           </Link>
           <Link
             to={`${cyberFarmEvoPagePath}/${cyberFarmWarehousePagePath}`}
@@ -49,7 +55,7 @@ const CyberFarmEvoMap = () => {
               src={farmMapCityWareHouseImage}
               alt={"warehouse"}
             />
-            <span>Склад</span>
+            <span>{warehouseText[language]}</span>
           </Link>
           <Link
             to={`${cyberFarmEvoPagePath}/${cyberFarmFarmsPagePath}`}
@@ -60,7 +66,7 @@ const CyberFarmEvoMap = () => {
               src={farmMapFarmBuildImage}
               alt={"farm"}
             />
-            <span>Ферма</span>
+            <span>{farmText[language]}</span>
           </Link>
         </div>
       </div>
