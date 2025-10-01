@@ -403,12 +403,13 @@ export const profileSlice = createSlice({
     builder.addCase(claimAdReward.fulfilled, (state, { payload }) => {
       const slotsWithoutReward = [
         EAdSlots.MiniGamesSessionSlot,
-        EAdSlots.CollectFarmProductionSlot,
+        // EAdSlots.CollectFarmProductionSlot,
       ];
       if (
         +payload.reward &&
         payload.status === "ok" &&
         !payload.bonus_distribution &&
+        payload.game_action !== "farm_collect_ready" &&
         !slotsWithoutReward.includes(payload.slot_id as EAdSlots)
       ) {
         state.stats.cp += +payload.reward;
