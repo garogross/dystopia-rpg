@@ -11,9 +11,16 @@ import {
   cyberFarmEvoPagePath,
   cyberFarmProductionPagePath,
 } from "../../../router/constants";
+import { SUPPORT_CHAT_URL } from "../../../constants/common/supportChatUrl";
+import { useTelegram } from "../../../hooks/useTelegram";
 
-const { titleText, productionText, trainingText, videoGuidesText } =
-  TRANSLATIONS.cyberfarmEvo.supportMenuBar;
+const {
+  titleText,
+  productionText,
+  trainingText,
+  videoGuidesText,
+  askInChatText,
+} = TRANSLATIONS.cyberfarmEvo.supportMenuBar;
 
 interface Props {
   show: boolean;
@@ -21,6 +28,7 @@ interface Props {
 }
 
 const CyberFarmEvoSupportMenuBar: React.FC<Props> = ({ show, onClose }) => {
+  const tg = useTelegram();
   const navigate = useNavigate();
 
   const items = [
@@ -34,6 +42,19 @@ const CyberFarmEvoSupportMenuBar: React.FC<Props> = ({ show, onClose }) => {
     {
       name: videoGuidesText,
       icon: <VideoGuidesIcon />,
+    },
+    {
+      name: askInChatText,
+      icon: <TrainingIcon />,
+      onClick: () => {
+        // @ts-ignore
+        if (tg) {
+          // @ts-ignore
+          tg.openTelegramLink(SUPPORT_CHAT_URL);
+        } else {
+          window.open(SUPPORT_CHAT_URL, "_blank");
+        }
+      },
     },
   ];
 

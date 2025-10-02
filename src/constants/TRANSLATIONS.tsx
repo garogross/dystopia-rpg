@@ -1213,6 +1213,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Video guides",
         [ELanguages.ru]: "Видео гайды",
       },
+      askInChatText: {
+        [ELanguages.en]: "Ask in chat",
+        [ELanguages.ru]: "Спросить в чате",
+      },
     },
     production: {
       helpText: {
