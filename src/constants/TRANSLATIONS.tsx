@@ -1166,8 +1166,8 @@ export const TRANSLATIONS = {
   loyality: {
     header: {
       titleText: {
-        [ELanguages.en]: "Support Center",
-        [ELanguages.ru]: "Центр Поддержки",
+        [ELanguages.en]: "Tasks",
+        [ELanguages.ru]: "Задания",
       },
     },
     tabs: {
