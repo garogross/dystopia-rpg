@@ -1,0 +1,82 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.cyberFarmUpgradeBuildModal {
+  @include flexCol();
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  border: 2px solid $color-primary;
+  background: $color-primary-dark-radial-gradient;
+  padding-block: 12px;
+  margin-top: 10px;
+
+  &__infoHeader {
+    @include flexCol();
+    gap: 3px;
+    margin-bottom: 6px;
+    padding-inline: 12px;
+  }
+
+  &__resourceImg {
+    width: 100%;
+    max-width: 76px;
+  }
+
+  &__titleBlock {
+    @include flexCol();
+    gap: 5px;
+    width: 100%;
+  }
+  &__titleLine {
+    flex: 1;
+    border: 1px solid $color-primary;
+
+    &_dashed {
+      border-style: dashed;
+    }
+  }
+  &__infoTitle {
+    @include setFont(16px, 400);
+  }
+
+  &__infoText {
+    @include setFont(13px, 400);
+  }
+  &__infoTable {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding-inline: 12px;
+  }
+
+  &__infoTableRow {
+    @include flexCol();
+    gap: 5px;
+    width: 100%;
+  }
+
+  &__missingResCost {
+    @include flexCol();
+    gap: 5px;
+  }
+
+  &__missingResCostText {
+    @include setFont(13px, 400);
+    font-style: italic;
+    text-align: center;
+  }
+  &__cpImage {
+    width: 10px;
+  }
+  &__acceptBtn {
+    height: 31px;
+  }
+  &__acceptBtnInner {
+    padding: 7px 16px;
+    @include flexCol();
+    gap: 8px;
+    @include setFont(16px, 400);
+  }
+}

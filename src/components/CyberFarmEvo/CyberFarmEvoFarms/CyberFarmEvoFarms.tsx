@@ -33,6 +33,8 @@ import { useSoltAd } from "../../../hooks/useSlotAd";
 import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import CyberFarmBuildingPlantOptionsModal from "../../CyberFarm/CyberFarmBuildingPlantOptionsModal/CyberFarmBuildingPlantOptionsModal";
+import CyberFarmUpgradeBuildModal from "../../CyberFarm/CyberFarmUpgradeBuildModal/CyberFarmUpgradeBuildModal";
 
 const FIELD_HEIGHT_ASPECT_RATIO = 3.4;
 
@@ -64,9 +66,16 @@ const CyberFarmEvoFarms = () => {
   const [buyModalOpened, setBuyModalOpened] = useState(false);
   const [buyingSlotId, setBuyingSlotId] = useState<string | null>(null);
   const [buildSlotId, setBuildSlotId] = useState<string | null>(null);
+  const [buildingPlantSlotId, setBuildingPlantSlotId] = useState<
+    string | null
+  >();
+  const [upgradingSlotId, setUpgradingSlotId] = useState<string | null>(null);
   const [buildModalOpened, setBuildModalOpened] = useState(false);
   const [buildOptionsModalOpened, setBuildOptionsModalOpened] = useState(false);
   const [progressModalOpened, setProgressModalOpened] = useState(false);
+  const [buildingPlantOptionsModalOpened, setBuildingPlantOptionsModalOpened] =
+    useState(false);
+  const [upgradeModalOpened, setUpgradeModalOpened] = useState(false);
   const [activeProgresModalItemId, setActiveProgresModalItemId] = useState<
     IFarmField["id"] | null
   >(null);
@@ -90,6 +99,11 @@ const CyberFarmEvoFarms = () => {
 
   const producingSlot =
     producingSlotId && slotFields.find((item) => item.id === producingSlotId);
+  const upgradingSlot =
+    upgradingSlotId && slotFields.find((item) => item.id === upgradingSlotId);
+  const buildingPlantSlot =
+    buildingPlantSlotId &&
+    slotFields.find((item) => item.id === buildingPlantSlotId);
 
   const activeProgresModalItem = slotFields.find(
     (field) => field.id === activeProgresModalItemId
@@ -195,8 +209,8 @@ const CyberFarmEvoFarms = () => {
         setBuildSlotId(field.id);
         setBuildModalOpened(true);
       } else {
-        setProducingSlotId(field.id);
-        setOptionsModalOpened(true);
+        setBuildingPlantSlotId(field.id);
+        setBuildingPlantOptionsModalOpened(true);
       }
     }
   };
@@ -314,12 +328,38 @@ const CyberFarmEvoFarms = () => {
           onClose={() => setBuildOptionsModalOpened(false)}
         />
       )}
+      {buildingPlantSlot && (
+        <CyberFarmBuildingPlantOptionsModal
+          evoMode
+          show={buildingPlantOptionsModalOpened}
+          onClose={() => setBuildingPlantOptionsModalOpened(false)}
+          onUpgrade={function (): void {
+            setUpgradingSlotId(buildingPlantSlotId);
+            setUpgradeModalOpened(true);
+          }}
+          onPlant={function (): void {
+            setProducingSlotId(buildingPlantSlotId);
+            setOptionsModalOpened(true);
+          }}
+          level={buildingPlantSlot.level}
+          type={buildingPlantSlot.type}
+        />
+      )}
       {producingSlot && (
         <CyberFarmEvoOptionsModal
           show={optionsModalOpened}
           onClose={() => setOptionsModalOpened(false)}
           type={producingSlot.type}
           slotId={producingSlotId}
+        />
+      )}
+      {upgradingSlot && (
+        <CyberFarmUpgradeBuildModal
+          show={upgradeModalOpened}
+          onClose={() => setUpgradeModalOpened(false)}
+          type={upgradingSlot.type}
+          slotId={upgradingSlotId}
+          evoMode
         />
       )}
       {activeProgresModalItem && !("count" in activeProgresModalItem) && (

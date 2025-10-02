@@ -707,6 +707,82 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "у вас:",
       },
     },
+    buildingPlantOptionsModal: {
+      titleText: {
+        [ELanguages.en]: "Choose how to use the field",
+        [ELanguages.ru]: "Выберите способ использования поля",
+      },
+      plantButtonText: {
+        [ELanguages.en]: "Plant",
+        [ELanguages.ru]: "Посадить",
+      },
+      upgradeButtonText: {
+        [ELanguages.en]: "Upgrade",
+        [ELanguages.ru]: "Улучшить",
+      },
+      farmText: {
+        [ELanguages.en]: "Farm",
+        [ELanguages.ru]: "Ферма",
+      },
+      factoryText: {
+        [ELanguages.en]: "Factory",
+        [ELanguages.ru]: "Фабрика",
+      },
+      levelText: {
+        [ELanguages.en]: "Level",
+        [ELanguages.ru]: "Уровень",
+      },
+    },
+    upgradeModal: {
+      titleText: {
+        [ELanguages.en]: "Current building level",
+        [ELanguages.ru]: "Текущий уровень постройки",
+      },
+      levelText: {
+        [ELanguages.en]: "Level",
+        [ELanguages.ru]: "Урпвень",
+      },
+      currentStatsText: {
+        [ELanguages.en]: "Current stats",
+        [ELanguages.ru]: "Текущие показатели",
+      },
+      productionOutputText: {
+        [ELanguages.en]: "Production output",
+        [ELanguages.ru]: "Выход продукции",
+      },
+      perHourText: {
+        [ELanguages.en]: "units/hour",
+        [ELanguages.ru]: "ед./час",
+      },
+      productionTimeText: {
+        [ELanguages.en]: "Production time",
+        [ELanguages.ru]: "Время производства",
+      },
+      hoursShortText: {
+        [ELanguages.en]: "h",
+        [ELanguages.ru]: "ч",
+      },
+      nextLevelText: {
+        [ELanguages.en]: "Next level",
+        [ELanguages.ru]: "Следующий уровень",
+      },
+      canUpgradeForText: {
+        [ELanguages.en]: "Can be upgraded for",
+        [ELanguages.ru]: "Можно повысить уровень за",
+      },
+      upgradeButtonText: {
+        [ELanguages.en]: "Upgrade",
+        [ELanguages.ru]: "Улучшить",
+      },
+      greenhouseText: {
+        [ELanguages.en]: "Greenhouse",
+        [ELanguages.ru]: "Теплица",
+      },
+      successText: {
+        [ELanguages.en]: "Building upgraded Successfully",
+        [ELanguages.ru]: "Постройка успешно улучшена",
+      },
+    },
     products: {
       metal: {
         [ELanguages.en]: "Metal",
