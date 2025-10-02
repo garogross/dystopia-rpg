@@ -77,6 +77,12 @@ export interface GetAccountDetailsResponse {
       exchange: number;
     };
     ton_cyber_farm_products: FarmProductsSettingsType;
+    ton_cyber_farm_slot_costs: {
+      upgrade: {
+        [EFarmSlotTypes.FARM]: [150, 200, 250, 300];
+        [EFarmSlotTypes.FACTORY]: [150, 200, 250, 300];
+      };
+    };
     pools: {
       ton_pool: {
         amount: number;

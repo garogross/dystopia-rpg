@@ -16,29 +16,4 @@
     flex-direction: column;
     flex: 1;
   }
-
-  &__table {
-    padding-bottom: 20px;
-  }
-  &__ownCol {
-    display: grid;
-    gap: 5px;
-    background: linear-gradient(
-      90deg,
-      #090419 0%,
-      #3d2b7e 53.37%,
-      #090419 100%
-    );
-    overflow: hidden;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: calc(100% - 2px);
-    margin: 1px;
-    padding: 4px 10px;
-  }
-
-  &__ownColText {
-    @include setFont(12px, 400);
-  }
 }

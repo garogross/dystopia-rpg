@@ -15,5 +15,6 @@ export interface IFarmField {
   idArg?: string;
   adProductionBonusReceived?: boolean;
   finalProduction?: number;
+  level?: number;
   disabled?: boolean; // for evo mode
 }
