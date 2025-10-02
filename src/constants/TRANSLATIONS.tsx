@@ -1202,8 +1202,8 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "СПРАВКА",
       },
       productionText: {
-        [ELanguages.en]: "Production",
-        [ELanguages.ru]: "Производства",
+        [ELanguages.en]: "Support",
+        [ELanguages.ru]: "Справка",
       },
       trainingText: {
         [ELanguages.en]: "Training",
