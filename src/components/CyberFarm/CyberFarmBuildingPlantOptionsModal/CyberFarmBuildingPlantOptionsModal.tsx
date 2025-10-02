@@ -52,9 +52,7 @@ const CyberFarmBuildingPlantOptionsModal: React.FC<Props> = ({
       show={show}
       onClose={onClose}
       title={titleText[language]}
-      titleLg={`${typeTexts[type][language]}, ${levelText[language]}: ${
-        level || 1
-      }`}
+      titleLg={`${typeTexts[type][language]}, ${levelText[language]}: ${level}`}
     >
       <div className={styles.cyberFarmBuildingPlantOptionsModal}>
         <button

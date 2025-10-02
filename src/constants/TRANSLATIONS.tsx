@@ -754,14 +754,7 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "units/hour",
         [ELanguages.ru]: "ед./час",
       },
-      productionTimeText: {
-        [ELanguages.en]: "Production time",
-        [ELanguages.ru]: "Время производства",
-      },
-      hoursShortText: {
-        [ELanguages.en]: "h",
-        [ELanguages.ru]: "ч",
-      },
+
       nextLevelText: {
         [ELanguages.en]: "Next level",
         [ELanguages.ru]: "Следующий уровень",
@@ -774,13 +767,21 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Upgrade",
         [ELanguages.ru]: "Улучшить",
       },
-      greenhouseText: {
-        [ELanguages.en]: "Greenhouse",
-        [ELanguages.ru]: "Теплица",
+      farmText: {
+        [ELanguages.en]: "Farm",
+        [ELanguages.ru]: "Ферма",
+      },
+      factoryText: {
+        [ELanguages.en]: "Factory",
+        [ELanguages.ru]: "Завод",
       },
       successText: {
         [ELanguages.en]: "Building upgraded Successfully",
-        [ELanguages.ru]: "Постройка успешно улучшена",
+        [ELanguages.ru]: "Постройка успешно улучшена!",
+      },
+      notEnoughCPText: {
+        [ELanguages.en]: "You don't have enough CP",
+        [ELanguages.ru]: "У вас недостаточно CP",
       },
     },
     products: {

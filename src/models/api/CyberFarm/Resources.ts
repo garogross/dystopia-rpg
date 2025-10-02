@@ -1,6 +1,7 @@
-import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
+import { FarmProductionEstimateType } from "../../../types/FarmProductionEstimateType";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
+import { FarmSlotsUpgradeLevelType } from "../../../types/FarmSlotsUpgradeLevelType";
 
 export interface ExchangeResponse {
   status: "ok";
@@ -55,14 +56,6 @@ export interface GetProductPricesResponse {
 
 export interface GetProductionEstimateResponse {
   status: string;
-  production_estimate: {
-    [key in CyberFarmProductType]: {
-      [key in EFarmSlotTypes]: {
-        base_production: number;
-        pool_bonus: number;
-        final_production: number;
-        pool_take: number;
-      };
-    };
-  };
+  final_production_per_upgrade_level: FarmSlotsUpgradeLevelType;
+  production_estimate: FarmProductionEstimateType;
 }

@@ -7,8 +7,6 @@ import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { buySlot } from "../../../store/slices/cyberFarm/slotsSlice";
-import { getProducMissingText } from "../../../utils/getProducMissingText";
-import { FarmMissingResourcesType } from "../../../types/FarmMissingResourcesType";
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
@@ -25,6 +23,7 @@ import {
 } from "../../../assets/imageMaps";
 import { ELanguages } from "../../../constants/ELanguages";
 import { UpgradeIcon } from "../../layout/icons/CyberFarm/CyberFarmUpgradeBuildModal";
+import { getProductionEstimate } from "../../../store/slices/cyberFarm/resourcesSlice";
 
 interface Props {
   show: boolean;
@@ -32,30 +31,30 @@ interface Props {
   type: EFarmSlotTypes;
   slotId: string;
   evoMode?: boolean;
+  level: number | undefined;
 }
 
 const {
   titleText,
-  greenhouseText,
+  farmText,
+  factoryText,
   levelText,
   currentStatsText,
   productionOutputText,
   perHourText,
-  productionTimeText,
-  hoursShortText,
   nextLevelText,
   canUpgradeForText,
   upgradeButtonText,
   successText,
+  notEnoughCPText,
 } = TRANSLATIONS.cyberFarm.upgradeModal;
 
 interface LevelStatsProps {
   language: ELanguages;
   output: number;
-  time: number;
 }
 
-const LevelStats: React.FC<LevelStatsProps> = ({ language, output, time }) => {
+const LevelStats: React.FC<LevelStatsProps> = ({ language, output }) => {
   return (
     <div className={styles.cyberFarmUpgradeBuildModal__infoTable}>
       <div className={styles.cyberFarmUpgradeBuildModal__infoTableCol}>
@@ -72,20 +71,6 @@ const LevelStats: React.FC<LevelStatsProps> = ({ language, output, time }) => {
           </span>
         </div>
       </div>
-      <div className={styles.cyberFarmUpgradeBuildModal__infoTableCol}>
-        <div className={styles.cyberFarmUpgradeBuildModal__infoTableRow}>
-          <span className={styles.cyberFarmUpgradeBuildModal__infoText}>
-            {productionTimeText[language]}
-          </span>
-          <div
-            className={`${styles.cyberFarmUpgradeBuildModal__titleLine} ${styles.cyberFarmUpgradeBuildModal__titleLine_dashed}`}
-          />
-
-          <span className={styles.cyberFarmUpgradeBuildModal__infoText}>
-            +{time} {hoursShortText[language]}
-          </span>
-        </div>
-      </div>
     </div>
   );
 };
@@ -96,15 +81,31 @@ const CyberFarmUpgradeBuildModal: React.FC<Props> = ({
   type,
   slotId,
   evoMode,
+  level = 1,
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const cp = useAppSelector((state) => state.profile.stats.cp);
 
-  const level = 1;
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
   const [errorText, setErrorText] = useState("");
   const { show: showTooltip, openTooltip } = useTooltip();
+
+  const upgradeLevels = useAppSelector(
+    (state) => state.cyberfarm.slots.upgradeLevels
+  );
+  const nextLevelData = upgradeLevels?.[(level + 1)?.toString()];
+  const upgradeCost =
+    nextLevelData?.[
+      type === EFarmSlotTypes.FACTORY
+        ? "upgrade_cost_factory"
+        : "upgrade_cost_farm"
+    ];
+  useEffect(() => {
+    dispatch(getProductionEstimate());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!show) {
@@ -117,6 +118,11 @@ const CyberFarmUpgradeBuildModal: React.FC<Props> = ({
 
   const onUpgrade = async () => {
     try {
+      if (!nextLevelData || !upgradeCost) return;
+      if (upgradeCost > cp) {
+        setErrorText(notEnoughCPText[language]);
+        throw new Error();
+      }
       setLoading(true);
       setErrored(false);
 
@@ -125,20 +131,12 @@ const CyberFarmUpgradeBuildModal: React.FC<Props> = ({
           id: slotId,
           type,
           isUpgrade: true,
+          cost: { cash_point: upgradeCost || 0 },
         })
       ).unwrap();
       await openTooltip();
       onClose();
     } catch (error: any) {
-      if (error?.message?.missing) {
-        const missingText = getProducMissingText(
-          error?.message?.missing as FarmMissingResourcesType,
-          language
-        );
-        setErrorText(missingText);
-      } else {
-        setErrorText("");
-      }
       setErrored(true);
     } finally {
       setLoading(false);
@@ -170,11 +168,15 @@ const CyberFarmUpgradeBuildModal: React.FC<Props> = ({
         <div className={styles.cyberFarmUpgradeBuildModal__infoHeader}>
           <ImageWebp
             {...slotTypeImg}
-            alt={greenhouseText[language]}
+            alt={farmText[language]}
             className={styles.cyberFarmUpgradeBuildModal__resourceImg}
           />
           <h4 className={styles.cyberFarmUpgradeBuildModal__infoTitle}>
-            {greenhouseText[language]}
+            {
+              (type === EFarmSlotTypes.FACTORY ? factoryText : farmText)[
+                language
+              ]
+            }
           </h4>
         </div>
         <div className={styles.cyberFarmUpgradeBuildModal__titleBlock}>
@@ -193,31 +195,40 @@ const CyberFarmUpgradeBuildModal: React.FC<Props> = ({
           </span>
           <div className={styles.cyberFarmUpgradeBuildModal__titleLine} />
         </div>
-        <LevelStats language={language} output={20} time={2} />
-        <div className={styles.cyberFarmUpgradeBuildModal__titleBlock}>
-          <div className={styles.cyberFarmUpgradeBuildModal__titleLine} />
+        <LevelStats
+          language={language}
+          output={upgradeLevels?.[level?.toString()].bonus || 0}
+        />
+        {nextLevelData && (
+          <>
+            <div className={styles.cyberFarmUpgradeBuildModal__titleBlock}>
+              <div className={styles.cyberFarmUpgradeBuildModal__titleLine} />
 
-          <span className={styles.cyberFarmUpgradeBuildModal__infoText}>
-            {nextLevelText[language]}
-          </span>
-          <div className={styles.cyberFarmUpgradeBuildModal__titleLine} />
-        </div>
-        <LevelStats language={language} output={25} time={2} />
-
-        <div className={styles.cyberFarmUpgradeBuildModal__missingResCost}>
-          <span
-            className={styles.cyberFarmUpgradeBuildModal__missingResCostText}
-          >
-            {canUpgradeForText[language]} 1000
-          </span>
-          <ImageWebp
-            src={cpImage}
-            srcSet={cpImageWebp}
-            alt="cp"
-            className={styles.cyberFarmUpgradeBuildModal__cpImage}
-          />
-        </div>
+              <span className={styles.cyberFarmUpgradeBuildModal__infoText}>
+                {nextLevelText[language]}
+              </span>
+              <div className={styles.cyberFarmUpgradeBuildModal__titleLine} />
+            </div>
+            <LevelStats language={language} output={nextLevelData.bonus} />
+          </>
+        )}
+        {nextLevelData && (
+          <div className={styles.cyberFarmUpgradeBuildModal__missingResCost}>
+            <span
+              className={styles.cyberFarmUpgradeBuildModal__missingResCostText}
+            >
+              {canUpgradeForText[language]} {upgradeCost}
+            </span>
+            <ImageWebp
+              src={cpImage}
+              srcSet={cpImageWebp}
+              alt="cp"
+              className={styles.cyberFarmUpgradeBuildModal__cpImage}
+            />
+          </div>
+        )}
         <MainBtn
+          disabled={!nextLevelData}
           onClick={onUpgrade}
           id={ECyberfarmTutorialActions.produceRes}
           innerClass={styles.cyberFarmUpgradeBuildModal__acceptBtnInner}

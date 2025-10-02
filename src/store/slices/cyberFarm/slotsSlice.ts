@@ -12,15 +12,19 @@ import { IFarmSlot } from "../../../models/CyberFarm/IFarmSlot";
 import { FarmSlotCostsType } from "../../../types/FarmSlotCostsType";
 import { getSlotCost } from "../../../utils/getSlotCost";
 import { claimAdReward } from "../tasksSlice";
+import { getProductionEstimate } from "./resourcesSlice";
+import { FarmSlotsUpgradeLevelType } from "../../../types/FarmSlotsUpgradeLevelType";
 
 export interface SlotsState {
   slots: Record<string, IFarmSlot> | null;
   slotCosts: FarmSlotCostsType | null;
+  upgradeLevels: FarmSlotsUpgradeLevelType | null;
 }
 
 const initialState: SlotsState = {
   slots: null,
   slotCosts: null,
+  upgradeLevels: null,
 };
 
 const buySlotUrl = "/ton_cyber_farm/buy_slot/";
@@ -124,7 +128,11 @@ export const slotsSlice = createSlice({
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
       state.slots = {
         ...state.slots,
-        [payload.slot_id]: { type: payload.type, updated_at: Date.now() },
+        [payload.slot_id]: {
+          type: payload.type,
+          updated_at: Date.now(),
+          level: payload.level || 1,
+        },
       };
     });
     builder.addCase(produceSlot.fulfilled, (state, { payload }) => {
@@ -189,6 +197,9 @@ export const slotsSlice = createSlice({
           state.slots = { ...state.slots, ...updatedSots };
         }
       }
+    });
+    builder.addCase(getProductionEstimate.fulfilled, (state, { payload }) => {
+      state.upgradeLevels = payload.final_production_per_upgrade_level;
     });
   },
 });
