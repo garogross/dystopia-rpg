@@ -22,10 +22,7 @@ const { titleText, languageText, goToChatText } = TRANSLATIONS.settings;
 const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const tgId = useAppSelector((state) => state.profile.tgId);
   const tg = useTelegram();
-
-  const testerIds = [1624247936, 6601840647];
 
   const onLanguageChange = (lang: ELanguages) => {
     dispatch(setLanguage(lang));
@@ -89,19 +86,6 @@ const SettingsModal: React.FC<Props> = ({ show, onClose }) => {
             <DotsLine />
           </div>
         </div>
-        {(process.env.NODE_ENV === "development" ||
-          process.env.REACT_APP_MODE === "dev" ||
-          testerIds.includes(+tgId)) && (
-          <div className={styles.settingsModal__linkItem}>
-            <div className={styles.settingsModal__linkDotline}>
-              <DotsLine />
-            </div>
-
-            <div className={styles.settingsModal__linkDotline}>
-              <DotsLine />
-            </div>
-          </div>
-        )}
       </div>
     </ModalWithAdd>
   );
