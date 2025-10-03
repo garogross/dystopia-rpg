@@ -740,7 +740,7 @@ export const TRANSLATIONS = {
       },
       levelText: {
         [ELanguages.en]: "Level",
-        [ELanguages.ru]: "Урпвень",
+        [ELanguages.ru]: "Уровень",
       },
       currentStatsText: {
         [ELanguages.en]: "Current stats",

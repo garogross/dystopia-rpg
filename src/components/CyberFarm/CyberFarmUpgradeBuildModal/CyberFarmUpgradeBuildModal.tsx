@@ -95,7 +95,9 @@ const CyberFarmUpgradeBuildModal: React.FC<Props> = ({
   const upgradeLevels = useAppSelector(
     (state) => state.cyberfarm.slots.upgradeLevels
   );
-  const nextLevelData = upgradeLevels?.[(level + 1)?.toString()];
+  const nextLevelData = upgradeLevels?.[(+level + 1)?.toString()];
+  console.log({ upgradeLevels });
+
   const upgradeCost =
     nextLevelData?.[
       type === EFarmSlotTypes.FACTORY
