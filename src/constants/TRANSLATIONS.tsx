@@ -751,8 +751,8 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Выход продукции",
       },
       perHourText: {
-        [ELanguages.en]: "units/hour",
-        [ELanguages.ru]: "ед./час",
+        [ELanguages.en]: "units",
+        [ELanguages.ru]: "ед.",
       },
 
       nextLevelText: {
