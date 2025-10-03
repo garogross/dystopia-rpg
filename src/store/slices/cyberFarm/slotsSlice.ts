@@ -199,7 +199,7 @@ export const slotsSlice = createSlice({
       }
     });
     builder.addCase(getProductionEstimate.fulfilled, (state, { payload }) => {
-      state.upgradeLevels = payload.final_production_per_upgrade_level;
+      state.upgradeLevels = payload.final_production_per_upgrade_level.algae; // data is same for all products
     });
   },
 });

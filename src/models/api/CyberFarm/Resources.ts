@@ -56,6 +56,8 @@ export interface GetProductPricesResponse {
 
 export interface GetProductionEstimateResponse {
   status: string;
-  final_production_per_upgrade_level: FarmSlotsUpgradeLevelType;
+  final_production_per_upgrade_level: {
+    [key in CyberFarmProductType]: FarmSlotsUpgradeLevelType;
+  };
   production_estimate: FarmProductionEstimateType;
 }
