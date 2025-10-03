@@ -197,7 +197,7 @@ const CyberFarmUpgradeBuildModal: React.FC<Props> = ({
         </div>
         <LevelStats
           language={language}
-          output={upgradeLevels?.[level?.toString()].bonus || 0}
+          output={upgradeLevels?.[level?.toString()]?.bonus || 0}
         />
         {nextLevelData && (
           <>
