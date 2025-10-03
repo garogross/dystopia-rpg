@@ -500,8 +500,8 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Выберите способ использования поля",
         },
         plantButtonText: {
-          [ELanguages.en]: "Plant",
-          [ELanguages.ru]: "Посадить",
+          [ELanguages.en]: "Produce",
+          [ELanguages.ru]: "Произвести",
         },
         buildButtonText: {
           [ELanguages.en]: "Build",
@@ -713,8 +713,8 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Выберите способ использования поля",
       },
       plantButtonText: {
-        [ELanguages.en]: "Plant",
-        [ELanguages.ru]: "Посадить",
+        [ELanguages.en]: "Produce",
+        [ELanguages.ru]: "Произвести",
       },
       upgradeButtonText: {
         [ELanguages.en]: "Upgrade",
