@@ -8,6 +8,18 @@
   gap: 16px;
   padding-block: 16px;
 
+  &__sortItem {
+    flex: 1;
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
+    padding: 6px;
+    border: 1px solid #7f5cff;
+    justify-content: center;
+  }
+
   &__tableWrapper {
     position: relative;
     width: 100%;

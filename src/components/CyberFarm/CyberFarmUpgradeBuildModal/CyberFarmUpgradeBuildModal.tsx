@@ -96,7 +96,6 @@ const CyberFarmUpgradeBuildModal: React.FC<Props> = ({
     (state) => state.cyberfarm.slots.upgradeLevels
   );
   const nextLevelData = upgradeLevels?.[(+level + 1)?.toString()];
-  console.log({ upgradeLevels });
 
   const upgradeCost =
     nextLevelData?.[
