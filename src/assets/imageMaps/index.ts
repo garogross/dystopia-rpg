@@ -7,4 +7,5 @@ export * from "./cyberfarmEvoImages";
 export * from "./miniGamesImages";
 export * from "./puzzleImages";
 export * from "./bubbleFrontImages";
+export * from "./gridlineImages";
 export * from "./influenceImages";

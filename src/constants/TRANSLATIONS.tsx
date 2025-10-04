@@ -1660,6 +1660,20 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Играть",
       },
     },
+    gameBottomNavbar: {
+      ratingsText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
+      },
+      levelSelectText: {
+        [ELanguages.en]: "Level Select",
+        [ELanguages.ru]: "Выбор сложности",
+      },
+      achievmentsText: {
+        [ELanguages.en]: "Achievements",
+        [ELanguages.ru]: "Достижения",
+      },
+    },
     puzzle: {
       name: {
         [ELanguages.en]: "Mini Puzzle",
@@ -1668,6 +1682,12 @@ export const TRANSLATIONS = {
       description: {
         [ELanguages.en]: "Small logic puzzles in a cyberpunk style.",
         [ELanguages.ru]: "Небольшие логические головоломки в стиле киберпанка.",
+      },
+    },
+    gridline: {
+      name: {
+        [ELanguages.en]: "Gridline",
+        [ELanguages.ru]: "Гридлайн",
       },
     },
     hackTerminal: {
@@ -1710,18 +1730,6 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Взлом терминала",
     },
     bottomNavbar: {
-      ratingsText: {
-        [ELanguages.en]: "Ratings",
-        [ELanguages.ru]: "Рейтинги",
-      },
-      levelSelectText: {
-        [ELanguages.en]: "Level Select",
-        [ELanguages.ru]: "Выбор сложности",
-      },
-      achievmentsText: {
-        [ELanguages.en]: "Achievements",
-        [ELanguages.ru]: "Достижения",
-      },
       prizesListText: {
         [ELanguages.en]: "Prizes List",
         [ELanguages.ru]: "Список призов",
