@@ -7,6 +7,7 @@ import CyberFarmEvoHeader from "../CyberFarmEvoHeader/CyberFarmEvoHeader";
 import { useMatch } from "react-router-dom";
 import { cyberFarmEvoPagePath } from "../../../router/constants";
 import CyberFarmEvoFooter from "../CyberFarmEvoFooter/CyberFarmEvoFooter";
+import TutorialPopup from "../../TutorialPopup/TutorialPopup";
 
 const CyberFarmWrapper = () => {
   const isMapPage = useMatch(cyberFarmEvoPagePath);
@@ -32,6 +33,7 @@ const CyberFarmWrapper = () => {
         offsetSize={isMapPage ? 48 : 113}
         mode={"ton_cyber_farm"}
       />
+      <TutorialPopup />
     </>
   );
 };

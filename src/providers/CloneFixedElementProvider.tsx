@@ -1,25 +1,38 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  CSSProperties,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
 import NewPortalProvider from "./NewPortalProvider";
 import Backdrop from "../components/layout/Backdrop/Backdrop";
-import {
-  CYBERFARM_TUTORIAL_PROGRESS,
-  ECyberfarmTutorialActions,
-} from "../constants/cyberfarm/tutorial";
+
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { updateAndSaveTutorialProgress } from "../store/slices/cyberFarm/tutorialSlice";
 import { TargetArrowIcon } from "../components/layout/icons/TutorialPopup";
+import {
+  CYBERFARM_EVO_TUTORIAL_PROGRESS,
+  ECyberfarmEvoTutorialActions,
+} from "../constants/cyberfarmEvo/tutorial";
 
 interface Props {
-  id: ECyberfarmTutorialActions;
+  id: ECyberfarmEvoTutorialActions;
   onClick: () => void | Promise<void>;
   targetFromTop?: boolean;
+  targetFromLeft?: boolean;
+  asDiv?: boolean;
+  style?: CSSProperties;
 }
 
 const CloneFixedElementProvider: React.FC<Props> = ({
   id,
   onClick,
   targetFromTop,
+  targetFromLeft,
+  asDiv,
+  style,
 }) => {
   const dispatch = useAppDispatch();
   const [clone, setClone] = useState<HTMLElement | null>(null);
@@ -36,8 +49,8 @@ const CloneFixedElementProvider: React.FC<Props> = ({
   const tutorialProgressIndex = useAppSelector(
     (state) => state.cyberfarm.tutorial.tutorialProgressIndex
   );
-
-  const curProgress = CYBERFARM_TUTORIAL_PROGRESS[tutorialProgressIndex];
+  const progress = CYBERFARM_EVO_TUTORIAL_PROGRESS;
+  const curProgress = progress[tutorialProgressIndex];
 
   const show =
     tutorialInProgress &&
@@ -57,7 +70,7 @@ const CloneFixedElementProvider: React.FC<Props> = ({
         return;
       }
 
-      if (original.tagName.toLowerCase() === "a") {
+      if (!asDiv && original.tagName.toLowerCase() === "a") {
         // If it's a link, extract href and content
         const href =
           (original as HTMLAnchorElement).getAttribute("href") || "#";
@@ -76,6 +89,13 @@ const CloneFixedElementProvider: React.FC<Props> = ({
         clonedNode.style.margin = "0";
         clonedNode.style.width = `${rect.width}px`;
         clonedNode.style.height = `${rect.height}px`;
+        // Apply optional styles from the styles prop, if provided
+        if (style && typeof style === "object") {
+          Object.entries(style).forEach(([key, value]) => {
+            // @ts-ignore
+            clonedNode.style[key] = value;
+          });
+        }
 
         setClone(clonedNode);
         setLinkProps(null);
@@ -88,6 +108,7 @@ const CloneFixedElementProvider: React.FC<Props> = ({
       setLinkProps(null);
       clearTimeout(timeOut);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, gameInited]);
 
   useEffect(() => {
@@ -110,12 +131,27 @@ const CloneFixedElementProvider: React.FC<Props> = ({
     ? original.getBoundingClientRect()
     : { top: 0, left: 0, width: 0, height: 0 };
 
+  let transform: undefined | string = undefined;
+
+  if (targetFromTop && targetFromLeft) {
+    transform = "translate(0%, -100%) rotate(180deg)";
+  } else if (targetFromTop) {
+    transform = "translateY(-100%) rotate(250deg)";
+  } else if (targetFromLeft) {
+    transform = "translateX(-100%)";
+  } else {
+    transform = "translateY(100%)";
+  }
+
   return (
     <NewPortalProvider>
       <Backdrop inProp={show} onClose={() => {}} highZIndex />
       {show && (
         <div
-          onClick={onClickItem}
+          onClick={(e) => {
+            e.preventDefault();
+            onClickItem();
+          }}
           ref={wrapperRef}
           style={{
             position: "fixed",
@@ -130,9 +166,21 @@ const CloneFixedElementProvider: React.FC<Props> = ({
             style={{
               position: "absolute",
               zIndex: 999999,
-              bottom: -2,
-              transform: `translateY(100%)`,
-              right: 0,
+              transform: transform,
+              ...(targetFromTop
+                ? {
+                    top: -2,
+                  }
+                : {
+                    bottom: -2,
+                  }),
+              ...(targetFromLeft
+                ? {
+                    left: 0,
+                  }
+                : {
+                    right: 0,
+                  }),
             }}
           >
             <TargetArrowIcon />

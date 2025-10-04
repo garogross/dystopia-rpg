@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { FinsihTutorialResponse } from "../../../models/api/CyberFarm/Tutorial";
 import { fetchRequest } from "../../tools/fetchTools";
+
 import {
-  CYBERFARM_TUTORIAL_PROGRESS,
-  ECyberfarmTutorialActions,
-} from "../../../constants/cyberfarm/tutorial";
+  CYBERFARM_EVO_TUTORIAL_PROGRESS,
+  ECyberfarmEvoTutorialActions,
+} from "../../../constants/cyberfarmEvo/tutorial";
 
 export interface TutorialState {
   tutorialInProgress: boolean;
@@ -18,8 +19,8 @@ const initialState: TutorialState = {
 
 const updateAndSaveTutorialProgressUrl = "/ton_cyber_farm/tutorial_progress/";
 export const updateAndSaveTutorialProgress = createAsyncThunk<
-  ECyberfarmTutorialActions,
-  ECyberfarmTutorialActions
+  ECyberfarmEvoTutorialActions,
+  ECyberfarmEvoTutorialActions
 >(
   "tutorial/updateAndSaveTutorialProgress",
   async (payload, { rejectWithValue }) => {
@@ -55,11 +56,11 @@ export const finsihTutorial = createAsyncThunk<
 });
 
 export function calculateTutorialProgressIndex(
-  tutorialProgressAction: ECyberfarmTutorialActions | null
+  tutorialProgressAction: ECyberfarmEvoTutorialActions | null
 ): number {
   if (!tutorialProgressAction) return 0;
 
-  const curActionIndex = CYBERFARM_TUTORIAL_PROGRESS.findIndex(
+  const curActionIndex = CYBERFARM_EVO_TUTORIAL_PROGRESS.findIndex(
     (item) => item?.action === tutorialProgressAction
   );
 
@@ -67,16 +68,16 @@ export function calculateTutorialProgressIndex(
   const nextActionIndex = curActionIndex + 1;
 
   let updatedTutorialProgressIndex = nextActionIndex;
-  const curProgress = CYBERFARM_TUTORIAL_PROGRESS[nextActionIndex];
-  const prevProgress = CYBERFARM_TUTORIAL_PROGRESS[curActionIndex];
+  const curProgress = CYBERFARM_EVO_TUTORIAL_PROGRESS[nextActionIndex];
+  const prevProgress = CYBERFARM_EVO_TUTORIAL_PROGRESS[curActionIndex];
 
   if (curProgress.required) {
-    const requiredProgressIndex = CYBERFARM_TUTORIAL_PROGRESS.findIndex(
+    const requiredProgressIndex = CYBERFARM_EVO_TUTORIAL_PROGRESS.findIndex(
       (item) => item?.action === curProgress.required
     );
 
     if (requiredProgressIndex !== -1) {
-      if (CYBERFARM_TUTORIAL_PROGRESS[requiredProgressIndex - 1]?.text) {
+      if (CYBERFARM_EVO_TUTORIAL_PROGRESS[requiredProgressIndex - 1]?.text) {
         updatedTutorialProgressIndex = requiredProgressIndex - 1;
       } else {
         updatedTutorialProgressIndex = requiredProgressIndex;

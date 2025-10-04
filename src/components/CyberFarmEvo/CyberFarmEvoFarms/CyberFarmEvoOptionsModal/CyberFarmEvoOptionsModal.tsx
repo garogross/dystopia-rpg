@@ -24,9 +24,6 @@ import {
   getProductPrices,
   getResourcesDeflict,
 } from "../../../../store/slices/cyberFarm/resourcesSlice";
-import { EPlants } from "../../../../constants/cyberfarm/EPlants";
-import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
-import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
 import { ConfirmIcon } from "../../../layout/icons/Common";
 import MainBtn from "../../../layout/MainBtn/MainBtn";
 import { cpImage, cpImageWebp } from "../../../../assets/imageMaps";
@@ -60,9 +57,6 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const tutorialInProgress = useAppSelector(
-    (state) => state.cyberfarm.tutorial.tutorialInProgress
-  );
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
@@ -145,7 +139,6 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
           buyResourceDeflict({
             product: selectedResource,
             slot_type: type,
-            tutorial: tutorialInProgress,
           })
         ).unwrap();
       }
@@ -353,11 +346,9 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
           </TransitionProvider>
           <MainBtn
             onClick={onProduce}
-            id={ECyberfarmTutorialActions.produceRes}
             disabled={
-              !tutorialInProgress &&
-              (!selectedResource ||
-                (isUnavailableForProduce && totalPricyByCp > cp))
+              !selectedResource ||
+              (isUnavailableForProduce && totalPricyByCp > cp)
             }
             innerClass={styles.cyberFarmEvoOptionsModal__acceptBtnInner}
             className={styles.cyberFarmEvoOptionsModal__acceptBtn}
@@ -379,16 +370,6 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
           ]
         }
       />
-      <CloneFixedElementProvider
-        id={ECyberfarmTutorialActions.selectProduceRes}
-        onClick={() => setSelectedResource(EPlants.MetalCactus)}
-      />
-      {selectedResource && (
-        <CloneFixedElementProvider
-          id={ECyberfarmTutorialActions.produceRes}
-          onClick={onProduce}
-        />
-      )}
     </ModalWithAdd>
   );
 };

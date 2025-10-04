@@ -24,8 +24,6 @@ import CyberFarmProcessModal from "../CyberFarmProcessModal/CyberFarmProcessModa
 import CyberFarmOptionsModal from "../CyberFarmOptionsModal/CyberFarmOptionsModal";
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import CyberFarmWrapperWithListItemProgress from "./CyberFarmWrapperWithListItemProgress/CyberFarmWrapperWithListItemProgress";
-import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
-import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
 
 interface Props<T extends IFarmField | IWarehouseProduct> {
   title: string;
@@ -69,12 +67,6 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
 
   const activeProgresModalItem = data.find(
     (field) => field.id === activeProgresModalItemId
-  );
-
-  const firstInProgressFieldIndex = data.findIndex(
-    (item) =>
-      "idArg" in item &&
-      item.idArg === ECyberfarmTutorialActions.openProgressModal
   );
 
   useEffect(() => {
@@ -243,12 +235,6 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
           onClose={() => setOptionsModalOpened(false)}
           type={productsType}
           slotId={producingSlotId}
-        />
-      )}
-      {firstInProgressFieldIndex !== -1 && (
-        <CloneFixedElementProvider
-          id={ECyberfarmTutorialActions.openProgressModal}
-          onClick={() => onClickItem(data[firstInProgressFieldIndex])}
         />
       )}
     </section>

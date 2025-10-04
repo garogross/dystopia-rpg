@@ -2,7 +2,6 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import CyberFarmHeader from "../CyberFarmHeader/CyberFarmHeader";
 import CyberFarmBottomNavbar from "../CyberFarmBottomNavbar/CyberFarmBottomNavbar";
 import * as cyberfarmImages from "../../../assets/imageMaps/cyberfarmImages";
-import TutorialPopup from "../../TutorialPopup/TutorialPopup";
 import GameWrapper from "../../GameWrapper/GameWrapper";
 import { useEffect } from "react";
 import { closeCyberFarm } from "../../../store/slices/cyberFarm/cyberfarmSlice";
@@ -30,8 +29,6 @@ const CyberFarmWrapper = () => {
         offsetSize={265}
         mode={"ton_cyber_farm"}
       />
-
-      <TutorialPopup />
     </>
   );
 };

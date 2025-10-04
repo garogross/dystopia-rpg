@@ -11,7 +11,6 @@ import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 
-import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
 import MainBtn from "../../layout/MainBtn/MainBtn";
 import {
   cpImage,
@@ -231,7 +230,6 @@ const CyberFarmUpgradeBuildModal: React.FC<Props> = ({
         <MainBtn
           disabled={!nextLevelData}
           onClick={onUpgrade}
-          id={ECyberfarmTutorialActions.produceRes}
           innerClass={styles.cyberFarmUpgradeBuildModal__acceptBtnInner}
           className={styles.cyberFarmUpgradeBuildModal__acceptBtn}
         >
