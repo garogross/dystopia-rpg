@@ -12,8 +12,6 @@ import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
 import { cpImage, cpImageWebp } from "../../../../assets/imageMaps";
-import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
-import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
 
 interface Props {
   show: boolean;
@@ -32,9 +30,7 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
 }) => {
   const dispath = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const tutorialInProgress = useAppSelector(
-    (state) => state.cyberfarm.tutorial.tutorialInProgress
-  );
+
   const { show: showTooltip, openTooltip } = useTooltip();
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
@@ -56,7 +52,7 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
       EFarmSlotTypes.FIELDS,
       byCp
     );
-    if (errored && !tutorialInProgress) {
+    if (errored) {
       setErrorText(notEnoughResourcesText);
       return;
     }
@@ -69,7 +65,6 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
           type: EFarmSlotTypes.FIELDS,
           byCp: byCp,
           cost,
-          tutorial: tutorialInProgress,
         })
       ).unwrap();
       await openTooltip();
@@ -120,12 +115,6 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
         </div>
       </div>
       <Tooltip show={showTooltip} text={successText[language]} />
-      {show && (
-        <CloneFixedElementProvider
-          id={ECyberfarmTutorialActions.buySlot}
-          onClick={onBuy}
-        />
-      )}
     </ModalWithAdd>
   );
 };

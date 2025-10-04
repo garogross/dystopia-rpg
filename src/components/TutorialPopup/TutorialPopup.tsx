@@ -15,17 +15,19 @@ import ImageWebp from "../layout/ImageWebp/ImageWebp";
 import { CloseIcon, NextIcon } from "../layout/icons/TutorialPopup";
 import styles from "./TutorialPopup.module.scss";
 import WrapperWithFrame from "../layout/WrapperWithFrame/WrapperWithFrame";
-import { CYBERFARM_TUTORIAL_PROGRESS } from "../../constants/cyberfarm/tutorial";
 import {
   finsihTutorial,
   setTutorialInProgress,
   updateTutorialProgress,
 } from "../../store/slices/cyberFarm/tutorialSlice";
 import { useNavigate } from "react-router-dom";
+import { CYBERFARM_EVO_TUTORIAL_PROGRESS } from "../../constants/cyberfarmEvo/tutorial";
 
 const { closeText, nextText } = TRANSLATIONS.tutorialPopup;
 
-const TutorialPopup = () => {
+interface Props {}
+
+const TutorialPopup: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const siteLanguage = useAppSelector((state) => state.ui.language);
@@ -37,8 +39,8 @@ const TutorialPopup = () => {
     (state) => state.cyberfarm.tutorial.tutorialProgressIndex
   );
   const mainRef = useRef<HTMLDivElement>(null);
-
-  const curTutorial = CYBERFARM_TUTORIAL_PROGRESS[tutorialProgressIndex];
+  const progress = CYBERFARM_EVO_TUTORIAL_PROGRESS;
+  const curTutorial = progress[tutorialProgressIndex];
   const show = tutorialInProgress && !!curTutorial?.text && gameInited;
 
   useEffect(() => {
@@ -55,7 +57,7 @@ const TutorialPopup = () => {
   };
 
   const onNext = () => {
-    if (tutorialProgressIndex === CYBERFARM_TUTORIAL_PROGRESS.length - 1) {
+    if (tutorialProgressIndex === progress.length - 1) {
       onClose();
     } else {
       dispatch(updateTutorialProgress());

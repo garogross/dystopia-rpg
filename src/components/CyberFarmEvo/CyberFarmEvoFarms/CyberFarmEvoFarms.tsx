@@ -351,6 +351,7 @@ const CyberFarmEvoFarms = () => {
           onClose={() => setOptionsModalOpened(false)}
           type={producingSlot.type}
           slotId={producingSlotId}
+          level={producingSlot.level}
         />
       )}
       {upgradingSlot && (

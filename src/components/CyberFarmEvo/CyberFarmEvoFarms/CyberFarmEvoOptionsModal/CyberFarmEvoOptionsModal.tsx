@@ -24,9 +24,6 @@ import {
   getProductPrices,
   getResourcesDeflict,
 } from "../../../../store/slices/cyberFarm/resourcesSlice";
-import { EPlants } from "../../../../constants/cyberfarm/EPlants";
-import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
-import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
 import { ConfirmIcon } from "../../../layout/icons/Common";
 import MainBtn from "../../../layout/MainBtn/MainBtn";
 import { cpImage, cpImageWebp } from "../../../../assets/imageMaps";
@@ -36,6 +33,7 @@ interface Props {
   onClose: () => void;
   type: EFarmSlotTypes;
   slotId: string;
+  level?: number;
 }
 
 const {
@@ -57,12 +55,10 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
   onClose,
   type,
   slotId,
+  level,
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const tutorialInProgress = useAppSelector(
-    (state) => state.cyberfarm.tutorial.tutorialInProgress
-  );
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
@@ -81,6 +77,10 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
   const resources = useAppSelector(
     (state) => state.cyberfarm.resources.resources
   );
+  const upgradeLevels = useAppSelector(
+    (state) => state.cyberfarm.slots.upgradeLevels
+  );
+  const curLevel = upgradeLevels?.[(level || "")?.toString()];
   const cp = useAppSelector((state) => state.profile.stats.cp);
 
   const productType = type === EFarmSlotTypes.FACTORY ? "factory" : "plant";
@@ -145,7 +145,6 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
           buyResourceDeflict({
             product: selectedResource,
             slot_type: type,
-            tutorial: tutorialInProgress,
           })
         ).unwrap();
       }
@@ -274,7 +273,9 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
 
             <span className={styles.cyberFarmEvoOptionsModal__infoText}>
               {productionText[language]}{" "}
-              {curEstimate ? curEstimate[type]?.final_production : 0}
+              {curEstimate
+                ? curEstimate[type]?.final_production + (curLevel?.bonus || 0)
+                : 0}
             </span>
             <div className={styles.cyberFarmEvoOptionsModal__titleLine} />
           </div>
@@ -353,11 +354,9 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
           </TransitionProvider>
           <MainBtn
             onClick={onProduce}
-            id={ECyberfarmTutorialActions.produceRes}
             disabled={
-              !tutorialInProgress &&
-              (!selectedResource ||
-                (isUnavailableForProduce && totalPricyByCp > cp))
+              !selectedResource ||
+              (isUnavailableForProduce && totalPricyByCp > cp)
             }
             innerClass={styles.cyberFarmEvoOptionsModal__acceptBtnInner}
             className={styles.cyberFarmEvoOptionsModal__acceptBtn}
@@ -379,16 +378,6 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
           ]
         }
       />
-      <CloneFixedElementProvider
-        id={ECyberfarmTutorialActions.selectProduceRes}
-        onClick={() => setSelectedResource(EPlants.MetalCactus)}
-      />
-      {selectedResource && (
-        <CloneFixedElementProvider
-          id={ECyberfarmTutorialActions.produceRes}
-          onClick={onProduce}
-        />
-      )}
     </ModalWithAdd>
   );
 };

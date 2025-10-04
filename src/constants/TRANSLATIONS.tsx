@@ -264,6 +264,90 @@ export const TRANSLATIONS = {
         ),
       },
     },
+    cyberFarmEvoSlides: {
+      welcomeText: {
+        [ELanguages.en]: (
+          <>
+            Welcome to the cyber farm!
+            <br />
+            Here you can grow products, process resources, build farms,
+            factories, and develop your farm.
+            <br />
+            Now you see a map showing available locations. As the game develops,
+            new locations will appear.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Добро пожаловать на киберферму!
+            <br />
+            Здесь ты можешь выращивать продукцию, перерабатывать ресурсы,
+            строить фермы, заводы и развивать свою ферму.
+            <br />
+            Сейчас перед тобой карта, на которой показаны доступные локации, по
+            мере развития игры будут появляться новые локации.
+          </>
+        ),
+      },
+      farmText: {
+        [ELanguages.en]: (
+          <>
+            On the farm, you will grow products, build factories, and process
+            materials.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            На ферме ты будешь выращивать продукцию, строить заводы и
+            перерабатывать материалы.
+          </>
+        ),
+      },
+      warehouseText: {
+        [ELanguages.en]: (
+          <>
+            The warehouse stores all your materials and products. Here you can
+            also buy missing items and sell unnecessary ones.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            На складе хранятся все твои материалы и продукты, там же ты можешь
+            купить недостающие и продать ненужные.
+          </>
+        ),
+      },
+      tasksText: {
+        [ELanguages.en]: (
+          <>
+            Tasks are a valuable source of Cash Points (CP), the in-game
+            currency you use to buy and sell everything. Check there often to
+            complete tasks and earn CP.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Задания – это ценный источник Cash Points (CP), игровой валюты, за
+            которую ты все покупаешь и продаешь, заглядывай туда почаще, чтобы
+            выполнять задания и получать СР.
+          </>
+        ),
+      },
+      finishText: {
+        [ELanguages.en]: (
+          <>
+            That's it, you're on your own now. I'll give you 6 CP to start
+            with—enough to get your first harvest. Now it's all up to you.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Вот и все, дальше уже сам, дам тебе на первое время 6 СР, хватит для
+            получения первого урожая. Теперь все зависит от тебя.
+          </>
+        ),
+      },
+    },
   },
   settings: {
     titleText: {

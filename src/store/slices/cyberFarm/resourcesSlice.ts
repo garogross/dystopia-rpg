@@ -58,7 +58,6 @@ export const buyResourceDeflict = createAsyncThunk<
   {
     slot_type: EFarmSlotTypes;
     product: CyberFarmProductType;
-    tutorial?: boolean;
   }
 >("resources/buyResourceDeflict", async (payload, { rejectWithValue }) => {
   try {
@@ -68,7 +67,6 @@ export const buyResourceDeflict = createAsyncThunk<
       {
         product: payload.product,
         slot_type: payload.slot_type,
-        // tutorial: payload.tutorial,
       }
     );
 

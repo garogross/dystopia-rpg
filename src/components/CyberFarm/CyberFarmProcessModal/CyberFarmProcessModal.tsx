@@ -187,10 +187,6 @@ const CyberFarmProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
         <Tooltip show={showAdTooltip} text={adTooltipText} />
       </div>
       <LoadingOverlay loading={loading || adLoading} />
-      {/* <CloneFixedElementProvider
-        id={ECyberfarmTutorialActions.speedUpProduce}
-        onClick={async () => await onSpeedUp(undefined, true)}
-      /> */}
     </ModalWithAdd>
   );
 };
