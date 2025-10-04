@@ -68,7 +68,7 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   const activeProgresModalItem = data.find(
     (field) => field.id === activeProgresModalItemId
   );
-
+  const producingSlot = data.find((item) => item.id === producingSlotId);
   useEffect(() => {
     if (optionsModalOpenedArg) setOptionsModalOpened(true);
   }, [optionsModalOpenedArg]);
@@ -235,6 +235,11 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
           onClose={() => setOptionsModalOpened(false)}
           type={productsType}
           slotId={producingSlotId}
+          level={
+            producingSlot && "level" in producingSlot && producingSlot?.level
+              ? producingSlot?.level
+              : undefined
+          }
         />
       )}
     </section>

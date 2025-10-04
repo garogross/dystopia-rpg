@@ -33,6 +33,7 @@ interface Props {
   onClose: () => void;
   type: EFarmSlotTypes;
   slotId: string;
+  level?: number;
 }
 
 const {
@@ -55,6 +56,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   onClose,
   type,
   slotId,
+  level,
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
@@ -76,6 +78,10 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   const resources = useAppSelector(
     (state) => state.cyberfarm.resources.resources
   );
+  const upgradeLevels = useAppSelector(
+    (state) => state.cyberfarm.slots.upgradeLevels
+  );
+  const curLevel = upgradeLevels?.[(level || "")?.toString()];
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const [selectedResource, setSelectedResource] =
     useState<CyberFarmProductType | null>(null);
@@ -256,7 +262,9 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
               {productionText[language]}
             </span>
             <span className={styles.cyberFarmOptionsModal__infoText}>
-              {curEstimate ? curEstimate[type].final_production : 0}
+              {curEstimate
+                ? curEstimate[type].final_production + (curLevel?.bonus || 0)
+                : 0}
             </span>
           </div>
           <div className={styles.cyberFarmOptionsModal__infoHeader}>

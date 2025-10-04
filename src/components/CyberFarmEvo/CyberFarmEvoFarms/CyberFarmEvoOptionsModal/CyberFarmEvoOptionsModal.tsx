@@ -33,6 +33,7 @@ interface Props {
   onClose: () => void;
   type: EFarmSlotTypes;
   slotId: string;
+  level?: number;
 }
 
 const {
@@ -54,6 +55,7 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
   onClose,
   type,
   slotId,
+  level,
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
@@ -75,6 +77,10 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
   const resources = useAppSelector(
     (state) => state.cyberfarm.resources.resources
   );
+  const upgradeLevels = useAppSelector(
+    (state) => state.cyberfarm.slots.upgradeLevels
+  );
+  const curLevel = upgradeLevels?.[(level || "")?.toString()];
   const cp = useAppSelector((state) => state.profile.stats.cp);
 
   const productType = type === EFarmSlotTypes.FACTORY ? "factory" : "plant";
@@ -267,7 +273,9 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
 
             <span className={styles.cyberFarmEvoOptionsModal__infoText}>
               {productionText[language]}{" "}
-              {curEstimate ? curEstimate[type]?.final_production : 0}
+              {curEstimate
+                ? curEstimate[type]?.final_production + (curLevel?.bonus || 0)
+                : 0}
             </span>
             <div className={styles.cyberFarmEvoOptionsModal__titleLine} />
           </div>
