@@ -11,5 +11,14 @@
     @include button();
     gap: 3px;
     @include setFont(10px, 400);
+
+    & svg {
+      transition: $transition;
+    }
+    &:not(&_active) {
+      svg {
+        opacity: 0;
+      }
+    }
   }
 }
