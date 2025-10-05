@@ -6,22 +6,20 @@ import React, {
   useState,
 } from "react";
 import { Link } from "react-router-dom";
-import NewPortalProvider from "./NewPortalProvider";
-import Backdrop from "../components/layout/Backdrop/Backdrop";
+import NewPortalProvider from "../NewPortalProvider";
+import Backdrop from "../../components/layout/Backdrop/Backdrop";
 
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { updateAndSaveTutorialProgress } from "../store/slices/cyberFarm/tutorialSlice";
-import { TargetArrowIcon } from "../components/layout/icons/TutorialPopup";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { updateTutorialProgress } from "../../store/slices/cyberFarm/tutorialSlice";
+import { TargetArrowIcon } from "../../components/layout/icons/TutorialPopup";
 import {
   CYBERFARM_EVO_TUTORIAL_PROGRESS,
   ECyberfarmEvoTutorialActions,
-} from "../constants/cyberfarmEvo/tutorial";
-
+} from "../../constants/cyberfarmEvo/tutorial";
+import styles from "./CloneFixedElementProvider.module.scss";
 interface Props {
   id: ECyberfarmEvoTutorialActions;
   onClick: () => void | Promise<void>;
-  targetFromTop?: boolean;
-  targetFromLeft?: boolean;
   asDiv?: boolean;
   style?: CSSProperties;
 }
@@ -29,8 +27,6 @@ interface Props {
 const CloneFixedElementProvider: React.FC<Props> = ({
   id,
   onClick,
-  targetFromTop,
-  targetFromLeft,
   asDiv,
   style,
 }) => {
@@ -121,7 +117,7 @@ const CloneFixedElementProvider: React.FC<Props> = ({
 
   const onClickItem = async () => {
     await onClick();
-    dispatch(updateAndSaveTutorialProgress(id));
+    dispatch(updateTutorialProgress());
   };
 
   // The wrapper div gets the fixed positioning
@@ -130,18 +126,6 @@ const CloneFixedElementProvider: React.FC<Props> = ({
   const rect = original
     ? original.getBoundingClientRect()
     : { top: 0, left: 0, width: 0, height: 0 };
-
-  let transform: undefined | string = undefined;
-
-  if (targetFromTop && targetFromLeft) {
-    transform = "translate(0%, -100%) rotate(180deg)";
-  } else if (targetFromTop) {
-    transform = "translateY(-100%) rotate(250deg)";
-  } else if (targetFromLeft) {
-    transform = "translateX(-100%)";
-  } else {
-    transform = "translateY(100%)";
-  }
 
   return (
     <NewPortalProvider>
@@ -153,36 +137,15 @@ const CloneFixedElementProvider: React.FC<Props> = ({
             onClickItem();
           }}
           ref={wrapperRef}
+          className={styles.cloneFixedElementProvider}
           style={{
-            position: "fixed",
-            zIndex: 999999,
             top: `${rect.top}px`,
             left: `${rect.left}px`,
             width: `${rect.width}px`,
             height: `${rect.height}px`,
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              zIndex: 999999,
-              transform: transform,
-              ...(targetFromTop
-                ? {
-                    top: -2,
-                  }
-                : {
-                    bottom: -2,
-                  }),
-              ...(targetFromLeft
-                ? {
-                    left: 0,
-                  }
-                : {
-                    right: 0,
-                  }),
-            }}
-          >
+          <div className={styles.cloneFixedElementProvider__target}>
             <TargetArrowIcon />
           </div>
           {linkProps && (
