@@ -362,6 +362,18 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Go to Chat",
       [ELanguages.ru]: "Перейти в Чат",
     },
+    uiModeText: {
+      [ELanguages.en]: "UI Settings",
+      [ELanguages.ru]: "Настройки UI",
+    },
+    evoText: {
+      [ELanguages.en]: "EVO",
+      [ELanguages.ru]: "EVO",
+    },
+    classicText: {
+      [ELanguages.en]: "Classic",
+      [ELanguages.ru]: "Classic",
+    },
   },
   home: {
     playInBrowserText: {

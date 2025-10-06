@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { setLSItem } from "../../../helpers/localStorage";
+import { ELSProps } from "../../../constants/ELSProps";
 
 export interface CyberfarmState {
   dataReceived: boolean;
@@ -22,6 +24,7 @@ export const cyberfarmSlice = createSlice({
     },
     setCyberfarmMode: (state, { payload }) => {
       state.appMode = payload;
+      setLSItem(ELSProps.farmMode, payload);
     },
   },
 });

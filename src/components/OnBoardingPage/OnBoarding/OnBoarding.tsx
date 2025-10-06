@@ -14,6 +14,9 @@ import {
   cyberFarmPagePath,
   influencePagePath,
 } from "../../../router/constants";
+import { getLSItem } from "../../../helpers/localStorage";
+import { ELSProps } from "../../../constants/ELSProps";
+import { setCyberfarmMode } from "../../../store/slices/cyberFarm/cyberfarmSlice";
 
 const OnBoarding = () => {
   const navigate = useNavigate();
@@ -32,10 +35,15 @@ const OnBoarding = () => {
         const res = await dispatch(authorizeUser(initData));
         switch (res) {
           case "ton_cyber_farm": {
+            // set cyberfarm mode
+            const mode = await getLSItem(ELSProps.farmMode);
+            const farmMode = mode || "evo";
+            if (appMode !== farmMode) {
+              dispatch(setCyberfarmMode(farmMode || "evo"));
+            }
             navigate(
-              appMode === "classic" ? cyberFarmPagePath : cyberFarmEvoPagePath
+              farmMode === "classic" ? cyberFarmPagePath : cyberFarmEvoPagePath
             );
-            // navigate(cyberFarmPagePath);
             break;
           }
           case "influence": {
