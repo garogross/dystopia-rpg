@@ -1160,11 +1160,15 @@ export const TRANSLATIONS = {
       },
       realEstateTabText: {
         [ELanguages.en]: "Real Estate",
-        [ELanguages.ru]: "Недвиж.",
+        [ELanguages.ru]: "Недвижимость",
       },
       technologyTabText: {
         [ELanguages.en]: "Technology",
         [ELanguages.ru]: "Техно.",
+      },
+      pointsTabText: {
+        [ELanguages.en]: "Points",
+        [ELanguages.ru]: "Очки",
       },
       overallTabText: {
         [ELanguages.en]: "Overall",
