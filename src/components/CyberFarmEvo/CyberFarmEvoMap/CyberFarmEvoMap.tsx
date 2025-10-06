@@ -22,8 +22,8 @@ import {
   CYBERFARM_EVO_TUTORIAL_PROGRESS,
   ECyberfarmEvoTutorialActions,
 } from "../../../constants/cyberfarmEvo/tutorial";
-import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
-import { updateAndSaveTutorialProgress } from "../../../store/slices/cyberFarm/tutorialSlice";
+import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider/CloneFixedElementProvider";
+import { updateTutorialProgress } from "../../../store/slices/cyberFarm/tutorialSlice";
 
 const { tasksText, warehouseText, farmText } = TRANSLATIONS.cyberfarmEvo.map;
 
@@ -47,7 +47,7 @@ const CyberFarmEvoMap = () => {
         CYBERFARM_EVO_TUTORIAL_PROGRESS[tutorialProgressIndex];
       if (curProgress?.action) {
         tutorialSlidetimeoutRef.current = setTimeout(() => {
-          dispatch(updateAndSaveTutorialProgress(curProgress?.action!));
+          dispatch(updateTutorialProgress());
         }, 2000);
       }
     }
@@ -108,22 +108,18 @@ const CyberFarmEvoMap = () => {
         asDiv
         style={{ bottom: 0, right: 0 }}
         onClick={() => {}}
-        targetFromTop
       />
       <CloneFixedElementProvider
         id={ECyberfarmEvoTutorialActions.showWarehouse}
         asDiv
         style={{ bottom: 0, right: 0 }}
         onClick={() => {}}
-        targetFromLeft
-        targetFromTop
       />
       <CloneFixedElementProvider
         id={ECyberfarmEvoTutorialActions.showFarm}
         asDiv
         style={{ bottom: 0, right: 0 }}
         onClick={() => {}}
-        targetFromTop
       />
     </section>
   );

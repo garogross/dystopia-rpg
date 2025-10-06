@@ -362,6 +362,18 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Go to Chat",
       [ELanguages.ru]: "Перейти в Чат",
     },
+    uiModeText: {
+      [ELanguages.en]: "UI Settings",
+      [ELanguages.ru]: "Настройки UI",
+    },
+    evoText: {
+      [ELanguages.en]: "EVO",
+      [ELanguages.ru]: "EVO",
+    },
+    classicText: {
+      [ELanguages.en]: "Classic",
+      [ELanguages.ru]: "Classic",
+    },
   },
   home: {
     playInBrowserText: {
@@ -1160,11 +1172,15 @@ export const TRANSLATIONS = {
       },
       realEstateTabText: {
         [ELanguages.en]: "Real Estate",
-        [ELanguages.ru]: "Недвиж.",
+        [ELanguages.ru]: "Недвижимость",
       },
       technologyTabText: {
         [ELanguages.en]: "Technology",
         [ELanguages.ru]: "Техно.",
+      },
+      pointsTabText: {
+        [ELanguages.en]: "Points",
+        [ELanguages.ru]: "Очки",
       },
       overallTabText: {
         [ELanguages.en]: "Overall",

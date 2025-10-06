@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import HeaderWithBackButton from "../../layout/HeaderWithBackButton/HeaderWithBackButton";
 import GradientInput from "../../layout/GradientInput/GradientInput";
 import Table from "../../layout/Table/Table";
@@ -8,43 +8,41 @@ import styles from "./CyberFarmRatings.module.scss";
 import { SearchLupeLgIcon } from "../../layout/icons/Common";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { getRatingsList } from "../../../store/slices/cyberFarm/ratingsSlice";
-import SortList from "../../layout/SortList/SortList";
 import { ELanguages } from "../../../constants/ELanguages";
-import { useSort } from "../../../hooks/useSort";
+import {
+  BuildingsIcon,
+  GeneralIcon,
+} from "../../layout/icons/CyberFarmEvo/Ratings";
 
 const {
   titleText,
   searchPlaceholder,
   playerTabText,
   realEstateTabText,
-  technologyTabText,
+  pointsTabText,
   overallTabText,
 } = TRANSLATIONS.cyberFarm.ratings;
-const headers = [
-  "№",
-  playerTabText,
-  realEstateTabText,
-  technologyTabText,
-  overallTabText,
-];
+const headers = ["№", playerTabText, pointsTabText];
 
 const cols: {
-  key: "name" | "builings" | "technology" | "general" | "index";
-}[] = [
-  { key: "index" },
-  { key: "name" },
-  { key: "builings" },
-  { key: "technology" },
-  { key: "general" },
-];
+  key: "name" | "index" | "score";
+}[] = [{ key: "index" }, { key: "name" }, { key: "score" }];
 
-const columnsTemplate = "0.5fr 2fr 1fr 1fr 1fr";
-const getSortItems = (
+const columnsTemplate = "0.5fr 2fr 1fr";
+const getTabItems = (
   language: ELanguages
-): { name: string; id: "builings" | "technology" | "general" }[] => [
-  { name: realEstateTabText[language], id: "builings" },
-  { name: technologyTabText[language], id: "technology" },
-  { name: overallTabText[language], id: "general" },
+): {
+  name: string;
+  id: "builings" | "general"; // "technology" |
+  icon: ReactNode;
+}[] => [
+  {
+    name: realEstateTabText[language],
+    id: "builings",
+    icon: <BuildingsIcon />,
+  },
+  // { name: technologyTabText[language], id: "technology",icon: <TechnologyIcon/> },
+  { name: overallTabText[language], id: "general", icon: <GeneralIcon /> },
 ];
 const CyberFarmRatings = () => {
   const dispatch = useAppDispatch();
@@ -54,41 +52,23 @@ const CyberFarmRatings = () => {
   const tgid = useAppSelector((state) => state.profile.tgId);
   const language = useAppSelector((state) => state.ui.language);
   const [searchQuery, setSearchQuery] = useState("");
-  const sortItems = getSortItems(language);
-  const { activeSort, handleSortChange } = useSort<(typeof sortItems)[0]["id"]>(
-    sortItems[0].id
-  );
+  const tabItems = getTabItems(language);
+  const [activeTab, setActiveTab] = useState(tabItems[0].id);
 
   const data = [
-    ...(ratings || []).map((item, index) => ({
-      id: item.user_id,
-      name: item.name,
-      builings: item.structures_value,
-      technology: 0,
-      general: item.total_value,
-    })),
+    ...(ratings || []).map((item, index) => {
+      const values = {
+        builings: item.structures_value,
+        general: item.total_value,
+      };
+      return {
+        id: item.user_id,
+        name: item.name,
+        score: values[activeTab],
+      };
+    }),
   ]
-    .sort((a, b) => {
-      if (!activeSort) return 0;
-
-      // Extract sort key and direction
-      const match = activeSort.match(/^(\w+)([+-])$/);
-      if (!match) return 0;
-      const [, sortKey, direction] = match as [string, string, "+" | "-"];
-
-      // @ts-ignore
-      const aValue = a[sortKey];
-      // @ts-ignore
-      const bValue = b[sortKey];
-
-      if (typeof aValue === "number" && typeof bValue === "number") {
-        return direction === "+" ? bValue - aValue : aValue - bValue;
-      }
-      // fallback to string comparison if not numbers
-      return direction === "+"
-        ? String(bValue).localeCompare(String(aValue))
-        : String(aValue).localeCompare(String(bValue));
-    })
+    .sort((a, b) => b.score - a.score)
     .map((item, index) => ({ ...item, index: index + 1 }));
 
   const curUserIndex = data?.findIndex((item) => item.id === tgid);
@@ -107,12 +87,20 @@ const CyberFarmRatings = () => {
         icon={<SearchLupeLgIcon />}
         placeholder={searchPlaceholder[language]}
       />
-      <SortList
-        items={sortItems}
-        itemClassName={styles.cyberFarmRatings__sortItem}
-        onChange={(id) => handleSortChange(id as (typeof sortItems)[0]["id"])}
-        activeSort={activeSort}
-      />
+      <div className={styles.cyberFarmRatings__tabBar}>
+        {tabItems.map((item) => (
+          <button
+            onClick={() => setActiveTab(item.id)}
+            key={item.id}
+            className={`${styles.cyberFarmRatings__taBtn} ${
+              item.id === activeTab ? styles.cyberFarmRatings__taBtn_active : ""
+            }`}
+          >
+            <span>{item.name}</span>
+            {item.icon}
+          </button>
+        ))}
+      </div>
       {data && (
         <div className={styles.cyberFarmRatings__tableWrapper}>
           <Table
