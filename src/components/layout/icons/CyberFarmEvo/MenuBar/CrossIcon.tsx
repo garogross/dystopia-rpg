@@ -20,8 +20,8 @@ export const CrossIcon: React.FC = () => (
         y2="18"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#776E99" />
-        <stop offset="1" stop-color="#C6B7FF" />
+        <stop stopColor="#776E99" />
+        <stop offset="1" stopColor="#C6B7FF" />
       </linearGradient>
     </defs>
   </svg>
