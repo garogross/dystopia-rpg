@@ -478,8 +478,8 @@ export const TRANSLATIONS = {
     },
     bonuses: {
       bonusesText: {
-        [ELanguages.en]: "Bonuses",
-        [ELanguages.ru]: "Бонусы",
+        [ELanguages.en]: "Wallet",
+        [ELanguages.ru]: "Кошелек",
       },
       walletText: {
         [ELanguages.en]: "Your wallet",
