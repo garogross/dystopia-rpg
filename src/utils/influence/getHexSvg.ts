@@ -1,6 +1,11 @@
 import { getHexPoints } from "./getHexPoints";
 
-export const getHexSvg = (size: number, color?: string) => {
+export const getHexSvg = (
+  size: number,
+  color?: string,
+  stroke?: string,
+  strokeDasharray?: [number, number]
+) => {
   const points = getHexPoints(size * 2);
 
   const lines = points.map((_, idx) => {
@@ -9,7 +14,12 @@ export const getHexSvg = (size: number, color?: string) => {
     const [x1, y1] = points[startIdx];
     const [x2, y2] = points[endIdx];
 
-    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black" stroke-width="2" stroke-linecap="round" />`;
+    // Add stroke-dasharray for dashed lines
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${
+      stroke || "black"
+    }" stroke-width="2" stroke-linecap="round" ${
+      strokeDasharray ? `stroke-dasharray="${strokeDasharray.join()}"` : ""
+    } />`;
   });
 
   // calculate bounding box of hex points

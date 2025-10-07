@@ -13,4 +13,8 @@ export interface IFarmField {
     endDate: number;
   };
   idArg?: string;
+  adProductionBonusReceived?: boolean;
+  finalProduction?: number;
+  level?: number;
+  disabled?: boolean; // for evo mode
 }

@@ -1,54 +1,30 @@
 import { useEffect } from "react";
 import { ELanguages } from "../../../../constants/ELanguages";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
-import { useVideoAd } from "../../../../hooks/useVideoAd";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import styles from "./LoyalitySupportProjectTaskItem.module.scss";
-import { EadProviders } from "../../../../constants/EadProviders";
-import { EAdActionTypes } from "../../../../constants/EadActionTypes";
+import { useSoltAd } from "../../../../hooks/useSlotAd";
+import { EAdSlots } from "../../../../constants/EAdSlots";
 
 const { watchAdAndGetCpText, watchAdText } = TRANSLATIONS.common;
-const { perDayText } = TRANSLATIONS.loyality.supportProject;
 
 const LoyalitySupportProjectVideoTaskItem = ({
   gameInited,
   language,
-  scsClb,
-  provider,
-  index,
   onLoadingUpdate,
   disabled,
-  adId,
-  adType,
 }: {
   language: ELanguages;
   gameInited: boolean;
-  scsClb?: (id?: string) => void;
-  provider: EadProviders;
-  index?: number;
   onLoadingUpdate: (loading: boolean) => void;
   disabled: boolean;
-  adId?: string;
-  adType?: EAdActionTypes;
 }) => {
-  const {
-    onShowAd,
-    showTooltip,
-    tooltipText,
-    maxPerDay,
-    viewsInDay,
-    loading,
-    amount,
-  } = useVideoAd({
-    scsClb,
-    provider,
-    index,
-    adId,
-    adType,
-  });
+  const { onShow, showTooltip, tooltipText, loading } = useSoltAd(
+    EAdSlots.SupportProjectSlot
+  );
 
   useEffect(() => {
     onLoadingUpdate(loading);
@@ -66,18 +42,12 @@ const LoyalitySupportProjectVideoTaskItem = ({
           <div className={styles.loyalitySupportProjectTaskItem__main}>
             <div className={styles.loyalitySupportProjectTaskItem__texts}>
               <p className={styles.loyalitySupportProjectTaskItem__name}>
-                {watchAdAndGetCpText[language].replace(
-                  "NUMBER",
-                  amount.toString()
-                )}
-              </p>
-              <p className={styles.loyalitySupportProjectTaskItem__description}>
-                {viewsInDay}/{maxPerDay} {perDayText[language]}
+                {watchAdAndGetCpText[language]}
               </p>
             </div>
             <div className={styles.loyalitySupportProjectTaskItem__actions}>
               <button
-                onClick={onShowAd}
+                onClick={onShow}
                 disabled={loading || disabled}
                 className={styles.loyalitySupportProjectTaskItem__getBtn}
               >

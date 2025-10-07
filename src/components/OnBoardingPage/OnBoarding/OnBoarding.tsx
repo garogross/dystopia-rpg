@@ -10,10 +10,14 @@ import eruda from "eruda";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { authorizeUser } from "../../../store/slices/profileSlice";
 import {
+  cyberFarmEvoPagePath,
   cyberFarmPagePath,
   influencePagePath,
 } from "../../../router/constants";
 import { TESTER_IDS } from "../../../constants/testerIds";
+import { getLSItem } from "../../../helpers/localStorage";
+import { ELSProps } from "../../../constants/ELSProps";
+import { setCyberfarmMode } from "../../../store/slices/cyberFarm/cyberfarmSlice";
 
 const OnBoarding = () => {
   const navigate = useNavigate();
@@ -21,6 +25,7 @@ const OnBoarding = () => {
   const accountDetailsReceived = useAppSelector(
     (state) => state.profile.accountDetailsReceived
   );
+  const appMode = useAppSelector((state) => state.cyberfarm.global.appMode);
   const [rememberSelect, setRememberSelect] = useState(false);
   const [loading, setLoading] = useState(true);
   const tg = useTelegram();
@@ -31,8 +36,15 @@ const OnBoarding = () => {
         const res = await dispatch(authorizeUser(initData));
         switch (res) {
           case "ton_cyber_farm": {
-            navigate(cyberFarmPagePath);
-            // navigate(cyberFarmPagePath);
+            // set cyberfarm mode
+            const mode = await getLSItem(ELSProps.farmMode);
+            const farmMode = mode || "evo";
+            if (appMode !== farmMode) {
+              dispatch(setCyberfarmMode(farmMode || "evo"));
+            }
+            navigate(
+              farmMode === "classic" ? cyberFarmPagePath : cyberFarmEvoPagePath
+            );
             break;
           }
           case "influence": {

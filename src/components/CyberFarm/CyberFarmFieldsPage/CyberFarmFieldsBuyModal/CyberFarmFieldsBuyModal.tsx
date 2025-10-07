@@ -11,45 +11,33 @@ import { useSlotCost } from "../../../../hooks/useSlotCost";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import Tooltip from "../../../layout/Tooltip/Tooltip";
 import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
-import {
-  cpImage,
-  cpImageWebp,
-  metalImage,
-  metalImageWebp,
-} from "../../../../assets/imageMaps";
-import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
-import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
+import { cpImage, cpImageWebp } from "../../../../assets/imageMaps";
 
 interface Props {
   show: boolean;
   buyingSlotId: string;
   onClose: () => void;
+  evoMode?: boolean;
 }
 
-const {
-  titleText,
-  buyByCpButtonText,
-  buyByMetalButtonText,
-  cancelButtonText,
-  successText,
-} = TRANSLATIONS.cyberFarm.fields.buyModal;
+const { titleText, buyByCpButtonText, cancelButtonText, successText } =
+  TRANSLATIONS.cyberFarm.fields.buyModal;
 const CyberFarmFieldsBuyModal: React.FC<Props> = ({
   show,
   onClose,
   buyingSlotId,
+  evoMode,
 }) => {
   const dispath = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const tutorialInProgress = useAppSelector(
-    (state) => state.cyberfarm.tutorial.tutorialInProgress
-  );
+
   const { show: showTooltip, openTooltip } = useTooltip();
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
   const [errorText, setErrorText] = useState("");
 
   const getSlotCostTexts = useSlotCost();
-  const { costText } = getSlotCostTexts(EFarmSlotTypes.FIELDS);
+  const { costTextInCp } = getSlotCostTexts(EFarmSlotTypes.FIELDS);
 
   useEffect(() => {
     if (!show) {
@@ -58,12 +46,13 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
     }
   }, [show]);
 
-  const onBuy = async (byCp?: boolean) => {
+  const onBuy = async () => {
+    const byCp = true;
     const { notEnoughResourcesText, errored, cost } = getSlotCostTexts(
       EFarmSlotTypes.FIELDS,
       byCp
     );
-    if (errored && !tutorialInProgress) {
+    if (errored) {
       setErrorText(notEnoughResourcesText);
       return;
     }
@@ -76,7 +65,6 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
           type: EFarmSlotTypes.FIELDS,
           byCp: byCp,
           cost,
-          tutorial: tutorialInProgress,
         })
       ).unwrap();
       await openTooltip();
@@ -92,15 +80,16 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
     <ModalWithAdd
       show={show}
       onClose={onClose}
-      title={`${titleText[language]} ${costText}?`}
+      title={titleText(costTextInCp ? costTextInCp : undefined)[language]}
       loading={loading}
       errored={errored}
       errorText={errorText}
+      evoMode={evoMode}
     >
       <div className={styles.cyberFarmFieldsBuyModal}>
         <div className={styles.cyberFarmFieldsBuyModal__btnsWrapper}>
           <button
-            onClick={() => onBuy(true)}
+            onClick={() => onBuy()}
             disabled={loading}
             className={`${styles.cyberFarmFieldsBuyModal__btn} ${styles.cyberFarmFieldsBuyModal__btn_byCp}`}
           >
@@ -115,39 +104,17 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
             </div>
           </button>
           <button
-            disabled={loading}
-            onClick={() => onBuy()}
-            id={ECyberfarmTutorialActions.buySlot}
-            className={`${styles.cyberFarmFieldsBuyModal__btn} ${styles.cyberFarmFieldsBuyModal__btn_byMetal}`}
+            onClick={onClose}
+            className={`${styles.cyberFarmFieldsBuyModal__btn} ${styles.cyberFarmFieldsBuyModal__btn_cancel}`}
           >
             <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
-              <ImageWebp
-                srcSet={metalImageWebp}
-                src={metalImage}
-                alt={"CP"}
-                className={styles.cyberFarmFieldsBuyModal__btnInnerImg}
-              />
-              <span>{buyByMetalButtonText[language]}</span>
+              <CancelIcon />
+              <span>{cancelButtonText[language]}</span>
             </div>
           </button>
         </div>
-        <button
-          onClick={onClose}
-          className={`${styles.cyberFarmFieldsBuyModal__btn} ${styles.cyberFarmFieldsBuyModal__btn_cancel}`}
-        >
-          <div className={styles.cyberFarmFieldsBuyModal__btnInner}>
-            <CancelIcon />
-            <span>{cancelButtonText[language]}</span>
-          </div>
-        </button>
       </div>
       <Tooltip show={showTooltip} text={successText[language]} />
-      {show && (
-        <CloneFixedElementProvider
-          id={ECyberfarmTutorialActions.buySlot}
-          onClick={onBuy}
-        />
-      )}
     </ModalWithAdd>
   );
 };

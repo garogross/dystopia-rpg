@@ -12,6 +12,7 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
 import LoadingOverlay from "../LoadingOverlay/LoadingOverlay";
 import { adBannerRenderers } from "../../../utils/adBannerRenderers";
+import { TopWings } from "../icons/ModalWithAdd";
 
 const ONCLICKA_SLOT = "6077989";
 
@@ -29,6 +30,7 @@ interface Props {
   errorText?: string;
   hideAd?: boolean;
   titleClass?: string;
+  evoMode?: boolean;
 }
 
 const ModalWithAdd: React.FC<Props> = ({
@@ -44,6 +46,7 @@ const ModalWithAdd: React.FC<Props> = ({
   errorText,
   hideAd,
   titleClass,
+  evoMode,
 }) => {
   const language = useAppSelector((state) => state.ui.language);
   const onClicka = adBannerRenderers.onclicka;
@@ -95,7 +98,12 @@ const ModalWithAdd: React.FC<Props> = ({
             fullHeught ? styles.modalWithAdd_full : ""
           }`}
         >
-          {!withoutFrame ? (
+          {evoMode && (
+            <div className={styles.modalWithAdd__topWings}>
+              <TopWings />
+            </div>
+          )}
+          {!withoutFrame && !evoMode ? (
             <WrapperWithFrame
               size="lg"
               className={styles.modalWithAdd__container}

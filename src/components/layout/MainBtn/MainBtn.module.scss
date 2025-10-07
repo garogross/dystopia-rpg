@@ -13,7 +13,6 @@
     width: 100%;
     height: 100%;
     @include setFont(12px, 400);
-    fill: $color-text;
     transition: $transition;
     background: $color-primary-dark-radial-gradient;
     padding: 4px;
@@ -33,8 +32,8 @@
       100% 87%,
       92% 100%,
       8% 100%,
-      4% 87%,
-      4% 13%
+      0% 87%,
+      0% 13%
     );
   }
 

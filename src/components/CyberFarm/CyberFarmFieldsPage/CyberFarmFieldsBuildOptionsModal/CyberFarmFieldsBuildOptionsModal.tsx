@@ -11,8 +11,10 @@ import {
   cyberFarmFactoryImageWebp,
   cyberFarmFarmImage,
   cyberFarmFarmImageWebp,
-  metalImage,
-  metalImageWebp,
+  evoFactoryImage,
+  evoFactoryWebpImage,
+  evoFarmImage,
+  evoFarmWebpImage,
 } from "../../../../assets/imageMaps";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
@@ -31,6 +33,7 @@ interface Props {
   show: boolean;
   onClose: () => void;
   slotId: string;
+  evoMode?: boolean;
 }
 
 const {
@@ -39,12 +42,12 @@ const {
   factoryButtonText,
   successText,
   buildByCpButtonText,
-  buildByMetalButtonText,
 } = TRANSLATIONS.cyberFarm.fields.buildOptionsModal;
 const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   show,
   onClose,
   slotId,
+  evoMode,
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -57,7 +60,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
   const [type, setType] = useState<
     EFarmSlotTypes.FARM | EFarmSlotTypes.FACTORY
   >(EFarmSlotTypes.FARM);
-  const { costTextInCp, costTextInMetal } = getSlotCostTexts(type);
+  const { costTextInCp } = getSlotCostTexts(type);
 
   useEffect(() => {
     if (show) {
@@ -66,7 +69,8 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
     }
   }, [show]);
 
-  const onBuild = async (byCp?: boolean) => {
+  const onBuild = async () => {
+    const byCp = true;
     const { notEnoughResourcesText, errored, cost } = getSlotCostTexts(
       type,
       byCp
@@ -83,11 +87,13 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
       await dispatch(buySlot({ id: slotId, type, cost, byCp })).unwrap();
       await openTooltip();
       onClose();
-      navigate(
-        type === EFarmSlotTypes.FACTORY
-          ? cyberFarmFactoriesPagePath
-          : cyberFarmFarmsPagePath
-      );
+      if (!evoMode) {
+        navigate(
+          type === EFarmSlotTypes.FACTORY
+            ? cyberFarmFactoriesPagePath
+            : cyberFarmFarmsPagePath
+        );
+      }
     } catch (error) {
       setErrored(true);
     } finally {
@@ -103,8 +109,13 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
       loading={loading}
       errored={errored || !!errorText}
       errorText={errorText}
+      evoMode={evoMode}
     >
-      <div className={styles.cyberFarmFieldsBuildOptionsModal}>
+      <div
+        className={`${styles.cyberFarmFieldsBuildOptionsModal} ${
+          evoMode ? styles.cyberFarmFieldsBuildOptionsModal_evo : ""
+        }`}
+      >
         <div className={styles.cyberFarmFieldsBuildOptionsModal__col}>
           <button
             onClick={() => setType(EFarmSlotTypes.FARM)}
@@ -118,8 +129,8 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
               className={styles.cyberFarmFieldsBuildOptionsModal__typeBtnInner}
             >
               <ImageWebp
-                srcSet={cyberFarmFarmImageWebp}
-                src={cyberFarmFarmImage}
+                srcSet={evoMode ? evoFarmWebpImage : cyberFarmFarmImageWebp}
+                src={evoMode ? evoFarmImage : cyberFarmFarmImage}
                 alt={"farm"}
                 pictureClass={styles.cyberFarmFieldsBuildOptionsModal__picture}
                 className={styles.cyberFarmFieldsBuildOptionsModal__typeBtnImg}
@@ -139,8 +150,8 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
               className={styles.cyberFarmFieldsBuildOptionsModal__typeBtnInner}
             >
               <ImageWebp
-                srcSet={cyberFarmFactoryImage}
-                src={cyberFarmFactoryImageWebp}
+                srcSet={evoMode ? evoFactoryWebpImage : cyberFarmFactoryImage}
+                src={evoMode ? evoFactoryImage : cyberFarmFactoryImageWebp}
                 alt={"factory"}
                 pictureClass={styles.cyberFarmFieldsBuildOptionsModal__picture}
                 className={styles.cyberFarmFieldsBuildOptionsModal__typeBtnImg}
@@ -151,12 +162,15 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
         </div>
         <div className={styles.cyberFarmFieldsBuildOptionsModal__col}>
           <button
-            onClick={() => onBuild(true)}
+            onClick={onBuild}
             disabled={loading}
             className={styles.cyberFarmFieldsBuildOptionsModal__btn}
           >
             <div className={styles.cyberFarmFieldsBuildOptionsModal__btnInner}>
               <div className={styles.cyberFarmFieldsBuildOptionsModal__btnMain}>
+                <span>
+                  {buildByCpButtonText[language]} {costTextInCp?.split(" ")[0]}
+                </span>
                 <ImageWebp
                   srcSet={cpImageWebp}
                   src={cpImage}
@@ -165,33 +179,7 @@ const CyberFarmFieldsBuildOptionsModal: React.FC<Props> = ({
                     styles.cyberFarmFieldsBuildOptionsModal__btnInnerImg
                   }
                 />
-                <span>{buildByCpButtonText[language]}</span>
               </div>
-              <p className={styles.cyberFarmFieldsBuildOptionsModal__btnCost}>
-                ({costTextInCp})
-              </p>
-            </div>
-          </button>
-          <button
-            disabled={loading}
-            onClick={() => onBuild()}
-            className={styles.cyberFarmFieldsBuildOptionsModal__btn}
-          >
-            <div className={styles.cyberFarmFieldsBuildOptionsModal__btnInner}>
-              <div className={styles.cyberFarmFieldsBuildOptionsModal__btnMain}>
-                <ImageWebp
-                  srcSet={metalImageWebp}
-                  src={metalImage}
-                  alt={"Metal"}
-                  className={
-                    styles.cyberFarmFieldsBuildOptionsModal__btnInnerImg
-                  }
-                />
-                <span>{buildByMetalButtonText[language]}</span>
-              </div>
-              <p className={styles.cyberFarmFieldsBuildOptionsModal__btnCost}>
-                ({costTextInMetal})
-              </p>
             </div>
           </button>
         </div>

@@ -1,0 +1,218 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.cyberFarmEvoProduction {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  gap: 16px;
+
+  &__main {
+    flex: 1;
+    overflow: hidden;
+    padding: 1px;
+    background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
+  }
+  &__mainInner {
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 12px;
+    background: $color-darkBlueBg;
+  }
+  &__headerBlock {
+    @include flexCol();
+    gap: 5px;
+  }
+  &__dotsline {
+    flex: 1;
+
+    & svg {
+      width: 100%;
+    }
+  }
+  &__headerMain {
+    @include flexCol();
+    gap: 10px;
+    @include setFont(18px, 400);
+  }
+
+  &__tabbar {
+    @include flexCol();
+    gap: 8px;
+  }
+  &__tabBtn {
+    @include button($color-primary);
+    padding: 1px;
+    height: 40px;
+    flex: 1;
+  }
+  &__tabBtnInner {
+    width: 100%;
+    height: 100%;
+    @include flexCol();
+    gap: 6px;
+    background: $color-primary-dark-radial-gradient;
+    @include setFont(16px, 400, $font-fam-main, $color-text);
+    fill: $color-text;
+    transition: $transition;
+
+    & svg {
+      fill: inherit;
+      transition: $transition;
+    }
+  }
+
+  &__tabBtn_active &__tabBtnInner {
+    background: $color-active-btn-gradient;
+    color: $color-black;
+    fill: $color-black;
+  }
+
+  &__tabBtn:first-child,
+  &__tabBtn:first-child &__tabBtnInner {
+    clip-path: polygon(
+      5.5% 0%,
+      /* M5.65625 0.5 */ 0% 10%,
+      /* 0.5 4.25391 */ 0% 90%,
+      /* V35.7451 */ 5.5% 100%,
+      /* 5.65625 39.5 */ 100% 100%,
+      /* H102.5 */ 100% 0%,
+      /* V0.5 */ 5.5% 0% /* H5.65625Z */
+    );
+  }
+  &__tabBtn:last-child,
+  &__tabBtn:last-child &__tabBtnInner {
+    clip-path: polygon(
+      95% 0%,
+      /* M97.3438 0.5 */ 100% 10%,
+      /* 102.5 4.25391 */ 100% 90%,
+      /* V35.7451 */ 95% 100%,
+      /* 97.3438 39.5 */ 0% 100%,
+      /* H0.5 */ 0% 0%,
+      /* V0.5 */ 95% 0% /* H97.3438Z */
+    );
+  }
+
+  &__list {
+    width: 100%;
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__listItem {
+    width: 100%;
+    background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
+    padding: 1px;
+  }
+
+  &__listItemInner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(90deg, #2a1e54 8.65%, #090419 24.04%);
+  }
+  &__dropdownBtn {
+    @include button();
+    width: 100%;
+    @include flexCol(space-between);
+    gap: 10px;
+    height: 54px;
+    padding-right: 12px;
+  }
+  &__dropdownBtnImg {
+    height: 100%;
+
+    transition: $transition;
+
+    &_hidden {
+      opacity: 0;
+    }
+  }
+  &__dropdownBtnPicture {
+    height: 100%;
+  }
+  &__dropdownBtnTitleTxt {
+    @include setFont(16px, 400);
+  }
+  &__listItemDropdownContent {
+    width: 100%;
+  }
+
+  &__listItemDropdownContentInner {
+    padding-inline: 12px;
+    @include flexCol(space-between);
+    gap: 10px;
+    width: 100%;
+  }
+  &__listItemDropdownCol {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 64px;
+  }
+  &__listItemDropdownProductBox {
+    width: 100%;
+    aspect-ratio: 64/52;
+    border: 1px dashed $color-primary;
+    position: relative;
+    @include flexCol(center, flex-start);
+    padding-top: 3px;
+  }
+  &__listItemDropdownProductBoxImg {
+    width: 100%;
+  }
+  &__listItemDropdownProductBoxPicture {
+    width: 60%;
+  }
+  &__listItemDropdownProductBoxCountText {
+    @include setFont(16px, 400, $font-fam-h3, $color-primary);
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+  }
+
+  &__listItemDropdownProductBoxArrowIcon {
+    position: absolute;
+    left: 0;
+    transform: translateX(-100%);
+    @include flexCol();
+
+    &_top {
+      height: 50%;
+      top: 100%;
+      transform: translate(-100%, -100%);
+    }
+
+    &_center {
+      transform: translate(-100%, -50%);
+      height: 10px;
+      top: 50%;
+    }
+
+    &_bottom {
+      top: 0%;
+      height: 50%;
+      transform: translate(-100%, 0%);
+    }
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__listItemDropdownCol_1 &__listItemDropdownProductBoxArrowIcon {
+    width: calc((100vw - 64px - 24px - 24px - 32px) / 2 - 64px);
+    max-width: 115px;
+  }
+  &__listItemDropdownCol_2 &__listItemDropdownProductBoxArrowIcon {
+    width: calc(100vw - 64px - 64px - 24px - 24px - 32px);
+    max-width: 289px;
+  }
+}

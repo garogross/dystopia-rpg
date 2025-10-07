@@ -1,0 +1,1 @@
+export { CompletedProducticon } from "./CompletedProducticon";

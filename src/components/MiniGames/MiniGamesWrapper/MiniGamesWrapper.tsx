@@ -1,5 +1,5 @@
 import MiniGamesHeader from "../MiniGamesHeader/MiniGamesHeader";
-import MiniGamesBottomNavbar from "../MiniGamesBottomNavbar/MiniGamesBottomNavbar";
+import MiniGamesBottomNavbar from "../../MiniGames/MiniGamesBottomNavbar/MiniGamesBottomNavbar";
 
 import * as miniGamesImages from "../../../assets/imageMaps/miniGamesImages";
 import GameWrapper from "../../GameWrapper/GameWrapper";

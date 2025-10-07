@@ -8,18 +8,18 @@
   gap: 12px;
   width: 100%;
 
-  &__languageSwitcherBlock {
+  &__switcherBlock {
     @include flexCol(space-between);
     width: 100%;
   }
-  &__languageSwitcherText {
+  &__switcherText {
     @include setFont(16px, 400);
   }
-  &__languageSwitcherOptions {
+  &__switcherOptions {
     @include flexCol();
     gap: 5px;
   }
-  &__languageSwitcherBtn {
+  &__switcherBtn {
     width: 45px;
     height: 28px;
     padding-block: 2px;
@@ -33,7 +33,7 @@
       )
     );
   }
-  &__languageSwitcherBtnInner {
+  &__switcherBtnInner {
     width: 100%;
     height: 100%;
     @include flexCol();
@@ -41,9 +41,9 @@
     background: $color-bg;
     transition: $transition;
   }
-  &__languageSwitcherBtn:hover &__languageSwitcherBtnInner,
-  &__languageSwitcherBtn:active &__languageSwitcherBtnInner,
-  &__languageSwitcherBtn_active &__languageSwitcherBtnInner {
+  &__switcherBtn:hover &__switcherBtnInner,
+  &__switcherBtn:active &__switcherBtnInner,
+  &__switcherBtn_active &__switcherBtnInner {
     background: transparent;
   }
 

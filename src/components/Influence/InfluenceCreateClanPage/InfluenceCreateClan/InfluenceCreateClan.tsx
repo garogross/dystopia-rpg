@@ -139,7 +139,6 @@ const InfluenceCreateClan = () => {
           >
             <Select
               name={languageSelectName}
-              keyName={"language"}
               options={[
                 {
                   value: ELanguages.en,

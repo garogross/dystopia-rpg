@@ -1,21 +1,18 @@
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
+import { FarmProductionEstimateType } from "../../../types/FarmProductionEstimateType";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
+import { FarmSlotsUpgradeLevelType } from "../../../types/FarmSlotsUpgradeLevelType";
 
-export interface BuyProductResponse {
+export interface ExchangeResponse {
   status: "ok";
+  operation: "buy" | "sell";
   product: CyberFarmProductType;
-  amount: number;
+  amount_sold?: number;
+  amount?: number;
+  price_per_unit?: number;
   total_price: number;
   cash_point_left: number;
-}
-
-export interface SellProductResponse {
-  status: string;
-  resource: CyberFarmProductType;
-  amount_exchanged: number;
-  ton_received: number;
-  ton_total: number;
-  resources_left: number;
+  pool_left: number;
 }
 
 export interface BuyResourceDeflictResponse {
@@ -45,4 +42,22 @@ export interface GetStorageResponse {
 
 export interface GetResourcesDeflictResponse {
   resource_deficit: FarmResourceDeficitType;
+}
+
+export interface GetProductPricesResponse {
+  status: string;
+  prices: {
+    [key in CyberFarmProductType]: {
+      price_buy: number;
+      price_sell: number;
+    };
+  };
+}
+
+export interface GetProductionEstimateResponse {
+  status: string;
+  final_production_per_upgrade_level: {
+    [key in CyberFarmProductType]: FarmSlotsUpgradeLevelType;
+  };
+  production_estimate: FarmProductionEstimateType;
 }

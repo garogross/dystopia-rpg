@@ -1,0 +1,23 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.cyberFarmEvoFarmsProgress {
+  position: absolute;
+  max-width: 100%;
+  width: 60px;
+  left: 50%;
+  top: -10px;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 2px 4px 0px #00000040;
+  height: 3px;
+  z-index: 3;
+  pointer-events: none;
+
+  &__completed {
+    position: absolute;
+    z-index: 4;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
