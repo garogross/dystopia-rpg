@@ -400,6 +400,12 @@ export const TRANSLATIONS = {
         "Никаких обещаний. Только скрины, стиль и геймплей, который мы затачиваем под кровь и металл. Посмотри — и подпишись, чтобы не проспать запуск.",
     },
   },
+  plugModal: {
+    updatingText: {
+      [ELanguages.en]: "The app is updating!",
+      [ELanguages.ru]: "Приложение обновляется!",
+    },
+  },
   onBoarding: {
     header: {
       titleText: {

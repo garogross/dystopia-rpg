@@ -1,0 +1,14 @@
+@import "../../styles/mixins";
+@import "../../styles/vars";
+
+.plugModal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 9999999;
+  top: 0;
+  left: 0;
+  background: $color-black;
+  @include flexCol();
+  padding: 10px;
+}

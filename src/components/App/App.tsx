@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import AppRouter from "../../router/AppRouter";
+// import AppRouter from "../../router/AppRouter";
 import { useTelegram } from "../../hooks/useTelegram";
 import { getPlatformType } from "../../utils/getPlatformType";
 import { useOfferwallSdk } from "../../hooks/useOfferwallSdk";
@@ -11,6 +11,7 @@ import { setLanguage } from "../../store/slices/uiSlice";
 import { postLog } from "../../api/logs";
 import { useStoreFreshDate } from "../../hooks/useStoreFreshDate";
 import { getUserIp } from "../../utils/getUserIp";
+import PlugModal from "../PlugModal/PlugModal";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -312,7 +313,8 @@ export const App = () => {
 
   return (
     <>
-      <AppRouter />
+      <PlugModal />
+      {/* <AppRouter /> */}
     </>
   );
 };
