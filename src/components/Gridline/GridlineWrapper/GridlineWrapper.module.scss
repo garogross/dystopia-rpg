@@ -1,2 +1,9 @@
 @import "../../../styles/mixins";
 @import "../../../styles/vars";
+
+.gridlineWrapper {
+  &__title {
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+}

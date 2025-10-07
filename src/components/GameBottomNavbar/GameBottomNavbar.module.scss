@@ -1,5 +1,5 @@
-@import "../../../styles/mixins";
-@import "../../../styles/vars";
+@import "../../styles/mixins";
+@import "../../styles/vars";
 
 .gameBottomNavbar {
   display: flex;
@@ -15,6 +15,7 @@
     flex: 1;
     padding: 1px;
     background-color: $color-primary;
+    text-decoration: none;
 
     &:nth-child(2) {
       margin-inline: -2%;

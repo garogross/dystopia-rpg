@@ -9,7 +9,7 @@ import { TopBtnBg } from "../../layout/icons/BubbleFront/BubbleFrontBottomNavbar
 import BottomBtnBg from "../../layout/icons/BubbleFront/BubbleFrontBottomNavbar/BottomBtnBg";
 import styles from "./BubbleFrontBottomNavbar.module.scss";
 import { NavLink, useLocation, useMatch } from "react-router-dom";
-import { BottomWings } from "../../layout/icons/HackTerminal/HackTerminalBottomNavbar";
+import { BottomWings } from "../../layout/icons/GameBottomNavbar";
 import {
   bubbleFrontAchievmentsPagePath,
   bubbleFrontPagePath,

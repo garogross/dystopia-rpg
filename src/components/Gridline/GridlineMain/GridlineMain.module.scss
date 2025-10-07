@@ -1,0 +1,164 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.gridlineMain {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2px;
+  }
+  &__headerWings {
+    width: 100%;
+    height: 13px;
+    margin-bottom: 13px;
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &__headerMain {
+    @include flexCol(space-between);
+    gap: 10px;
+    padding-inline: 10%;
+  }
+  &__headerText {
+    @include setFont(12px, 400, $font-fam-bowler, $color-primary);
+  }
+  &__headerBalls {
+    @include flexCol();
+    gap: 6px;
+  }
+  &__headerBallImg {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+
+  &__gameWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  &__gameWrapperTopIcon {
+    width: 100%;
+    height: 13px;
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &__gameContainer {
+    flex: 1;
+    aspect-ratio: 1/1;
+    background: $color-white;
+    width: fit-content;
+    margin-inline: auto;
+  }
+  &__gameWrapperBottomIcon {
+    width: 100%;
+    height: 13px;
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &__bonuses {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  &__bonusesInfoText {
+    @include setFont(10px, 200, $font-fam-main, $color-primary);
+    text-align: center;
+  }
+  &__bonusesProgressBar {
+    width: 100%;
+    border: 1px solid $color-primary;
+    border-radius: 2px;
+    height: 18px;
+  }
+  &__bonusesProgressBarInner {
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(270deg, #5d42ba 0%, #2a1e54 100%);
+    box-shadow: inset 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    @include flexCol(flex-end);
+    padding-right: 5px;
+    @include setFont(10px, 300, $font-fam-main, $color-black);
+  }
+  &__bonusesOptionsList {
+    width: 300px;
+    max-width: 100%;
+    @include flexCol();
+    gap: 12px;
+    margin-inline: auto;
+  }
+  &__bonusOptionBtn {
+    @include button($color-primary);
+    padding: 1px;
+    height: 54px;
+    flex: 1;
+  }
+  &__bonusOptionBtnInner {
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      rgb(61, 43, 126) 0%,
+      rgb(4, 0, 16) 100%
+    );
+    width: 100%;
+    height: 100%;
+    @include flexCol();
+    flex-direction: column;
+    @include setFont(12px, 400);
+  }
+
+  &__bonusOptionBtn:first-child,
+  &__bonusOptionBtn:first-child &__bonusOptionBtnInner {
+    clip-path: polygon(
+      8.7% 0%,
+      /* (7.8/90) */ 100% 0%,
+      100% 20.6%,
+      /* (10.9365/53) */ 100% 80.9%,
+      /* (42.9048/53) */ 100% 100%,
+      8.7% 100%,
+      0% 80.9%,
+      0% 20.6%
+    );
+  }
+
+  &__bonusOptionBtn:last-child,
+  &__bonusOptionBtn:last-child &__bonusOptionBtnInner {
+    clip-path: polygon(
+      0% 0%,
+      91.3% 0%,
+      /* (82.2047/90) */ 100% 20.6%,
+      /* (10.9365/53) */ 100% 80.9%,
+      /* (42.9048/53) */ 90.6% 100%,
+      /* (81.4961/90) */ 0% 100%,
+      0% 80.9%,
+      0% 20.6%
+    );
+  }
+  &__bonusesBottomWings {
+    width: 100%;
+    height: 8px;
+    padding-top: 5px;
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

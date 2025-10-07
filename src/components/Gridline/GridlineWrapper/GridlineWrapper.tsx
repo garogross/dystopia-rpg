@@ -16,6 +16,7 @@ import GameBottomNavbar from "../../GameBottomNavbar/GameBottomNavbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
+import { RefreshIcon } from "../../layout/icons/Gridline/Common";
 
 const { name } = TRANSLATIONS.miniGames.gridline;
 
@@ -39,6 +40,9 @@ const GridlineWrapper = () => {
                   : gridlinePagePath
               );
             }}
+            rightBtn={{
+              icon: <RefreshIcon />,
+            }}
             title={name[language]}
           />
         </>
@@ -51,7 +55,7 @@ const GridlineWrapper = () => {
         />
       }
       images={gridlineImages}
-      offsetSize={180}
+      offsetSize={171}
     />
   );
 };

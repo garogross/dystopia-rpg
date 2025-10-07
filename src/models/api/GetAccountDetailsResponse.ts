@@ -54,6 +54,7 @@ export interface GetAccountDetailsResponse {
         cooldown_until_ts: number;
       };
     };
+    ton_cyber_farm_tutorial_finished: boolean;
     resources: Partial<Record<CyberFarmProductType, number>>;
     ton: number;
     achievements: FarmAchievmentsType;

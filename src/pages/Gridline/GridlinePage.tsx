@@ -1,7 +1,8 @@
 import React from "react";
+import GridlineWrapper from "../../components/Gridline/GridlineWrapper/GridlineWrapper";
 
 const GridlinePage = () => {
-  return <div></div>;
+  return <GridlineWrapper />;
 };
 
 export default GridlinePage;
