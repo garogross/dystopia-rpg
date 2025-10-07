@@ -204,13 +204,11 @@ export const getAccountDetails =
       );
 
       // cyberfarm tutorial
-      const dataset = resData.user?.profile?.dataset;
+      const isTutorialFinished =
+        resData.ton_cyber_farm.ton_cyber_farm_tutorial_finished;
       dispatch(
         initTutorial({
-          tutorialInProgress:
-            dataset && "tutorial_finished_rewarded" in dataset
-              ? !dataset.tutorial_finished_rewarded
-              : true,
+          tutorialInProgress: isTutorialFinished ? !isTutorialFinished : true,
         })
       );
     }

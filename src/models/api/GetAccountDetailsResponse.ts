@@ -1,5 +1,4 @@
 import { EFarmSlotTypes } from "../../constants/cyberfarm/EFarmSlotTypes";
-import { ECyberfarmTutorialActions } from "../../constants/cyberfarm/tutorial";
 import { AppGameMode } from "../../types/AppGameMode";
 import { CyberFarmProductType } from "../../types/CyberFarmProductType";
 import { FarmAchievmentSettingsType } from "../../types/Achievments/FarmAchievmentSettingsType";
@@ -54,6 +53,7 @@ export interface GetAccountDetailsResponse {
         cooldown_until_ts: number;
       };
     };
+    ton_cyber_farm_tutorial_finished: boolean;
     resources: Partial<Record<CyberFarmProductType, number>>;
     ton: number;
     achievements: FarmAchievmentsType;
@@ -99,11 +99,7 @@ export interface GetAccountDetailsResponse {
   resource_deficit: FarmResourceDeficitType;
   claim_daily_login: ClaimDailyLogin;
   social_shop: SocialShopType;
-  metrics: {
-    ton_cyber_farm_metrics: {
-      tutorial?: ECyberfarmTutorialActions[];
-    };
-  };
+  metrics: {};
 
   // influence
   settings?: {
