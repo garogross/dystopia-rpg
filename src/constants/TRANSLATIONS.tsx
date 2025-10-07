@@ -1793,18 +1793,6 @@ export const TRANSLATIONS = {
           "Bubble Front — тактическая артиллерия в оболочке аркады.",
       },
     },
-    bubbleFront: {
-      name: {
-        [ELanguages.en]: "Bubble Front",
-        [ELanguages.ru]: "Bubble Front",
-      },
-      description: {
-        [ELanguages.en]:
-          "Bubble Front — tactical artillery in an arcade shell.",
-        [ELanguages.ru]:
-          "Bubble Front — тактическая артиллерия в оболочке аркады.",
-      },
-    },
     achievments: {
       titleText: {
         [ELanguages.en]: "Achievements",
