@@ -12,6 +12,8 @@ import { postLog } from "../../api/logs";
 import { useStoreFreshDate } from "../../hooks/useStoreFreshDate";
 import { getUserIp } from "../../utils/getUserIp";
 import PlugModal from "../PlugModal/PlugModal";
+import { TESTER_IDS } from "../../constants/testerIds";
+import AppRouter from "../../router/AppRouter";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
@@ -313,8 +315,11 @@ export const App = () => {
 
   return (
     <>
-      <PlugModal />
-      {/* <AppRouter /> */}
+      {TESTER_IDS.includes(tg?.initDataUnsafe.user?.id || 0) ? (
+        <AppRouter />
+      ) : (
+        <PlugModal />
+      )}
     </>
   );
 };
