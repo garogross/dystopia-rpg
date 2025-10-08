@@ -145,6 +145,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   } = useFormValue({
     address: "",
     amount: "",
+    memo: "",
     currency: "usdt",
   });
   const [loading, setLoading] = useState(false);
@@ -288,6 +289,13 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             placeholder={totalToReceivePlaceholder[language]}
             disabled
             value={withdrawWithCommision}
+          />
+          <Formfield
+            headerText={totalToReceiveText[language]}
+            placeholder={totalToReceivePlaceholder[language]}
+            onChange={onChange}
+            name="memo"
+            value={formData.memo}
           />
           <FormBtn disabled={loading}>
             <WithdrawIcon />

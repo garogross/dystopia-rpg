@@ -311,7 +311,7 @@ export const authorizeUser =
 const withdrawCPUrl = "/ton_cyber_farm/withdraw_cp/";
 export const withdrawCP = createAsyncThunk<
   WithdrawCPResponse,
-  { amount: number; address: string; currency: "usdt" | "ton" }
+  { amount: number; address: string; currency: "usdt" | "ton"; memo?: string }
 >("profile/withdrawCP", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<WithdrawCPResponse>(
@@ -321,6 +321,7 @@ export const withdrawCP = createAsyncThunk<
         amount: payload.amount,
         address: payload.address,
         currency: payload.currency,
+        memo: payload.memo,
       }
     );
 
