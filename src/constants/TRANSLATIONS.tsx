@@ -563,6 +563,14 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Wallet address is required",
         [ELanguages.ru]: "Требуется адрес кошелька",
       },
+      commentText: {
+        [ELanguages.en]: "Comment",
+        [ELanguages.ru]: "Комментарий",
+      },
+      tonWithdrawCommentPlaceholder: {
+        [ELanguages.en]: "Enter a comment for  withdrawal (optional)",
+        [ELanguages.ru]: "Введите комментарий для вывода (необязательно)",
+      },
     },
     fields: {
       titleText: {

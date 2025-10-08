@@ -51,6 +51,8 @@ const {
   amountExceedsCPBalanceText,
   invalidCurrencyText,
   walletAddressRequiredText,
+  commentText,
+  tonWithdrawCommentPlaceholder,
 } = TRANSLATIONS.cyberFarm.bonuses;
 
 const Formfield: React.FC<FormFieldProps> = ({
@@ -291,8 +293,8 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             value={withdrawWithCommision}
           />
           <Formfield
-            headerText={totalToReceiveText[language]}
-            placeholder={totalToReceivePlaceholder[language]}
+            headerText={commentText[language]}
+            placeholder={tonWithdrawCommentPlaceholder[language]}
             onChange={onChange}
             name="memo"
             value={formData.memo}
