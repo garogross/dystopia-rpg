@@ -19,7 +19,7 @@ import { useTaddy } from "../../../context/TaddyContext";
 import { TadsWidget } from "react-tads-widget";
 import LoyalitySupportProjectAdditionalTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdditionalTaskItem";
 import LoyalitySupportProjectAdsgramTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdsgramTaskItem";
-import LoyalitySupportProjectVideoTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectVideoTaskItem";
+// import LoyalitySupportProjectVideoTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectVideoTaskItem";
 import LoyalitySupportProjectTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectTaskItem";
 import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraffyContainer/LoyalitySupportProjectTraffyContainer";
 import { useTooltip } from "../../../hooks/useTooltip";
@@ -190,12 +190,12 @@ const LoyalitySupportProject = () => {
           gameInited={gameInited}
           language={language}
         />
-        <LoyalitySupportProjectVideoTaskItem
+        {/* <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
-        />
+        /> */}
         {Array.isArray(taddyTasks) &&
           taddyTasks?.map((task, index) => (
             <LoyalitySupportProjectTaskItem

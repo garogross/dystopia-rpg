@@ -23,6 +23,7 @@ const LoyalitySupportProjectTraffyContainer = () => {
   const traffyTasks = useRef<HTMLDivElement | null>(null);
   const { show: showTooltip, openTooltip } = useTooltip();
   const language = useAppSelector((state) => state.ui.language);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
   const [hidden, setHidden] = React.useState(true);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const LoyalitySupportProjectTraffyContainer = () => {
   }, []);
 
   useEffect(() => {
-    if (!hidden) {
+    if (!hidden && gameInited) {
       initTraffyTasks(
         traffyTasks.current,
         (signedToken, _id) => {
@@ -70,7 +71,7 @@ const LoyalitySupportProjectTraffyContainer = () => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hidden]);
+  }, [hidden, gameInited]);
 
   return (
     <>
