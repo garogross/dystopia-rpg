@@ -347,6 +347,7 @@ export const profileSlice = createSlice({
     receiveAccountDetails(state, { payload }) {
       state.accountDetailsReceived = true;
       state.tonWithdrawCommission = payload.tonWithdrawCommission;
+      state.usdtWithdrawCommission = payload.usdtWithdrawCommission;
     },
   },
   extraReducers: (builder) => {

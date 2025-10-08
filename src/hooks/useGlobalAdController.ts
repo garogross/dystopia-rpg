@@ -129,7 +129,6 @@ export const useGlobalAdController = (
                   const hasIframe = [
                     ...(document.querySelector("html")?.children || []),
                   ].find((item) => item.tagName.toLowerCase() === "iframe");
-                  console.log({ hasIframe });
 
                   if (!hasIframe) {
                     didTimeout = true;

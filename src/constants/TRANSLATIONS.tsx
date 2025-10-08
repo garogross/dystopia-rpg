@@ -367,12 +367,12 @@ export const TRANSLATIONS = {
       [ELanguages.ru]: "Настройки UI",
     },
     evoText: {
-      [ELanguages.en]: "EVO",
-      [ELanguages.ru]: "EVO",
+      [ELanguages.en]: "New",
+      [ELanguages.ru]: "Новый",
     },
     classicText: {
-      [ELanguages.en]: "Classic",
-      [ELanguages.ru]: "Classic",
+      [ELanguages.en]: "Old",
+      [ELanguages.ru]: "Старый",
     },
   },
   home: {
@@ -1295,12 +1295,12 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Настройки UI",
       },
       classicModeText: {
-        [ELanguages.en]: "Classic",
-        [ELanguages.ru]: "Классик",
+        [ELanguages.en]: "Old",
+        [ELanguages.ru]: "Старый",
       },
       evoModeText: {
-        [ELanguages.en]: "Evo mode (new)",
-        [ELanguages.ru]: "Эво режим (новый)",
+        [ELanguages.en]: "New",
+        [ELanguages.ru]: "Новый",
       },
     },
     supportMenuBar: {

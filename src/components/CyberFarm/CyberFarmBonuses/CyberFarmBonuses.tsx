@@ -84,6 +84,7 @@ const Formfield: React.FC<FormFieldProps> = ({
         <input
           type="text"
           {...args}
+          value={value}
           placeholder={placeholder}
           className={`${styles.cyberFarmBonuses__input} ${
             isInvalid ? styles.cyberFarmBonuses__input_invalid : ""
@@ -153,12 +154,10 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
     usdt: usdtWithdrawCommission,
     ton: tonWithdrawCommission,
   };
+  const commision =
+    commisions[(formData.currency as "usdt" | "ton") || "usdt"] || 0;
+  const withdrawWithCommision = Math.max(+formData.amount - commision, 0);
 
-  const withdrawWithCommision = Math.max(
-    +formData.amount -
-      (commisions[(formData.currency as "usdt" | "ton") || "usdt"] || 0),
-    0
-  );
   useEffect(() => {
     if (!show) onResetForm();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -219,6 +218,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
       show={show}
       onClose={onClose}
       fullHeught
+      hideAd
     >
       <div className={styles.cyberFarmBonuses}>
         {/* <button
@@ -269,7 +269,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             <Formfield
               headerText={withdrawAmountText[language]}
               placeholder={withdrawAmountPlaceholder[language]}
-              commission={`${tonWithdrawCommission} CP`}
+              commission={`${commision} CP`}
               name="amount"
               onChange={onChange}
               value={formData.amount}

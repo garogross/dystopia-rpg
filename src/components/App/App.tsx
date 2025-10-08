@@ -285,7 +285,12 @@ export const App = () => {
 
   useEffect(() => {
     loadScripts(tg);
-    disableInspect();
+    if (
+      process.env.NODE_ENV !== "development" &&
+      process.env.REACT_APP_MODE !== "dev"
+    ) {
+      disableInspect();
+    }
     initOfferwall();
     (async () => {
       const code = tg.initDataUnsafe?.user?.language_code;
@@ -315,7 +320,7 @@ export const App = () => {
 
   return (
     <>
-      {TESTER_IDS.includes(tg?.initDataUnsafe.user?.id || 0) ? (
+      {process.env.NODE_ENV === "development" || TESTER_IDS.includes(tg?.initDataUnsafe.user?.id || 0) ? (
         <AppRouter />
       ) : (
         <PlugModal />

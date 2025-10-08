@@ -684,8 +684,6 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         }
 
         if (ballSprite.destroyed || !!ballSprite.parent) {
-          // for test
-          console.log("ballSprite", ballSprite.destroyed, !!ballSprite.parent);
         }
 
         // If hits top (y <= 0), snap to closest empty hex in the first row
