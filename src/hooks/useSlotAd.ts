@@ -30,21 +30,22 @@ export const useSoltAd = (
 ) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const mediation = useAppSelector((state) => state.tasks.mediation);
   const successText = successTooltipText || rewardReceivedText[language];
   const [tooltipText, setTooltipText] = useState(successText);
   const [loading, setLoading] = useState(false);
   const isMobile = getPlatformType();
   const { show: showTooltip, openTooltip } = useTooltip();
 
-  // const curSlotDetails = mediation?.[slotId];
-  const adType = EAdActionTypes.Video;
-  // curSlotDetails && "ad_type" in curSlotDetails
-  //   ? curSlotDetails.ad_type
-  //   : EAdActionTypes.Video;
-  const provider = EadProviders.Taddy;
-  // curSlotDetails && "provider" in curSlotDetails
-  //   ? curSlotDetails.provider
-  //   : EadProviders.Gigapub;
+  const curSlotDetails = mediation?.[slotId];
+  const adType =
+    curSlotDetails && "ad_type" in curSlotDetails
+      ? curSlotDetails.ad_type
+      : EAdActionTypes.Video;
+  const provider =
+    curSlotDetails && "provider" in curSlotDetails
+      ? curSlotDetails.provider
+      : EadProviders.Gigapub;
 
   const onSuccess = async () => {
     try {

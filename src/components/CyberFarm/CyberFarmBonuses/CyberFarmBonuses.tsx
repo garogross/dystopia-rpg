@@ -172,7 +172,6 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
     +formData.amount * commision.commission - commision.pool,
     0
   );
-  console.log({ commision });
 
   useEffect(() => {
     if (!show) onResetForm();
