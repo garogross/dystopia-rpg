@@ -88,10 +88,12 @@ export interface GetAccountDetailsResponse {
         amount: number;
         description: string;
         ton_usd_rate: number;
+        comission_ton: number;
       };
       usdt_pool: {
         amount: number;
         description: string;
+        comission_usdt: number;
       };
       max_cp_usdt_price: 0.001;
     };

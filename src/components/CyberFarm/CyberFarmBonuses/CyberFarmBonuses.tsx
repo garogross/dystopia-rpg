@@ -53,6 +53,8 @@ const {
   walletAddressRequiredText,
   commentText,
   tonWithdrawCommentPlaceholder,
+  depositLabel,
+  withdrawLabel,
 } = TRANSLATIONS.cyberFarm.bonuses;
 
 const Formfield: React.FC<FormFieldProps> = ({
@@ -68,7 +70,7 @@ const Formfield: React.FC<FormFieldProps> = ({
   const language = useAppSelector((state) => state.ui.language);
 
   return (
-    <label className="{styles.cyberFarmBonuses__form}">
+    <label className={styles.cyberFarmBonuses__form}>
       <div className={styles.cyberFarmBonuses__formFieldHeader}>
         <p className={styles.cyberFarmBonuses__formFieldHeaderText}>
           {headerText}
@@ -121,6 +123,7 @@ const FormBtn = ({
     </div>
   </div>
 );
+
 const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
@@ -129,6 +132,12 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   );
   const usdtWithdrawCommission = useAppSelector(
     (state) => state.profile.usdtWithdrawCommission
+  );
+  const tonWithdrawPoolAmount = useAppSelector(
+    (state) => state.profile.tonWithdrawPoolAmount
+  );
+  const usdtWithdrawPoolAmount = useAppSelector(
+    (state) => state.profile.usdtWithdrawPoolAmount
   );
   const cp = useAppSelector((state) => state.profile.stats.cp);
   // const {
@@ -154,12 +163,16 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const [tooltipText, setTooltipText] = useState(withdrawCompletedText);
 
   const commisions = {
-    usdt: usdtWithdrawCommission,
-    ton: tonWithdrawCommission,
+    usdt: { commission: usdtWithdrawCommission, pool: usdtWithdrawPoolAmount },
+    ton: { commission: tonWithdrawCommission, pool: tonWithdrawPoolAmount },
   };
   const commision =
     commisions[(formData.currency as "usdt" | "ton") || "usdt"] || 0;
-  const withdrawWithCommision = Math.max(+formData.amount - commision, 0);
+  const withdrawWithCommision = Math.max(
+    +formData.amount * commision.commission - commision.pool,
+    0
+  );
+  console.log({ commision });
 
   useEffect(() => {
     if (!show) onResetForm();
@@ -240,7 +253,14 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
           </div>
         </button> */}
 
-        <h3 className={styles.cyberFarmBonuses__title}>CP</h3>
+        <div className={styles.cyberFarmBonuses__tabs}>
+          <button disabled className={styles.cyberFarmBonuses__tabBtn}>
+            {depositLabel[language]}
+          </button>
+          <button disabled className={styles.cyberFarmBonuses__tabBtn}>
+            {withdrawLabel[language]}
+          </button>
+        </div>
         <form onSubmit={onSubmit} className={styles.cyberFarmBonuses__form}>
           <Formfield
             headerText={currencyText[language]}
@@ -267,14 +287,16 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             name="address"
             value={formData.address}
             isInvalid={!!getCurError("address")}
+            disabled
           />
           <div>
             <Formfield
               headerText={withdrawAmountText[language]}
               placeholder={withdrawAmountPlaceholder[language]}
-              commission={`${commision} CP`}
+              commission={`${commision.pool} CP`}
               name="amount"
               onChange={onChange}
+              disabled
               value={formData.amount}
               isInvalid={!!getCurError("amount")}
             />
@@ -287,19 +309,22 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             </button>
           </div>
           <Formfield
-            headerText={totalToReceiveText[language]}
-            placeholder={totalToReceivePlaceholder[language]}
-            disabled
-            value={withdrawWithCommision}
-          />
-          <Formfield
             headerText={commentText[language]}
             placeholder={tonWithdrawCommentPlaceholder[language]}
             onChange={onChange}
             name="memo"
+            disabled
             value={formData.memo}
           />
-          <FormBtn disabled={loading}>
+          <Formfield
+            headerText={totalToReceiveText[language]}
+            placeholder={totalToReceivePlaceholder[language]}
+            disabled
+            value={withdrawWithCommision}
+            isInvalid={!!formData.amount && withdrawWithCommision <= 0}
+          />
+          <FormBtn disabled>
+            {/* disabled={loading} */}
             <WithdrawIcon />
             <span>{withdrawText[language]}</span>
           </FormBtn>

@@ -50,6 +50,8 @@ export interface ProfileState {
   accountDetailsReceived: boolean;
   tonWithdrawCommission: number;
   usdtWithdrawCommission: number;
+  tonWithdrawPoolAmount: number;
+  usdtWithdrawPoolAmount: number;
 }
 
 const initUserData =
@@ -80,6 +82,8 @@ const initialState: ProfileState = {
   accountDetailsReceived: false,
   tonWithdrawCommission: 0,
   usdtWithdrawCommission: 0,
+  tonWithdrawPoolAmount: 0,
+  usdtWithdrawPoolAmount: 0,
 };
 const authUserUrl = "/auth";
 
@@ -125,12 +129,13 @@ export const getAccountDetails =
       })
     );
 
+    const pools = resData.game_settings_new.pools;
     dispatch(
       receiveAccountDetails({
-        tonWithdrawCommission:
-          resData.game_settings_new.pools?.ton_pool?.amount || 0,
-        usdtWithdrawCommission:
-          resData.game_settings_new.pools?.usdt_pool?.amount || 0,
+        tonWithdrawCommission: pools?.ton_pool?.comission_ton || 0,
+        usdtWithdrawCommission: pools.usdt_pool.comission_usdt || 0,
+        tonWithdrawPoolAmount: pools?.ton_pool.amount,
+        usdtWithdrawPoolAmount: pools?.usdt_pool.amount,
       })
     );
     dispatch(
@@ -349,6 +354,8 @@ export const profileSlice = createSlice({
       state.accountDetailsReceived = true;
       state.tonWithdrawCommission = payload.tonWithdrawCommission;
       state.usdtWithdrawCommission = payload.usdtWithdrawCommission;
+      state.usdtWithdrawPoolAmount = payload.usdtWithdrawPoolAmount;
+      state.tonWithdrawPoolAmount = payload.tonWithdrawPoolAmount;
     },
   },
   extraReducers: (builder) => {

@@ -564,12 +564,20 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Требуется адрес кошелька",
       },
       commentText: {
-        [ELanguages.en]: "Comment",
-        [ELanguages.ru]: "Комментарий",
+        [ELanguages.en]: "Comment (memo)",
+        [ELanguages.ru]: "Комментарий (мемо)",
       },
       tonWithdrawCommentPlaceholder: {
         [ELanguages.en]: "Enter a comment for  withdrawal (optional)",
         [ELanguages.ru]: "Введите комментарий для вывода (необязательно)",
+      },
+      depositLabel: {
+        [ELanguages.en]: "Deposit",
+        [ELanguages.ru]: "Депозит",
+      },
+      withdrawLabel: {
+        [ELanguages.en]: "Withdraw",
+        [ELanguages.ru]: "Вывод",
       },
     },
     fields: {

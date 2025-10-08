@@ -4,6 +4,29 @@
 .cyberFarmBonuses {
   @include flexCol();
   flex-direction: column;
+
+  &__tabs {
+    width: 100%;
+    @include flexCol();
+    gap: 10px;
+    margin-block: 16px;
+  }
+  &__tabBtn {
+    @include button(
+      $color-primary-dark-radial-gradient,
+      1px solid $color-primary
+    );
+    flex: 1;
+    @include flexCol();
+    @include setFont(14px, 400);
+    padding: 6px;
+
+    &:disabled {
+      border-color: transparent;
+      color: $color-disabledText;
+    }
+  }
+
   &__getByAddBtn {
     max-width: 185px;
     width: 100%;
@@ -87,11 +110,6 @@
     clip-path: polygon(100% 50%, 90% 100%, 10% 100%, 0% 50%, 10% 0%, 90% 0%);
   }
 
-  &__title {
-    @include setFont(12px, 400, $font-fam-h1);
-    text-align: center;
-    margin-block: 16px;
-  }
   &__form {
     width: 100%;
     display: flex;
