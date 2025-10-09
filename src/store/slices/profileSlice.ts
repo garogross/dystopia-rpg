@@ -181,7 +181,6 @@ export const getAccountDetails =
         dispatch(
           getCyberFarmResources({
             resources: resData.ton_cyber_farm.resources,
-            resourceTonmailValue: resData.ton_cyber_farm.resource_ton_value,
             resourceDeficit: resData?.resource_deficit,
             productsSettings:
               resData?.game_settings_new?.ton_cyber_farm_products,

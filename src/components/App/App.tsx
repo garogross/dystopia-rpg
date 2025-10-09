@@ -11,8 +11,6 @@ import { setLanguage } from "../../store/slices/uiSlice";
 import { postLog } from "../../api/logs";
 import { useStoreFreshDate } from "../../hooks/useStoreFreshDate";
 import { getUserIp } from "../../utils/getUserIp";
-import PlugModal from "../PlugModal/PlugModal";
-import { TESTER_IDS } from "../../constants/testerIds";
 import AppRouter from "../../router/AppRouter";
 
 const loadScripts = (tg: WebApp) => {
@@ -320,11 +318,12 @@ export const App = () => {
 
   return (
     <>
-      {process.env.NODE_ENV === "development" || TESTER_IDS.includes(tg?.initDataUnsafe.user?.id || 0) ? (
+      <AppRouter />
+      {/* {process.env.NODE_ENV === "development" || TESTER_IDS.includes(tg?.initDataUnsafe.user?.id || 0) ? (
         <AppRouter />
       ) : (
         <PlugModal />
-      )}
+      )} */}
     </>
   );
 };

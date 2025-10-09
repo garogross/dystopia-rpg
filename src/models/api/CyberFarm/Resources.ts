@@ -28,9 +28,7 @@ export interface GetStorageResponse {
   resources: {
     [key in CyberFarmProductType]?: number;
   };
-  resource_ton_value: {
-    [key in CyberFarmProductType]?: number;
-  };
+
   estimated_cost: {
     resources_cost: number;
     slots_cost: number;
