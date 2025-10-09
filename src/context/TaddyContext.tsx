@@ -42,6 +42,8 @@ export const TaddyProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [gameInited]);
 
   const fetchTaddyTasks = () => {
+    console.log({ exchange });
+
     if (!exchange) return;
     exchange
       .feed({
