@@ -402,8 +402,8 @@ export const TRANSLATIONS = {
   },
   plugModal: {
     updatingText: {
-      [ELanguages.en]: "The app is updating!",
-      [ELanguages.ru]: "Приложение обновляется!",
+      [ELanguages.en]: "App under maintenance.",
+      [ELanguages.ru]: "Приложение на техническом обслуживании.",
     },
   },
   onBoarding: {
