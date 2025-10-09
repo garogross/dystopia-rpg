@@ -46,7 +46,7 @@ const loadScripts = (tg: WebApp) => {
     const traffyScript = document.createElement("script");
     traffyScript.src = "https://embed.traffy.site/v0.0.7/traffy-wrapper.min.js";
     traffyScript.setAttribute("resource-id", traffyToken);
-    traffyScript.setAttribute("mode", "mock");
+    traffyScript.setAttribute("mode", "production");
     traffyScript.async = true;
     traffyScript.onerror = () => {
       postLog({
