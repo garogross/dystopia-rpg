@@ -34,6 +34,7 @@ const OnBoarding = () => {
     const fetchData = async (initData: string) => {
       try {
         const res = await dispatch(authorizeUser(initData));
+
         switch (res) {
           case "ton_cyber_farm": {
             // set cyberfarm mode

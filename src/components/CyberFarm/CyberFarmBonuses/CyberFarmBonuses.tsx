@@ -11,7 +11,10 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { useFormValue } from "../../../hooks/useFormValue";
-import { withdrawCP } from "../../../store/slices/profileSlice";
+import {
+  getWithdrawRates,
+  withdrawCP,
+} from "../../../store/slices/profileSlice";
 import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import { useTooltip } from "../../../hooks/useTooltip";
 import FormSelect from "../../layout/FormSelect/FormSelect";
@@ -68,7 +71,6 @@ const Formfield: React.FC<FormFieldProps> = ({
   ...args
 }) => {
   const language = useAppSelector((state) => state.ui.language);
-
   return (
     <label className={styles.cyberFarmBonuses__form}>
       <div className={styles.cyberFarmBonuses__formFieldHeader}>
@@ -127,18 +129,17 @@ const FormBtn = ({
 const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const tonWithdrawCommission = useAppSelector(
-    (state) => state.profile.tonWithdrawCommission
-  );
-  const usdtWithdrawCommission = useAppSelector(
-    (state) => state.profile.usdtWithdrawCommission
-  );
-  const tonWithdrawPoolAmount = useAppSelector(
-    (state) => state.profile.tonWithdrawPoolAmount
-  );
-  const usdtWithdrawPoolAmount = useAppSelector(
-    (state) => state.profile.usdtWithdrawPoolAmount
-  );
+  const [withdrawSettings, setWithdrawSettings] = useState({
+    ton: {
+      rate: 0,
+      commission: 0,
+    },
+    usdt: {
+      rate: 0,
+      commission: 0,
+    },
+  });
+
   const cp = useAppSelector((state) => state.profile.stats.cp);
   // const {
   //   onShowAd,
@@ -162,16 +163,38 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [tooltipText, setTooltipText] = useState(withdrawCompletedText);
 
-  const commisions = {
-    usdt: { commission: usdtWithdrawCommission, pool: usdtWithdrawPoolAmount },
-    ton: { commission: tonWithdrawCommission, pool: tonWithdrawPoolAmount },
-  };
   const commision =
-    commisions[(formData.currency as "usdt" | "ton") || "usdt"] || 0;
+    withdrawSettings[(formData.currency as "usdt" | "ton") || "usdt"] || 0;
+
   const withdrawWithCommision = Math.max(
-    +formData.amount * commision.commission - commision.pool,
+    +formData.amount * commision.rate - commision.commission,
     0
   );
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const res = await dispatch(getWithdrawRates()).unwrap();
+        const rates = res.rates_per_1000cp;
+        const commisions = res.commissions;
+        setWithdrawSettings({
+          ton: {
+            rate: rates.ton / 1000,
+            commission: commisions.commission_ton_abs,
+          },
+          usdt: {
+            rate: rates.usdt / 1000,
+            commission: commisions.commission_usdt_abs,
+          },
+        });
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!show) onResetForm();
@@ -256,7 +279,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
           <button disabled className={styles.cyberFarmBonuses__tabBtn}>
             {depositLabel[language]}
           </button>
-          <button disabled className={styles.cyberFarmBonuses__tabBtn}>
+          <button className={styles.cyberFarmBonuses__tabBtn}>
             {withdrawLabel[language]}
           </button>
         </div>
@@ -286,16 +309,14 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             name="address"
             value={formData.address}
             isInvalid={!!getCurError("address")}
-            disabled
           />
           <div>
             <Formfield
               headerText={withdrawAmountText[language]}
               placeholder={withdrawAmountPlaceholder[language]}
-              commission={`${commision.pool} CP`}
+              commission={`${commision.commission} CP`}
               name="amount"
               onChange={onChange}
-              disabled
               value={formData.amount}
               isInvalid={!!getCurError("amount")}
             />
@@ -312,18 +333,15 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             placeholder={tonWithdrawCommentPlaceholder[language]}
             onChange={onChange}
             name="memo"
-            disabled
             value={formData.memo}
           />
           <Formfield
             headerText={totalToReceiveText[language]}
             placeholder={totalToReceivePlaceholder[language]}
-            disabled
             value={withdrawWithCommision}
             isInvalid={!!formData.amount && withdrawWithCommision <= 0}
           />
-          <FormBtn disabled>
-            {/* disabled={loading} */}
+          <FormBtn disabled={loading}>
             <WithdrawIcon />
             <span>{withdrawText[language]}</span>
           </FormBtn>

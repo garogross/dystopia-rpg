@@ -11,6 +11,7 @@ import styles from "./LoyalitySupportProjectTraffyContainer.module.scss";
 import { ELSProps } from "../../../../constants/ELSProps";
 import { EAdActionTypes } from "../../../../constants/EadActionTypes";
 import { EadProviders } from "../../../../constants/EadProviders";
+import { postLog } from "../../../../api/logs";
 
 const { taskNotCompletedText } = TRANSLATIONS.loyality.supportProject;
 
@@ -32,6 +33,10 @@ const LoyalitySupportProjectTraffyContainer = () => {
       try {
         const hideUntil = await getLSItem(ELSProps.hideTraffyContainerUntil);
         if (hideUntil && Number(hideUntil) > Date.now()) {
+          postLog({
+            id: window?.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+            message: "traffy timer log",
+          });
           setHidden(true);
           // Set a timeout to show again after the period ends
           const timeout = setTimeout(

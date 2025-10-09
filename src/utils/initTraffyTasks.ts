@@ -1,3 +1,5 @@
+import { postLog } from "../api/logs";
+
 type TraffyTask = {
   id: string;
   title: string;
@@ -11,6 +13,12 @@ export const initTraffyTasks = (
   onReject: () => void,
   bonus: number
 ) => {
+  if (!window.Traffy) {
+    postLog({
+      id: window?.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+      message: "traffy init failed",
+    });
+  }
   if (traffyTasksVal && window.Traffy) {
     function onTaskLoad(tasks: TraffyTask[]) {}
     function onTaskRender(

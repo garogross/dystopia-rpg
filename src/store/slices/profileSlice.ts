@@ -34,6 +34,7 @@ import { initSettings } from "./influence/settingsSlice";
 import { initMap } from "./influence/mapSlice";
 import { initMail, receiveMailReward } from "./influence/mailSlice";
 import { EAdSlots } from "../../constants/EAdSlots";
+import { GetWithdrawRatesResponse } from "../../models/api/GetWithdrawRatesResponse";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -129,15 +130,17 @@ export const getAccountDetails =
       })
     );
 
-    const pools = resData.game_settings_new.pools;
-    dispatch(
-      receiveAccountDetails({
-        tonWithdrawCommission: pools?.ton_pool?.comission_ton || 0,
-        usdtWithdrawCommission: pools.usdt_pool.comission_usdt || 0,
-        tonWithdrawPoolAmount: pools?.ton_pool.amount,
-        usdtWithdrawPoolAmount: pools?.usdt_pool.amount,
-      })
-    );
+    const pools = resData.game_settings_new?.pools;
+    if (pools) {
+      dispatch(
+        receiveAccountDetails({
+          tonWithdrawCommission: pools?.ton_pool?.comission_ton || 0,
+          usdtWithdrawCommission: pools.usdt_pool.comission_usdt || 0,
+          tonWithdrawPoolAmount: pools?.ton_pool.amount,
+          usdtWithdrawPoolAmount: pools?.usdt_pool.amount,
+        })
+      );
+    }
     dispatch(
       updateStats({
         [EStats.cp]: resData.user?.profile?.cash_point || 0,
@@ -327,6 +330,22 @@ export const withdrawCP = createAsyncThunk<
         currency: payload.currency,
         memo: payload.memo,
       }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+const getWithdrawRatesUrl = "/ton_cyber_farm/withdraw_rates/";
+export const getWithdrawRates = createAsyncThunk<
+  GetWithdrawRatesResponse,
+  undefined
+>("profile/getWithdrawRates", async (_, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<GetWithdrawRatesResponse>(
+      getWithdrawRatesUrl
     );
 
     return resData;
