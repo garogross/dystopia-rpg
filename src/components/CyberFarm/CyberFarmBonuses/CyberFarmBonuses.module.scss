@@ -26,7 +26,10 @@
       color: $color-disabledText;
     }
   }
-
+  &__rateText {
+    @include setFont(16px, 400);
+    text-align: center;
+  }
   &__getByAddBtn {
     max-width: 185px;
     width: 100%;

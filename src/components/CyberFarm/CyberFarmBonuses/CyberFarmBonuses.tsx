@@ -131,11 +131,11 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const language = useAppSelector((state) => state.ui.language);
   const [withdrawSettings, setWithdrawSettings] = useState({
     ton: {
-      rate: 0,
+      ratePer1000: 0,
       commission: 0,
     },
     usdt: {
-      rate: 0,
+      ratePer1000: 0,
       commission: 0,
     },
   });
@@ -154,7 +154,12 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
     getCurError,
     formData,
     onResetForm,
-  } = useFormValue({
+  } = useFormValue<{
+    address: string;
+    amount: string;
+    memo: string;
+    currency: "usdt" | "ton";
+  }>({
     address: "",
     amount: "",
     memo: "",
@@ -167,7 +172,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
     withdrawSettings[(formData.currency as "usdt" | "ton") || "usdt"] || 0;
 
   const withdrawWithCommision = Math.max(
-    +formData.amount * commision.rate - commision.commission,
+    +formData.amount * (commision.ratePer1000 / 1000) - commision.commission,
     0
   );
 
@@ -180,11 +185,11 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
         const commisions = res.commissions;
         setWithdrawSettings({
           ton: {
-            rate: rates.ton / 1000,
+            ratePer1000: rates.ton,
             commission: commisions.commission_ton_abs,
           },
           usdt: {
-            rate: rates.usdt / 1000,
+            ratePer1000: rates.usdt,
             commission: commisions.commission_usdt_abs,
           },
         });
@@ -283,6 +288,11 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             {withdrawLabel[language]}
           </button>
         </div>
+        <h5 className={styles.cyberFarmBonuses__rateText}>
+          1000 CP = {formData.currency === "usdt" && "$"}
+          {withdrawSettings[formData.currency]?.ratePer1000 || 0}
+          {formData.currency === "ton" && ` TON`}
+        </h5>
         <form onSubmit={onSubmit} className={styles.cyberFarmBonuses__form}>
           <Formfield
             headerText={currencyText[language]}
@@ -314,7 +324,9 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             <Formfield
               headerText={withdrawAmountText[language]}
               placeholder={withdrawAmountPlaceholder[language]}
-              commission={`${commision.commission} CP`}
+              commission={`${
+                commision.commission
+              } ${formData.currency.toUpperCase()}`}
               name="amount"
               onChange={onChange}
               value={formData.amount}
