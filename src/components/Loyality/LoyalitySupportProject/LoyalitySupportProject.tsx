@@ -197,22 +197,28 @@ const LoyalitySupportProject = () => {
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
         /> */}
-        <LoyalitySupportProjectManualAdTaskItem
-          language={language}
-          gameInited={gameInited}
-          disabled={adLoading}
-          onLoadingUpdate={(loading) => setAdLoading(loading)}
-          provider={EadProviders.Adsgram}
-          adType={EAdActionTypes.Video}
-        />
-        <LoyalitySupportProjectManualAdTaskItem
-          language={language}
-          gameInited={gameInited}
-          disabled={adLoading}
-          onLoadingUpdate={(loading) => setAdLoading(loading)}
-          provider={EadProviders.Adsgram}
-          adType={EAdActionTypes.Interstitial}
-        />
+        {isMobile && (
+          <>
+            <LoyalitySupportProjectManualAdTaskItem
+              language={language}
+              gameInited={gameInited}
+              disabled={adLoading}
+              onLoadingUpdate={(loading) => setAdLoading(loading)}
+              provider={EadProviders.Adsgram}
+              adType={EAdActionTypes.Video}
+              index={1}
+            />
+            <LoyalitySupportProjectManualAdTaskItem
+              language={language}
+              gameInited={gameInited}
+              disabled={adLoading}
+              onLoadingUpdate={(loading) => setAdLoading(loading)}
+              provider={EadProviders.Adsgram}
+              adType={EAdActionTypes.Interstitial}
+              index={2}
+            />
+          </>
+        )}
         {Array.isArray(taddyTasks) &&
           taddyTasks?.map((task, index) => (
             <LoyalitySupportProjectTaskItem
