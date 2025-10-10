@@ -12,6 +12,7 @@ export interface InfluenceState {
   lastRestoreActionPointsTs: number;
   restoreModalOpened: boolean;
   restoreModalOpenedType: "restore" | "fill";
+  dataRecieved: boolean;
 }
 
 const initialState: InfluenceState = {
@@ -20,6 +21,7 @@ const initialState: InfluenceState = {
   lastRestoreActionPointsTs: 0,
   restoreModalOpened: false,
   restoreModalOpenedType: "restore",
+  dataRecieved: false,
 };
 
 const restoreAPUrl = "/influence/buy_action_points/";
@@ -68,7 +70,10 @@ export const influenceSlice = createSlice({
   initialState,
   reducers: {
     initInfluence: (state, action) => {
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload, dataRecieved: true };
+    },
+    closeInfluence: (state) => {
+      state.dataRecieved = false;
     },
     setActionPoints: (state, { payload }) => {
       state.actionPoints = payload;
@@ -93,7 +98,11 @@ export const influenceSlice = createSlice({
   },
 });
 
-export const { initInfluence, openRestoreModal, closeRestoreModal } =
-  influenceSlice.actions;
+export const {
+  initInfluence,
+  openRestoreModal,
+  closeInfluence,
+  closeRestoreModal,
+} = influenceSlice.actions;
 
 export default influenceSlice.reducer;

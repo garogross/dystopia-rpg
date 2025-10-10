@@ -130,17 +130,15 @@ export const getAccountDetails =
       })
     );
 
-    const pools = resData.game_settings_new?.pools;
-    if (pools) {
-      dispatch(
-        receiveAccountDetails({
-          tonWithdrawCommission: pools?.ton_pool?.comission_ton || 0,
-          usdtWithdrawCommission: pools.usdt_pool.comission_usdt || 0,
-          tonWithdrawPoolAmount: pools?.ton_pool.amount,
-          usdtWithdrawPoolAmount: pools?.usdt_pool.amount,
-        })
-      );
-    }
+    const pools = resData?.game_settings_new?.pools;
+    dispatch(
+      receiveAccountDetails({
+        tonWithdrawCommission: pools?.ton_pool?.comission_ton || 0,
+        usdtWithdrawCommission: pools?.usdt_pool?.comission_usdt || 0,
+        tonWithdrawPoolAmount: pools?.ton_pool?.amount || 0,
+        usdtWithdrawPoolAmount: pools?.usdt_pool?.amount || 0,
+      })
+    );
     dispatch(
       updateStats({
         [EStats.cp]: resData.user?.profile?.cash_point || 0,
