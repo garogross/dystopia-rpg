@@ -30,6 +30,7 @@ import { getPlatformType } from "../../../utils/getPlatformType";
 import { EadProviders } from "../../../constants/EadProviders";
 import { EAdActionTypes } from "../../../constants/EadActionTypes";
 import { postLog } from "../../../api/logs";
+import LoyalitySupportProjectManualAdTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectManualAdTaskItem";
 // import LoyalitySupportProjectAdMasterWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdMasterWidget";
 // import LoyalitySupportProjectBarzhaTaskWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectBarzhaTaskWidget";
 
@@ -196,6 +197,22 @@ const LoyalitySupportProject = () => {
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
         /> */}
+        <LoyalitySupportProjectManualAdTaskItem
+          language={language}
+          gameInited={gameInited}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
+          provider={EadProviders.Adsgram}
+          adType={EAdActionTypes.Video}
+        />
+        <LoyalitySupportProjectManualAdTaskItem
+          language={language}
+          gameInited={gameInited}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
+          provider={EadProviders.Adsgram}
+          adType={EAdActionTypes.Interstitial}
+        />
         {Array.isArray(taddyTasks) &&
           taddyTasks?.map((task, index) => (
             <LoyalitySupportProjectTaskItem
