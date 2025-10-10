@@ -17,17 +17,17 @@ const loadScripts = (tg: WebApp) => {
   // load telegram scripts
   // if (!tg.initDataUnsafe?.user?.id) return;
   // load barzha script
-  const barzhaScript = document.createElement("script");
-  barzhaScript.src = `https://app.barzha.com/bQuest.js?token=${process.env.REACT_APP_BARZHA_TOKEN}`;
-  barzhaScript.async = true;
-  barzhaScript.onerror = () => {
-    postLog({
-      type: "script_error",
-      message: "Failed to load barzha script",
-      src: barzhaScript.src,
-    });
-  };
-  document.body.appendChild(barzhaScript);
+  // const barzhaScript = document.createElement("script");
+  // barzhaScript.src = `https://app.barzha.com/bQuest.js?token=${process.env.REACT_APP_BARZHA_TOKEN}`;
+  // barzhaScript.async = true;
+  // barzhaScript.onerror = () => {
+  //   postLog({
+  //     type: "script_error",
+  //     message: "Failed to load barzha script",
+  //     src: barzhaScript.src,
+  //   });
+  // };
+  // document.body.appendChild(barzhaScript);
   // load barzha task-widget script
   // const barzhaTaskWidgetScript = document.createElement("script");
   // barzhaTaskWidgetScript.src = "https://app.barzha.com/task-widget.js";
@@ -41,62 +41,62 @@ const loadScripts = (tg: WebApp) => {
   // };
   // document.body.appendChild(barzhaTaskWidgetScript);
   // load traffy script
-  const traffyToken = process.env.REACT_APP_TRAFFY_TOKEN;
-  if (traffyToken) {
-    const traffyScript = document.createElement("script");
-    traffyScript.src = "https://embed.traffy.site/v0.0.7/traffy-wrapper.min.js";
-    traffyScript.setAttribute("resource-id", traffyToken);
-    traffyScript.setAttribute("mode", "production");
-    traffyScript.async = true;
-    traffyScript.onerror = () => {
-      postLog({
-        type: "script_error",
-        message: "Failed to load traffy script",
-        src: traffyScript.src,
-      });
-    };
-    document.body.appendChild(traffyScript);
+  // const traffyToken = process.env.REACT_APP_TRAFFY_TOKEN;
+  // if (traffyToken) {
+  //   const traffyScript = document.createElement("script");
+  //   traffyScript.src = "https://embed.traffy.site/v0.0.7/traffy-wrapper.min.js";
+  //   traffyScript.setAttribute("resource-id", traffyToken);
+  //   traffyScript.setAttribute("mode", "production");
+  //   traffyScript.async = true;
+  //   traffyScript.onerror = () => {
+  //     postLog({
+  //       type: "script_error",
+  //       message: "Failed to load traffy script",
+  //       src: traffyScript.src,
+  //     });
+  //   };
+  //   document.body.appendChild(traffyScript);
 
-    // load adsgram script with error handling
-    // const adsgramScript = document.createElement("script");
-    // adsgramScript.src = "https://sad.adsgram.ai/js/sad.min.js";
-    // adsgramScript.async = true;
-    // adsgramScript.onerror = () => {
-    //   postLog({
-    //     type: "script_error",
-    //     message: "Failed to load adsgram script",
-    //     src: adsgramScript.src,
-    //   });
-    // };
-    // document.body.appendChild(adsgramScript);
+  //   // load adsgram script with error handling
+  //   // const adsgramScript = document.createElement("script");
+  //   // adsgramScript.src = "https://sad.adsgram.ai/js/sad.min.js";
+  //   // adsgramScript.async = true;
+  //   // adsgramScript.onerror = () => {
+  //   //   postLog({
+  //   //     type: "script_error",
+  //   //     message: "Failed to load adsgram script",
+  //   //     src: adsgramScript.src,
+  //   //   });
+  //   // };
+  //   // document.body.appendChild(adsgramScript);
 
-    // load taddy script with error handling
-    const taddyScript = document.createElement("script");
-    taddyScript.src = "https://sdk.taddy.pro/web/taddy.min.js";
-    taddyScript.async = true;
-    taddyScript.onerror = () => {
-      postLog({
-        type: "script_error",
-        message: "Failed to load taddy script",
-        src: taddyScript.src,
-      });
-    };
-    document.body.appendChild(taddyScript);
+  //   // load taddy script with error handling
+  //   const taddyScript = document.createElement("script");
+  //   taddyScript.src = "https://sdk.taddy.pro/web/taddy.min.js";
+  //   taddyScript.async = true;
+  //   taddyScript.onerror = () => {
+  //     postLog({
+  //       type: "script_error",
+  //       message: "Failed to load taddy script",
+  //       src: taddyScript.src,
+  //     });
+  //   };
+  //   document.body.appendChild(taddyScript);
 
-    // load barzha admaster-callback script with error handling
-    const barzhaAdmasterCallbackScript = document.createElement("script");
-    barzhaAdmasterCallbackScript.src =
-      "https://app.barzha.com/admaster-callback.js";
-    barzhaAdmasterCallbackScript.async = true;
-    barzhaAdmasterCallbackScript.onerror = () => {
-      postLog({
-        type: "script_error",
-        message: "Failed to load barzha admaster-callback script",
-        src: barzhaAdmasterCallbackScript.src,
-      });
-    };
-    document.body.appendChild(barzhaAdmasterCallbackScript);
-  }
+  //   // load barzha admaster-callback script with error handling
+  //   const barzhaAdmasterCallbackScript = document.createElement("script");
+  //   barzhaAdmasterCallbackScript.src =
+  //     "https://app.barzha.com/admaster-callback.js";
+  //   barzhaAdmasterCallbackScript.async = true;
+  //   barzhaAdmasterCallbackScript.onerror = () => {
+  //     postLog({
+  //       type: "script_error",
+  //       message: "Failed to load barzha admaster-callback script",
+  //       src: barzhaAdmasterCallbackScript.src,
+  //     });
+  //   };
+  //   document.body.appendChild(barzhaAdmasterCallbackScript);
+  // }
 
   // load onclicka banner script
   const onclickaCode = process.env.REACT_APP_ONCLICKA_CODE;
@@ -153,17 +153,17 @@ const loadScripts = (tg: WebApp) => {
   }
 
   // load giga tasks script
-  const script = document.createElement("script");
-  script.src = "https://cdn.giga.pub/script/offer/loader/loader.js";
-  script.async = true;
-  script.onerror = () => {
-    postLog({
-      type: "script_error",
-      message: "Failed to load giga tasks script",
-      src: script.src,
-    });
-  };
-  document.head.appendChild(script);
+  // const script = document.createElement("script");
+  // script.src = "https://cdn.giga.pub/script/offer/loader/loader.js";
+  // script.async = true;
+  // script.onerror = () => {
+  //   postLog({
+  //     type: "script_error",
+  //     message: "Failed to load giga tasks script",
+  //     src: script.src,
+  //   });
+  // };
+  // document.head.appendChild(script);
 
   // load onclicka script
   const onclickaScript2 = document.createElement("script");

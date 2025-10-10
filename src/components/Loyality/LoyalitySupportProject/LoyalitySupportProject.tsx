@@ -21,7 +21,7 @@ import LoyalitySupportProjectAdditionalTaskItem from "./LoyalitySupportProjectTa
 import LoyalitySupportProjectAdsgramTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdsgramTaskItem";
 // import LoyalitySupportProjectVideoTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectVideoTaskItem";
 import LoyalitySupportProjectTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectTaskItem";
-import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraffyContainer/LoyalitySupportProjectTraffyContainer";
+// import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraffyContainer/LoyalitySupportProjectTraffyContainer";
 import { useTooltip } from "../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import Tooltip from "../../layout/Tooltip/Tooltip";
@@ -157,7 +157,7 @@ const LoyalitySupportProject = () => {
 
   return (
     <div className={styles.loyalitySupportProject}>
-      <LoyalitySupportProjectTraffyContainer />
+      {/* <LoyalitySupportProjectTraffyContainer /> */}
       <div className={styles.loyalitySupportProject__list}>
         <TadsWidget
           id={TADS_WIDGET_ID}
@@ -219,6 +219,15 @@ const LoyalitySupportProject = () => {
             />
           </>
         )}
+        <LoyalitySupportProjectManualAdTaskItem
+          language={language}
+          gameInited={gameInited}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
+          provider={EadProviders.Taddy}
+          adType={EAdActionTypes.Video}
+          index={3}
+        />
         {Array.isArray(taddyTasks) &&
           taddyTasks?.map((task, index) => (
             <LoyalitySupportProjectTaskItem
