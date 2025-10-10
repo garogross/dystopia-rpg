@@ -54,10 +54,7 @@ const LoyalitySupportProjectManualAdTaskItem = ({
   }, [loading]);
 
   // Build title text with reward amount
-  const titleText = watchAdAndGetCpText[language].replace(
-    "NUMBER",
-    amount.toString()
-  );
+  const titleText = watchAdAndGetCpText(amount)[language];
 
   // Build description text with viewsInDay/maxPerDay
   const descriptionText = `${viewsInDay}/${maxPerDay} ${perDayText[language]}`;

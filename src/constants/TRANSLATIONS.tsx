@@ -66,10 +66,12 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "cp",
       [ELanguages.ru]: "cp",
     },
-    watchAdAndGetCpText: {
-      [ELanguages.en]: "Watch an ad and get CP",
-      [ELanguages.ru]: "Посмотри рекламу и получи CP",
-    },
+    watchAdAndGetCpText: (amount?: number) => ({
+      [ELanguages.en]: `Watch an ad and get ${amount ? ` ${amount}` : ""}CP`,
+      [ELanguages.ru]: `Посмотри рекламу и получи ${
+        amount ? ` ${amount}` : ""
+      }CP`,
+    }),
     watchAdText: {
       [ELanguages.en]: "Watch",
       [ELanguages.ru]: "Посмотреть",

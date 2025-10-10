@@ -18,6 +18,7 @@ interface ViewProps {
   tooltipText: string;
   // Text content
   titleText: string;
+  amount?: number;
   descriptionText?: string; // e.g., "3/10 per day"
 }
 
@@ -31,6 +32,7 @@ const LoyalitySupportProjectVideoTaskItemView = ({
   tooltipText,
   titleText,
   descriptionText,
+  amount,
 }: ViewProps) => {
   return (
     <>

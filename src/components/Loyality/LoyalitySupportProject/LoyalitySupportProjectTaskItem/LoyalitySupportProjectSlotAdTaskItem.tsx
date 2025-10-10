@@ -38,7 +38,7 @@ const LoyalitySupportProjectSlotAdTaskItem = ({
       disabled={disabled}
       showTooltip={showTooltip}
       tooltipText={tooltipText}
-      titleText={watchAdAndGetCpText[language]}
+      titleText={watchAdAndGetCpText()[language]}
     />
   );
 };
