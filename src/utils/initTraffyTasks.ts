@@ -35,6 +35,11 @@ export const initTraffyTasks = (
       onReward(signedToken, task.id);
     }
     function onTaskReject(task: TraffyTask) {
+      postLog({
+        id: window?.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+        message: "traffy onReject",
+        task,
+      });
       onReject();
     }
     window.Traffy.renderTasks(traffyTasksVal, {
