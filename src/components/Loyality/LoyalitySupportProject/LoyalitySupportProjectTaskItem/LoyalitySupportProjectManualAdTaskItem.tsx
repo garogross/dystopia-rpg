@@ -2,24 +2,21 @@ import { useEffect } from "react";
 import { ELanguages } from "../../../../constants/ELanguages";
 import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
 import { useVideoAd } from "../../../../hooks/useVideoAd";
-import { EadProviders } from "../../../../constants/EadProviders";
-import { EAdActionTypes } from "../../../../constants/EadActionTypes";
 import LoyalitySupportProjectVideoTaskItemView from "./LoyalitySupportProjectVideoTaskItemView";
+import { AdRewardValidPairsType } from "../../../../types/tasks/AdRewardValidPairsType";
 
 const { watchAdAndGetCpText } = TRANSLATIONS.common;
 const { perDayText } = TRANSLATIONS.loyality.supportProject;
 
-interface ManualAdTaskItemProps {
+type ManualAdTaskItemProps = AdRewardValidPairsType & {
   gameInited: boolean;
   language: ELanguages;
   onLoadingUpdate: (loading: boolean) => void;
   disabled: boolean;
-  provider: EadProviders; // required
-  adType: EAdActionTypes; // required
   adId?: string; // optional
   scsClb?: (id?: string) => void;
   index?: number;
-}
+};
 
 const LoyalitySupportProjectManualAdTaskItem = ({
   gameInited,
@@ -27,7 +24,7 @@ const LoyalitySupportProjectManualAdTaskItem = ({
   onLoadingUpdate,
   disabled,
   provider,
-  adType,
+  ad_type,
   adId,
   scsClb,
   index,
@@ -42,10 +39,9 @@ const LoyalitySupportProjectManualAdTaskItem = ({
     amount,
   } = useVideoAd({
     scsClb,
-    provider,
     index,
     adId,
-    adType,
+    ...({ ad_type, provider } as AdRewardValidPairsType),
   });
 
   useEffect(() => {
