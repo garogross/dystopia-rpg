@@ -30,7 +30,7 @@ import { getPlatformType } from "../../../utils/getPlatformType";
 import { EadProviders } from "../../../constants/EadProviders";
 import { EAdActionTypes } from "../../../constants/EadActionTypes";
 import { postLog } from "../../../api/logs";
-import LoyalitySupportProjectManualAdTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectManualAdTaskItem";
+// import LoyalitySupportProjectManualAdTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectManualAdTaskItem";
 // import LoyalitySupportProjectAdMasterWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdMasterWidget";
 // import LoyalitySupportProjectBarzhaTaskWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectBarzhaTaskWidget";
 
@@ -197,7 +197,7 @@ const LoyalitySupportProject = () => {
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
         /> */}
-        {isMobile && (
+        {/* {isMobile && (
           <>
             <LoyalitySupportProjectManualAdTaskItem
               language={language}
@@ -218,7 +218,7 @@ const LoyalitySupportProject = () => {
               index={2}
             />
           </>
-        )}
+        )} */}
         {/* <LoyalitySupportProjectManualAdTaskItem
           language={language}
           gameInited={gameInited}
