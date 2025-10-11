@@ -70,18 +70,18 @@ const loadScripts = (tg: WebApp) => {
   //   // };
   //   // document.body.appendChild(adsgramScript);
 
-  //   // load taddy script with error handling
-  //   const taddyScript = document.createElement("script");
-  //   taddyScript.src = "https://sdk.taddy.pro/web/taddy.min.js";
-  //   taddyScript.async = true;
-  //   taddyScript.onerror = () => {
-  //     postLog({
-  //       type: "script_error",
-  //       message: "Failed to load taddy script",
-  //       src: taddyScript.src,
-  //     });
-  //   };
-  //   document.body.appendChild(taddyScript);
+  // load taddy script with error handling
+  const taddyScript = document.createElement("script");
+  taddyScript.src = "https://sdk.taddy.pro/web/taddy.min.js";
+  taddyScript.async = true;
+  taddyScript.onerror = () => {
+    postLog({
+      type: "script_error",
+      message: "Failed to load taddy script",
+      src: taddyScript.src,
+    });
+  };
+  document.body.appendChild(taddyScript);
 
   //   // load barzha admaster-callback script with error handling
   //   const barzhaAdmasterCallbackScript = document.createElement("script");
