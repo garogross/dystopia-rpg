@@ -140,8 +140,12 @@ const CyberFarmEvoFarms = () => {
       }
 
       let globalSlotIndex = 0;
+      const totalColsLength = Math.max(
+        colsLength,
+        totalSlotsCols + UNUSABLE_COLS_COUNT
+      );
       const initialFields = Array.from(
-        { length: Math.max(colsLength, totalSlotsCols + UNUSABLE_COLS_COUNT) },
+        { length: totalColsLength },
         (_, colIndex) => {
           const rowLength = isOdd(colIndex) ? 4 : 3;
           return Array.from({ length: rowLength }, (_, index) => {
@@ -150,7 +154,7 @@ const CyberFarmEvoFarms = () => {
             if (
               !curSlot ||
               colIndex < 2 ||
-              colIndex === colsLength ||
+              colIndex === totalColsLength ||
               (isOdd(colIndex) && (!index || index === rowLength - 1))
             )
               return {
@@ -263,6 +267,7 @@ const CyberFarmEvoFarms = () => {
 
               return (
                 <button
+                  data-id={field.id}
                   onClick={() => onClickSlot(field)}
                   disabled={field.disabled}
                   key={`${colIndex}-${fieldIndex}`}
