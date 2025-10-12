@@ -74,7 +74,7 @@ const CyberFarmEvoHeader = () => {
           onClick={() => setBonusesOpened(true)}
           className={styles.cyberFarmEvoHeader__cp}
         >
-          <span>{formatNumber(cp)}</span>
+          <span>{formatNumber(cp, undefined, true)}</span>
           <ImageWebp
             src={cpImage}
             srcSet={cpImageWebp}
