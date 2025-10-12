@@ -11,6 +11,7 @@ import { EAdActionTypes } from "../constants/EadActionTypes";
 import { getVideoAdSettings } from "../utils/tasks/getVideoAdSettings";
 import { AdRewardValidPairsType } from "../types/tasks/AdRewardValidPairsType";
 import { ClaimAdRewardActionType } from "../types/tasks/ClaimAdRewardActionType";
+import { postLog } from "../api/logs";
 
 const {
   loadAdText,
@@ -72,6 +73,7 @@ export const useVideoAd = ({
 } & AdRewardValidPairsType) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const tgId = useAppSelector((state) => state.profile.tgId);
   const adRewardSettings = useAppSelector(
     (state) => state.tasks.adRewardSettings
   );
@@ -94,7 +96,6 @@ export const useVideoAd = ({
     try {
       let cost = 0;
       // Сохраняем новый просмотр
-      if (scsClb) await scsClb(id);
       if (!scsClb || claimAfterClb) {
         const res = await dispatch(
           claimAdReward({
@@ -108,6 +109,8 @@ export const useVideoAd = ({
 
         cost = res?.final_production || 0;
       }
+      if (scsClb) await scsClb(id);
+
       const now = Date.now();
       let timestamps = await getVideoAdViewTimestamps(index);
       timestamps = timestamps?.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
@@ -186,21 +189,32 @@ export const useVideoAd = ({
   }, []);
 
   const onShowAd = async () => {
-    setLoading(true);
-    const showValidation = await canShowVideoAd();
+    try {
+      setLoading(true);
+      const showValidation = await canShowVideoAd();
 
-    if (!showValidation) {
+      if (!showValidation) {
+        openTooltip();
+        setLoading(false);
+        return;
+      }
+      setTooltipText(loadAdText[language]);
+      if (process.env.NODE_ENV === "development") {
+        await onReward();
+      } else {
+        await onShowOnClickaAd();
+      }
+    } catch (error) {
+      postLog({
+        tgId: tgId,
+        message: "usevideoad error",
+        error,
+      });
+      setTooltipText(somethingWentWrong[language]);
       openTooltip();
+    } finally {
       setLoading(false);
-      return;
     }
-    setTooltipText(loadAdText[language]);
-    if (process.env.NODE_ENV === "development") {
-      await onReward();
-    } else {
-      await onShowOnClickaAd();
-    }
-    setLoading(false);
   };
 
   return {
