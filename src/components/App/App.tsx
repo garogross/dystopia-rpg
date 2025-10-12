@@ -83,19 +83,19 @@ const loadScripts = (tg: WebApp) => {
   };
   document.body.appendChild(taddyScript);
 
-  //   // load barzha admaster-callback script with error handling
-  //   const barzhaAdmasterCallbackScript = document.createElement("script");
-  //   barzhaAdmasterCallbackScript.src =
-  //     "https://app.barzha.com/admaster-callback.js";
-  //   barzhaAdmasterCallbackScript.async = true;
-  //   barzhaAdmasterCallbackScript.onerror = () => {
-  //     postLog({
-  //       type: "script_error",
-  //       message: "Failed to load barzha admaster-callback script",
-  //       src: barzhaAdmasterCallbackScript.src,
-  //     });
-  //   };
-  //   document.body.appendChild(barzhaAdmasterCallbackScript);
+  // load barzha admaster-callback script with error handling
+  const barzhaAdmasterCallbackScript = document.createElement("script");
+  barzhaAdmasterCallbackScript.src =
+    "https://app.barzha.com/admaster-callback.js";
+  barzhaAdmasterCallbackScript.async = true;
+  barzhaAdmasterCallbackScript.onerror = () => {
+    postLog({
+      type: "script_error",
+      message: "Failed to load barzha admaster-callback script",
+      src: barzhaAdmasterCallbackScript.src,
+    });
+  };
+  document.body.appendChild(barzhaAdmasterCallbackScript);
   // }
 
   // load onclicka banner script
