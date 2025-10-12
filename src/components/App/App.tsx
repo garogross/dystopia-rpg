@@ -17,29 +17,31 @@ const loadScripts = (tg: WebApp) => {
   // load telegram scripts
   // if (!tg.initDataUnsafe?.user?.id) return;
   // load barzha script
-  // const barzhaScript = document.createElement("script");
-  // barzhaScript.src = `https://app.barzha.com/bQuest.js?token=${process.env.REACT_APP_BARZHA_TOKEN}`;
-  // barzhaScript.async = true;
-  // barzhaScript.onerror = () => {
-  //   postLog({
-  //     type: "script_error",
-  //     message: "Failed to load barzha script",
-  //     src: barzhaScript.src,
-  //   });
-  // };
-  // document.body.appendChild(barzhaScript);
+  const barzhaScript = document.createElement("script");
+  barzhaScript.src = `https://app.barzha.com/bQuest.js?token=${process.env.REACT_APP_BARZHA_TOKEN}`;
+  barzhaScript.async = true;
+  barzhaScript.onerror = () => {
+    postLog({
+      type: "script_error",
+      message: "Failed to load barzha script",
+      src: barzhaScript.src,
+    });
+  };
+  document.body.appendChild(barzhaScript);
+
   // load barzha task-widget script
-  // const barzhaTaskWidgetScript = document.createElement("script");
-  // barzhaTaskWidgetScript.src = "https://app.barzha.com/task-widget.js";
-  // barzhaTaskWidgetScript.async = true;
-  // barzhaTaskWidgetScript.onerror = () => {
-  //   postLog({
-  //     type: "script_error",
-  //     message: "Failed to load barzha task-widget script",
-  //     src: barzhaTaskWidgetScript.src,
-  //   });
-  // };
-  // document.body.appendChild(barzhaTaskWidgetScript);
+  const barzhaTaskWidgetScript = document.createElement("script");
+  barzhaTaskWidgetScript.src = "https://app.barzha.com/task-widget.js";
+  barzhaTaskWidgetScript.async = true;
+  barzhaTaskWidgetScript.onerror = () => {
+    postLog({
+      type: "script_error",
+      message: "Failed to load barzha task-widget script",
+      src: barzhaTaskWidgetScript.src,
+    });
+  };
+  document.body.appendChild(barzhaTaskWidgetScript);
+
   // load traffy script
   // const traffyToken = process.env.REACT_APP_TRAFFY_TOKEN;
   // if (traffyToken) {
