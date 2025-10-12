@@ -10,6 +10,7 @@ import { TranslationItemType } from "../types/TranslationItemType";
 import { EAdActionTypes } from "../constants/EadActionTypes";
 import { getVideoAdSettings } from "../utils/tasks/getVideoAdSettings";
 import { AdRewardValidPairsType } from "../types/tasks/AdRewardValidPairsType";
+import { ClaimAdRewardActionType } from "../types/tasks/ClaimAdRewardActionType";
 
 const {
   loadAdText,
@@ -52,6 +53,10 @@ export const useVideoAd = ({
   maxPerDayArg,
   minPouseMsArg,
   ad_type,
+  slotId,
+  game_action,
+  farm_slot,
+  claimAfterClb,
 }: {
   scsClb?: (id?: string) => void;
   speedUpCompleteText?: TranslationItemType;
@@ -60,6 +65,10 @@ export const useVideoAd = ({
   maxPerHourArg?: number;
   maxPerDayArg?: number;
   minPouseMsArg?: number;
+  slotId?: string;
+  game_action?: ClaimAdRewardActionType;
+  farm_slot?: string;
+  claimAfterClb?: boolean;
 } & AdRewardValidPairsType) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
@@ -83,15 +92,22 @@ export const useVideoAd = ({
 
   const onReward = async (id?: string) => {
     try {
+      let cost = 0;
       // Сохраняем новый просмотр
       if (scsClb) await scsClb(id);
-      else
-        await dispatch(
+      if (!scsClb || claimAfterClb) {
+        const res = await dispatch(
           claimAdReward({
             ad_type,
             provider,
+            slotId,
+            game_action,
+            farm_slot,
           } as AdRewardValidPairsType)
         ).unwrap();
+
+        cost = res?.final_production || 0;
+      }
       const now = Date.now();
       let timestamps = await getVideoAdViewTimestamps(index);
       timestamps = timestamps?.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
@@ -99,7 +115,12 @@ export const useVideoAd = ({
       saveVideoAdViewTimestamps(timestamps, index);
       setViewsInDay(timestamps?.length);
 
-      setTooltipText((speedUpCompleteText || rewardReceivedText)[language]);
+      setTooltipText(
+        (speedUpCompleteText || rewardReceivedText)[language].replace(
+          "NUMBER",
+          cost.toString()
+        )
+      );
     } catch (error) {
       setTooltipText(somethingWentWrong[language]);
     } finally {

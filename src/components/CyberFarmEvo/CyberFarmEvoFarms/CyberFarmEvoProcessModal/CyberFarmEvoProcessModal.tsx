@@ -19,9 +19,10 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../../providers/TransitionProvider";
 import { useFarmFieldProgress } from "../../../../hooks/useFarmFieldProgress";
-import { useSoltAd } from "../../../../hooks/useSlotAd";
 import { ClaimAdRewardActionType } from "../../../../types/tasks/ClaimAdRewardActionType";
-import { EAdSlots } from "../../../../constants/EAdSlots";
+import { useVideoAd } from "../../../../hooks/useVideoAd";
+import { EAdActionTypes } from "../../../../constants/EadActionTypes";
+import { EadProviders } from "../../../../constants/EadProviders";
 
 interface Props {
   show: boolean;
@@ -68,17 +69,21 @@ const CyberFarmEvoProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
     ? "farm_production_bonus"
     : "farm_boost_production";
   const {
-    onShow,
+    onShowAd,
     showTooltip: showAdTooltip,
     tooltipText: adTooltipText,
     loading: adLoading,
-  } = useSoltAd(
-    EAdSlots.CyberfarmActionSlot,
-    gameAction,
-    item.id,
-    onHarvest,
-    profitIncreasedText[language]
-  );
+  } = useVideoAd({
+    scsClb: () => {
+      onHarvest();
+    },
+    speedUpCompleteText: profitIncreasedText,
+    provider: EadProviders.Gigapub,
+    ad_type: EAdActionTypes.Video,
+    game_action: gameAction,
+    farm_slot: item.id,
+    claimAfterClb: true,
+  });
 
   const { show: showTooltip, openTooltip } = useTooltip();
 
@@ -157,7 +162,7 @@ const CyberFarmEvoProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
           ) : (
             <>
               <button
-                onClick={onShow}
+                onClick={onShowAd}
                 className={styles.cyberFarmEvoProcessModal__btn}
               >
                 <div className={styles.cyberFarmEvoProcessModal__btnInner}>
