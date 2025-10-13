@@ -287,7 +287,8 @@ export const App = () => {
     loadScripts(tg);
     if (
       process.env.NODE_ENV !== "development" &&
-      process.env.REACT_APP_MODE !== "dev"
+      process.env.REACT_APP_MODE !== "dev" &&
+      !getPlatformType()
     ) {
       disableInspect();
     }
