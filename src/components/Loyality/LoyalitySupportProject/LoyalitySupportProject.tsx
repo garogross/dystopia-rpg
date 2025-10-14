@@ -225,6 +225,15 @@ const LoyalitySupportProject = () => {
           gameInited={gameInited}
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
+          provider={EadProviders.Onclicka}
+          ad_type={EAdActionTypes.Video}
+          index={1}
+        />
+        <LoyalitySupportProjectManualAdTaskItem
+          language={language}
+          gameInited={gameInited}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
           provider={EadProviders.Taddy}
           ad_type={EAdActionTypes.Video}
           index={3}
