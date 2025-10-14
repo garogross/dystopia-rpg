@@ -100,6 +100,14 @@ export const claimAdReward = createAsyncThunk<
   }
 >("tasks/claimAdReward", async (payload, { rejectWithValue }) => {
   try {
+    if (payload.provider === EadProviders.Gigapub && !payload.game_action) {
+      postLog({
+        tgId: window.Telegram.WebApp.initDataUnsafe.user?.id,
+        message: "gigapub claim request",
+        payload,
+        path: window.location.pathname,
+      });
+    }
     const resData = await fetchRequest<ClaimAdRewardResponse>(
       claimAdRewardUrl,
       "POST",
