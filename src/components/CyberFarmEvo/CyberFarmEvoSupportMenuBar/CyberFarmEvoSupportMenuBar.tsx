@@ -43,6 +43,15 @@ const CyberFarmEvoSupportMenuBar: React.FC<Props> = ({ show, onClose }) => {
     {
       name: videoGuidesText,
       icon: <VideoGuidesIcon />,
+      onClick: () => {
+        // @ts-ignore
+        if (tg) {
+          // @ts-ignore
+          tg.openTelegramLink(GUIDES_CHAT_URL);
+        } else {
+          window.open(SUPPORT_CHAT_URL, "_blank");
+        }
+      },
     },
     {
       name: askInChatText,
