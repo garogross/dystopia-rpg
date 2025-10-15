@@ -79,6 +79,7 @@ const InfluenceRestoreApModal = () => {
       ),
     speedUpCompleteText: apsRestoredSuccessText,
     provider: EadProviders.Gigapub,
+    ad_type: EAdActionTypes.Video,
   });
   const { show: showTooltip, openTooltip } = useTooltip();
   const [tooltipText, setTooltipText] = useState(

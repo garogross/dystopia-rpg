@@ -1,3 +1,5 @@
+import { postLog } from "../api/logs";
+
 type TraffyTask = {
   id: string;
   title: string;
@@ -8,8 +10,15 @@ type TraffyTask = {
 export const initTraffyTasks = (
   traffyTasksVal: HTMLElement | null,
   onReward: (signedToken: string, id: string) => void,
-  onReject: () => void
+  onReject: () => void,
+  bonus: number
 ) => {
+  if (!window.Traffy) {
+    postLog({
+      id: window?.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+      message: "traffy init failed",
+    });
+  }
   if (traffyTasksVal && window.Traffy) {
     function onTaskLoad(tasks: TraffyTask[]) {}
     function onTaskRender(
@@ -18,7 +27,7 @@ export const initTraffyTasks = (
       changeDescription: (str: string) => void,
       changeButtonCheckText: (str: string) => void
     ) {
-      changeReward("15");
+      changeReward(bonus.toString());
       changeCardTitle("Subscribe on: ");
       changeButtonCheckText("Check");
     }
@@ -26,6 +35,11 @@ export const initTraffyTasks = (
       onReward(signedToken, task.id);
     }
     function onTaskReject(task: TraffyTask) {
+      postLog({
+        id: window?.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+        message: "traffy onReject",
+        task,
+      });
       onReject();
     }
     window.Traffy.renderTasks(traffyTasksVal, {

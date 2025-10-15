@@ -1,5 +1,4 @@
 import { EFarmSlotTypes } from "../../constants/cyberfarm/EFarmSlotTypes";
-import { ECyberfarmTutorialActions } from "../../constants/cyberfarm/tutorial";
 import { AppGameMode } from "../../types/AppGameMode";
 import { CyberFarmProductType } from "../../types/CyberFarmProductType";
 import { FarmAchievmentSettingsType } from "../../types/Achievments/FarmAchievmentSettingsType";
@@ -8,6 +7,7 @@ import { FarmResourceDeficitType } from "../../types/FarmResourceDeficitType";
 import { FarmSlotCostsType } from "../../types/FarmSlotCostsType";
 import { SocialShopType } from "../../types/SocialShopType";
 import { IMailMessage } from "../IMailMessage";
+import { FarmProductsSettingsType } from "../../types/FarmProductsSettingsType";
 
 type ClaimDailyLogin = {
   next_reward: number;
@@ -53,10 +53,10 @@ export interface GetAccountDetailsResponse {
         cooldown_until_ts: number;
       };
     };
+    ton_cyber_farm_tutorial_finished: boolean;
     resources: Partial<Record<CyberFarmProductType, number>>;
     ton: number;
     achievements: FarmAchievmentsType;
-    resource_ton_value: Partial<Record<CyberFarmProductType, number>>;
   };
   game_settings?: {
     base_costs: Record<string, number>;
@@ -68,16 +68,6 @@ export interface GetAccountDetailsResponse {
         production_time_hours: number;
       };
     };
-    production_chains: {
-      [key in EFarmSlotTypes]: {
-        [key in CyberFarmProductType]: {
-          input: {
-            [key in CyberFarmProductType]: number;
-          };
-          output: number;
-        };
-      };
-    };
     achievements_settings: FarmAchievmentSettingsType;
     ton_withdraw_commission: number;
   };
@@ -85,15 +75,32 @@ export interface GetAccountDetailsResponse {
     reward_taddy: {
       exchange: number;
     };
+    ton_cyber_farm_products: FarmProductsSettingsType;
+    ton_cyber_farm_slot_costs: {
+      upgrade: {
+        [EFarmSlotTypes.FARM]: [150, 200, 250, 300];
+        [EFarmSlotTypes.FACTORY]: [150, 200, 250, 300];
+      };
+    };
+    pools: {
+      ton_pool: {
+        amount: number;
+        description: string;
+        ton_usd_rate: number;
+        comission_ton: number;
+      };
+      usdt_pool: {
+        amount: number;
+        description: string;
+        comission_usdt: number;
+      };
+      max_cp_usdt_price: 0.001;
+    };
   };
   resource_deficit: FarmResourceDeficitType;
   claim_daily_login: ClaimDailyLogin;
   social_shop: SocialShopType;
-  metrics: {
-    ton_cyber_farm_metrics: {
-      tutorial?: ECyberfarmTutorialActions[];
-    };
-  };
+  metrics: {};
 
   // influence
   settings?: {

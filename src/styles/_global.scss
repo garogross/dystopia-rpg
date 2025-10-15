@@ -32,6 +32,9 @@ body {
 
 #root {
   height: 100dvh;
+  @supports not (height: 100dvh) {
+    height: 100vh;
+  }
   padding-top: calc(var(--tg-safe-area-inset-top)) +
     var(--tg-content-safe-area-inset-top);
   padding-bottom: var(--tg-safe-area-inset-bottom);

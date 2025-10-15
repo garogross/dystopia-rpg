@@ -1,0 +1,35 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.gradientInput {
+  position: relative;
+  width: 100%;
+  padding: 1px;
+
+  background: linear-gradient(180deg, #6a4cd7 0%, #0d0623 100%);
+
+  &__label {
+    width: 100%;
+    background: $color-black;
+    @include flexCol();
+    gap: 10px;
+    padding: 8px 12px;
+  }
+
+  &__input {
+    width: 100%;
+    border: none;
+    @include setFont(18px, 200);
+    transition: $transition;
+    outline: none;
+    background: $color-black;
+    flex: 1;
+
+    &::placeholder {
+      color: #4c3799;
+    }
+  }
+  &:has(&__input:focus) {
+    background: $color-primary;
+  }
+}

@@ -8,8 +8,10 @@ import { useTooltip } from "./useTooltip";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
 import { TranslationItemType } from "../types/TranslationItemType";
 import { EAdActionTypes } from "../constants/EadActionTypes";
-import { EadProviders } from "../constants/EadProviders";
 import { getVideoAdSettings } from "../utils/tasks/getVideoAdSettings";
+import { AdRewardValidPairsType } from "../types/tasks/AdRewardValidPairsType";
+import { ClaimAdRewardActionType } from "../types/tasks/ClaimAdRewardActionType";
+import { postLog } from "../api/logs";
 
 const {
   loadAdText,
@@ -51,20 +53,27 @@ export const useVideoAd = ({
   maxPerHourArg,
   maxPerDayArg,
   minPouseMsArg,
-  adType,
+  ad_type,
+  slotId,
+  game_action,
+  farm_slot,
+  claimAfterClb,
 }: {
   scsClb?: (id?: string) => void;
   speedUpCompleteText?: TranslationItemType;
-  provider: EadProviders;
   index?: number;
   adId?: string;
   maxPerHourArg?: number;
   maxPerDayArg?: number;
   minPouseMsArg?: number;
-  adType?: EAdActionTypes;
-}) => {
+  slotId?: string;
+  game_action?: ClaimAdRewardActionType;
+  farm_slot?: string;
+  claimAfterClb?: boolean;
+} & AdRewardValidPairsType) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
+  const tgId = useAppSelector((state) => state.profile.tgId);
   const adRewardSettings = useAppSelector(
     (state) => state.tasks.adRewardSettings
   );
@@ -76,7 +85,7 @@ export const useVideoAd = ({
   const curSettings = getVideoAdSettings(
     adRewardSettings,
     provider,
-    adType === EAdActionTypes.Interstitial
+    ad_type === EAdActionTypes.Interstitial
   );
 
   const maxPerHour = maxPerHourArg || curSettings.per_hour;
@@ -85,15 +94,23 @@ export const useVideoAd = ({
 
   const onReward = async (id?: string) => {
     try {
+      let cost = 0;
       // Сохраняем новый просмотр
-      if (scsClb) await scsClb(id);
-      else
-        await dispatch(
+      if (!scsClb || claimAfterClb) {
+        const res = await dispatch(
           claimAdReward({
-            ad_type: EAdActionTypes.Video,
-            provider: EadProviders.Gigapub,
-          })
+            ad_type,
+            provider,
+            slotId,
+            game_action,
+            farm_slot,
+          } as AdRewardValidPairsType)
         ).unwrap();
+
+        cost = res?.final_production || 0;
+      }
+      if (scsClb) await scsClb(id);
+
       const now = Date.now();
       let timestamps = await getVideoAdViewTimestamps(index);
       timestamps = timestamps?.filter((ts) => now - ts < 24 * 60 * 60 * 1000); // только за сутки
@@ -101,7 +118,12 @@ export const useVideoAd = ({
       saveVideoAdViewTimestamps(timestamps, index);
       setViewsInDay(timestamps?.length);
 
-      setTooltipText((speedUpCompleteText || rewardReceivedText)[language]);
+      setTooltipText(
+        (speedUpCompleteText || rewardReceivedText)[language].replace(
+          "NUMBER",
+          cost.toString()
+        )
+      );
     } catch (error) {
       setTooltipText(somethingWentWrong[language]);
     } finally {
@@ -110,7 +132,7 @@ export const useVideoAd = ({
   };
 
   const onShowOnClickaAd = useGlobalAdController(
-    adType || EAdActionTypes.Video,
+    ad_type || EAdActionTypes.Video,
     provider,
     adId || "",
     onReward,
@@ -167,17 +189,32 @@ export const useVideoAd = ({
   }, []);
 
   const onShowAd = async () => {
-    setLoading(true);
-    const showValidation = await canShowVideoAd();
+    try {
+      setLoading(true);
+      const showValidation = await canShowVideoAd();
 
-    if (!showValidation) {
+      if (!showValidation) {
+        openTooltip();
+        setLoading(false);
+        return;
+      }
+      setTooltipText(loadAdText[language]);
+      if (process.env.NODE_ENV === "development") {
+        await onReward();
+      } else {
+        await onShowOnClickaAd();
+      }
+    } catch (error) {
+      postLog({
+        tgId: tgId,
+        message: "usevideoad error",
+        error,
+      });
+      setTooltipText(somethingWentWrong[language]);
       openTooltip();
+    } finally {
       setLoading(false);
-      return;
     }
-    setTooltipText(loadAdText[language]);
-    await onShowOnClickaAd();
-    setLoading(false);
   };
 
   return {

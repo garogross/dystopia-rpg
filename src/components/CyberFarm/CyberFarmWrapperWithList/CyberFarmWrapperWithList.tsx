@@ -24,8 +24,6 @@ import CyberFarmProcessModal from "../CyberFarmProcessModal/CyberFarmProcessModa
 import CyberFarmOptionsModal from "../CyberFarmOptionsModal/CyberFarmOptionsModal";
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import CyberFarmWrapperWithListItemProgress from "./CyberFarmWrapperWithListItemProgress/CyberFarmWrapperWithListItemProgress";
-import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
-import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
 
 interface Props<T extends IFarmField | IWarehouseProduct> {
   title: string;
@@ -40,6 +38,7 @@ interface Props<T extends IFarmField | IWarehouseProduct> {
   producingSlotIdArg?: string | null;
   productsType?: EFarmSlotTypes;
   subTitleBlock?: ReactNode;
+  evoMode?: boolean;
   sorts?: { header: ReactNode; filterBy: (item: T) => boolean }[];
 }
 const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
@@ -55,6 +54,7 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   onCloseOptionsModal,
   productsType,
   subTitleBlock,
+  evoMode,
   sorts,
 }: Props<T>) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
@@ -68,13 +68,7 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
   const activeProgresModalItem = data.find(
     (field) => field.id === activeProgresModalItemId
   );
-
-  const firstInProgressFieldIndex = data.findIndex(
-    (item) =>
-      "idArg" in item &&
-      item.idArg === ECyberfarmTutorialActions.openProgressModal
-  );
-
+  const producingSlot = data.find((item) => item.id === producingSlotId);
   useEffect(() => {
     if (optionsModalOpenedArg) setOptionsModalOpened(true);
   }, [optionsModalOpenedArg]);
@@ -127,7 +121,9 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
 
         if ("count" in field) {
           // check if IWarehouseProduct
-          curImage = products[field.product];
+          curImage = evoMode
+            ? products[field.product].evo
+            : products[field.product];
         } else if (field.type === "factory") {
           curImage = {
             src: cyberFarmFactoryImage,
@@ -239,12 +235,11 @@ const CyberFarmWrapperWithList = <T extends IFarmField | IWarehouseProduct>({
           onClose={() => setOptionsModalOpened(false)}
           type={productsType}
           slotId={producingSlotId}
-        />
-      )}
-      {firstInProgressFieldIndex !== -1 && (
-        <CloneFixedElementProvider
-          id={ECyberfarmTutorialActions.openProgressModal}
-          onClick={() => onClickItem(data[firstInProgressFieldIndex])}
+          level={
+            producingSlot && "level" in producingSlot && producingSlot?.level
+              ? producingSlot?.level
+              : undefined
+          }
         />
       )}
     </section>

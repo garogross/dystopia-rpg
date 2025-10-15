@@ -70,10 +70,12 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "cp",
       [ELanguages.ru]: "cp",
     },
-    watchAdAndGetCpText: {
-      [ELanguages.en]: "Watch an ad and get NUMBER CP",
-      [ELanguages.ru]: "Посмотри рекламу и получи NUMBER CP",
-    },
+    watchAdAndGetCpText: (amount?: number) => ({
+      [ELanguages.en]: `Watch an ad and get ${amount ? ` ${amount}` : ""}CP`,
+      [ELanguages.ru]: `Посмотри рекламу и получи ${
+        amount ? ` ${amount}` : ""
+      }CP`,
+    }),
     watchAdText: {
       [ELanguages.en]: "Watch",
       [ELanguages.ru]: "Посмотреть",
@@ -268,6 +270,90 @@ export const TRANSLATIONS = {
         ),
       },
     },
+    cyberFarmEvoSlides: {
+      welcomeText: {
+        [ELanguages.en]: (
+          <>
+            Welcome to the cyber farm!
+            <br />
+            Here you can grow products, process resources, build farms,
+            factories, and develop your farm.
+            <br />
+            Now you see a map showing available locations. As the game develops,
+            new locations will appear.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Добро пожаловать на киберферму!
+            <br />
+            Здесь ты можешь выращивать продукцию, перерабатывать ресурсы,
+            строить фермы, заводы и развивать свою ферму.
+            <br />
+            Сейчас перед тобой карта, на которой показаны доступные локации, по
+            мере развития игры будут появляться новые локации.
+          </>
+        ),
+      },
+      farmText: {
+        [ELanguages.en]: (
+          <>
+            On the farm, you will grow products, build factories, and process
+            materials.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            На ферме ты будешь выращивать продукцию, строить заводы и
+            перерабатывать материалы.
+          </>
+        ),
+      },
+      warehouseText: {
+        [ELanguages.en]: (
+          <>
+            The warehouse stores all your materials and products. Here you can
+            also buy missing items and sell unnecessary ones.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            На складе хранятся все твои материалы и продукты, там же ты можешь
+            купить недостающие и продать ненужные.
+          </>
+        ),
+      },
+      tasksText: {
+        [ELanguages.en]: (
+          <>
+            Tasks are a valuable source of Cash Points (CP), the in-game
+            currency you use to buy and sell everything. Check there often to
+            complete tasks and earn CP.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Задания – это ценный источник Cash Points (CP), игровой валюты, за
+            которую ты все покупаешь и продаешь, заглядывай туда почаще, чтобы
+            выполнять задания и получать СР.
+          </>
+        ),
+      },
+      finishText: {
+        [ELanguages.en]: (
+          <>
+            That's it, you're on your own now. I'll give you 6 CP to start
+            with—enough to get your first harvest. Now it's all up to you.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Вот и все, дальше уже сам, дам тебе на первое время 6 СР, хватит для
+            получения первого урожая. Теперь все зависит от тебя.
+          </>
+        ),
+      },
+    },
   },
   settings: {
     titleText: {
@@ -281,6 +367,18 @@ export const TRANSLATIONS = {
     goToChatText: {
       [ELanguages.en]: "Go to Chat",
       [ELanguages.ru]: "Перейти в Чат",
+    },
+    uiModeText: {
+      [ELanguages.en]: "UI Settings",
+      [ELanguages.ru]: "Настройки UI",
+    },
+    evoText: {
+      [ELanguages.en]: "New",
+      [ELanguages.ru]: "Новый",
+    },
+    classicText: {
+      [ELanguages.en]: "Old",
+      [ELanguages.ru]: "Старый",
     },
   },
   home: {
@@ -308,6 +406,12 @@ export const TRANSLATIONS = {
         "Никаких обещаний. Только скрины, стиль и геймплей, который мы затачиваем под кровь и металл. Посмотри — и подпишись, чтобы не проспать запуск.",
     },
   },
+  plugModal: {
+    updatingText: {
+      [ELanguages.en]: "App under maintenance.",
+      [ELanguages.ru]: "Приложение на техническом обслуживании.",
+    },
+  },
   onBoarding: {
     header: {
       titleText: {
@@ -327,9 +431,9 @@ export const TRANSLATIONS = {
           "💾 ...Прием. Рада видеть тебя в сети, незнакомец. Ищешь острых ощущений? Мои каналы открыты:\n• Play2Earn (ТОН Кибер Ферма);\n• Архив Мини-Игр: куча способов убить время.\n• RPG: скоро, но обещаю, оно того стоит.\nДай сигнал. Я позабочусь, чтобы твой сеанс был... незабываемым. 🌀",
       },
 
-      titleTonCyberFarm: {
-        [ELanguages.en]: "Ton Cyber Farm",
-        [ELanguages.ru]: "Тон Кибер Ферма",
+      titleCyberFarm: {
+        [ELanguages.en]: "Cyber Farm",
+        [ELanguages.ru]: "Кибер Ферма",
       },
 
       titleMiniGames: {
@@ -386,20 +490,28 @@ export const TRANSLATIONS = {
     },
     bonuses: {
       bonusesText: {
-        [ELanguages.en]: "Bonuses",
-        [ELanguages.ru]: "Бонусы",
+        [ELanguages.en]: "Wallet",
+        [ELanguages.ru]: "Кошелек",
       },
       walletText: {
         [ELanguages.en]: "Your wallet",
         [ELanguages.ru]: "Ваш кошелёк",
+      },
+      currencyText: {
+        [ELanguages.en]: "Currency",
+        [ELanguages.ru]: "Валюта",
+      },
+      currencyPlaceholder: {
+        [ELanguages.en]: "Select currency...",
+        [ELanguages.ru]: "Выберите валюту...",
       },
       walletPlaceholder: {
         [ELanguages.en]: "Enter wallet number...",
         [ELanguages.ru]: "Вставлять номер кошелька...",
       },
       withdrawAmountText: {
-        [ELanguages.en]: "Withdrawal amount (TON)",
-        [ELanguages.ru]: "Сумма вывода (TON)",
+        [ELanguages.en]: "Withdrawal amount (CP)",
+        [ELanguages.ru]: "Сумма вывода (CP)",
       },
       withdrawAmountPlaceholder: {
         [ELanguages.en]: "0.5",
@@ -445,13 +557,33 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Amount after commission must be greater than 0",
         [ELanguages.ru]: "Сумма после вычета комиссии должна быть больше 0",
       },
-      amountExceedsTonBalanceText: {
-        [ELanguages.en]: "Amount exceeds your TON balance",
-        [ELanguages.ru]: "Сумма превышает ваш баланс TON",
+      amountExceedsCPBalanceText: {
+        [ELanguages.en]: "Amount exceeds your CP balance",
+        [ELanguages.ru]: "Сумма превышает ваш баланс CP",
+      },
+      invalidCurrencyText: {
+        [ELanguages.en]: "Invalid currency selected",
+        [ELanguages.ru]: "Выбрана неверная валюта",
       },
       walletAddressRequiredText: {
         [ELanguages.en]: "Wallet address is required",
         [ELanguages.ru]: "Требуется адрес кошелька",
+      },
+      commentText: {
+        [ELanguages.en]: "Comment (memo)",
+        [ELanguages.ru]: "Комментарий (мемо)",
+      },
+      tonWithdrawCommentPlaceholder: {
+        [ELanguages.en]: "Enter a comment for  withdrawal (optional)",
+        [ELanguages.ru]: "Введите комментарий для вывода (необязательно)",
+      },
+      depositLabel: {
+        [ELanguages.en]: "Deposit",
+        [ELanguages.ru]: "Депозит",
+      },
+      withdrawLabel: {
+        [ELanguages.en]: "Withdraw",
+        [ELanguages.ru]: "Вывод",
       },
     },
     fields: {
@@ -464,18 +596,19 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "У вас нет полей",
       },
       buyModal: {
-        titleText: {
-          [ELanguages.en]: "Are you sure you want to buy this field for",
-          [ELanguages.ru]: "Вы точно хотите купить этот участок за",
-        },
+        titleText: (value?: string) => ({
+          [ELanguages.en]: `Are you sure you want to buy this field for ${
+            value === undefined ? "free" : value
+          }`,
+          [ELanguages.ru]: `Вы точно хотите купить этот участок ${
+            value === undefined ? "бесплатно" : `за ${value}`
+          }`,
+        }),
         buyByCpButtonText: {
           [ELanguages.en]: "Buy by CP",
           [ELanguages.ru]: "Купить за CP",
         },
-        buyByMetalButtonText: {
-          [ELanguages.en]: "Buy by Metal",
-          [ELanguages.ru]: "Купить за Металл",
-        },
+
         cancelButtonText: {
           [ELanguages.en]: "Cancel",
           [ELanguages.ru]: "Отмена",
@@ -491,8 +624,8 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Выберите способ использования поля",
         },
         plantButtonText: {
-          [ELanguages.en]: "Plant",
-          [ELanguages.ru]: "Посадить",
+          [ELanguages.en]: "Produce",
+          [ELanguages.ru]: "Произвести",
         },
         buildButtonText: {
           [ELanguages.en]: "Build",
@@ -517,12 +650,8 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Постройка выполнена",
         },
         buildByCpButtonText: {
-          [ELanguages.en]: "Build by CP",
-          [ELanguages.ru]: "Построить за CP",
-        },
-        buildByMetalButtonText: {
-          [ELanguages.en]: "Build by Metal",
-          [ELanguages.ru]: "Построить за Металл",
+          [ELanguages.en]: "Build by",
+          [ELanguages.ru]: "Построить за",
         },
       },
     },
@@ -555,46 +684,20 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Warehouse is empty",
         [ELanguages.ru]: "Склад пуст",
       },
-      socialStoreButtonText: {
-        [ELanguages.en]: "Social Store",
-        [ELanguages.ru]: "Социальный магазин",
-      },
-      farmEstimatedValueText: {
-        [ELanguages.en]: "Farm estimated value",
-        [ELanguages.ru]: "Оценочная стоимость фермы",
-      },
-      sellForText: {
-        [ELanguages.en]: "Sell for",
-        [ELanguages.ru]: "Продажа за",
-      },
-      buyForText: {
-        [ELanguages.en]: "Buy for",
-        [ELanguages.ru]: "Покупка за",
-      },
+
       productInfo: {
         youHaveText: {
           [ELanguages.en]: "You have:",
           [ELanguages.ru]: "У вас:",
         },
-        priceText: {
-          [ELanguages.en]: "Price:",
-          [ELanguages.ru]: "Цена:",
-        },
-        youWillGetText: {
-          [ELanguages.en]: "You will get:",
-          [ELanguages.ru]: "Вы получите:",
-        },
-        youWillSpendText: {
-          [ELanguages.en]: "You will spend:",
-          [ELanguages.ru]: "Вы тратите:",
-        },
+
         buyButtonText: {
-          [ELanguages.en]: "Buy",
-          [ELanguages.ru]: "Купить",
+          [ELanguages.en]: "Buy by",
+          [ELanguages.ru]: "Купить за",
         },
         sellButtonText: {
-          [ELanguages.en]: "Sell",
-          [ELanguages.ru]: "Продать",
+          [ELanguages.en]: "Sell by",
+          [ELanguages.ru]: "Продать за",
         },
         piecesText: {
           [ELanguages.en]: "pcs",
@@ -651,17 +754,26 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Time remaining:",
         [ELanguages.ru]: "Осталось:",
       },
+      productionText: {
+        [ELanguages.en]: "Production",
+        [ELanguages.ru]: "Выработка",
+      },
       collectButtonText: {
         [ELanguages.en]: "Collect harvest",
         [ELanguages.ru]: "Собрать урожай",
       },
-      speedUpCpButtonText: {
-        [ELanguages.en]: "Speed up for NUMBERCP",
-        [ELanguages.ru]: "Ускорить за NUMBERCP",
+
+      watchAdIncreaseProfitText: {
+        [ELanguages.en]: "Watch ad for more profit",
+        [ELanguages.ru]: "Реклама — больше прибыли",
       },
-      speedUpAdButtonText: {
-        [ELanguages.en]: "Speed up with ad",
-        [ELanguages.ru]: "Ускорить за рекламу",
+      watchAdInstantFinishText: {
+        [ELanguages.en]: "Watch ad to finish and boost profit",
+        [ELanguages.ru]: "Реклама — завершить и увеличить прибыль",
+      },
+      profitIncreasedText: {
+        [ELanguages.en]: "Profit increased to NUMBER",
+        [ELanguages.ru]: "Прибыль увеличена до NUMBER",
       },
       harvestCollectedText: {
         [ELanguages.en]: "Harvest collected!",
@@ -674,13 +786,14 @@ export const TRANSLATIONS = {
     },
     optionsModal: {
       titleText: {
-        [ELanguages.en]: "Choose what to process",
-        [ELanguages.ru]: "Выберите что переработать",
+        [ELanguages.en]: "Choose item to process",
+        [ELanguages.ru]: "Выберите предмет переработки",
       },
       plantTitleText: {
-        [ELanguages.en]: "Choose what to plant",
-        [ELanguages.ru]: "Выберите что посадить",
+        [ELanguages.en]: "Choose seed type",
+        [ELanguages.ru]: "Выберите тип семян",
       },
+
       successText: {
         [ELanguages.en]: "Processing started successfully!",
         [ELanguages.ru]: "Переработка выполнена успешно!",
@@ -694,12 +807,12 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "У вас недостаточно ресурсов для производства",
       },
       missingResourcesCostText: {
-        [ELanguages.en]: "Replenishing missing resources costs: ",
-        [ELanguages.ru]: "Пополнение недостающих ресурсов обойдется в ",
+        [ELanguages.en]: "Buy missing for",
+        [ELanguages.ru]: "Докупить недостающее за",
       },
       buyAllButtonText: {
         [ELanguages.en]: "Buy all",
-        [ELanguages.ru]: "Докупать всё",
+        [ELanguages.ru]: "Докупить всё",
       },
       confirmButtonText: {
         [ELanguages.en]: "Confirm",
@@ -716,6 +829,83 @@ export const TRANSLATIONS = {
       youHaveText: {
         [ELanguages.en]: "you have:",
         [ELanguages.ru]: "у вас:",
+      },
+    },
+    buildingPlantOptionsModal: {
+      titleText: {
+        [ELanguages.en]: "Choose how to use the field",
+        [ELanguages.ru]: "Выберите способ использования поля",
+      },
+      plantButtonText: {
+        [ELanguages.en]: "Produce",
+        [ELanguages.ru]: "Произвести",
+      },
+      upgradeButtonText: {
+        [ELanguages.en]: "Upgrade",
+        [ELanguages.ru]: "Улучшить",
+      },
+      farmText: {
+        [ELanguages.en]: "Farm",
+        [ELanguages.ru]: "Ферма",
+      },
+      factoryText: {
+        [ELanguages.en]: "Factory",
+        [ELanguages.ru]: "Фабрика",
+      },
+      levelText: {
+        [ELanguages.en]: "Level",
+        [ELanguages.ru]: "Уровень",
+      },
+    },
+    upgradeModal: {
+      titleText: {
+        [ELanguages.en]: "Current building level",
+        [ELanguages.ru]: "Текущий уровень постройки",
+      },
+      levelText: {
+        [ELanguages.en]: "Level",
+        [ELanguages.ru]: "Уровень",
+      },
+      currentStatsText: {
+        [ELanguages.en]: "Current stats",
+        [ELanguages.ru]: "Текущие показатели",
+      },
+      productionOutputText: {
+        [ELanguages.en]: "Production output",
+        [ELanguages.ru]: "Выход продукции",
+      },
+      perHourText: {
+        [ELanguages.en]: "units",
+        [ELanguages.ru]: "ед.",
+      },
+
+      nextLevelText: {
+        [ELanguages.en]: "Next level",
+        [ELanguages.ru]: "Следующий уровень",
+      },
+      canUpgradeForText: {
+        [ELanguages.en]: "Can be upgraded for",
+        [ELanguages.ru]: "Можно повысить уровень за",
+      },
+      upgradeButtonText: {
+        [ELanguages.en]: "Upgrade",
+        [ELanguages.ru]: "Улучшить",
+      },
+      farmText: {
+        [ELanguages.en]: "Farm",
+        [ELanguages.ru]: "Ферма",
+      },
+      factoryText: {
+        [ELanguages.en]: "Factory",
+        [ELanguages.ru]: "Завод",
+      },
+      successText: {
+        [ELanguages.en]: "Building upgraded Successfully",
+        [ELanguages.ru]: "Постройка успешно улучшена!",
+      },
+      notEnoughCPText: {
+        [ELanguages.en]: "You don't have enough CP",
+        [ELanguages.ru]: "У вас недостаточно CP",
       },
     },
     products: {
@@ -994,12 +1184,199 @@ export const TRANSLATIONS = {
         },
       },
     },
+    ratings: {
+      titleText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
+      },
+      searchPlaceholder: {
+        [ELanguages.en]: "Search by player name",
+        [ELanguages.ru]: "Поиск по имени игрока",
+      },
+
+      playerTabText: {
+        [ELanguages.en]: "Player",
+        [ELanguages.ru]: "Игрок",
+      },
+      realEstateTabText: {
+        [ELanguages.en]: "Real Estate",
+        [ELanguages.ru]: "Недвижимость",
+      },
+      technologyTabText: {
+        [ELanguages.en]: "Technology",
+        [ELanguages.ru]: "Техно.",
+      },
+      pointsTabText: {
+        [ELanguages.en]: "Points",
+        [ELanguages.ru]: "Очки",
+      },
+      overallTabText: {
+        [ELanguages.en]: "Overall",
+        [ELanguages.ru]: "Общая",
+      },
+    },
+  },
+  cyberfarmEvo: {
+    header: {
+      profileText: {
+        [ELanguages.en]: "Profile",
+        [ELanguages.ru]: "Профиль",
+      },
+      helpText: {
+        [ELanguages.en]: "Help",
+        [ELanguages.ru]: "Справка",
+      },
+    },
+    footer: {
+      goBackToMapText: {
+        [ELanguages.en]: "GO BACK TO MAP",
+        [ELanguages.ru]: "ВЕРНУТСЯ НА КАРТУ",
+      },
+    },
+    map: {
+      tasksText: {
+        [ELanguages.en]: "Tasks",
+        [ELanguages.ru]: "Задания",
+      },
+      warehouseText: {
+        [ELanguages.en]: "Warehouse",
+        [ELanguages.ru]: "Склад",
+      },
+      farmText: {
+        [ELanguages.en]: "Farm",
+        [ELanguages.ru]: "Ферма",
+      },
+    },
+    farms: {
+      collectAllText: {
+        [ELanguages.en]: "Collect all",
+        [ELanguages.ru]: "Собрать всё",
+      },
+      productionCollectedText: {
+        [ELanguages.en]: "Production collected",
+        [ELanguages.ru]: "Производство собрано",
+      },
+    },
+    optionsModal: {
+      evoTitleText: {
+        [ELanguages.en]: "Choose item to process",
+        [ELanguages.ru]: "Выберите предмет переработки",
+      },
+      evoPlantTitleText: {
+        [ELanguages.en]: "Choose seed type",
+        [ELanguages.ru]: "Выберите тип семян",
+      },
+    },
+    profileMenuBar: {
+      titleText: {
+        [ELanguages.en]: "PROFILE",
+        [ELanguages.ru]: "ПРОФИЛЬ",
+      },
+      changeLanguageText: {
+        [ELanguages.en]: "Change language",
+        [ELanguages.ru]: "Сменить язык",
+      },
+      uiSettingsText: {
+        [ELanguages.en]: "UI Settings",
+        [ELanguages.ru]: "Настройки UI",
+      },
+      referralSystemText: {
+        [ELanguages.en]: "Referral system",
+        [ELanguages.ru]: "Реферальная система",
+      },
+      achievementsText: {
+        [ELanguages.en]: "Achievements",
+        [ELanguages.ru]: "Достижения",
+      },
+      changeGameText: {
+        [ELanguages.en]: "Change game",
+        [ELanguages.ru]: "Смена игры",
+      },
+      ratingsText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
+      },
+    },
+    languageMenubar: {
+      titleText: {
+        [ELanguages.en]: "LANGUAGE",
+        [ELanguages.ru]: "ЯЗЫК",
+      },
+      englishText: {
+        [ELanguages.en]: "English",
+        [ELanguages.ru]: "Английский",
+      },
+      russianText: {
+        [ELanguages.en]: "Russian",
+        [ELanguages.ru]: "Русский",
+      },
+    },
+    uiSettingsmenuBar: {
+      titleText: {
+        [ELanguages.en]: "UI Settings",
+        [ELanguages.ru]: "Настройки UI",
+      },
+      classicModeText: {
+        [ELanguages.en]: "Old",
+        [ELanguages.ru]: "Старый",
+      },
+      evoModeText: {
+        [ELanguages.en]: "New",
+        [ELanguages.ru]: "Новый",
+      },
+    },
+    supportMenuBar: {
+      titleText: {
+        [ELanguages.en]: "SUPPORT",
+        [ELanguages.ru]: "СПРАВКА",
+      },
+      productionText: {
+        [ELanguages.en]: "Support",
+        [ELanguages.ru]: "Справка",
+      },
+      trainingText: {
+        [ELanguages.en]: "Training",
+        [ELanguages.ru]: "Обучение",
+      },
+      videoGuidesText: {
+        [ELanguages.en]: "Video guides",
+        [ELanguages.ru]: "Видео гайды",
+      },
+      askInChatText: {
+        [ELanguages.en]: "Ask in chat",
+        [ELanguages.ru]: "Спросить в чате",
+      },
+    },
+    production: {
+      helpText: {
+        [ELanguages.en]: "Help",
+        [ELanguages.ru]: "Справка",
+      },
+      branchText: {
+        [ELanguages.en]: "Production branch",
+        [ELanguages.ru]: "Ветва производства",
+      },
+      tabsTexts: {
+        fields: {
+          [ELanguages.en]: "Fields",
+          [ELanguages.ru]: "Поля",
+        },
+        farms: {
+          [ELanguages.en]: "Farms",
+          [ELanguages.ru]: "Фермы",
+        },
+        factories: {
+          [ELanguages.en]: "Factories",
+          [ELanguages.ru]: "Заводы",
+        },
+      },
+    },
   },
   loyality: {
     header: {
       titleText: {
-        [ELanguages.en]: "Support Center",
-        [ELanguages.ru]: "Центр Поддержки",
+        [ELanguages.en]: "Tasks",
+        [ELanguages.ru]: "Задания",
       },
     },
     tabs: {
@@ -1430,6 +1807,18 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Hack the terminal code, you only have a few attempts",
         [ELanguages.ru]:
           "Взломай код терминала, у тебя всего несколько попыток",
+      },
+    },
+    bubbleFront: {
+      name: {
+        [ELanguages.en]: "Bubble Front",
+        [ELanguages.ru]: "Bubble Front",
+      },
+      description: {
+        [ELanguages.en]:
+          "Bubble Front — tactical artillery in an arcade shell.",
+        [ELanguages.ru]:
+          "Bubble Front — тактическая артиллерия в оболочке аркады.",
       },
     },
     achievments: {
@@ -1880,6 +2269,108 @@ export const TRANSLATIONS = {
       },
     },
   },
+  bubbleFront: {
+    bottomNavbar: {
+      modeSelectText: {
+        [ELanguages.en]: "Mode Select",
+        [ELanguages.ru]: "Выбор режима",
+      },
+      ratingsText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
+      },
+      necrobombText: {
+        [ELanguages.en]: "Necrobomb",
+        [ELanguages.ru]: "Некробомба",
+      },
+      achievementsText: {
+        [ELanguages.en]: "Achievements",
+        [ELanguages.ru]: "Достижения",
+      },
+    },
+    buyNecroballModal: {
+      titleText: {
+        [ELanguages.en]: "Necrobomb is ready to launch!",
+        [ELanguages.ru]: "Некрабомба готова к запуску!",
+      },
+      descriptionText: {
+        [ELanguages.en]:
+          "Stronger than a standard necro shell. Blast radius — three balls.",
+        [ELanguages.ru]:
+          "Мощнее стандартного некроснаряда. Радиус поражения — три шара.",
+      },
+      chooseMethodText: {
+        [ELanguages.en]: "Choose how to get the super shell.",
+        [ELanguages.ru]: "Выберите способ получения супер снаряда.",
+      },
+      watchAdText: {
+        [ELanguages.en]: "Watch ad",
+        [ELanguages.ru]: "Смотреть рекламу",
+      },
+      buyForCpText: {
+        [ELanguages.en]: "Buy for 1CP",
+        [ELanguages.ru]: "Купить за 1CP",
+      },
+    },
+    difficultyModal: {
+      titleText: {
+        [ELanguages.en]: "Select difficulty level",
+        [ELanguages.ru]: "выберите уровень сложноси",
+      },
+      descriptionText: {
+        [ELanguages.en]: "Difficulty is a style. Choose yours.",
+        [ELanguages.ru]: "Сложность — это стиль. Выбери свой.",
+      },
+      levelsTexts: {
+        calibration: {
+          [ELanguages.en]: "Calibration",
+          [ELanguages.ru]: "Калибровка",
+        },
+        combatMode: {
+          [ELanguages.en]: "Combat mode",
+          [ELanguages.ru]: "Боевой режим",
+        },
+        overload: {
+          [ELanguages.en]: "Overload",
+          [ELanguages.ru]: "Перегрузка",
+        },
+      },
+      selectedMarkText: {
+        [ELanguages.en]: "Selected",
+        [ELanguages.ru]: "Выбран",
+      },
+      rowDescriptionText: {
+        [ELanguages.en]: "unsuccessful shots — new row.",
+        [ELanguages.ru]: "неудачных выстрелов — новый ряд.",
+      },
+    },
+    main: {
+      header: {
+        scoreText: {
+          [ELanguages.en]: "Score",
+          [ELanguages.ru]: "Очки",
+        },
+        difficultyText: {
+          [ELanguages.en]: "Difficulty",
+          [ELanguages.ru]: "Сложность",
+        },
+      },
+      gameOverModal: {
+        titleText: {
+          [ELanguages.en]: "Game over",
+          [ELanguages.ru]: "Игра окончена",
+        },
+        collectedScoreText: {
+          [ELanguages.en]: "Collected Score",
+          [ELanguages.ru]: "Набрано очков",
+        },
+        restartButtonText: {
+          [ELanguages.en]: "Play again",
+          [ELanguages.ru]: "Играть еще раз",
+        },
+      },
+    },
+  },
   puzzle: {
     achievments: {
       win: {
@@ -2010,26 +2501,7 @@ export const TRANSLATIONS = {
       },
     },
   },
-  bubbleFront: {
-    bottomNavbar: {
-      modeSelectText: {
-        [ELanguages.en]: "Mode Select",
-        [ELanguages.ru]: "Выбор режима",
-      },
-      ratingsText: {
-        [ELanguages.en]: "Ratings",
-        [ELanguages.ru]: "Рейтинги",
-      },
-      necrobombText: {
-        [ELanguages.en]: "Necrobomb",
-        [ELanguages.ru]: "Некробомба",
-      },
-      achievementsText: {
-        [ELanguages.en]: "Achievements",
-        [ELanguages.ru]: "Достижения",
-      },
-    },
-  },
+
   influence: {
     header: {
       throughText: {

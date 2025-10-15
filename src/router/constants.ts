@@ -14,13 +14,17 @@ export const rpgGameReferalsPagePath = "referals";
 export const rpgGameSkinViewPagePath = "skin-view";
 export const rpgGamePlayAreaPagePath = `${rpgGamePagePath}/play-area`;
 
+// cyberfarm
 export const cyberFarmPagePath = onBoardingPagePath + "/cyberfarm";
+export const cyberFarmEvoPagePath = onBoardingPagePath + "/cyberfarm-evo";
 export const cyberFarmFarmsPagePath = "farms";
 export const cyberFarmFactoriesPagePath = "factories";
 export const cyberFarmWarehousePagePath = "warehouse";
 export const cyberFarmSupportPagePath = "support";
 export const cyberFarmReferalsPagePath = "referals";
 export const cyberFarmAchievmentsPagePath = "achievments";
+export const cyberFarmProductionPagePath = "production";
+export const cyberFarmRatingsPagePath = "ratings";
 
 export const miniGamesPagePath = onBoardingPagePath + "/minigames";
 export const miniGamesAchievmentsPagePath = "achievments";

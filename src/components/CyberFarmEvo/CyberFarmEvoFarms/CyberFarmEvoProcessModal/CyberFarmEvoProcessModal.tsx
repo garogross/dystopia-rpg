@@ -1,0 +1,202 @@
+import React, { useEffect, useState } from "react";
+
+import styles from "./CyberFarmEvoProcessModal.module.scss";
+import ModalWithAdd from "../../../layout/ModalWithAdd/ModalWithAdd";
+
+import ImageWebp from "../../../layout/ImageWebp/ImageWebp";
+import { products } from "../../../../constants/cyberfarm/products";
+import { IFarmField } from "../../../../models/CyberFarm/IFarmField";
+import { formatTime } from "../../../../utils/formatTime";
+import { adImage } from "../../../../assets/imageMaps";
+import { CollectIcon } from "../../../layout/icons/CyberFarm/CyberFarmProcessModal";
+import { TRANSLATIONS } from "../../../../constants/TRANSLATIONS";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { harvest } from "../../../../store/slices/cyberFarm/slotsSlice";
+import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
+import Tooltip from "../../../layout/Tooltip/Tooltip";
+import { useTooltip } from "../../../../hooks/useTooltip";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../../providers/TransitionProvider";
+import { useFarmFieldProgress } from "../../../../hooks/useFarmFieldProgress";
+import { ClaimAdRewardActionType } from "../../../../types/tasks/ClaimAdRewardActionType";
+import { useVideoAd } from "../../../../hooks/useVideoAd";
+import { EAdActionTypes } from "../../../../constants/EadActionTypes";
+import { EadProviders } from "../../../../constants/EadProviders";
+
+interface Props {
+  show: boolean;
+  onClose: () => void;
+  item: IFarmField;
+}
+const {
+  titleText,
+  readyToCollectText,
+  timeRemainingText,
+  collectButtonText,
+  profitIncreasedText,
+  harvestCollectedText,
+  watchAdIncreaseProfitText,
+  watchAdInstantFinishText,
+  speedUpCompleteText,
+  productionText,
+} = TRANSLATIONS.cyberFarm.processModal;
+const { somethingWentWrong } = TRANSLATIONS.errors;
+
+const CyberFarmEvoProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
+  const dispatch = useAppDispatch();
+  const language = useAppSelector((state) => state.ui.language);
+
+  const [loading, setLoading] = useState(false);
+  const [errored, setErrored] = useState(false);
+
+  const onHarvest = async (withoutAd?: boolean) => {
+    if (!withoutAd && !item.adProductionBonusReceived) return;
+    try {
+      setLoading(true);
+      setErrored(false);
+      setTooltipText(harvestCollectedText);
+      await dispatch(harvest({ id: item.id, clb: openTooltip })).unwrap();
+      onClose();
+    } catch (error) {
+      setErrored(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const gameAction: ClaimAdRewardActionType = !item.adProductionBonusReceived
+    ? "farm_production_bonus"
+    : "farm_boost_production";
+  const {
+    onShowAd,
+    showTooltip: showAdTooltip,
+    tooltipText: adTooltipText,
+    loading: adLoading,
+  } = useVideoAd({
+    scsClb: () => {
+      onHarvest();
+    },
+    speedUpCompleteText: profitIncreasedText,
+    provider: EadProviders.Gigapub,
+    ad_type: EAdActionTypes.Video,
+    game_action: gameAction,
+    farm_slot: item.id,
+    claimAfterClb: true,
+  });
+
+  const { show: showTooltip, openTooltip } = useTooltip();
+
+  const productKey = item.factoryProduct || item.plant;
+  const { progressPercent: progress, remainingTimeInSecs } =
+    useFarmFieldProgress(item.process, [show]);
+  const [tooltipText, setTooltipText] = useState(speedUpCompleteText);
+  useEffect(() => {
+    if (!show) {
+      setErrored(false);
+      setLoading(false);
+    }
+  }, [show]);
+
+  if (!productKey || !item.process) return null;
+
+  const productdetails = products[productKey];
+  const isReadyToCollect = progress && progress >= 100;
+
+  return (
+    <ModalWithAdd
+      evoMode
+      show={show}
+      onClose={onClose}
+      title={titleText[language]}
+    >
+      <div className={styles.cyberFarmEvoProcessModal}>
+        <div className={styles.cyberFarmEvoProcessModal__info}>
+          <ImageWebp
+            src={productdetails.evo.src}
+            srcSet={productdetails.evo.srcSet}
+            alt={productdetails.name[language]}
+            className={styles.cyberFarmEvoProcessModal__img}
+          />
+          <div className={styles.cyberFarmEvoProcessModal__infoMain}>
+            <p className={styles.cyberFarmEvoProcessModal__text}>
+              {productdetails.name[language]}
+            </p>
+            <div className={styles.cyberFarmEvoProcessModal__progressBar}>
+              <div
+                className={styles.cyberFarmEvoProcessModal__progressBarWrapper}
+              >
+                <div
+                  style={{ width: `${progress}%` }}
+                  className={styles.cyberFarmEvoProcessModal__progressBarinner}
+                ></div>
+              </div>
+            </div>
+            <div className={styles.cyberFarmEvoProcessModal__infoCol}>
+              <p className={styles.cyberFarmEvoProcessModal__text}>
+                {isReadyToCollect
+                  ? readyToCollectText[language]
+                  : remainingTimeInSecs
+                  ? `${timeRemainingText[language]} ${formatTime(
+                      remainingTimeInSecs
+                    )}`
+                  : ""}
+              </p>
+              <p className={styles.cyberFarmEvoProcessModal__text}>
+                {productionText[language]} - {item.finalProduction || 0}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className={styles.cyberFarmEvoProcessModal__actions}>
+          {isReadyToCollect ? (
+            <button
+              onClick={() => onHarvest(true)}
+              className={styles.cyberFarmEvoProcessModal__btn}
+            >
+              <div className={styles.cyberFarmEvoProcessModal__btnInner}>
+                <CollectIcon />
+                <span>{collectButtonText[language]}</span>
+              </div>
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={onShowAd}
+                className={styles.cyberFarmEvoProcessModal__btn}
+              >
+                <div className={styles.cyberFarmEvoProcessModal__btnInner}>
+                  <img
+                    src={adImage}
+                    alt="cash point"
+                    className={styles.cyberFarmEvoProcessModal__btnImg}
+                  />
+                  <span>
+                    {
+                      (item.adProductionBonusReceived
+                        ? watchAdInstantFinishText
+                        : watchAdIncreaseProfitText)[language]
+                    }
+                  </span>
+                </div>
+              </button>
+            </>
+          )}
+        </div>
+        <TransitionProvider
+          inProp={errored}
+          style={TransitionStyleTypes.height}
+          height={40}
+          className={styles.cyberFarmEvoProcessModal__error}
+        >
+          <span>{somethingWentWrong[language]}</span>
+        </TransitionProvider>
+        <Tooltip show={showTooltip} text={tooltipText[language]} />
+        <Tooltip show={showAdTooltip} text={adTooltipText} />
+      </div>
+      <LoadingOverlay loading={loading || adLoading} />
+    </ModalWithAdd>
+  );
+};
+
+export default CyberFarmEvoProcessModal;

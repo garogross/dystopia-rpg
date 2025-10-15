@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import AppRouter from "../../router/AppRouter";
+// import AppRouter from "../../router/AppRouter";
 import { useTelegram } from "../../hooks/useTelegram";
 import { getPlatformType } from "../../utils/getPlatformType";
 import { useOfferwallSdk } from "../../hooks/useOfferwallSdk";
@@ -10,10 +10,12 @@ import { useAppDispatch } from "../../hooks/redux";
 import { setLanguage } from "../../store/slices/uiSlice";
 import { postLog } from "../../api/logs";
 import { useStoreFreshDate } from "../../hooks/useStoreFreshDate";
+import { getUserIp } from "../../utils/getUserIp";
+import AppRouter from "../../router/AppRouter";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
-  if (!tg.initDataUnsafe?.user?.id) return;
+  // if (!tg.initDataUnsafe?.user?.id) return;
   // load barzha script
   const barzhaScript = document.createElement("script");
   barzhaScript.src = `https://app.barzha.com/bQuest.js?token=${process.env.REACT_APP_BARZHA_TOKEN}`;
@@ -26,75 +28,77 @@ const loadScripts = (tg: WebApp) => {
     });
   };
   document.body.appendChild(barzhaScript);
+
   // load barzha task-widget script
-  // const barzhaTaskWidgetScript = document.createElement("script");
-  // barzhaTaskWidgetScript.src = "https://app.barzha.com/task-widget.js";
-  // barzhaTaskWidgetScript.async = true;
-  // barzhaTaskWidgetScript.onerror = () => {
-  //   postLog({
-  //     type: "script_error",
-  //     message: "Failed to load barzha task-widget script",
-  //     src: barzhaTaskWidgetScript.src,
-  //   });
-  // };
-  // document.body.appendChild(barzhaTaskWidgetScript);
+  const barzhaTaskWidgetScript = document.createElement("script");
+  barzhaTaskWidgetScript.src = "https://app.barzha.com/task-widget.js";
+  barzhaTaskWidgetScript.async = true;
+  barzhaTaskWidgetScript.onerror = () => {
+    postLog({
+      type: "script_error",
+      message: "Failed to load barzha task-widget script",
+      src: barzhaTaskWidgetScript.src,
+    });
+  };
+  document.body.appendChild(barzhaTaskWidgetScript);
+
   // load traffy script
-  const traffyToken = process.env.REACT_APP_TRAFFY_TOKEN;
-  if (traffyToken) {
-    const traffyScript = document.createElement("script");
-    traffyScript.src = "https://embed.traffy.site/v0.0.7/traffy-wrapper.min.js";
-    traffyScript.setAttribute("resource-id", traffyToken);
-    traffyScript.setAttribute("mode", "production");
-    traffyScript.async = true;
-    traffyScript.onerror = () => {
-      postLog({
-        type: "script_error",
-        message: "Failed to load traffy script",
-        src: traffyScript.src,
-      });
-    };
-    document.body.appendChild(traffyScript);
+  // const traffyToken = process.env.REACT_APP_TRAFFY_TOKEN;
+  // if (traffyToken) {
+  //   const traffyScript = document.createElement("script");
+  //   traffyScript.src = "https://embed.traffy.site/v0.0.7/traffy-wrapper.min.js";
+  //   traffyScript.setAttribute("resource-id", traffyToken);
+  //   traffyScript.setAttribute("mode", "production");
+  //   traffyScript.async = true;
+  //   traffyScript.onerror = () => {
+  //     postLog({
+  //       type: "script_error",
+  //       message: "Failed to load traffy script",
+  //       src: traffyScript.src,
+  //     });
+  //   };
+  //   document.body.appendChild(traffyScript);
 
-    // load adsgram script with error handling
-    // const adsgramScript = document.createElement("script");
-    // adsgramScript.src = "https://sad.adsgram.ai/js/sad.min.js";
-    // adsgramScript.async = true;
-    // adsgramScript.onerror = () => {
-    //   postLog({
-    //     type: "script_error",
-    //     message: "Failed to load adsgram script",
-    //     src: adsgramScript.src,
-    //   });
-    // };
-    // document.body.appendChild(adsgramScript);
+  //   // load adsgram script with error handling
+  //   // const adsgramScript = document.createElement("script");
+  //   // adsgramScript.src = "https://sad.adsgram.ai/js/sad.min.js";
+  //   // adsgramScript.async = true;
+  //   // adsgramScript.onerror = () => {
+  //   //   postLog({
+  //   //     type: "script_error",
+  //   //     message: "Failed to load adsgram script",
+  //   //     src: adsgramScript.src,
+  //   //   });
+  //   // };
+  //   // document.body.appendChild(adsgramScript);
 
-    // load taddy script with error handling
-    const taddyScript = document.createElement("script");
-    taddyScript.src = "https://sdk.taddy.pro/web/taddy.min.js";
-    taddyScript.async = true;
-    taddyScript.onerror = () => {
-      postLog({
-        type: "script_error",
-        message: "Failed to load taddy script",
-        src: taddyScript.src,
-      });
-    };
-    document.body.appendChild(taddyScript);
+  // load taddy script with error handling
+  const taddyScript = document.createElement("script");
+  taddyScript.src = "https://sdk.taddy.pro/web/taddy.min.js";
+  taddyScript.async = true;
+  taddyScript.onerror = () => {
+    postLog({
+      type: "script_error",
+      message: "Failed to load taddy script",
+      src: taddyScript.src,
+    });
+  };
+  document.body.appendChild(taddyScript);
 
-    // load barzha admaster-callback script with error handling
-    const barzhaAdmasterCallbackScript = document.createElement("script");
-    barzhaAdmasterCallbackScript.src =
-      "https://app.barzha.com/admaster-callback.js";
-    barzhaAdmasterCallbackScript.async = true;
-    barzhaAdmasterCallbackScript.onerror = () => {
-      postLog({
-        type: "script_error",
-        message: "Failed to load barzha admaster-callback script",
-        src: barzhaAdmasterCallbackScript.src,
-      });
-    };
-    document.body.appendChild(barzhaAdmasterCallbackScript);
-  }
+  // load barzha admaster-callback script with error handling
+  const barzhaAdmasterCallbackScript = document.createElement("script");
+  barzhaAdmasterCallbackScript.src =
+    "https://app.barzha.com/admaster-callback.js";
+  barzhaAdmasterCallbackScript.async = true;
+  barzhaAdmasterCallbackScript.onerror = () => {
+    postLog({
+      type: "script_error",
+      message: "Failed to load barzha admaster-callback script",
+      src: barzhaAdmasterCallbackScript.src,
+    });
+  };
+  document.body.appendChild(barzhaAdmasterCallbackScript);
+  // }
 
   // load onclicka banner script
   const onclickaCode = process.env.REACT_APP_ONCLICKA_CODE;
@@ -151,17 +155,17 @@ const loadScripts = (tg: WebApp) => {
   }
 
   // load giga tasks script
-  const script = document.createElement("script");
-  script.src = "https://cdn.giga.pub/script/offer/loader/loader.js";
-  script.async = true;
-  script.onerror = () => {
-    postLog({
-      type: "script_error",
-      message: "Failed to load giga tasks script",
-      src: script.src,
-    });
-  };
-  document.head.appendChild(script);
+  // const script = document.createElement("script");
+  // script.src = "https://cdn.giga.pub/script/offer/loader/loader.js";
+  // script.async = true;
+  // script.onerror = () => {
+  //   postLog({
+  //     type: "script_error",
+  //     message: "Failed to load giga tasks script",
+  //     src: script.src,
+  //   });
+  // };
+  // document.head.appendChild(script);
 
   // load onclicka script
   const onclickaScript2 = document.createElement("script");
@@ -190,6 +194,40 @@ const getLanguage = async (language_code: string | undefined) => {
   return ELanguages.en;
 };
 
+// Utility function to disable access to inspect elements
+const disableInspect = () => {
+  // Disable right-click context menu
+  document.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
+
+  // Disable F12, Ctrl+Shift+I/J/C/U, Cmd+Opt+I/J/C/U, and Ctrl+U
+  document.addEventListener("keydown", (e) => {
+    // F12
+    if (e.key === "F12") {
+      e.preventDefault();
+    }
+    // Ctrl+Shift+I/J/C/U
+    if (
+      (e.ctrlKey &&
+        e.shiftKey &&
+        ["I", "J", "C"].includes(e.key.toUpperCase())) ||
+      (e.ctrlKey && e.key.toUpperCase() === "U")
+    ) {
+      e.preventDefault();
+    }
+    // Cmd+Opt+I/J/C/U (for Mac)
+    if (
+      (e.metaKey &&
+        e.altKey &&
+        ["I", "J", "C"].includes(e.key.toUpperCase())) ||
+      (e.metaKey && e.key.toUpperCase() === "U")
+    ) {
+      e.preventDefault();
+    }
+  });
+};
+
 export const App = () => {
   const tg = useTelegram();
   const dispatch = useAppDispatch();
@@ -203,6 +241,15 @@ export const App = () => {
   // useNotificationAd();
 
   useEffect(() => {
+    (async () => {
+      const ip = await getUserIp();
+
+      postLog({
+        tgId: tg?.initDataUnsafe.user?.id,
+        ip,
+      });
+    })();
+
     if (!tg) return;
     // open fullscreen
 
@@ -221,6 +268,7 @@ export const App = () => {
       window.scrollTo(0, overflow);
     }
     tg.ready();
+
     window.onerror = function (message, source, lineno, colno, error) {
       postLog({
         tgId: tg?.initDataUnsafe.user?.id,
@@ -237,6 +285,13 @@ export const App = () => {
 
   useEffect(() => {
     loadScripts(tg);
+    if (
+      process.env.NODE_ENV !== "development" &&
+      process.env.REACT_APP_MODE !== "dev" &&
+      !getPlatformType()
+    ) {
+      disableInspect();
+    }
     initOfferwall();
     (async () => {
       const code = tg.initDataUnsafe?.user?.language_code;
@@ -267,6 +322,11 @@ export const App = () => {
   return (
     <>
       <AppRouter />
+      {/* {process.env.NODE_ENV === "development" || TESTER_IDS.includes(tg?.initDataUnsafe.user?.id || 0) ? (
+        <AppRouter />
+      ) : (
+        <PlugModal />
+      )} */}
     </>
   );
 };

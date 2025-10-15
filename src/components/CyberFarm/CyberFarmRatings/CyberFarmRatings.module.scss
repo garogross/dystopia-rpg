@@ -1,0 +1,61 @@
+@import "../../../styles/mixins";
+@import "../../../styles/vars";
+
+.cyberFarmRatings {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 16px;
+  padding-block: 16px;
+
+  &__tabBar {
+    @include flexCol();
+    gap: 8px;
+    width: 100%;
+  }
+  &__taBtn {
+    flex: 1;
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      #3d2b7e 0%,
+      #040010 100%
+    );
+    padding: 6px;
+    border: 1px solid #7f5cff;
+    @include flexCol();
+    @include setFont(14px, 400);
+    transition: $transition;
+    fill: $color-text;
+
+    & span {
+      max-width: 0px;
+      transition: $transition;
+      overflow: hidden;
+    }
+
+    &_active {
+      flex: 2;
+      background: $color-active-btn-gradient;
+      color: $color-black;
+      fill: $color-black;
+
+      & span {
+        max-width: 100%;
+        padding-right: 5px;
+      }
+    }
+
+    & svg {
+      fill: inherit;
+      transition: $transition;
+    }
+  }
+  &__tableWrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+}

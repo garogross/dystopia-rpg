@@ -9,8 +9,7 @@ import TransitionProvider, {
 } from "../../../providers/TransitionProvider";
 
 interface Props {
-  name: TranslationItemType;
-  keyName: string;
+  name: TranslationItemType | string;
   options: {
     value: string;
     label: string;
@@ -76,7 +75,10 @@ const Select: FC<Props> = ({
         onClick={() => setDropdownOpened((prev) => !prev)}
       >
         <div className={`${styles.select__btnInner} ${btnInnerClass || ""}`}>
-          <span>{selectedItem?.label || name[language]}</span>
+          <span>
+            {selectedItem?.label ||
+              (typeof name === "string" ? name : name[language])}
+          </span>
           <ArrowIcon rotate={dropdownOpened} />
         </div>
       </button>

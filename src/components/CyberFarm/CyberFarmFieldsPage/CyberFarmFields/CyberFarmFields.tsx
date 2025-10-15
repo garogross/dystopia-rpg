@@ -9,8 +9,6 @@ import { useAppSelector } from "../../../../hooks/redux";
 import { EFarmSlotTypes } from "../../../../constants/cyberfarm/EFarmSlotTypes";
 import { v4 } from "uuid";
 import { getFarmFieldsFromSlots } from "../../../../utils/getFarmFieldsFromSlots";
-import CloneFixedElementProvider from "../../../../providers/CloneFixedElementProvider";
-import { ECyberfarmTutorialActions } from "../../../../constants/cyberfarm/tutorial";
 import { getFarmFieldProgress } from "../../../../utils/getFarmFieldProgress";
 import { useFarmFieldsProgressCheck } from "../../../../hooks/useFarmFieldsProgressCheck";
 
@@ -30,6 +28,7 @@ const CyberFarmFields = () => {
   const slotCosts = useAppSelector((state) => state.cyberfarm.slots.slotCosts);
 
   const fields = getFarmFieldsFromSlots(slots);
+
   const maxSlotCount =
     slotCosts && slotCosts.fields[slotCosts.fields.length - 1].range[1];
 
@@ -39,9 +38,7 @@ const CyberFarmFields = () => {
   const firstEmptyFieldIndex = filteredFields.findIndex(
     (item) => !item.blocked && !item.process
   );
-  const firstEmptyField = filteredFields.find(
-    (item) => !item.blocked && !item.process
-  );
+
   const firstInProgressFieldIndex = filteredFields.findIndex(
     (item) =>
       !item.blocked &&
@@ -53,14 +50,12 @@ const CyberFarmFields = () => {
   if (firstEmptyFieldIndex !== -1) {
     filteredFields[firstEmptyFieldIndex] = {
       ...filteredFields[firstEmptyFieldIndex],
-      idArg: ECyberfarmTutorialActions.openProduceModal,
     };
   }
 
   if (firstInProgressFieldIndex !== -1) {
     filteredFields[firstInProgressFieldIndex] = {
       ...filteredFields[firstInProgressFieldIndex],
-      idArg: ECyberfarmTutorialActions.openProgressModal,
     };
   }
   const showBlockedField =
@@ -74,7 +69,6 @@ const CyberFarmFields = () => {
             id: v4(),
             type: EFarmSlotTypes.FIELDS,
             blocked: true,
-            idArg: ECyberfarmTutorialActions.openBuySlot,
           },
         ]
       : []),
@@ -125,23 +119,6 @@ const CyberFarmFields = () => {
           show={buildOptionsModalOpened}
           slotId={buildSlotId}
           onClose={() => setBuildOptionsModalOpened(false)}
-        />
-      )}
-      <CloneFixedElementProvider
-        id={ECyberfarmTutorialActions.openBuySlot}
-        onClick={() => {
-          const field = data[data.length - 1]; // blocked
-          onBuy(field);
-        }}
-      />
-      {firstEmptyFieldIndex !== -1 && !!firstEmptyField && (
-        <CloneFixedElementProvider
-          id={ECyberfarmTutorialActions.openProduceModal}
-          onClick={() => {
-            setProducingSlotId(firstEmptyField.id);
-
-            setPlantOptionsModalOpened(true);
-          }}
         />
       )}
     </main>

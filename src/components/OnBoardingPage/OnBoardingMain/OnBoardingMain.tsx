@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 
 import styles from "./OnBoardingMain.module.scss";
-import { CyberFarmIcon, InfluenceIcon } from "../../layout/icons/OnBoarding";
 import {
+  CyberFarmIcon,
+  InfluenceIcon,
+  MiniGamesIcon,
+} from "../../layout/icons/OnBoarding";
+import {
+  cyberFarmEvoPagePath,
   cyberFarmPagePath,
   influencePagePath,
+  miniGamesPagePath,
 } from "../../../router/constants";
 import { Link } from "react-router-dom";
 import { onBoardingGirl2Video } from "../../../assets/videos";
@@ -25,7 +31,7 @@ interface Props {
 
 const {
   talkText,
-  titleTonCyberFarm,
+  titleCyberFarm,
   titleMiniGames,
   titleInfluence,
   titleRPG,
@@ -35,7 +41,7 @@ const {
 } = TRANSLATIONS.onBoarding.main;
 
 const titleKeysMap: Record<string, { [key: string]: string }> = {
-  titleTonCyberFarm,
+  titleCyberFarm,
   titleMiniGames,
   titleRPG,
   titleStrategy,
@@ -62,45 +68,45 @@ type Option = {
   gameModeKey?: AppGameMode;
 };
 
-const options: Option[] = [
-  {
-    icon: <CyberFarmIcon />,
-    titleKey: "titleTonCyberFarm",
-    link: cyberFarmPagePath,
-    smallText: pay2EarnText,
-    gameModeKey: "ton_cyber_farm",
-  },
-  {
-    icon: <InfluenceIcon />,
-    titleKey: "titleInfluence",
-    smallText: comingSoonText,
-    gameModeKey: "influence",
-    link: influencePagePath,
-    // gameModeKey: "mini_games",
-  },
-  // {
-  //   icon: <MiniGamesIcon />,
-  //   titleKey: "titleMiniGames",
-  //   smallText: comingSoonText,
-  //   link: miniGamesPagePath,
-  //   // gameModeKey: "mini_games",
-  // },
-  // {
-  //   icon: <RPGIcon />,
-  //   titleKey: "titleRPG",
-  //   link: process.env.NODE_ENV === "development" ? rpgGamePagePath : "",
-  //   gameModeKey: "rpg",
-  // },
-  // {
-  //   icon: <StrategyIcon />,
-  //   titleKey: "titleStrategy",
-  //   link: "",
-  // },
-];
-
 const OnBoardingMain: React.FC<Props> = ({ rememberSelect }) => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const language = useAppSelector((state) => state.ui.language);
+  const appMode = useAppSelector((state) => state.cyberfarm.global.appMode);
+  const options: Option[] = [
+    {
+      icon: <CyberFarmIcon />,
+      titleKey: "titleCyberFarm",
+      link: appMode === "classic" ? cyberFarmPagePath : cyberFarmEvoPagePath,
+      smallText: pay2EarnText,
+      gameModeKey: "ton_cyber_farm",
+    },
+    {
+      icon: <InfluenceIcon />,
+      titleKey: "titleInfluence",
+      smallText: comingSoonText,
+      gameModeKey: "influence",
+      link: influencePagePath,
+      // gameModeKey: "mini_games",
+    },
+    {
+      icon: <MiniGamesIcon />,
+      titleKey: "titleMiniGames",
+      smallText: comingSoonText,
+      link: miniGamesPagePath,
+      // gameModeKey: "mini_games",
+    },
+    // {
+    //   icon: <RPGIcon />,
+    //   titleKey: "titleRPG",
+    //   link: process.env.NODE_ENV === "development" ? rpgGamePagePath : "",
+    //   gameModeKey: "rpg",
+    // },
+    // {
+    //   icon: <StrategyIcon />,
+    //   titleKey: "titleStrategy",
+    //   link: "",
+    // },
+  ];
 
   const onClickLink = (mode?: AppGameMode) => {
     if (!mode) return;

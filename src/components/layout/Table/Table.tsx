@@ -20,6 +20,7 @@ interface Props<T extends Record<string, TableColValue>> {
   columnsTemplate?: string;
   withoutBorder?: boolean;
   className?: string;
+  activeItemIndex?: number;
 }
 
 const Table = <T extends Record<string, TableColValue>>({
@@ -29,6 +30,7 @@ const Table = <T extends Record<string, TableColValue>>({
   columnsTemplate,
   withoutBorder,
   className,
+  activeItemIndex,
 }: Props<T>) => {
   const language = useAppSelector((state) => state.ui.language);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
@@ -56,7 +58,12 @@ const Table = <T extends Record<string, TableColValue>>({
         ))}
       </TransitionProvider>
       {data.map((item, index) => (
-        <div key={index} className={styles.table__col}>
+        <div
+          key={index}
+          className={`${styles.table__col} ${
+            index === activeItemIndex ? styles.table__col_active : ""
+          }`}
+        >
           {cols.map((col, index) => (
             <TransitionProvider
               inProp={gameInited}

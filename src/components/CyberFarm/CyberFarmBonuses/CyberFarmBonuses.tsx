@@ -11,9 +11,13 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { useFormValue } from "../../../hooks/useFormValue";
-import { withdrawTon } from "../../../store/slices/profileSlice";
+import {
+  getWithdrawRates,
+  withdrawCP,
+} from "../../../store/slices/profileSlice";
 import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import { useTooltip } from "../../../hooks/useTooltip";
+import FormSelect from "../../layout/FormSelect/FormSelect";
 
 interface Props {
   show: boolean;
@@ -24,11 +28,18 @@ interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;
   commission?: string;
   isInvalid?: boolean;
+  options?: {
+    value: string;
+    label: string;
+  }[];
+  onSelectChange?: (val: string) => void;
 }
 
 const {
   bonusesText,
   walletText,
+  currencyText,
+  currencyPlaceholder,
   walletPlaceholder,
   withdrawAmountText,
   withdrawAmountPlaceholder,
@@ -40,8 +51,13 @@ const {
   withdrawFailedText,
   setAllText,
   amountAfterCommissionMustBeGreaterThanZeroText,
-  amountExceedsTonBalanceText,
+  amountExceedsCPBalanceText,
+  invalidCurrencyText,
   walletAddressRequiredText,
+  commentText,
+  tonWithdrawCommentPlaceholder,
+  depositLabel,
+  withdrawLabel,
 } = TRANSLATIONS.cyberFarm.bonuses;
 
 const Formfield: React.FC<FormFieldProps> = ({
@@ -49,26 +65,38 @@ const Formfield: React.FC<FormFieldProps> = ({
   placeholder,
   commission,
   isInvalid,
+  options,
+  value,
+  onSelectChange,
   ...args
 }) => {
   const language = useAppSelector((state) => state.ui.language);
-
   return (
-    <label className="{styles.cyberFarmBonuses__form}">
+    <label className={styles.cyberFarmBonuses__form}>
       <div className={styles.cyberFarmBonuses__formFieldHeader}>
         <p className={styles.cyberFarmBonuses__formFieldHeaderText}>
           {headerText}
         </p>
         <FormFieldWind />
       </div>
-      <input
-        type="text"
-        {...args}
-        placeholder={placeholder}
-        className={`${styles.cyberFarmBonuses__input} ${
-          isInvalid ? styles.cyberFarmBonuses__input_invalid : ""
-        }`}
-      />
+      {options && onSelectChange ? (
+        <FormSelect
+          name={placeholder}
+          options={options}
+          value={value as string}
+          onChange={onSelectChange}
+        />
+      ) : (
+        <input
+          type="text"
+          {...args}
+          value={value}
+          placeholder={placeholder}
+          className={`${styles.cyberFarmBonuses__input} ${
+            isInvalid ? styles.cyberFarmBonuses__input_invalid : ""
+          }`}
+        />
+      )}
       {commission && (
         <p className={styles.cyberFarmBonuses__formFieldDescriptionText}>
           {commissionText[language]}: {commission}
@@ -97,13 +125,22 @@ const FormBtn = ({
     </div>
   </div>
 );
+
 const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const tonWithdrawCommission = useAppSelector(
-    (state) => state.profile.tonWithdrawCommission
-  );
-  const ton = useAppSelector((state) => state.profile.stats.ton);
+  const [withdrawSettings, setWithdrawSettings] = useState({
+    ton: {
+      ratePer1000: 0,
+      commission: 0,
+    },
+    usdt: {
+      ratePer1000: 0,
+      commission: 0,
+    },
+  });
+
+  const cp = useAppSelector((state) => state.profile.stats.cp);
   // const {
   //   onShowAd,
   //   showTooltip: showAdTooltip,
@@ -117,17 +154,53 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
     getCurError,
     formData,
     onResetForm,
-  } = useFormValue({
+  } = useFormValue<{
+    address: string;
+    amount: string;
+    memo: string;
+    currency: "usdt" | "ton";
+  }>({
     address: "",
     amount: "",
+    memo: "",
+    currency: "usdt",
   });
   const [loading, setLoading] = useState(false);
   const [tooltipText, setTooltipText] = useState(withdrawCompletedText);
 
+  const commision =
+    withdrawSettings[(formData.currency as "usdt" | "ton") || "usdt"] || 0;
+
   const withdrawWithCommision = Math.max(
-    +formData.amount - tonWithdrawCommission,
+    +formData.amount * (commision.ratePer1000 / 1000) - commision.commission,
     0
   );
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const res = await dispatch(getWithdrawRates()).unwrap();
+        const rates = res.rates_per_1000cp;
+        const commisions = res.commissions;
+        setWithdrawSettings({
+          ton: {
+            ratePer1000: rates.ton,
+            commission: commisions.commission_ton_abs,
+          },
+          usdt: {
+            ratePer1000: rates.usdt,
+            commission: commisions.commission_usdt_abs,
+          },
+        });
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (!show) onResetForm();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -149,17 +222,28 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
       openTooltip();
       return;
     }
-    if (+formData.amount > ton) {
-      setTooltipText(amountExceedsTonBalanceText);
+    if (+formData.amount > cp) {
+      setTooltipText(amountExceedsCPBalanceText);
       openTooltip();
       setError((prev) => ({ ...prev, amount: "invalid" }));
+      return;
+    }
+    const currencies = ["usdt", "ton"];
+    if (!formData.currency || !currencies.includes(formData.currency)) {
+      setTooltipText(invalidCurrencyText);
+      openTooltip();
+      setError((prev) => ({ ...prev, currency: "invalid" }));
       return;
     }
 
     try {
       setLoading(true);
       await dispatch(
-        withdrawTon({ ...formData, amount: +formData.amount })
+        withdrawCP({
+          ...formData,
+          currency: formData.currency as "usdt" | "ton",
+          amount: +formData.amount,
+        })
       ).unwrap();
       setTooltipText(withdrawCompletedText);
     } catch (error) {
@@ -177,6 +261,7 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
       show={show}
       onClose={onClose}
       fullHeught
+      hideAd
     >
       <div className={styles.cyberFarmBonuses}>
         {/* <button
@@ -195,13 +280,43 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
           </div>
         </button> */}
 
-        <h3 className={styles.cyberFarmBonuses__title}>TON</h3>
+        <div className={styles.cyberFarmBonuses__tabs}>
+          <button disabled className={styles.cyberFarmBonuses__tabBtn}>
+            {depositLabel[language]}
+          </button>
+          <button className={styles.cyberFarmBonuses__tabBtn}>
+            {withdrawLabel[language]}
+          </button>
+        </div>
+        <h5 className={styles.cyberFarmBonuses__rateText}>
+          1000 CP = {formData.currency === "usdt" && "$"}
+          {withdrawSettings[formData.currency]?.ratePer1000 || 0}
+          {formData.currency === "ton" && ` TON`}
+        </h5>
         <form onSubmit={onSubmit} className={styles.cyberFarmBonuses__form}>
+          <Formfield
+            headerText={currencyText[language]}
+            placeholder={currencyPlaceholder[language]}
+            name="currency"
+            onSelectChange={(val) => onChangeSelect("currency", val)}
+            value={formData.currency}
+            isInvalid={!!getCurError("currency")}
+            options={[
+              {
+                value: "ton",
+                label: "TON",
+              },
+              {
+                value: "usdt",
+                label: "USDT",
+              },
+            ]}
+          />
           <Formfield
             headerText={walletText[language]}
             placeholder={walletPlaceholder[language]}
-            name="address"
             onChange={onChange}
+            name="address"
             value={formData.address}
             isInvalid={!!getCurError("address")}
           />
@@ -209,7 +324,9 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             <Formfield
               headerText={withdrawAmountText[language]}
               placeholder={withdrawAmountPlaceholder[language]}
-              commission={`${tonWithdrawCommission} TON`}
+              commission={`${
+                commision.commission
+              } ${formData.currency.toUpperCase()}`}
               name="amount"
               onChange={onChange}
               value={formData.amount}
@@ -217,17 +334,24 @@ const CyberFarmBonuses: React.FC<Props> = ({ show, onClose }) => {
             />
             <button
               type="button"
-              onClick={() => onChangeSelect("amount", ton)}
+              onClick={() => onChangeSelect("amount", cp)}
               className={styles.cyberFarmBonuses__setAllBtn}
             >
-              {setAllText[language]} ({+ton.toFixed(2)})
+              {setAllText[language]} ({+cp.toFixed(2)})
             </button>
           </div>
           <Formfield
+            headerText={commentText[language]}
+            placeholder={tonWithdrawCommentPlaceholder[language]}
+            onChange={onChange}
+            name="memo"
+            value={formData.memo}
+          />
+          <Formfield
             headerText={totalToReceiveText[language]}
             placeholder={totalToReceivePlaceholder[language]}
-            disabled
             value={withdrawWithCommision}
+            isInvalid={!!formData.amount && withdrawWithCommision <= 0}
           />
           <FormBtn disabled={loading}>
             <WithdrawIcon />

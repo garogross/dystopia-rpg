@@ -22,11 +22,10 @@ import TransitionProvider, {
 import { BuyIcon } from "../../layout/icons/CyberFarm/CyberFarmOptionsModal";
 import {
   buyResourceDeflict,
+  getProductionEstimate,
+  getProductPrices,
   getResourcesDeflict,
 } from "../../../store/slices/cyberFarm/resourcesSlice";
-import { EPlants } from "../../../constants/cyberfarm/EPlants";
-import { ECyberfarmTutorialActions } from "../../../constants/cyberfarm/tutorial";
-import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider";
 import { ConfirmIcon } from "../../layout/icons/Common";
 
 interface Props {
@@ -34,6 +33,7 @@ interface Props {
   onClose: () => void;
   type: EFarmSlotTypes;
   slotId: string;
+  level?: number;
 }
 
 const {
@@ -56,45 +56,70 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   onClose,
   type,
   slotId,
+  level,
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
-  const tutorialInProgress = useAppSelector(
-    (state) => state.cyberfarm.tutorial.tutorialInProgress
-  );
 
   const [loading, setLoading] = useState(false);
   const [errored, setErrored] = useState(false);
   const [errorText, setErrorText] = useState("");
   const { show: showTooltip, openTooltip } = useTooltip();
-  const productionChains = useAppSelector(
-    (state) => state.cyberfarm.resources.productionChains
-  );
+
   const resourceDeficit = useAppSelector(
     (state) => state.cyberfarm.resources.resourceDeficit
+  );
+  const productsSettings = useAppSelector(
+    (state) => state.cyberfarm.resources.productsSettings
+  );
+  const productionEstimate = useAppSelector(
+    (state) => state.cyberfarm.resources.productionEstimate
   );
   const resources = useAppSelector(
     (state) => state.cyberfarm.resources.resources
   );
+  const upgradeLevels = useAppSelector(
+    (state) => state.cyberfarm.slots.upgradeLevels
+  );
+  const curLevel = upgradeLevels?.[(level || "")?.toString()];
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const [selectedResource, setSelectedResource] =
     useState<CyberFarmProductType | null>(null);
 
-  const curChain =
-    selectedResource && productionChains
-      ? productionChains[type][selectedResource]
-      : null;
   const curProduct = selectedResource ? products[selectedResource] : null;
   const totalPricyByCp =
     selectedResource && resourceDeficit
       ? resourceDeficit[type]?.[selectedResource]?.total_price || 0
       : 0;
+
+  const curEstimate =
+    selectedResource && productionEstimate
+      ? productionEstimate[selectedResource]
+      : null;
+  const curProductSettings =
+    selectedResource && productsSettings
+      ? productsSettings[selectedResource]
+      : null;
+
+  const fetchProductInfo = async () => {
+    setLoading(true);
+    try {
+      await Promise.all([
+        dispatch(getResourcesDeflict()),
+        dispatch(getProductionEstimate()),
+        dispatch(getProductPrices()),
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!show) {
       setErrorText("");
       setErrored(false);
     } else {
-      dispatch(getResourcesDeflict());
+      fetchProductInfo();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,7 +135,6 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           buyResourceDeflict({
             product: selectedResource,
             slot_type: type,
-            tutorial: tutorialInProgress,
           })
         ).unwrap();
       }
@@ -149,17 +173,19 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
   const col1 = data.slice(0, Math.ceil(data.length / 2));
   const col2 = data.slice(Math.ceil(data.length / 2));
 
-  const inputResources = curChain?.input
-    ? Object.entries(curChain.input).map(([k, value]) => {
-        const key = k as CyberFarmProductType;
-        return {
-          key,
-          name: products[key].name[language],
-          required: value,
-          available: resources[key],
-          isInsufficient: resources[key] < value,
-        };
-      })
+  const inputResources = curProductSettings?.production?.[type]?.requirements
+    ? Object.entries(curProductSettings.production[type].requirements).map(
+        ([k, value]) => {
+          const key = k as CyberFarmProductType;
+          return {
+            key,
+            name: products[key].name[language],
+            required: value,
+            available: resources[key],
+            isInsufficient: resources[key] < value,
+          };
+        }
+      )
     : [];
 
   const isUnavailableForProduce = inputResources.some(
@@ -185,11 +211,6 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
                 .filter(([_, product]) => product.type === productType)
                 .map(([key, product]) => (
                   <button
-                    id={
-                      key === EPlants.MetalCactus
-                        ? ECyberfarmTutorialActions.selectProduceRes
-                        : undefined
-                    }
                     className={`${styles.cyberFarmOptionsModal__btn} ${
                       type !== EFarmSlotTypes.FACTORY
                         ? styles.cyberFarmOptionsModal__btn_plant
@@ -220,7 +241,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           ))}
         </div>
         <TransitionProvider
-          inProp={!!curChain}
+          inProp={!!(selectedResource && curEstimate)}
           style={TransitionStyleTypes.height}
           height={600}
           className={styles.cyberFarmOptionsModal__info}
@@ -241,7 +262,9 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
               {productionText[language]}
             </span>
             <span className={styles.cyberFarmOptionsModal__infoText}>
-              {curChain?.output}
+              {curEstimate
+                ? curEstimate[type].final_production + (curLevel?.bonus || 0)
+                : 0}
             </span>
           </div>
           <div className={styles.cyberFarmOptionsModal__infoHeader}>
@@ -257,27 +280,38 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           </div>
           <table className={styles.cyberFarmOptionsModal__infoTable}>
             <tbody>
-              {inputResources.map((resource) => (
-                <tr key={resource.key}>
-                  <td className={styles.cyberFarmOptionsModal__infoTableRow}>
-                    <span className={styles.cyberFarmOptionsModal__infoText}>
-                      {resource.name}
-                    </span>
-                  </td>
-                  <td className={styles.cyberFarmOptionsModal__infoTableRow}>
-                    <span className={styles.cyberFarmOptionsModal__infoText}>
-                      {resource.isInsufficient ? (
-                        <span className="redText">
-                          ({youHaveText[language]}:{resource.available})
+              {inputResources &&
+                inputResources.map((resource) => {
+                  return (
+                    <tr key={resource.key}>
+                      <td
+                        className={styles.cyberFarmOptionsModal__infoTableRow}
+                      >
+                        <span
+                          className={styles.cyberFarmOptionsModal__infoText}
+                        >
+                          {resource.name}
                         </span>
-                      ) : (
-                        ""
-                      )}{" "}
-                      {resource.required}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      </td>
+                      <td
+                        className={styles.cyberFarmOptionsModal__infoTableRow}
+                      >
+                        <span
+                          className={styles.cyberFarmOptionsModal__infoText}
+                        >
+                          {resource.isInsufficient ? (
+                            <span className="redText">
+                              ({youHaveText[language]}:{resource.available})
+                            </span>
+                          ) : (
+                            ""
+                          )}{" "}
+                          {resource.required}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </TransitionProvider>
@@ -297,7 +331,7 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
         >
           <span className={styles.cyberFarmOptionsModal__missingResCostText}>
             {missingResourcesCostText[language]}:{" "}
-            {totalPricyByCp ? +totalPricyByCp.toFixed(2) : 0}
+            {totalPricyByCp ? +totalPricyByCp.toFixed(4) : 0}
           </span>
           <ImageWebp
             src={cpImage}
@@ -308,11 +342,9 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
         </TransitionProvider>
         <button
           onClick={onProduce}
-          id={ECyberfarmTutorialActions.produceRes}
           disabled={
-            !tutorialInProgress &&
-            (!selectedResource ||
-              (isUnavailableForProduce && totalPricyByCp > cp))
+            !selectedResource ||
+            (isUnavailableForProduce && totalPricyByCp > cp)
           }
           className={styles.cyberFarmOptionsModal__acceptBtn}
         >
@@ -334,16 +366,6 @@ const CyberFarmOptionsModal: React.FC<Props> = ({
           ]
         }
       />
-      <CloneFixedElementProvider
-        id={ECyberfarmTutorialActions.selectProduceRes}
-        onClick={() => setSelectedResource(EPlants.MetalCactus)}
-      />
-      {selectedResource && (
-        <CloneFixedElementProvider
-          id={ECyberfarmTutorialActions.produceRes}
-          onClick={onProduce}
-        />
-      )}
     </ModalWithAdd>
   );
 };

@@ -12,6 +12,7 @@ import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
 import LoadingOverlay from "../LoadingOverlay/LoadingOverlay";
 import { adBannerRenderers } from "../../../utils/adBannerRenderers";
+import { TopWings } from "../icons/ModalWithAdd";
 
 const ONCLICKA_SLOT = "6077989";
 
@@ -27,6 +28,9 @@ interface Props {
   loading?: boolean;
   errored?: boolean;
   errorText?: string;
+  hideAd?: boolean;
+  titleClass?: string;
+  evoMode?: boolean;
 }
 
 const ModalWithAdd: React.FC<Props> = ({
@@ -40,12 +44,15 @@ const ModalWithAdd: React.FC<Props> = ({
   loading,
   errored,
   errorText,
+  hideAd,
+  titleClass,
+  evoMode,
 }) => {
   const language = useAppSelector((state) => state.ui.language);
   const onClicka = adBannerRenderers.onclicka;
 
   useEffect(() => {
-    if (show) onClicka.init(ONCLICKA_SLOT);
+    if (show && !hideAd) onClicka.init(ONCLICKA_SLOT);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [show]);
 
@@ -59,7 +66,11 @@ const ModalWithAdd: React.FC<Props> = ({
       {titleLg && (
         <h2 className={styles.modalWithAdd__titleLgText}>{titleLg}</h2>
       )}
-      {title && <h4 className={styles.modalWithAdd__titleText}>{title}</h4>}{" "}
+      {title && (
+        <h4 className={`${styles.modalWithAdd__titleText} ${titleClass || ""}`}>
+          {title}
+        </h4>
+      )}{" "}
       <div className={styles.modalWithAdd__content}>{children}</div>
       <TransitionProvider
         inProp={!!errored}
@@ -69,9 +80,11 @@ const ModalWithAdd: React.FC<Props> = ({
       >
         <span>{errorText || somethingWentWrong[language]}</span>
       </TransitionProvider>
-      <div className={styles.modalWithAdd__adWrapper}>
-        {onClicka.render(ONCLICKA_SLOT)}
-      </div>
+      {!hideAd && (
+        <div className={styles.modalWithAdd__adWrapper}>
+          {onClicka.render(ONCLICKA_SLOT)}
+        </div>
+      )}
     </>
   );
   return (
@@ -85,7 +98,12 @@ const ModalWithAdd: React.FC<Props> = ({
             fullHeught ? styles.modalWithAdd_full : ""
           }`}
         >
-          {!withoutFrame ? (
+          {evoMode && (
+            <div className={styles.modalWithAdd__topWings}>
+              <TopWings />
+            </div>
+          )}
+          {!withoutFrame && !evoMode ? (
             <WrapperWithFrame
               size="lg"
               className={styles.modalWithAdd__container}

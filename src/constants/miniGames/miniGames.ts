@@ -1,34 +1,63 @@
 import {
-  hackTerminalImage,
-  hackTerminalImageWebp,
-  minGamesPuzzleImage,
-  minGamesPuzzleImageWebp,
+  bubblefrontImage,
+  bubblefrontImageWebp,
+  // hackTerminalImage,
+  // hackTerminalImageWebp,
+  // minGamesPuzzleImage,
+  // minGamesPuzzleImageWebp,
 } from "../../assets/imageMaps";
-import { hackTerminalPagePath } from "../../router/constants";
+import {
+  bubbleFrontPagePath,
+  // hackTerminalPagePath,
+} from "../../router/constants";
+import { TranslationItemType } from "../../types/TranslationItemType";
 import { TRANSLATIONS } from "../TRANSLATIONS";
 import { EMiniGames } from "./EMiniGames";
 
-const { puzzle, hackTerminal } = TRANSLATIONS.miniGames;
+const {
+  // puzzle, hackTerminal,
+  bubbleFront,
+} = TRANSLATIONS.miniGames;
 
-export const MINI_GAMES = [
+export const MINI_GAMES: {
+  image: {
+    src: string;
+    srcSet: string;
+  };
+  name: TranslationItemType;
+  description: TranslationItemType;
+  key: EMiniGames;
+  link: string;
+  pinned?: boolean;
+}[] = [
+  // {
+  //   image: {
+  //     src: minGamesPuzzleImage,
+  //     srcSet: minGamesPuzzleImageWebp,
+  //   },
+  //   name: puzzle.name,
+  //   description: puzzle.description,
+  //   pinned: true,
+  //   key: EMiniGames.PUZZLE,
+  // },
+  // {
+  //   image: {
+  //     src: hackTerminalImage,
+  //     srcSet: hackTerminalImageWebp,
+  //   },
+  //   name: hackTerminal.name,
+  //   description: hackTerminal.description,
+  //   key: EMiniGames.HACK_TERMINAL,
+  //   link: hackTerminalPagePath,
+  // },
   {
     image: {
-      src: minGamesPuzzleImage,
-      srcSet: minGamesPuzzleImageWebp,
+      src: bubblefrontImage,
+      srcSet: bubblefrontImageWebp,
     },
-    name: puzzle.name,
-    description: puzzle.description,
-    pinned: true,
-    key: EMiniGames.PUZZLE,
-  },
-  {
-    image: {
-      src: hackTerminalImage,
-      srcSet: hackTerminalImageWebp,
-    },
-    name: hackTerminal.name,
-    description: hackTerminal.description,
-    key: EMiniGames.HACK_TERMINAL,
-    link: hackTerminalPagePath,
+    name: bubbleFront.name,
+    description: bubbleFront.description,
+    key: EMiniGames.BUBBLE_FRONT,
+    link: bubbleFrontPagePath,
   },
 ];
