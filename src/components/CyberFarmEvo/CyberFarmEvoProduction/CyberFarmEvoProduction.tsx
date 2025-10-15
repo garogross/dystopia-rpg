@@ -52,8 +52,9 @@ const BOX_PER_COL = 2;
 
 const CyberFarmEvoProduction = () => {
   const dispatch = useAppDispatch();
-  const resourceDeflict = useAppSelector(
-    (state) => state.cyberfarm.resources.resourceDeficit
+
+  const productsSettings = useAppSelector(
+    (state) => state.cyberfarm.resources.productsSettings
   );
   const productionEstimate = useAppSelector(
     (state) => state.cyberfarm.resources.productionEstimate
@@ -62,7 +63,7 @@ const CyberFarmEvoProduction = () => {
   const [activeTab, setActiveTab] = useState(tabs[0].key);
   const [selectedProduct, setSelectedProduct] =
     useState<CyberFarmProductType | null>(null);
-  const curDeflict = resourceDeflict?.[activeTab];
+  const curDeflict = productsSettings ? productsSettings : null;
   const data = curDeflict && Object.entries(curDeflict);
 
   useEffect(() => {
@@ -106,182 +107,188 @@ const CyberFarmEvoProduction = () => {
           </div>
           <div className={styles.cyberFarmEvoProduction__list}>
             {data &&
-              data.map(([key, deflict]) => {
-                const product = key as CyberFarmProductType;
-                const productInfo = products[product];
-                const requiredResources = Object.entries(deflict).filter(
-                  ([key]) => key !== "total_price"
-                );
+              data
+                .filter(
+                  ([_key, deflict]) =>
+                    deflict?.production?.[activeTab]?.requirements
+                )
+                .map(([key, deflict]) => {
+                  const product = key as CyberFarmProductType;
 
-                const finalProduction =
-                  productionEstimate?.[product]?.[activeTab]
-                    ?.final_production || 0;
-                return (
-                  <div
-                    key={product}
-                    className={styles.cyberFarmEvoProduction__listItem}
-                  >
+                  const productInfo = products[product];
+                  const requiredResources = Object.entries(
+                    deflict?.production?.[activeTab]?.requirements
+                  );
+
+                  const finalProduction =
+                    productionEstimate?.[product]?.[activeTab]
+                      ?.final_production || 0;
+                  return (
                     <div
                       key={product}
-                      className={styles.cyberFarmEvoProduction__listItemInner}
+                      className={styles.cyberFarmEvoProduction__listItem}
                     >
-                      <button
-                        onClick={() => setSelectedProduct(product)}
-                        className={styles.cyberFarmEvoProduction__dropdownBtn}
+                      <div
+                        key={product}
+                        className={styles.cyberFarmEvoProduction__listItemInner}
                       >
-                        <ImageWebp
-                          className={`${
-                            styles.cyberFarmEvoProduction__dropdownBtnImg
-                          } ${
-                            selectedProduct === product
-                              ? styles.cyberFarmEvoProduction__dropdownBtnImg_hidden
-                              : ""
-                          }`}
-                          pictureClass={
-                            styles.cyberFarmEvoProduction__dropdownBtnPicture
-                          }
-                          src={productInfo.evo.src}
-                          alt={productInfo.name[language]}
-                          srcSet={productInfo.evo.srcSet}
-                        />
-                        <span
-                          className={
-                            styles.cyberFarmEvoProduction__dropdownBtnTitleTxt
-                          }
+                        <button
+                          onClick={() => setSelectedProduct(product)}
+                          className={styles.cyberFarmEvoProduction__dropdownBtn}
                         >
-                          {productInfo.name[language]}
-                        </span>
-                        <DropDownArrowIcon
-                          rotated={selectedProduct !== product}
-                        />
-                      </button>
-                      <TransitionProvider
-                        className={
-                          styles.cyberFarmEvoProduction__listItemDropdownContent
-                        }
-                        style={TransitionStyleTypes.height}
-                        height={200}
-                        inProp={selectedProduct === product}
-                      >
-                        <div
+                          <ImageWebp
+                            className={`${
+                              styles.cyberFarmEvoProduction__dropdownBtnImg
+                            } ${
+                              selectedProduct === product
+                                ? styles.cyberFarmEvoProduction__dropdownBtnImg_hidden
+                                : ""
+                            }`}
+                            pictureClass={
+                              styles.cyberFarmEvoProduction__dropdownBtnPicture
+                            }
+                            src={productInfo.evo.src}
+                            alt={productInfo.name[language]}
+                            srcSet={productInfo.evo.srcSet}
+                          />
+                          <span
+                            className={
+                              styles.cyberFarmEvoProduction__dropdownBtnTitleTxt
+                            }
+                          >
+                            {productInfo.name[language]}
+                          </span>
+                          <DropDownArrowIcon
+                            rotated={selectedProduct !== product}
+                          />
+                        </button>
+                        <TransitionProvider
                           className={
-                            styles.cyberFarmEvoProduction__listItemDropdownContentInner
+                            styles.cyberFarmEvoProduction__listItemDropdownContent
                           }
+                          style={TransitionStyleTypes.height}
+                          height={200}
+                          inProp={selectedProduct === product}
                         >
                           <div
                             className={
-                              styles.cyberFarmEvoProduction__listItemDropdownCol
+                              styles.cyberFarmEvoProduction__listItemDropdownContentInner
                             }
                           >
                             <div
                               className={
-                                styles.cyberFarmEvoProduction__listItemDropdownProductBox
+                                styles.cyberFarmEvoProduction__listItemDropdownCol
                               }
                             >
-                              <ImageWebp
-                                src={productInfo.evo.src}
-                                alt={productInfo.name[language]}
-                                srcSet={productInfo.evo.srcSet}
-                                className={
-                                  styles.cyberFarmEvoProduction__listItemDropdownProductBoxImg
-                                }
-                                pictureClass={
-                                  styles.cyberFarmEvoProduction__listItemDropdownProductBoxPicture
-                                }
-                              />
-                              <span
-                                className={
-                                  styles.cyberFarmEvoProduction__listItemDropdownProductBoxCountText
-                                }
-                              >
-                                {finalProduction}
-                              </span>
-                            </div>
-                          </div>
-                          {Array.from({
-                            length: 2,
-                          }).map((_, colIndex) => {
-                            const colData = requiredResources.slice(
-                              colIndex * BOX_PER_COL,
-                              colIndex * BOX_PER_COL + BOX_PER_COL
-                            ) as [CyberFarmProductType, number][];
-
-                            return (
                               <div
-                                key={colIndex}
-                                className={`${
-                                  styles.cyberFarmEvoProduction__listItemDropdownCol
-                                } ${
-                                  styles[
-                                    `cyberFarmEvoProduction__listItemDropdownCol_${
-                                      colIndex + 1
-                                    }`
-                                  ]
-                                }`}
+                                className={
+                                  styles.cyberFarmEvoProduction__listItemDropdownProductBox
+                                }
                               >
-                                {colData.map(([key, count], index) => {
-                                  let arrowIcon = <DeflictCenterArrow />;
-                                  let arrowIconClassnamePrefix:
-                                    | "center"
-                                    | "top"
-                                    | "bottom" = "center";
-                                  if (!colIndex && colData.length > 1) {
-                                    if (index) {
-                                      arrowIconClassnamePrefix = "bottom";
-                                      arrowIcon = <DeflictBottomArrow />;
-                                    } else {
-                                      arrowIconClassnamePrefix = "top";
-                                      arrowIcon = <DeflictTopArrow />;
-                                    }
+                                <ImageWebp
+                                  src={productInfo.evo.src}
+                                  alt={productInfo.name[language]}
+                                  srcSet={productInfo.evo.srcSet}
+                                  className={
+                                    styles.cyberFarmEvoProduction__listItemDropdownProductBoxImg
                                   }
-                                  return (
-                                    <div
-                                      key={key}
-                                      className={
-                                        styles.cyberFarmEvoProduction__listItemDropdownProductBox
-                                      }
-                                    >
-                                      <ImageWebp
-                                        src={products[key].evo.src}
-                                        alt={products[key].name[language]}
-                                        srcSet={products[key].evo.srcSet}
-                                        className={
-                                          styles.cyberFarmEvoProduction__listItemDropdownProductBoxImg
-                                        }
-                                        pictureClass={
-                                          styles.cyberFarmEvoProduction__listItemDropdownProductBoxPicture
-                                        }
-                                      />
-                                      <span
-                                        className={
-                                          styles.cyberFarmEvoProduction__listItemDropdownProductBoxCountText
-                                        }
-                                      >
-                                        {count}
-                                      </span>
-                                      <div
-                                        className={`${
-                                          styles.cyberFarmEvoProduction__listItemDropdownProductBoxArrowIcon
-                                        } ${
-                                          styles[
-                                            `cyberFarmEvoProduction__listItemDropdownProductBoxArrowIcon_${arrowIconClassnamePrefix}`
-                                          ]
-                                        }`}
-                                      >
-                                        {arrowIcon}
-                                      </div>
-                                    </div>
-                                  );
-                                })}
+                                  pictureClass={
+                                    styles.cyberFarmEvoProduction__listItemDropdownProductBoxPicture
+                                  }
+                                />
+                                <span
+                                  className={
+                                    styles.cyberFarmEvoProduction__listItemDropdownProductBoxCountText
+                                  }
+                                >
+                                  {finalProduction}
+                                </span>
                               </div>
-                            );
-                          })}
-                        </div>
-                      </TransitionProvider>
+                            </div>
+                            {Array.from({
+                              length: 2,
+                            }).map((_, colIndex) => {
+                              const colData = requiredResources.slice(
+                                colIndex * BOX_PER_COL,
+                                colIndex * BOX_PER_COL + BOX_PER_COL
+                              ) as [CyberFarmProductType, number][];
+
+                              return (
+                                <div
+                                  key={colIndex}
+                                  className={`${
+                                    styles.cyberFarmEvoProduction__listItemDropdownCol
+                                  } ${
+                                    styles[
+                                      `cyberFarmEvoProduction__listItemDropdownCol_${
+                                        colIndex + 1
+                                      }`
+                                    ]
+                                  }`}
+                                >
+                                  {colData.map(([key, count], index) => {
+                                    let arrowIcon = <DeflictCenterArrow />;
+                                    let arrowIconClassnamePrefix:
+                                      | "center"
+                                      | "top"
+                                      | "bottom" = "center";
+                                    if (!colIndex && colData.length > 1) {
+                                      if (index) {
+                                        arrowIconClassnamePrefix = "bottom";
+                                        arrowIcon = <DeflictBottomArrow />;
+                                      } else {
+                                        arrowIconClassnamePrefix = "top";
+                                        arrowIcon = <DeflictTopArrow />;
+                                      }
+                                    }
+                                    return (
+                                      <div
+                                        key={key}
+                                        className={
+                                          styles.cyberFarmEvoProduction__listItemDropdownProductBox
+                                        }
+                                      >
+                                        <ImageWebp
+                                          src={products[key].evo.src}
+                                          alt={products[key].name[language]}
+                                          srcSet={products[key].evo.srcSet}
+                                          className={
+                                            styles.cyberFarmEvoProduction__listItemDropdownProductBoxImg
+                                          }
+                                          pictureClass={
+                                            styles.cyberFarmEvoProduction__listItemDropdownProductBoxPicture
+                                          }
+                                        />
+                                        <span
+                                          className={
+                                            styles.cyberFarmEvoProduction__listItemDropdownProductBoxCountText
+                                          }
+                                        >
+                                          {count}
+                                        </span>
+                                        <div
+                                          className={`${
+                                            styles.cyberFarmEvoProduction__listItemDropdownProductBoxArrowIcon
+                                          } ${
+                                            styles[
+                                              `cyberFarmEvoProduction__listItemDropdownProductBoxArrowIcon_${arrowIconClassnamePrefix}`
+                                            ]
+                                          }`}
+                                        >
+                                          {arrowIcon}
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </TransitionProvider>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
           </div>
         </div>
       </div>
