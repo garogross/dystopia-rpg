@@ -3,6 +3,8 @@ import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
   farmMapCityWareHouseImage,
   farmMapCityWareHouseWebpImage,
+  farmMapFabricBuildImage,
+  farmMapFabricBuildWebpImage,
   farmMapFarmBuildImage,
   farmMapFarmBuildWebpImage,
   farmMapTasksBuildImage,
@@ -12,6 +14,7 @@ import styles from "./CyberFarmEvoMap.module.scss";
 import { Link } from "react-router-dom";
 import {
   cyberFarmEvoPagePath,
+  cyberFarmFabricPagePath,
   cyberFarmFarmsPagePath,
   cyberFarmSupportPagePath,
   cyberFarmWarehousePagePath,
@@ -25,7 +28,8 @@ import {
 import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider/CloneFixedElementProvider";
 import { updateTutorialProgress } from "../../../store/slices/cyberFarm/tutorialSlice";
 
-const { tasksText, warehouseText, farmText } = TRANSLATIONS.cyberfarmEvo.map;
+const { tasksText, fabricText, warehouseText, farmText } =
+  TRANSLATIONS.cyberfarmEvo.map;
 
 const CyberFarmEvoMap = () => {
   const dispatch = useAppDispatch();
@@ -76,6 +80,18 @@ const CyberFarmEvoMap = () => {
               alt={"tasks"}
             />
             <span>{tasksText[language]}</span>
+          </Link>
+          <Link
+            id={ECyberfarmEvoTutorialActions.showTasks}
+            to={`${cyberFarmEvoPagePath}/${cyberFarmFabricPagePath}`}
+            className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_fabric}`}
+          >
+            <ImageWebp
+              srcSet={farmMapFabricBuildImage}
+              src={farmMapFabricBuildWebpImage}
+              alt={"fabric"}
+            />
+            <span>{fabricText[language]}</span>
           </Link>
           <Link
             id={ECyberfarmEvoTutorialActions.showWarehouse}

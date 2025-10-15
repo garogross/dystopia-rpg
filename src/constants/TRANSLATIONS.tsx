@@ -1246,6 +1246,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Farm",
         [ELanguages.ru]: "Ферма",
       },
+      fabricText: {
+        [ELanguages.en]: "Factory",
+        [ELanguages.ru]: "Фабрика",
+      },
     },
     farms: {
       collectAllText: {

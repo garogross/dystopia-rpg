@@ -25,6 +25,7 @@ export const cyberFarmReferalsPagePath = "referals";
 export const cyberFarmAchievmentsPagePath = "achievments";
 export const cyberFarmProductionPagePath = "production";
 export const cyberFarmRatingsPagePath = "ratings";
+export const cyberFarmFabricPagePath = "fabric";
 
 export const miniGamesPagePath = onBoardingPagePath + "/minigames";
 export const miniGamesAchievmentsPagePath = "achievments";

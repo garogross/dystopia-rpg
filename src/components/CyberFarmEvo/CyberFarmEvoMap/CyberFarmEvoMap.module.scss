@@ -71,6 +71,10 @@
       bottom: 7%;
       right: 20%;
     }
+    &_fabric {
+      left: 33%;
+      bottom: 35%;
+    }
 
     &:active {
       transform: scale(0.9);
@@ -81,6 +85,9 @@
     }
     &_tasks img {
       width: clamp(30px, 30vw, 150px);
+    }
+    &_fabric img {
+      width: clamp(28px, 36vw, 180px);
     }
 
     &_warehouse img {
