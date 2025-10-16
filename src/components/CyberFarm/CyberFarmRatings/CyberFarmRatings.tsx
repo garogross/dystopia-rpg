@@ -49,7 +49,9 @@ const CyberFarmRatings = () => {
   const ratings = useAppSelector(
     (state) => state.cyberfarm.ratings.wealthRankData
   );
+  const myRank = useAppSelector((state) => state.cyberfarm.ratings.myRank);
   const tgid = useAppSelector((state) => state.profile.tgId);
+  const username = useAppSelector((state) => state.profile.username);
   const language = useAppSelector((state) => state.ui.language);
   const [searchQuery, setSearchQuery] = useState("");
   const tabItems = getTabItems(language);
@@ -71,7 +73,20 @@ const CyberFarmRatings = () => {
     .sort((a, b) => b.score - a.score)
     .map((item, index) => ({ ...item, index: index + 1 }));
 
-  const curUserIndex = data?.findIndex((item) => item.id === tgid);
+  let curUserIndex = data?.findIndex((item) => item.id === tgid);
+  const values = {
+    builings: myRank?.structures?.structures_value,
+    general: myRank?.structures?.total,
+  };
+  if (curUserIndex === -1) {
+    data.push({
+      id: +tgid,
+      name: username,
+      score: values[activeTab] || 0,
+      index: myRank?.structures.rank || -1,
+    });
+    curUserIndex = data.length - 1;
+  }
 
   useEffect(() => {
     dispatch(getRatingsList());

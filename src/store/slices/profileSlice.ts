@@ -361,7 +361,7 @@ export const profileSlice = createSlice({
       state.id = payload.id;
       state.tgId = payload.tgId;
       state.avatar = payload.avatar;
-      state.username = payload.username;
+      state.username = payload.username || state.username;
     },
     updateStats(state, { payload }) {
       state.stats = { ...state.stats, ...payload };

@@ -10,18 +10,42 @@ import { GetRatingsListResponse } from "../../../models/api/CyberFarm/Ratings";
 export interface RatingsState {
   structuresRankData: IFarmUserStructuresRankRating[] | null;
   wealthRankData: IFarmUserWealthRankRating[] | null;
+  myRank: {
+    structures: {
+      total: number;
+      user_id: number;
+      rank: number;
+      structures_value: number;
+      fields: number;
+      farms: number;
+      factories: number;
+      farm_upgrade_levels: number;
+      factory_upgrade_levels: number;
+    };
+    wealth: {
+      total: number;
+      user_id: number;
+      rank: number;
+      total_value: number;
+      resources_cost: number;
+      production_cost: number;
+      unsorted_products_cost: number;
+      structures_value: number;
+    };
+  } | null;
 }
 
 const initialState: RatingsState = {
   structuresRankData: null,
   wealthRankData: null,
+  myRank: null,
 };
 
 const getRatingsListUrl = "/ton_cyber_farm/rankings/";
 export const getRatingsList = createAsyncThunk<
   GetRatingsListResponse,
   undefined
->("ratings/getRatingsList", async (payload, { rejectWithValue }) => {
+>("ratings/getRatingsList", async (_payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<GetRatingsListResponse>(
       getRatingsListUrl
@@ -42,6 +66,7 @@ export const ratingsSlice = createSlice({
     builder.addCase(getRatingsList.fulfilled, (state, { payload }) => {
       state.structuresRankData = payload.structures_rank.items;
       state.wealthRankData = payload.wealth_rank.items;
+      state.myRank = payload.my_rank;
     });
   },
 });
