@@ -22,33 +22,31 @@ import {
 } from "../../layout/icons/Gridline/Main";
 
 import styles from "./GridlineMain.module.scss";
-
-enum EBalls {
-  Blue = "Blue",
-  Gold = "Gold",
-  Green = "Green",
-  Red = "Red",
-  Silver = "Silver",
-}
-
-enum EBonuses {
-  LineBang = "LineBang",
-  SphereChange = "SphereChange",
-  ColorVirus = "ColorVirus",
-}
+import GridlineMainCanvas from "./GridlineMainCanvas/GridlineMainCanvas";
+import { EGridlineBalls } from "../../../constants/gridline/EGridlineBalls";
+import { EGridlineBonuses } from "../../../constants/gridline/EGridlineBonuses";
 
 const nextBalls = {
-  [EBalls.Blue]: [gridlineBlueBallImage, gridlineBlueBallImageWebp],
-  [EBalls.Gold]: [gridlineGoldBallImage, gridlineGoldBallImageWebp],
-  [EBalls.Green]: [gridlineGreenBallImage, gridlineGreenBallImageWebp],
-  [EBalls.Red]: [gridlineRedBallImage, gridlineRedBallImageWebp],
-  [EBalls.Silver]: [gridlineSilverBallImage, gridlineSilverBallImageWebp],
+  [EGridlineBalls.Blue]: [gridlineBlueBallImage, gridlineBlueBallImageWebp],
+  [EGridlineBalls.Gold]: [gridlineGoldBallImage, gridlineGoldBallImageWebp],
+  [EGridlineBalls.Green]: [gridlineGreenBallImage, gridlineGreenBallImageWebp],
+  [EGridlineBalls.Red]: [gridlineRedBallImage, gridlineRedBallImageWebp],
+  [EGridlineBalls.Silver]: [
+    gridlineSilverBallImage,
+    gridlineSilverBallImageWebp,
+  ],
 };
 
 const bonuses = {
-  [EBonuses.LineBang]: { icon: <LineBangIcon />, name: "Взрыв линии" },
-  [EBonuses.SphereChange]: { icon: <ChangeShapersIcon />, name: "Смена сфер" },
-  [EBonuses.ColorVirus]: { icon: <ColorVirusIcon />, name: "Цветовирус" },
+  [EGridlineBonuses.LineBang]: { icon: <LineBangIcon />, name: "Взрыв линии" },
+  [EGridlineBonuses.SphereChange]: {
+    icon: <ChangeShapersIcon />,
+    name: "Смена сфер",
+  },
+  [EGridlineBonuses.ColorVirus]: {
+    icon: <ColorVirusIcon />,
+    name: "Цветовирус",
+  },
 };
 
 const GridlineMain = () => {
@@ -71,15 +69,17 @@ const GridlineMain = () => {
                   className={styles.gridlineMain__headerBallImg}
                 />
               ))}
-            <span className={styles.gridlineMain__headerText}>очки: 1000</span>
           </div>
+          <span className={styles.gridlineMain__headerText}>очки: 1000</span>
         </div>
       </div>
       <div className={styles.gridlineMain__gameWrapper}>
         <div className={styles.gridlineMain__gameWrapperTopIcon}>
           <TopFrame />
         </div>
-        <div className={styles.gridlineMain__gameContainer}></div>
+        <div className={styles.gridlineMain__gameContainer}>
+          <GridlineMainCanvas />
+        </div>
         <div className={styles.gridlineMain__gameWrapperBottomIcon}>
           <BottomFrame />
         </div>
@@ -96,7 +96,7 @@ const GridlineMain = () => {
         </div>
         <div className={styles.gridlineMain__bonusesOptionsList}>
           {Object.entries(bonuses).map(([k, value]) => {
-            const key = k as EBonuses;
+            const key = k as EGridlineBonuses;
             return (
               <button className={styles.gridlineMain__bonusOptionBtn} key={key}>
                 <div className={styles.gridlineMain__bonusOptionBtnInner}>

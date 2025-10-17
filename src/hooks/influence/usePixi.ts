@@ -42,6 +42,8 @@ export const usePixi = (
 
       // In v7.2, the canvas is called .view
       if (app?.view && pixiContainer.current) {
+        // Ensure canvas behaves like a block element to avoid inline-gap quirks
+        (app.view as HTMLCanvasElement).style.display = "block";
         pixiContainer.current.appendChild(app.view as HTMLCanvasElement);
         canvas = app.view as HTMLCanvasElement;
       }
