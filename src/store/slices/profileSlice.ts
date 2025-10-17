@@ -114,10 +114,20 @@ export const authUser = createAsyncThunk<AuthUserResponse, string>(
 const getAccountDetailsUrl = "/account/";
 
 export const getAccountDetails =
-  (avatar?: string, username?: string, mode?: AppGameMode) =>
+  (
+    avatar?: string,
+    username?: string,
+    mode?: AppGameMode,
+    startParam?: string
+  ) =>
   async (dispatch: AppDispatch) => {
+    const params: string[] = [];
+    if (mode) params.push(`mode=${encodeURIComponent(mode)}`);
+    if (startParam) params.push(`partner_id=${encodeURIComponent(startParam)}`);
+    const query = params.length ? `?${params.join("&")}` : "";
+
     const resData = await fetchRequest<GetAccountDetailsResponse>(
-      `${getAccountDetailsUrl}${mode ? `?mode=${mode}` : ""}`
+      `${getAccountDetailsUrl}${query}`
     );
 
     dispatch(getAdRewardSettings());
@@ -279,7 +289,13 @@ export const getAccountDetails =
   };
 
 export const authorizeUser =
-  (initData: string, avatar?: string, username?: string, mode?: AppGameMode) =>
+  (
+    initData: string,
+    startParam?: string,
+    avatar?: string,
+    username?: string,
+    mode?: AppGameMode
+  ) =>
   async (dispatch: AppDispatch) => {
     // for test in dev mode
     if (process.env.NODE_ENV === "development") {
@@ -295,7 +311,9 @@ export const authorizeUser =
     }
 
     try {
-      const res = await dispatch(getAccountDetails(avatar, username, mode));
+      const res = await dispatch(
+        getAccountDetails(avatar, username, mode, startParam)
+      );
 
       return res.mode;
     } catch (error: any) {

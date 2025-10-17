@@ -33,7 +33,9 @@ const OnBoarding = () => {
   useEffect(() => {
     const fetchData = async (initData: string) => {
       try {
-        const res = await dispatch(authorizeUser(initData));
+        const res = await dispatch(
+          authorizeUser(initData, tg.initDataUnsafe.start_param)
+        );
 
         switch (res) {
           case "ton_cyber_farm": {
