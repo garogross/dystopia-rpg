@@ -25,6 +25,9 @@ const INITIAL_BALLS_COUNT = 10;
 // minimum length of a line to remove
 const MIN_LINE = 5;
 
+// number of balls to spawn after a move if no lines removed
+const SPAWN_COUNT = 3;
+
 const BALLS = {
   [EGridlineBalls.Blue]: Texture.from(gridlineBlueBallImage),
   [EGridlineBalls.Gold]: Texture.from(gridlineGoldBallImage),
@@ -50,7 +53,7 @@ const generateInitialFields = (): IField[] => {
 
   for (const idx of filledIndices) {
     const randomBall = ballTypes[Math.floor(Math.random() * ballTypes.length)];
-    fields[idx] = { ball: randomBall };
+    fields[idx] = { ball: randomBall as EGridlineBalls };
   }
 
   return fields;
@@ -205,6 +208,30 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
     }
 
     return Array.from(toRemove);
+  };
+
+  // spawn N random balls into empty cells (mutates a shallow copy passed in)
+  const spawnRandomBalls = (count: number, localFields: IField[]) => {
+    const emptyIndices: number[] = [];
+    for (let i = 0; i < localFields.length; i++) {
+      if (!localFields[i] || !localFields[i].ball) emptyIndices.push(i);
+    }
+    if (emptyIndices.length === 0) return;
+
+    // shuffle emptyIndices
+    for (let i = emptyIndices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [emptyIndices[i], emptyIndices[j]] = [emptyIndices[j], emptyIndices[i]];
+    }
+
+    const ballTypes = Object.values(EGridlineBalls);
+    const toPlace = Math.min(count, emptyIndices.length);
+    for (let k = 0; k < toPlace; k++) {
+      const idx = emptyIndices[k];
+      const randomBall =
+        ballTypes[Math.floor(Math.random() * ballTypes.length)];
+      localFields[idx] = { ball: randomBall as EGridlineBalls };
+    }
   };
 
   // Clear road graphics (if any)
@@ -552,7 +579,11 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
                 return;
               }
 
-              // no lines found: usual finalize
+              // no lines found: spawn new balls and finalize
+              // spawn SPAWN_COUNT new balls in random empty places
+              spawnRandomBalls(SPAWN_COUNT, newFields);
+
+              // commit state + fieldsRef
               setFields(newFields);
               fieldsRef.current = newFields;
 
