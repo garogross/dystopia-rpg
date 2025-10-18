@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
 import {
   gridlineBlueBallImage,
@@ -50,6 +50,7 @@ const bonuses = {
 };
 
 const GridlineMain = () => {
+  const [score, setScore] = useState(0);
   return (
     <div className={`container ${styles.gridlineMain}`}>
       <div className={styles.gridlineMain__header}>
@@ -70,7 +71,7 @@ const GridlineMain = () => {
                 />
               ))}
           </div>
-          <span className={styles.gridlineMain__headerText}>очки: 1000</span>
+          <span className={styles.gridlineMain__headerText}>очки: {score}</span>
         </div>
       </div>
       <div className={styles.gridlineMain__gameWrapper}>
@@ -78,7 +79,7 @@ const GridlineMain = () => {
           <TopFrame />
         </div>
         <div className={styles.gridlineMain__gameContainer}>
-          <GridlineMainCanvas />
+          <GridlineMainCanvas setScore={setScore} />
         </div>
         <div className={styles.gridlineMain__gameWrapperBottomIcon}>
           <BottomFrame />

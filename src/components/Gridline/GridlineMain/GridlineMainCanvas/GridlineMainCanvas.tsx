@@ -13,13 +13,16 @@ import {
 import { EGridlineBalls } from "../../../../constants/gridline/EGridlineBalls";
 import { Graphics, Sprite, Texture, Ticker } from "pixi.js";
 
-interface Props {}
+interface Props {
+  setScore: React.Dispatch<React.SetStateAction<number>>;
+}
 
 interface IField {
   ball?: EGridlineBalls;
 }
 
 const BALLS_PER_ROW = 10;
+const SCORE_PER_BALL = 10;
 const INITIAL_BALLS_COUNT = 10;
 
 // minimum length of a line to remove
@@ -59,7 +62,7 @@ const generateInitialFields = (): IField[] => {
   return fields;
 };
 
-const GridlineMainCanvas: React.FC<Props> = (props) => {
+const GridlineMainCanvas: React.FC<Props> = ({ setScore }) => {
   const onInitApp = () => {};
   const { isInitialized, pixiContainer, hexLayerRef } = usePixi(onInitApp);
   const [fields, setFields] = useState(generateInitialFields());
@@ -541,7 +544,11 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
 
               // After the move, check for lines to remove
               const linesToRemove = findLinesToRemove(newFields);
+
               if (linesToRemove.length > 0) {
+                setScore(
+                  (prev) => prev + SCORE_PER_BALL * linesToRemove.length
+                );
                 // remove them
                 for (const idx of linesToRemove) {
                   newFields[idx] = {};
