@@ -15,6 +15,8 @@ import { Graphics, Sprite, Texture, Ticker } from "pixi.js";
 
 interface Props {
   setScore: React.Dispatch<React.SetStateAction<number>>;
+  onGameOver?: () => void;
+  resetKey?: number;
 }
 
 interface IField {
@@ -62,10 +64,14 @@ const generateInitialFields = (): IField[] => {
   return fields;
 };
 
-const GridlineMainCanvas: React.FC<Props> = ({ setScore }) => {
+const GridlineMainCanvas: React.FC<Props> = ({
+  setScore,
+  onGameOver,
+  resetKey,
+}) => {
   const onInitApp = () => {};
   const { isInitialized, pixiContainer, hexLayerRef } = usePixi(onInitApp);
-  const [fields, setFields] = useState(generateInitialFields());
+  const [fields, setFields] = useState<IField[]>(generateInitialFields());
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(-1);
 
   // keep latest fields in ref so pointer handlers inside updateCanvas can read current data
@@ -214,12 +220,13 @@ const GridlineMainCanvas: React.FC<Props> = ({ setScore }) => {
   };
 
   // spawn N random balls into empty cells (mutates a shallow copy passed in)
-  const spawnRandomBalls = (count: number, localFields: IField[]) => {
+  // returns number of balls actually placed
+  const spawnRandomBalls = (count: number, localFields: IField[]): number => {
     const emptyIndices: number[] = [];
     for (let i = 0; i < localFields.length; i++) {
       if (!localFields[i] || !localFields[i].ball) emptyIndices.push(i);
     }
-    if (emptyIndices.length === 0) return;
+    if (emptyIndices.length === 0) return 0;
 
     // shuffle emptyIndices
     for (let i = emptyIndices.length - 1; i > 0; i--) {
@@ -235,6 +242,16 @@ const GridlineMainCanvas: React.FC<Props> = ({ setScore }) => {
         ballTypes[Math.floor(Math.random() * ballTypes.length)];
       localFields[idx] = { ball: randomBall as EGridlineBalls };
     }
+    return toPlace;
+  };
+
+  // count empty cells
+  const countEmptyCells = (localFields: IField[]) => {
+    let n = 0;
+    for (let i = 0; i < localFields.length; i++) {
+      if (!localFields[i] || !localFields[i].ball) n++;
+    }
+    return n;
   };
 
   // Clear road graphics (if any)
@@ -249,7 +266,7 @@ const GridlineMainCanvas: React.FC<Props> = ({ setScore }) => {
 
   // Cancel pending move animation (if any)
   const cancelPendingMove = () => {
-    // stop ticker handler for movement
+    // stop movement ticker handler
     if (moveTickerFnRef.current) {
       Ticker.shared.remove(moveTickerFnRef.current);
       moveTickerFnRef.current = null;
@@ -546,13 +563,14 @@ const GridlineMainCanvas: React.FC<Props> = ({ setScore }) => {
               const linesToRemove = findLinesToRemove(newFields);
 
               if (linesToRemove.length > 0) {
-                setScore(
-                  (prev) => prev + SCORE_PER_BALL * linesToRemove.length
-                );
-                // remove them
+                // calculate score and remove
+                const removedCount = linesToRemove.length;
                 for (const idx of linesToRemove) {
                   newFields[idx] = {};
                 }
+                // update score (parent)
+                setScore((prev) => prev + removedCount * SCORE_PER_BALL);
+
                 // commit state + fieldsRef
                 setFields(newFields);
                 fieldsRef.current = newFields;
@@ -583,6 +601,11 @@ const GridlineMainCanvas: React.FC<Props> = ({ setScore }) => {
 
                 // re-render canvas with removals applied
                 updateCanvas(newFields, -1);
+
+                // After removals, check if board full (unlikely but keep consistent)
+                if (countEmptyCells(newFields) === 0) {
+                  onGameOver?.();
+                }
                 return;
               }
 
@@ -620,6 +643,11 @@ const GridlineMainCanvas: React.FC<Props> = ({ setScore }) => {
 
               // re-render canvas with updated fields
               updateCanvas(newFields, -1);
+
+              // if after spawning there are no empty cells -> game over
+              if (countEmptyCells(newFields) === 0) {
+                onGameOver?.();
+              }
               return;
             }
 
@@ -701,6 +729,27 @@ const GridlineMainCanvas: React.FC<Props> = ({ setScore }) => {
     tickerRef.current = animate;
     Ticker.shared.add(animate);
   };
+
+  // handle external reset: regenerate board when resetKey changes
+  const prevResetKeyRef = useRef<number | undefined>(undefined);
+  useEffect(() => {
+    if (typeof resetKey === "undefined") return;
+    if (prevResetKeyRef.current === undefined) {
+      prevResetKeyRef.current = resetKey;
+      return;
+    }
+    if (prevResetKeyRef.current !== resetKey) {
+      // reset requested
+      cancelPendingMove();
+      const fresh = generateInitialFields();
+      setFields(fresh);
+      fieldsRef.current = fresh;
+      setSelectedFieldIndex(-1);
+      updateCanvas(fresh, -1);
+      prevResetKeyRef.current = resetKey;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetKey]);
 
   // keep selection ref / sprite scales in sync if selection changes from outside
   useEffect(() => {

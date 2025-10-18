@@ -10,19 +10,17 @@ import {
   gridlineLevelSelectPagePath,
   gridlinePagePath,
   gridlineRatingsPagePath,
-  onBoardingPagePath,
 } from "../../../router/constants";
 import GameBottomNavbar from "../../GameBottomNavbar/GameBottomNavbar";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
-import { RefreshIcon } from "../../layout/icons/Gridline/Common";
 
 const { name } = TRANSLATIONS.miniGames.gridline;
 
 const GridlineWrapper = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const match = useMatch(gridlinePagePath);
   const language = useAppSelector((state) => state.ui.language);
   return (
     <GameWrapper
@@ -30,21 +28,15 @@ const GridlineWrapper = () => {
       header={
         <>
           <MiniGamesHeader />
-
-          <HeaderWithBackButton
-            className={`container ${styles.gridlineWrapper__title}`}
-            onClose={() => {
-              navigate(
-                location.pathname === gridlinePagePath
-                  ? onBoardingPagePath
-                  : gridlinePagePath
-              );
-            }}
-            rightBtn={{
-              icon: <RefreshIcon />,
-            }}
-            title={name[language]}
-          />
+          {!match && (
+            <HeaderWithBackButton
+              className={`container ${styles.gridlineWrapper__title}`}
+              onClose={() => {
+                navigate(gridlinePagePath);
+              }}
+              title={name[language]}
+            />
+          )}
         </>
       }
       bottomNavbar={

@@ -25,6 +25,15 @@ import styles from "./GridlineMain.module.scss";
 import GridlineMainCanvas from "./GridlineMainCanvas/GridlineMainCanvas";
 import { EGridlineBalls } from "../../../constants/gridline/EGridlineBalls";
 import { EGridlineBonuses } from "../../../constants/gridline/EGridlineBonuses";
+import GridlineMainGameOverModal from "./GridlineMainGameOverModal/GridlineMainGameOverModal";
+import HeaderWithBackButton from "../../layout/HeaderWithBackButton/HeaderWithBackButton";
+import { useNavigate } from "react-router-dom";
+import { onBoardingPagePath } from "../../../router/constants";
+import { RefreshIcon } from "../../layout/icons/Gridline/Common";
+import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import { useAppSelector } from "../../../hooks/redux";
+
+const { name } = TRANSLATIONS.miniGames.gridline;
 
 const nextBalls = {
   [EGridlineBalls.Blue]: [gridlineBlueBallImage, gridlineBlueBallImageWebp],
@@ -51,68 +60,118 @@ const bonuses = {
 
 const GridlineMain = () => {
   const [score, setScore] = useState(0);
+  const navigate = useNavigate();
+  const language = useAppSelector((state) => state.ui.language);
+
+  // show/hide game over modal
+  const [showGameOver, setShowGameOver] = useState(false);
+
+  // resetKey increments when the game should restart; passed to canvas to trigger re-init
+  const [resetKey, setResetKey] = useState(0);
+
+  // called by GridlineMainCanvas when the board becomes full / game over
+  const handleGameOver = () => {
+    setShowGameOver(true);
+  };
+
+  const handleReset = () => {
+    // reset score and reinit canvas by bumping resetKey
+    setScore(0);
+    setShowGameOver(false);
+    setResetKey((k) => k + 1);
+  };
+
   return (
-    <div className={`container ${styles.gridlineMain}`}>
-      <div className={styles.gridlineMain__header}>
-        <div className={styles.gridlineMain__headerWings}>
-          <HeaderWings />
-        </div>
-        <div className={styles.gridlineMain__headerMain}>
-          <span className={styles.gridlineMain__headerText}>СферЫ; 14</span>
-          <div className={styles.gridlineMain__headerBalls}>
-            {Object.values(nextBalls)
-              .slice(0, 3)
-              .map((item, index) => (
-                <ImageWebp
-                  src={item[0]}
-                  srcSet={item[1]}
-                  alt={"ball"}
-                  className={styles.gridlineMain__headerBallImg}
-                />
-              ))}
+    <>
+      <div className={styles.gridlineMain}>
+        <HeaderWithBackButton
+          className={`container ${styles.gridlineMain__title}`}
+          onClose={() => {
+            navigate(onBoardingPagePath);
+          }}
+          rightBtn={{
+            icon: <RefreshIcon />,
+            onClick: handleReset,
+          }}
+          title={name[language]}
+        />
+        <div className={styles.gridlineMain__header}>
+          <div className={styles.gridlineMain__headerWings}>
+            <HeaderWings />
           </div>
-          <span className={styles.gridlineMain__headerText}>очки: {score}</span>
-        </div>
-      </div>
-      <div className={styles.gridlineMain__gameWrapper}>
-        <div className={styles.gridlineMain__gameWrapperTopIcon}>
-          <TopFrame />
-        </div>
-        <div className={styles.gridlineMain__gameContainer}>
-          <GridlineMainCanvas setScore={setScore} />
-        </div>
-        <div className={styles.gridlineMain__gameWrapperBottomIcon}>
-          <BottomFrame />
-        </div>
-      </div>
-      <div className={styles.gridlineMain__bonuses}>
-        <div className={styles.gridlineMain__bonusesInfoText}>
-          Шкала способностей заполняется при каждом удачном ходу. Полная полоска
-          даёт возможность выбрать один из доступных помогающих бонусов
-        </div>
-        <div className={styles.gridlineMain__bonusesProgressBar}>
-          <div className={styles.gridlineMain__bonusesProgressBarInner}>
-            42%
+          <div className={styles.gridlineMain__headerMain}>
+            <span className={styles.gridlineMain__headerText}>СферЫ; 14</span>
+            <div className={styles.gridlineMain__headerBalls}>
+              {Object.values(nextBalls)
+                .slice(0, 3)
+                .map((item, index) => (
+                  <ImageWebp
+                    src={item[0]}
+                    srcSet={item[1]}
+                    alt={"ball"}
+                    className={styles.gridlineMain__headerBallImg}
+                    key={index}
+                  />
+                ))}
+            </div>
+            <span className={styles.gridlineMain__headerText}>
+              очки: {score}
+            </span>
           </div>
         </div>
-        <div className={styles.gridlineMain__bonusesOptionsList}>
-          {Object.entries(bonuses).map(([k, value]) => {
-            const key = k as EGridlineBonuses;
-            return (
-              <button className={styles.gridlineMain__bonusOptionBtn} key={key}>
-                <div className={styles.gridlineMain__bonusOptionBtnInner}>
-                  {value.icon}
-                  <span>{value.name}</span>
-                </div>
-              </button>
-            );
-          })}
+        <div className={styles.gridlineMain__gameWrapper}>
+          <div className={styles.gridlineMain__gameWrapperTopIcon}>
+            <TopFrame />
+          </div>
+          <div className={styles.gridlineMain__gameContainer}>
+            <GridlineMainCanvas
+              setScore={setScore}
+              onGameOver={handleGameOver}
+              resetKey={resetKey}
+            />
+          </div>
+          <div className={styles.gridlineMain__gameWrapperBottomIcon}>
+            <BottomFrame />
+          </div>
         </div>
-        <div className={styles.gridlineMain__bonusesBottomWings}>
-          <HeaderWings reversed />
+        <div className={styles.gridlineMain__bonuses}>
+          <div className={styles.gridlineMain__bonusesInfoText}>
+            Шкала способностей заполняется при каждом удачном ходу. Полная
+            полоска даёт возможность выбрать один из доступных помогающих
+            бонусов
+          </div>
+          <div className={styles.gridlineMain__bonusesProgressBar}>
+            <div className={styles.gridlineMain__bonusesProgressBarInner}>
+              42%
+            </div>
+          </div>
+          <div className={styles.gridlineMain__bonusesOptionsList}>
+            {Object.entries(bonuses).map(([k, value]) => {
+              const key = k as EGridlineBonuses;
+              return (
+                <button
+                  className={styles.gridlineMain__bonusOptionBtn}
+                  key={key}
+                >
+                  <div className={styles.gridlineMain__bonusOptionBtnInner}>
+                    {value.icon}
+                    <span>{value.name}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          <div className={styles.gridlineMain__bonusesBottomWings}>
+            <HeaderWings reversed />
+          </div>
         </div>
+        <GridlineMainGameOverModal
+          show={showGameOver}
+          onReset={handleReset}
+          score={score}
+        />
       </div>
-    </div>
+    </>
   );
 };
 
