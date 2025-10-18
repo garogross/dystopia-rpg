@@ -76,15 +76,115 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
   const graphicsMapRef = useRef<Record<number, Graphics>>({});
   const selectedIndexRef = useRef<number>(-1);
 
+  // road graphics and move state
+  const roadGraphicsRef = useRef<Graphics[]>([]);
+  const isMovingRef = useRef(false);
+
+  // moving animation refs (replaces timeout)
+  const movingAnimRef = useRef<{
+    sprite: Sprite;
+    points: { x: number; y: number }[];
+    curIndex: number; // next point index in points array
+    speedPerTick: number; // pixels per ticker delta unit
+  } | null>(null);
+  const moveTickerFnRef = useRef<((delta: number) => void) | null>(null);
+
+  // Helper: compute neighbors (4-directional)
+  const neighbors = (index: number) => {
+    const row = Math.floor(index / BALLS_PER_ROW);
+    const col = index % BALLS_PER_ROW;
+    const result: number[] = [];
+    if (row > 0) result.push(index - BALLS_PER_ROW); // up
+    if (row < BALLS_PER_ROW - 1) result.push(index + BALLS_PER_ROW); // down
+    if (col > 0) result.push(index - 1); // left
+    if (col < BALLS_PER_ROW - 1) result.push(index + 1); // right
+    return result;
+  };
+
+  // Helper: BFS shortest path from start to target.
+  // Treat start as passable even if occupied; other nodes must be empty unless they are the target.
+  const findShortestPath = (
+    start: number,
+    target: number,
+    localFields: IField[]
+  ): number[] | null => {
+    if (start === target) return [start];
+    const q: number[] = [];
+    const visited = new Array(localFields.length).fill(false);
+    const parent = new Array<number | null>(localFields.length).fill(null);
+
+    q.push(start);
+    visited[start] = true;
+
+    while (q.length) {
+      const cur = q.shift() as number;
+      for (const nb of neighbors(cur)) {
+        if (visited[nb]) continue;
+        // allow stepping into target regardless (target should be empty in our use-case),
+        // allow stepping into empty cells
+        if (nb !== target && localFields[nb].ball) continue;
+        visited[nb] = true;
+        parent[nb] = cur;
+        if (nb === target) {
+          // reconstruct path
+          const path: number[] = [nb];
+          let p: number | null = parent[nb];
+          while (p !== null) {
+            path.push(p);
+            p = parent[p];
+          }
+          return path.reverse(); // from start to target
+        }
+        q.push(nb);
+      }
+    }
+    return null;
+  };
+
+  // Clear road graphics (if any)
+  const clearRoadGraphics = () => {
+    if (!hexLayerRef.current) return;
+    for (const g of roadGraphicsRef.current) {
+      if (g.parent) g.parent.removeChild(g);
+      g.destroy();
+    }
+    roadGraphicsRef.current = [];
+  };
+
+  // Cancel pending move animation (if any)
+  const cancelPendingMove = () => {
+    // stop ticker handler for movement
+    if (moveTickerFnRef.current) {
+      Ticker.shared.remove(moveTickerFnRef.current);
+      moveTickerFnRef.current = null;
+    }
+    // destroy moving sprite if exists
+    if (movingAnimRef.current) {
+      try {
+        if (movingAnimRef.current.sprite.parent)
+          movingAnimRef.current.sprite.parent.removeChild(
+            movingAnimRef.current.sprite
+          );
+      } catch {}
+      try {
+        movingAnimRef.current.sprite.destroy();
+      } catch {}
+      movingAnimRef.current = null;
+    }
+    isMovingRef.current = false;
+    clearRoadGraphics();
+  };
+
   // updateCanvas accepts optional fields and selected index so we can rerender immediately with new data
   const updateCanvas = (fieldsArg?: IField[], selArg?: number) => {
     if (!pixiContainer.current || !hexLayerRef.current) return;
 
-    // Clean previous ticker if any
+    // stop any existing ticker for regular sprite scaling (we'll add it back)
     if (tickerRef.current) {
       Ticker.shared.remove(tickerRef.current);
       tickerRef.current = null;
     }
+
     // Reset sprite info and graphics map
     spriteInfoRef.current = {};
     graphicsMapRef.current = {};
@@ -94,8 +194,10 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
     // Remove previous hexLayer's children (clear all)
     hexLayerRef.current?.removeChildren();
 
+    // Clear any existing road markers (we will re-draw if needed)
+    clearRoadGraphics();
+
     // Get the width and compute rect size
-    // NOTE: If container is a div, getBoundingClientRect().width, else fallback
     let containerWidth = 400; // fallback
     const container = pixiContainer.current;
     containerWidth = container.getBoundingClientRect().width;
@@ -123,9 +225,17 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
 
       // interaction
       try {
+        // PIXI v7+ pattern
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         graphics.eventMode = "static";
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         graphics.cursor = "pointer";
       } catch {
+        // fallback for older PIXI
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         graphics.interactive = true;
       }
 
@@ -134,6 +244,9 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
 
       // pointer event to set selected index and update visuals (or transfer ball)
       graphics.on("pointerdown", () => {
+        // ignore inputs while moving
+        if (isMovingRef.current) return;
+
         const currentFields = fieldsRef.current;
         const clickedHasBall = !!currentFields[i]?.ball;
         const sel = selectedIndexRef.current;
@@ -222,21 +335,167 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
 
         // clicked is empty, try to transfer ball from selected to clicked
         if (selectedField && selectedField.ball) {
-          // build new fields array
-          const newFields = [...currentFields];
-          newFields[i] = { ball: selectedField.ball };
-          newFields[sel] = {};
+          // Find path over empty cells
+          const localCopy = [...currentFields];
+          const path = findShortestPath(sel, i, localCopy);
 
-          // commit state + fieldsRef
-          setFields(newFields);
-          fieldsRef.current = newFields;
+          if (!path) {
+            // no path found - optionally provide feedback (no-op now)
+            return;
+          }
 
-          // clear selection after move
-          selectedIndexRef.current = -1;
-          setSelectedFieldIndex(-1);
+          // Draw small white circles along the path (excluding the start index)
+          clearRoadGraphics();
+          for (let p = 1; p < path.length; p++) {
+            const idx = path[p];
+            const r = Math.floor(idx / BALLS_PER_ROW);
+            const c = idx % BALLS_PER_ROW;
+            const circle = new Graphics();
+            circle.beginFill(0xffffff, 1);
+            // small radius relative to rectSize
+            const radius = Math.max(3, Math.floor(rectSize * 0.08));
+            circle.drawCircle(0, 0, radius);
+            circle.endFill();
+            circle.x = c * rectSize + rectSize / 2;
+            circle.y = r * rectSize + rectSize / 2;
+            // ensure circles don't block pointer events
+            try {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              circle.eventMode = "none";
+            } catch {
+              // fallback
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              circle.interactive = false;
+            }
+            hexLayerRef.current?.addChild(circle);
+            roadGraphicsRef.current.push(circle);
+          }
 
-          // re-render canvas with updated fields and no selection
-          updateCanvas(newFields, -1);
+          // Set moving state to prevent concurrent interactions
+          isMovingRef.current = true;
+
+          // Prepare moving sprite (clone)
+          const info = spriteInfoRef.current[sel];
+          const texture =
+            (info && info.sprite && info.sprite.texture) ||
+            BALLS[selectedField.ball as EGridlineBalls];
+          const movingSprite = new Sprite(texture);
+          // compute baseScale
+          const baseScale =
+            info?.baseScale ??
+            Math.min(
+              (rectSize * 0.9) / (texture.width || rectSize),
+              (rectSize * 0.9) / (texture.height || rectSize)
+            );
+          movingSprite.scale.set(baseScale);
+          movingSprite.anchor.set(0.5);
+
+          // start position - center of source cell
+          const startRow = Math.floor(sel / BALLS_PER_ROW);
+          const startCol = sel % BALLS_PER_ROW;
+          movingSprite.x = startCol * rectSize + rectSize / 2;
+          movingSprite.y = startRow * rectSize + rectSize / 2;
+
+          // Add to layer
+          hexLayerRef.current?.addChild(movingSprite);
+
+          // destroy static sprite for source if present (we will redraw after animation)
+          if (info && info.sprite) {
+            try {
+              if (info.sprite.parent)
+                info.sprite.parent.removeChild(info.sprite);
+            } catch {}
+            try {
+              info.sprite.destroy();
+            } catch {}
+            delete spriteInfoRef.current[sel];
+          }
+
+          // Build points array (centers of path nodes, starting from first step)
+          const points: { x: number; y: number }[] = [];
+          for (let p = 1; p < path.length; p++) {
+            const idx = path[p];
+            const r = Math.floor(idx / BALLS_PER_ROW);
+            const c = idx % BALLS_PER_ROW;
+            points.push({
+              x: c * rectSize + rectSize / 2,
+              y: r * rectSize + rectSize / 2,
+            });
+          }
+
+          // movement speed - pixels per ticker delta unit (delta is ~1 at 60fps)
+          const speedPerTick = Math.max(2, rectSize * 0.35);
+
+          // register moving animation object
+          movingAnimRef.current = {
+            sprite: movingSprite,
+            points,
+            curIndex: 0,
+            speedPerTick,
+          };
+
+          // Ticker callback to drive movement
+          const moveTicker = (delta: number) => {
+            const anim = movingAnimRef.current;
+            if (!anim) return;
+            if (anim.curIndex >= anim.points.length) {
+              // finished: update fields and cleanup
+              const newFields = [...fieldsRef.current];
+              newFields[i] = { ball: selectedField.ball };
+              newFields[sel] = {};
+
+              setFields(newFields);
+              fieldsRef.current = newFields;
+
+              // remove moving sprite
+              try {
+                if (anim.sprite.parent)
+                  anim.sprite.parent.removeChild(anim.sprite);
+              } catch {}
+              try {
+                anim.sprite.destroy();
+              } catch {}
+              movingAnimRef.current = null;
+
+              // clear road and flags
+              clearRoadGraphics();
+              isMovingRef.current = false;
+
+              // remove ticker handler
+              if (moveTickerFnRef.current) {
+                Ticker.shared.remove(moveTickerFnRef.current);
+                moveTickerFnRef.current = null;
+              }
+
+              // clear selection
+              selectedIndexRef.current = -1;
+              setSelectedFieldIndex(-1);
+
+              // re-render canvas with updated fields
+              updateCanvas(newFields, -1);
+              return;
+            }
+
+            const target = anim.points[anim.curIndex];
+            const dx = target.x - anim.sprite.x;
+            const dy = target.y - anim.sprite.y;
+            const dist = Math.hypot(dx, dy);
+            const step = anim.speedPerTick * delta;
+            if (dist <= step) {
+              // snap to target and advance
+              anim.sprite.x = target.x;
+              anim.sprite.y = target.y;
+              anim.curIndex += 1;
+            } else {
+              anim.sprite.x += (dx / dist) * step;
+              anim.sprite.y += (dy / dist) * step;
+            }
+          };
+
+          moveTickerFnRef.current = moveTicker;
+          Ticker.shared.add(moveTicker);
         }
       });
 
@@ -284,7 +543,7 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
       g.endFill();
     }
 
-    // Start ticker animation for scale up/down — only animate the selected sprite
+    // Start ticker animation for scale up/down — only animate the selected sprite (if no moving animation in progress)
     const animate = (delta: number) => {
       const sel = selectedIndexRef.current;
       if (sel === -1) return;
@@ -331,6 +590,9 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
         Ticker.shared.remove(tickerRef.current);
         tickerRef.current = null;
       }
+      // cancel any pending move animation
+      cancelPendingMove();
+
       spriteInfoRef.current = {};
       graphicsMapRef.current = {};
     };
