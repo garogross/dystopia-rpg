@@ -22,6 +22,9 @@ interface IField {
 const BALLS_PER_ROW = 10;
 const INITIAL_BALLS_COUNT = 10;
 
+// minimum length of a line to remove
+const MIN_LINE = 5;
+
 const BALLS = {
   [EGridlineBalls.Blue]: Texture.from(gridlineBlueBallImage),
   [EGridlineBalls.Gold]: Texture.from(gridlineGoldBallImage),
@@ -139,6 +142,69 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
       }
     }
     return null;
+  };
+
+  // New: find lines (horizontal, vertical, diagonal) of length >= MIN_LINE
+  // Returns array of unique indices to remove
+  const findLinesToRemove = (localFields: IField[]): number[] => {
+    const toRemove = new Set<number>();
+    const rows = BALLS_PER_ROW;
+    const cols = BALLS_PER_ROW;
+
+    const index = (r: number, c: number) => r * cols + c;
+
+    // directions: [dr, dc]
+    const dirs: [number, number][] = [
+      [0, 1], // horizontal right
+      [1, 0], // vertical down
+      [1, 1], // diagonal down-right
+      [1, -1], // diagonal down-left
+    ];
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const i = index(r, c);
+        const cell = localFields[i];
+        if (!cell || !cell.ball) continue;
+        const color = cell.ball;
+
+        for (const [dr, dc] of dirs) {
+          const prevR = r - dr;
+          const prevC = c - dc;
+          // if previous in this direction exists and same color, skip (we only start at the sequence head)
+          if (
+            prevR >= 0 &&
+            prevR < rows &&
+            prevC >= 0 &&
+            prevC < cols &&
+            localFields[index(prevR, prevC)]?.ball === color
+          ) {
+            continue;
+          }
+
+          // collect forward
+          const seq: number[] = [i];
+          let nr = r + dr;
+          let nc = c + dc;
+          while (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+            const ni = index(nr, nc);
+            if (localFields[ni]?.ball === color) {
+              seq.push(ni);
+            } else {
+              break;
+            }
+            nr += dr;
+            nc += dc;
+          }
+
+          if (seq.length >= MIN_LINE) {
+            for (const idx of seq) toRemove.add(idx);
+          }
+        }
+      }
+    }
+
+    return Array.from(toRemove);
   };
 
   // Clear road graphics (if any)
@@ -446,6 +512,47 @@ const GridlineMainCanvas: React.FC<Props> = (props) => {
               newFields[i] = { ball: selectedField.ball };
               newFields[sel] = {};
 
+              // After the move, check for lines to remove
+              const linesToRemove = findLinesToRemove(newFields);
+              if (linesToRemove.length > 0) {
+                // remove them
+                for (const idx of linesToRemove) {
+                  newFields[idx] = {};
+                }
+                // commit state + fieldsRef
+                setFields(newFields);
+                fieldsRef.current = newFields;
+
+                // remove moving sprite
+                try {
+                  if (anim.sprite.parent)
+                    anim.sprite.parent.removeChild(anim.sprite);
+                } catch {}
+                try {
+                  anim.sprite.destroy();
+                } catch {}
+                movingAnimRef.current = null;
+
+                // clear road and flags
+                clearRoadGraphics();
+                isMovingRef.current = false;
+
+                // remove ticker handler
+                if (moveTickerFnRef.current) {
+                  Ticker.shared.remove(moveTickerFnRef.current);
+                  moveTickerFnRef.current = null;
+                }
+
+                // clear selection
+                selectedIndexRef.current = -1;
+                setSelectedFieldIndex(-1);
+
+                // re-render canvas with removals applied
+                updateCanvas(newFields, -1);
+                return;
+              }
+
+              // no lines found: usual finalize
               setFields(newFields);
               fieldsRef.current = newFields;
 
