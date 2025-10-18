@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { fetchRequest } from "../tools/fetchTools";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { fetchRequest } from "../tools/fetchTools";
 import { AuthUserResponse } from "../../models/api/AuthUserResponse";
 import { getLSItem, setLSItem } from "../../helpers/localStorage";
@@ -126,8 +126,16 @@ export const getAccountDetails =
     if (startParam) params.push(`partner_id=${encodeURIComponent(startParam)}`);
     const query = params.length ? `?${params.join("&")}` : "";
 
+    const fp = await FingerprintJS.load();
+    const result = await fp.get();
+    console.log({ result: result.visitorId });
+
     const resData = await fetchRequest<GetAccountDetailsResponse>(
-      `${getAccountDetailsUrl}${query}`
+      `${getAccountDetailsUrl}${query}`,
+      "GET",
+      null,
+      undefined,
+      { "X-Client-FP": result.visitorId }
     );
 
     dispatch(getAdRewardSettings());
