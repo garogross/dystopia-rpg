@@ -18,11 +18,11 @@ interface Props {
   onGameOver?: () => void;
   resetKey?: number;
 }
-
 interface IField {
   ball?: EGridlineBalls;
-  incoming?: boolean;
-  new?: boolean;
+  incoming?: boolean; // spawned and will animate in on next render
+  new?: boolean; // freshly spawned this update (used to trigger spawn animation)
+  recent?: boolean; // recently changed state (useful for temporary effects)
 }
 
 const BALLS_PER_ROW = 10;
@@ -87,7 +87,13 @@ const GridlineMainCanvas: React.FC<Props> = ({
   const spriteInfoRef = useRef<
     Record<
       number,
-      { sprite: Sprite; baseScale: number; phase: number; speed: number }
+      {
+        sprite: Sprite;
+        baseScale: number;
+        phase: number;
+        speed: number;
+        smallScale?: number;
+      }
     >
   >({});
   const tickerRef = useRef<((delta: number) => void) | null>(null);
@@ -316,7 +322,9 @@ const GridlineMainCanvas: React.FC<Props> = ({
     onComplete?: () => void
   ) => {
     let elapsed = 0;
-    sprite.scale.set(from);
+    try {
+      sprite.scale.set(from);
+    } catch {}
 
     const tick = (delta: number) => {
       // delta is usually ~1 per frame at 60fps, approximate ms
@@ -345,7 +353,6 @@ const GridlineMainCanvas: React.FC<Props> = ({
       Ticker.shared.remove(tick);
     };
   };
-
   // Animate multiple sprites scaling down to 0, then call onAllDone
   const animateAndRemoveIndices = async (indices: number[], durationMs = 300) =>
     new Promise<void>((resolve) => {
@@ -743,6 +750,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
                 ...field,
                 incoming: false,
                 new: false,
+                recent: field.incoming ? true : false,
               }));
               setFields(newFields);
               fieldsRef.current = newFields;
@@ -818,19 +826,27 @@ const GridlineMainCanvas: React.FC<Props> = ({
         if (texture) {
           const sprite = new Sprite(texture);
 
-          // Compute baseScale so sprite fits within the cell:
-          // incoming balls use 50% of the cell size, regular balls use 90%; preserves aspect ratio
-          const targetSize = rectSize * (field.incoming ? 0.5 : 0.9);
-          const baseScale = Math.min(
-            targetSize / texture.width,
-            targetSize / texture.height
+          // Compute full and small baseScale so we can animate between them:
+          // small = 50% of cell, full = 90% of cell
+          const fullTargetSize = rectSize * 0.9;
+          const smallTargetSize = rectSize * 0.5;
+          const fullBaseScale = Math.min(
+            fullTargetSize / texture.width,
+            fullTargetSize / texture.height
+          );
+          const smallBaseScale = Math.min(
+            smallTargetSize / texture.width,
+            smallTargetSize / texture.height
           );
 
-          // For incoming balls we start from tiny scale and animate up to baseScale
+          // For incoming balls we start from tiny scale and animate up to fullBaseScale
+          // For new-but-not-incoming balls we start at smallBaseScale and animate up to fullBaseScale
           if (field.new) {
             sprite.scale.set(0.0001);
+          } else if (field.incoming) {
+            sprite.scale.set(smallBaseScale);
           } else {
-            sprite.scale.set(baseScale);
+            sprite.scale.set(fullBaseScale);
           }
 
           // Center sprite in rectangle using anchor
@@ -839,10 +855,11 @@ const GridlineMainCanvas: React.FC<Props> = ({
           sprite.y = graphics.y + rectSize / 2;
           hexLayerRef.current.addChild(sprite);
 
-          // Store sprite info by index (do NOT animate all; we'll animate only selected + incoming/removed)
+          // Store sprite info by index (do NOT animate all; we'll animate only selected + incoming/removed/new)
           spriteInfoRef.current[i] = {
             sprite,
-            baseScale,
+            baseScale: fullBaseScale,
+            smallScale: smallBaseScale,
             phase: Math.random() * Math.PI * 2,
             speed: 1,
           };
@@ -863,7 +880,6 @@ const GridlineMainCanvas: React.FC<Props> = ({
 
     // Start ticker animation for scale up/down — animate:
     // - the selected sprite pulsation
-    // - any incoming sprites scale-up once
     const animate = (delta: number) => {
       const sel = selectedIndexRef.current;
       if (sel !== -1) {
@@ -878,23 +894,43 @@ const GridlineMainCanvas: React.FC<Props> = ({
     tickerRef.current = animate;
     Ticker.shared.add(animate);
 
-    // After drawing all sprites, kick off incoming scale-up animations for fields marked incoming
+    // After drawing all sprites, kick off incoming/new scale-up animations for fields marked accordingly
+
     for (let i = 0; i < localFields.length; i++) {
       const f = localFields[i];
-      if (f?.new && spriteInfoRef.current[i]) {
-        const info = spriteInfoRef.current[i];
-        // animate from near-zero to baseScale over 300ms
+      const info = spriteInfoRef.current[i];
+      if (!info || !info.sprite) continue;
+
+      if (f?.new) {
+        // animate from smallScale (50%) to full base scale (90%)
+        const to = info.smallScale ?? info.baseScale * (0.5 / 0.9);
+        const cancel = animateSpriteScale(info.sprite, 0.0001, to, 300, () => {
+          // clear new flag in canonical state
+          try {
+            const current = fieldsRef.current.slice();
+            if (current[i]) {
+              current[i] = { ...current[i], new: false };
+              fieldsRef.current = current;
+              setFields(current);
+            }
+          } catch {}
+        });
+        scaleAnimCancelsRef.current.push(cancel);
+      } else if (f?.recent) {
+        const from = info.smallScale ?? info.baseScale * (0.5 / 0.9);
+
+        // animate from near-zero to fullBaseScale over 300ms
         const cancel = animateSpriteScale(
           info.sprite,
-          0.0001,
+          from,
           info.baseScale,
           300,
           () => {
-            // clear incoming flag in the canonical state (fieldsRef + state)
-            // It's okay if fieldsRef differs slightly; update both refs
+            // clear incoming flag in canonical state
             try {
               const current = fieldsRef.current.slice();
               if (current[i]) {
+                current[i] = { ...current[i], incoming: false };
                 fieldsRef.current = current;
                 setFields(current);
               }
