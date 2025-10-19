@@ -21,11 +21,13 @@ interface Props {
 
 interface IField {
   ball?: EGridlineBalls;
+  incoming?: boolean;
 }
 
 const BALLS_PER_ROW = 10;
 const SCORE_PER_BALL = 10;
 const INITIAL_BALLS_COUNT = 10;
+const MOVE_SPEED = 0.3;
 
 // minimum length of a line to remove
 const MIN_LINE = 5;
@@ -177,7 +179,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
       for (let c = 0; c < cols; c++) {
         const i = index(r, c);
         const cell = localFields[i];
-        if (!cell || !cell.ball) continue;
+        if (!cell || !cell.ball || cell.incoming) continue;
         const color = cell.ball;
 
         for (const [dr, dc] of dirs) {
@@ -240,7 +242,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
       const idx = emptyIndices[k];
       const randomBall =
         ballTypes[Math.floor(Math.random() * ballTypes.length)];
-      localFields[idx] = { ball: randomBall as EGridlineBalls };
+      localFields[idx] = { ball: randomBall as EGridlineBalls, incoming: true };
     }
     return toPlace;
   };
@@ -332,7 +334,6 @@ const GridlineMainCanvas: React.FC<Props> = ({
       graphics.beginFill(0x0f0e10, 1);
       graphics.drawRect(0, 0, rectSize, rectSize);
       graphics.endFill();
-
       graphics.x = col * rectSize;
       graphics.y = row * rectSize;
 
@@ -358,7 +359,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
       // pointer event to set selected index and update visuals (or transfer ball)
       graphics.on("pointerdown", () => {
         // ignore inputs while moving
-        if (isMovingRef.current) return;
+        if (isMovingRef.current || field.incoming) return;
 
         const currentFields = fieldsRef.current;
         const clickedHasBall = !!currentFields[i]?.ball;
@@ -539,7 +540,8 @@ const GridlineMainCanvas: React.FC<Props> = ({
           }
 
           // movement speed - pixels per ticker delta unit (delta is ~1 at 60fps)
-          const speedPerTick = Math.max(2, rectSize * 0.35);
+          const speedPerTick = Math.max(2, rectSize * MOVE_SPEED);
+          console.log({ speedPerTick });
 
           // register moving animation object
           movingAnimRef.current = {
@@ -555,7 +557,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
             if (!anim) return;
             if (anim.curIndex >= anim.points.length) {
               // finished: update fields and cleanup
-              const newFields = [...fieldsRef.current];
+              let newFields = [...fieldsRef.current];
               newFields[i] = { ball: selectedField.ball };
               newFields[sel] = {};
 
@@ -610,6 +612,13 @@ const GridlineMainCanvas: React.FC<Props> = ({
               }
 
               // no lines found: spawn new balls and finalize
+              newFields = newFields.map((field) => ({
+                ...field,
+                incoming: false,
+              }));
+              setFields(newFields);
+              fieldsRef.current = newFields;
+
               // spawn SPAWN_COUNT new balls in random empty places
               spawnRandomBalls(SPAWN_COUNT, newFields);
 
@@ -680,8 +689,9 @@ const GridlineMainCanvas: React.FC<Props> = ({
         if (texture) {
           const sprite = new Sprite(texture);
 
-          // Set sprite size: 90% of rectSize, maintaining aspect ratio using scale
-          const targetSize = rectSize * 0.9;
+          // Compute baseScale so sprite fits within the cell:
+          // incoming balls use 50% of the cell size, regular balls use 90%; preserves aspect ratio
+          const targetSize = rectSize * (field.incoming ? 0.5 : 0.9);
           const baseScale = Math.min(
             targetSize / texture.width,
             targetSize / texture.height
