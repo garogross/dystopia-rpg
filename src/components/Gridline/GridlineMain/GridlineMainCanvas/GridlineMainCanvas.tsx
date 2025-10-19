@@ -22,6 +22,7 @@ interface Props {
 interface IField {
   ball?: EGridlineBalls;
   incoming?: boolean;
+  new?: boolean;
 }
 
 const BALLS_PER_ROW = 10;
@@ -105,6 +106,9 @@ const GridlineMainCanvas: React.FC<Props> = ({
     speedPerTick: number; // pixels per ticker delta unit
   } | null>(null);
   const moveTickerFnRef = useRef<((delta: number) => void) | null>(null);
+
+  // Keep cancellers for any temporary scale animations so we can clean them on unmount / cancel
+  const scaleAnimCancelsRef = useRef<(() => void)[]>([]);
 
   // Helper: compute neighbors (4-directional)
   const neighbors = (index: number) => {
@@ -242,7 +246,11 @@ const GridlineMainCanvas: React.FC<Props> = ({
       const idx = emptyIndices[k];
       const randomBall =
         ballTypes[Math.floor(Math.random() * ballTypes.length)];
-      localFields[idx] = { ball: randomBall as EGridlineBalls, incoming: true };
+      localFields[idx] = {
+        ball: randomBall as EGridlineBalls,
+        incoming: true,
+        new: true,
+      };
     }
     return toPlace;
   };
@@ -288,7 +296,114 @@ const GridlineMainCanvas: React.FC<Props> = ({
     }
     isMovingRef.current = false;
     clearRoadGraphics();
+
+    // cancel any running scale animations
+    for (const cancel of scaleAnimCancelsRef.current) {
+      try {
+        cancel();
+      } catch {}
+    }
+    scaleAnimCancelsRef.current = [];
   };
+
+  // Helper to animate sprite scale between two values over durationMs.
+  // Returns a cancel function.
+  const animateSpriteScale = (
+    sprite: Sprite,
+    from: number,
+    to: number,
+    durationMs: number,
+    onComplete?: () => void
+  ) => {
+    let elapsed = 0;
+    sprite.scale.set(from);
+
+    const tick = (delta: number) => {
+      // delta is usually ~1 per frame at 60fps, approximate ms
+      const ms = delta * (1000 / 60);
+      elapsed += ms;
+      const t = Math.min(1, elapsed / durationMs);
+      // simple easeOutCubic for nicer feel
+      const ease = 1 - Math.pow(1 - t, 3);
+      const cur = from + (to - from) * ease;
+      try {
+        sprite.scale.set(cur);
+      } catch {
+        // if sprite destroyed during animation, stop
+        Ticker.shared.remove(tick);
+        return;
+      }
+      if (t >= 1) {
+        Ticker.shared.remove(tick);
+        onComplete?.();
+      }
+    };
+
+    Ticker.shared.add(tick);
+    // return cancel
+    return () => {
+      Ticker.shared.remove(tick);
+    };
+  };
+
+  // Animate multiple sprites scaling down to 0, then call onAllDone
+  const animateAndRemoveIndices = async (indices: number[], durationMs = 300) =>
+    new Promise<void>((resolve) => {
+      const sprites: { idx: number; sprite: Sprite }[] = [];
+      for (const idx of indices) {
+        const info = spriteInfoRef.current[idx];
+        if (info && info.sprite) {
+          sprites.push({ idx, sprite: info.sprite });
+        }
+      }
+
+      // if none of the sprites are present (edge-case), resolve immediately
+      if (sprites.length === 0) {
+        resolve();
+        return;
+      }
+
+      let remaining = sprites.length;
+      const cancels: (() => void)[] = [];
+
+      // helper completion handler declared outside the loop to avoid capturing loop variables unsafely
+      const makeOnComplete = (sprite: Sprite, idx: number) => {
+        return () => {
+          // after each sprite finished shrink, destroy it
+          try {
+            if (sprite.parent) sprite.parent.removeChild(sprite);
+          } catch {}
+          try {
+            sprite.destroy();
+          } catch {}
+          // remove from spriteInfoRef if present
+          try {
+            delete spriteInfoRef.current[idx];
+          } catch {}
+          remaining -= 1;
+          if (remaining <= 0) {
+            // clean up any road markers and resolve
+            clearRoadGraphics();
+            resolve();
+          }
+        };
+      };
+
+      for (const s of sprites) {
+        const from = s.sprite.scale.x || 0.0001;
+        const cancel = animateSpriteScale(
+          s.sprite,
+          from,
+          0.0001,
+          durationMs,
+          makeOnComplete(s.sprite, s.idx)
+        );
+        cancels.push(cancel);
+      }
+
+      // track cancels for cleanup if needed
+      scaleAnimCancelsRef.current.push(...cancels);
+    });
 
   // updateCanvas accepts optional fields and selected index so we can rerender immediately with new data
   const updateCanvas = (fieldsArg?: IField[], selArg?: number) => {
@@ -541,7 +656,6 @@ const GridlineMainCanvas: React.FC<Props> = ({
 
           // movement speed - pixels per ticker delta unit (delta is ~1 at 60fps)
           const speedPerTick = Math.max(2, rectSize * MOVE_SPEED);
-          console.log({ speedPerTick });
 
           // register moving animation object
           movingAnimRef.current = {
@@ -565,49 +679,62 @@ const GridlineMainCanvas: React.FC<Props> = ({
               const linesToRemove = findLinesToRemove(newFields);
 
               if (linesToRemove.length > 0) {
-                // calculate score and remove
-                const removedCount = linesToRemove.length;
-                for (const idx of linesToRemove) {
-                  newFields[idx] = {};
-                }
-                // update score (parent)
-                setScore((prev) => prev + removedCount * SCORE_PER_BALL);
+                // animate removals first, then remove and update score
+                (async () => {
+                  // update fields state now so UI shows the moved sprite position before shrinking
+                  setFields(newFields);
+                  fieldsRef.current = newFields;
 
-                // commit state + fieldsRef
-                setFields(newFields);
-                fieldsRef.current = newFields;
+                  // remove moving sprite
+                  try {
+                    if (anim.sprite.parent)
+                      anim.sprite.parent.removeChild(anim.sprite);
+                  } catch {}
+                  try {
+                    anim.sprite.destroy();
+                  } catch {}
+                  movingAnimRef.current = null;
+                  // clear road and flags
+                  clearRoadGraphics();
+                  isMovingRef.current = false;
 
-                // remove moving sprite
-                try {
-                  if (anim.sprite.parent)
-                    anim.sprite.parent.removeChild(anim.sprite);
-                } catch {}
-                try {
-                  anim.sprite.destroy();
-                } catch {}
-                movingAnimRef.current = null;
+                  // animate shrink for the sprites that will be removed
+                  await animateAndRemoveIndices(linesToRemove, 300);
 
-                // clear road and flags
-                clearRoadGraphics();
-                isMovingRef.current = false;
+                  // Now actually clear the fields
+                  for (const idx of linesToRemove) {
+                    newFields[idx] = {};
+                  }
 
-                // remove ticker handler
-                if (moveTickerFnRef.current) {
-                  Ticker.shared.remove(moveTickerFnRef.current);
-                  moveTickerFnRef.current = null;
-                }
+                  // update score (parent)
+                  const removedCount = linesToRemove.length;
+                  setScore((prev) => prev + removedCount * SCORE_PER_BALL);
+                  newFields = newFields.map((field) => ({
+                    ...field,
+                    new: false,
+                  }));
+                  // commit state + fieldsRef
+                  setFields(newFields);
+                  fieldsRef.current = newFields;
 
-                // clear selection
-                selectedIndexRef.current = -1;
-                setSelectedFieldIndex(-1);
+                  // remove ticker handler
+                  if (moveTickerFnRef.current) {
+                    Ticker.shared.remove(moveTickerFnRef.current);
+                    moveTickerFnRef.current = null;
+                  }
 
-                // re-render canvas with removals applied
-                updateCanvas(newFields, -1);
+                  // clear selection
+                  selectedIndexRef.current = -1;
+                  setSelectedFieldIndex(-1);
 
-                // After removals, check if board full (unlikely but keep consistent)
-                if (countEmptyCells(newFields) === 0) {
-                  onGameOver?.();
-                }
+                  // re-render canvas with removals applied
+                  updateCanvas(newFields, -1);
+
+                  // After removals, check if board full (unlikely but keep consistent)
+                  if (countEmptyCells(newFields) === 0) {
+                    onGameOver?.();
+                  }
+                })();
                 return;
               }
 
@@ -615,6 +742,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
               newFields = newFields.map((field) => ({
                 ...field,
                 incoming: false,
+                new: false,
               }));
               setFields(newFields);
               fieldsRef.current = newFields;
@@ -677,6 +805,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
           };
 
           moveTickerFnRef.current = moveTicker;
+
           Ticker.shared.add(moveTicker);
         }
       });
@@ -696,7 +825,13 @@ const GridlineMainCanvas: React.FC<Props> = ({
             targetSize / texture.width,
             targetSize / texture.height
           );
-          sprite.scale.set(baseScale);
+
+          // For incoming balls we start from tiny scale and animate up to baseScale
+          if (field.new) {
+            sprite.scale.set(0.0001);
+          } else {
+            sprite.scale.set(baseScale);
+          }
 
           // Center sprite in rectangle using anchor
           sprite.anchor.set(0.5);
@@ -704,7 +839,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
           sprite.y = graphics.y + rectSize / 2;
           hexLayerRef.current.addChild(sprite);
 
-          // Store sprite info by index (do NOT animate all; we'll animate only selected)
+          // Store sprite info by index (do NOT animate all; we'll animate only selected + incoming/removed)
           spriteInfoRef.current[i] = {
             sprite,
             baseScale,
@@ -726,18 +861,49 @@ const GridlineMainCanvas: React.FC<Props> = ({
       g.endFill();
     }
 
-    // Start ticker animation for scale up/down — only animate the selected sprite (if no moving animation in progress)
+    // Start ticker animation for scale up/down — animate:
+    // - the selected sprite pulsation
+    // - any incoming sprites scale-up once
     const animate = (delta: number) => {
       const sel = selectedIndexRef.current;
-      if (sel === -1) return;
-      const info = spriteInfoRef.current[sel];
-      if (!info) return;
-      info.phase += 0.12 * delta * info.speed;
-      const scaleMultiplier = 1 + 0.12 * Math.sin(info.phase); // slightly stronger
-      info.sprite.scale.set(info.baseScale * scaleMultiplier);
+      if (sel !== -1) {
+        const info = spriteInfoRef.current[sel];
+        if (info && info.sprite) {
+          info.phase += 0.12 * delta * info.speed;
+          const scaleMultiplier = 1 + 0.12 * Math.sin(info.phase); // slightly stronger
+          info.sprite.scale.set(info.baseScale * scaleMultiplier);
+        }
+      }
     };
     tickerRef.current = animate;
     Ticker.shared.add(animate);
+
+    // After drawing all sprites, kick off incoming scale-up animations for fields marked incoming
+    for (let i = 0; i < localFields.length; i++) {
+      const f = localFields[i];
+      if (f?.new && spriteInfoRef.current[i]) {
+        const info = spriteInfoRef.current[i];
+        // animate from near-zero to baseScale over 300ms
+        const cancel = animateSpriteScale(
+          info.sprite,
+          0.0001,
+          info.baseScale,
+          300,
+          () => {
+            // clear incoming flag in the canonical state (fieldsRef + state)
+            // It's okay if fieldsRef differs slightly; update both refs
+            try {
+              const current = fieldsRef.current.slice();
+              if (current[i]) {
+                fieldsRef.current = current;
+                setFields(current);
+              }
+            } catch {}
+          }
+        );
+        scaleAnimCancelsRef.current.push(cancel);
+      }
+    }
   };
 
   // handle external reset: regenerate board when resetKey changes
@@ -797,6 +963,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
       // cancel any pending move animation
       cancelPendingMove();
 
+      // destroy tracked sprites / clear maps
       spriteInfoRef.current = {};
       graphicsMapRef.current = {};
     };
