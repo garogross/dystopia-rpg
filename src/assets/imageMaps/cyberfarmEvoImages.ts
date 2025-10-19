@@ -4,6 +4,7 @@ import farmMapFarmBuildImage from "../images/CyberFarmEvo/Map/farmMapFarmBuild.p
 import farmMapFarmBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapFarmBuild.webp";
 import farmMapTasksBuildImage from "../images/CyberFarmEvo/Map/farmMapTasksBuild.png";
 import farmMapTasksBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapTasksBuild.webp";
+
 import cybefarmEvoFieldWebpImage from "../images/CyberFarmEvo/Farms/common/cybefarmEvoField.webp";
 import cybefarmEvoFieldImage from "../images/CyberFarmEvo/Farms/common/cybefarmEvoField.png";
 import evoFactoryImage from "../images/CyberFarmEvo/Farms/common/evoFactory.png";
@@ -67,6 +68,14 @@ import plasmaMushroomEvoImage from "../images/CyberFarmEvo/products/plantProduct
 import plasmaMushroomEvoWebpImage from "../images/CyberFarmEvo/products/plantProducts/plasmaMushroomEvo.webp";
 import algaeEvoImage from "../images/CyberFarmEvo/products/plantProducts/аlgaeEvo.png";
 import algaeEvoWebpImage from "../images/CyberFarmEvo/products/plantProducts/аlgaeEvo.webp";
+import farmMapFabricBuildImage from "../images/CyberFarmEvo/Map/farmMapFabricBuild.png";
+import farmMapFabricBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapFabricBuild.webp";
+import farmMapCityWebpImage from "../images/CyberFarmEvo/Map/farmMapCity.webp";
+import farmMapCityImage from "../images/CyberFarmEvo/Map/farmMapCity.png";
+import farmMapPowerPlantBuildImage from "../images/CyberFarmEvo/Map/farmMapPowerPlantBuild.png";
+import farmMapPowerPlantBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapPowerPlantBuild.webp";
+import farmMapRecyclerBuildImage from "../images/CyberFarmEvo/Map/farmMapRecyclerBuild.png";
+import farmMapRecyclerBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapRecyclerBuild.webp";
 
 export {
   farmMapCityWareHouseImage,
@@ -75,6 +84,14 @@ export {
   farmMapFarmBuildWebpImage,
   farmMapTasksBuildImage,
   farmMapTasksBuildWebpImage,
+  farmMapFabricBuildImage,
+  farmMapFabricBuildWebpImage,
+  farmMapCityWebpImage,
+  farmMapCityImage,
+  farmMapPowerPlantBuildImage,
+  farmMapPowerPlantBuildWebpImage,
+  farmMapRecyclerBuildImage,
+  farmMapRecyclerBuildWebpImage,
   cybefarmEvoFieldWebpImage,
   cybefarmEvoFieldImage,
   evoFactoryImage,

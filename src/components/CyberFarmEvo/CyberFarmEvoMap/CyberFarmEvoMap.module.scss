@@ -32,12 +32,11 @@
     width: 100%;
     aspect-ratio: 636/1095;
     max-height: 100%;
+    overflow: auto;
   }
 
   &__mainInner {
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    position: relative;
     width: 100%;
     aspect-ratio: 636/1095;
     @include bgWebp(
@@ -59,17 +58,67 @@
     transition: $transition;
     text-decoration: none;
 
+    @media (max-width: 320px) {
+      font-size: 16px;
+    }
+
     &_tasks {
       left: 4%;
       bottom: 36%;
+
+      img {
+        width: clamp(30px, 30vw, 150px);
+      }
     }
     &_warehouse {
       bottom: 34%;
       right: 0%;
+
+      img {
+        width: clamp(30px, 30vw, 120px);
+      }
     }
     &_farm {
       bottom: 7%;
       right: 20%;
+
+      img {
+        width: clamp(30px, 46vw, 180px);
+      }
+    }
+    &_fabric {
+      left: 33%;
+      bottom: 35%;
+
+      img {
+        width: clamp(28px, 36vw, 180px);
+      }
+    }
+    &_powerPlant {
+      bottom: 60%;
+      right: 4%;
+      align-items: flex-end;
+
+      img {
+        width: clamp(28px, 28vw, 140px);
+      }
+    }
+    &_recycler {
+      bottom: 63%;
+      left: 2%;
+      align-items: flex-start;
+
+      img {
+        width: clamp(28px, 29vw, 140px);
+      }
+    }
+    &_city {
+      top: 4%;
+      right: 29%;
+
+      img {
+        width: clamp(28px, 33vw, 163px);
+      }
     }
 
     &:active {
@@ -79,23 +128,13 @@
     & img {
       transition: all 0.1s;
     }
-    &_tasks img {
-      width: clamp(30px, 30vw, 150px);
-    }
-
-    &_warehouse img {
-      width: clamp(30px, 30vw, 120px);
-    }
-    &_farm img {
-      width: clamp(30px, 46vw, 180px);
-    }
 
     &:hover,
     &:active img {
       filter: drop-shadow(0 6px 15px #00abff);
     }
 
-    & span {
+    &:not(&_city) span {
       transform: translateY(-100%);
     }
   }

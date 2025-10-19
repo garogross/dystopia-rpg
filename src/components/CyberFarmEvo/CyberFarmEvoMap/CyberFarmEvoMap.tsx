@@ -7,6 +7,14 @@ import {
   farmMapFarmBuildWebpImage,
   farmMapTasksBuildImage,
   farmMapTasksBuildWebpImage,
+  farmMapFabricBuildImage,
+  farmMapFabricBuildWebpImage,
+  farmMapCityWebpImage,
+  farmMapCityImage,
+  farmMapPowerPlantBuildImage,
+  farmMapPowerPlantBuildWebpImage,
+  farmMapRecyclerBuildImage,
+  farmMapRecyclerBuildWebpImage,
 } from "../../../assets/imageMaps";
 import styles from "./CyberFarmEvoMap.module.scss";
 import { Link } from "react-router-dom";
@@ -24,8 +32,86 @@ import {
 } from "../../../constants/cyberfarmEvo/tutorial";
 import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvider/CloneFixedElementProvider";
 import { updateTutorialProgress } from "../../../store/slices/cyberFarm/tutorialSlice";
+import { useTooltip } from "../../../hooks/useTooltip";
+import Tooltip from "../../layout/Tooltip/Tooltip";
 
-const { tasksText, warehouseText, farmText } = TRANSLATIONS.cyberfarmEvo.map;
+const {
+  tasksText,
+  warehouseText,
+  farmText,
+  fabricText,
+  powerPlantText,
+  recyclerText,
+  cityText,
+} = TRANSLATIONS.cyberfarmEvo.map;
+const { inDevelopmentText } = TRANSLATIONS.common;
+type MapButton = {
+  id?: ECyberfarmEvoTutorialActions;
+  to?: string;
+  btnClass: string;
+  imgWebp: string;
+  imgSrc: string;
+  imgAlt: string;
+  label: Record<string, string>;
+};
+
+const cyberFarmMapButtons: MapButton[] = [
+  {
+    id: ECyberfarmEvoTutorialActions.showTasks,
+    to: cyberFarmSupportPagePath,
+    btnClass: `tasks`,
+    imgWebp: farmMapTasksBuildWebpImage,
+    imgSrc: farmMapTasksBuildImage,
+    imgAlt: "tasks",
+    label: tasksText,
+  },
+  {
+    id: ECyberfarmEvoTutorialActions.showWarehouse,
+    to: cyberFarmWarehousePagePath,
+    btnClass: `warehouse`,
+    imgWebp: farmMapCityWareHouseWebpImage,
+    imgSrc: farmMapCityWareHouseImage,
+    imgAlt: "warehouse",
+    label: warehouseText,
+  },
+  {
+    id: ECyberfarmEvoTutorialActions.showFarm,
+    to: cyberFarmFarmsPagePath,
+    btnClass: `farm`,
+    imgWebp: farmMapFarmBuildWebpImage,
+    imgSrc: farmMapFarmBuildImage,
+    imgAlt: "farm",
+    label: farmText,
+  },
+  {
+    btnClass: `fabric`,
+    imgWebp: farmMapFabricBuildWebpImage,
+    imgSrc: farmMapFabricBuildImage,
+    imgAlt: "fabric",
+    label: fabricText,
+  },
+  {
+    btnClass: `powerPlant`,
+    imgWebp: farmMapPowerPlantBuildWebpImage,
+    imgSrc: farmMapPowerPlantBuildImage,
+    imgAlt: "powerPlant",
+    label: powerPlantText,
+  },
+  {
+    btnClass: `recycler`,
+    imgWebp: farmMapRecyclerBuildWebpImage,
+    imgSrc: farmMapRecyclerBuildImage,
+    imgAlt: "recycler",
+    label: recyclerText,
+  },
+  {
+    btnClass: `city`,
+    imgWebp: farmMapCityWebpImage,
+    imgSrc: farmMapCityImage,
+    imgAlt: "city",
+    label: cityText,
+  },
+];
 
 const CyberFarmEvoMap = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +123,7 @@ const CyberFarmEvoMap = () => {
     (state) => state.cyberfarm.tutorial.tutorialProgressIndex
   );
   const tutorialSlidetimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
+  const { show, openTooltip } = useTooltip();
   useEffect(() => {
     if (tutorialSlidetimeoutRef.current) {
       clearTimeout(tutorialSlidetimeoutRef.current);
@@ -65,42 +151,47 @@ const CyberFarmEvoMap = () => {
             alt={"map"}
             className={styles.cyberFarmEvoMap__mainImg}
           /> */}
-          <Link
-            id={ECyberfarmEvoTutorialActions.showTasks}
-            to={`${cyberFarmEvoPagePath}/${cyberFarmSupportPagePath}`}
-            className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_tasks}`}
-          >
-            <ImageWebp
-              srcSet={farmMapTasksBuildWebpImage}
-              src={farmMapTasksBuildImage}
-              alt={"tasks"}
-            />
-            <span>{tasksText[language]}</span>
-          </Link>
-          <Link
-            id={ECyberfarmEvoTutorialActions.showWarehouse}
-            to={`${cyberFarmEvoPagePath}/${cyberFarmWarehousePagePath}`}
-            className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_warehouse}`}
-          >
-            <ImageWebp
-              srcSet={farmMapCityWareHouseWebpImage}
-              src={farmMapCityWareHouseImage}
-              alt={"warehouse"}
-            />
-            <span>{warehouseText[language]}</span>
-          </Link>
-          <Link
-            id={ECyberfarmEvoTutorialActions.showFarm}
-            to={`${cyberFarmEvoPagePath}/${cyberFarmFarmsPagePath}`}
-            className={`${styles.cyberFarmEvoMap__btn} ${styles.cyberFarmEvoMap__btn_farm}`}
-          >
-            <ImageWebp
-              srcSet={farmMapFarmBuildWebpImage}
-              src={farmMapFarmBuildImage}
-              alt={"farm"}
-            />
-            <span>{farmText[language]}</span>
-          </Link>
+          {cyberFarmMapButtons.map((btn) =>
+            btn.to ? (
+              <Link
+                id={btn.id}
+                key={btn.imgAlt}
+                to={`${cyberFarmEvoPagePath}/${btn.to}`}
+                className={`${styles.cyberFarmEvoMap__btn} ${
+                  styles[`cyberFarmEvoMap__btn_${btn.btnClass}`]
+                }`}
+              >
+                <ImageWebp
+                  srcSet={btn.imgWebp}
+                  src={btn.imgSrc}
+                  alt={btn.imgAlt}
+                />
+                <span>{btn.label[language]}</span>
+              </Link>
+            ) : (
+              <div
+                id={btn.id}
+                key={btn.imgAlt}
+                className={`${styles.cyberFarmEvoMap__btn} ${
+                  styles[`cyberFarmEvoMap__btn_${btn.btnClass}`]
+                }`}
+                onClick={() => openTooltip()}
+                role="button"
+                tabIndex={0}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" || e.key === " ") openTooltip();
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <ImageWebp
+                  srcSet={btn.imgWebp}
+                  src={btn.imgSrc}
+                  alt={btn.imgAlt}
+                />
+                <span>{btn.label[language]}</span>
+              </div>
+            )
+          )}
         </div>
       </div>
       <CloneFixedElementProvider
@@ -121,6 +212,7 @@ const CyberFarmEvoMap = () => {
         style={{ bottom: 0, right: 0 }}
         onClick={() => {}}
       />
+      <Tooltip show={show} text={inDevelopmentText[language]} />
     </section>
   );
 };

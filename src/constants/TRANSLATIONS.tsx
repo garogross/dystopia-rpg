@@ -1242,6 +1242,22 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Farm",
         [ELanguages.ru]: "Ферма",
       },
+      fabricText: {
+        [ELanguages.en]: "Fabric",
+        [ELanguages.ru]: "Фабрика",
+      },
+      powerPlantText: {
+        [ELanguages.en]: "Power Plant",
+        [ELanguages.ru]: "Электростанция",
+      },
+      recyclerText: {
+        [ELanguages.en]: "Recycler",
+        [ELanguages.ru]: "Утилизатор",
+      },
+      cityText: {
+        [ELanguages.en]: "City",
+        [ELanguages.ru]: "Город",
+      },
     },
     farms: {
       collectAllText: {
