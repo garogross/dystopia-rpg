@@ -4,7 +4,6 @@ import {
   ProductionIcon,
   SupportChatIcon,
   TrainingIcon,
-  VideoGuidesIcon,
 } from "../../layout/icons/CyberFarmEvo/SupportMenuBar";
 import CyberFarmEvoMenuBar from "../CyberFarmEvoMenuBar/CyberFarmEvoMenuBar";
 import { useNavigate } from "react-router-dom";
@@ -15,13 +14,8 @@ import {
 import { SUPPORT_CHAT_URL } from "../../../constants/common/supportChatUrl";
 import { useTelegram } from "../../../hooks/useTelegram";
 
-const {
-  titleText,
-  productionText,
-  trainingText,
-  videoGuidesText,
-  askInChatText,
-} = TRANSLATIONS.cyberfarmEvo.supportMenuBar;
+const { titleText, productionText, trainingText, askInChatText } =
+  TRANSLATIONS.cyberfarmEvo.supportMenuBar;
 
 interface Props {
   show: boolean;
@@ -39,10 +33,9 @@ const CyberFarmEvoSupportMenuBar: React.FC<Props> = ({ show, onClose }) => {
       onClick: () =>
         navigate(`${cyberFarmEvoPagePath}/${cyberFarmProductionPagePath}`),
     },
-    { name: trainingText, icon: <TrainingIcon /> },
     {
-      name: videoGuidesText,
-      icon: <VideoGuidesIcon />,
+      name: trainingText,
+      icon: <TrainingIcon />,
       onClick: () => {
         // @ts-ignore
         if (tg) {
@@ -53,6 +46,11 @@ const CyberFarmEvoSupportMenuBar: React.FC<Props> = ({ show, onClose }) => {
         }
       },
     },
+    // {
+    //   name: videoGuidesText,
+    //   icon: <VideoGuidesIcon />,
+
+    // },
     {
       name: askInChatText,
       icon: <SupportChatIcon />,
