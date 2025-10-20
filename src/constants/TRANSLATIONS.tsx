@@ -1243,12 +1243,12 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Ферма",
       },
       fabricText: {
-        [ELanguages.en]: "Fabric",
+        [ELanguages.en]: "Factory",
         [ELanguages.ru]: "Фабрика",
       },
       powerPlantText: {
         [ELanguages.en]: "Power Plant",
-        [ELanguages.ru]: "Электростанция",
+        [ELanguages.ru]: "Электро станция",
       },
       recyclerText: {
         [ELanguages.en]: "Recycler",

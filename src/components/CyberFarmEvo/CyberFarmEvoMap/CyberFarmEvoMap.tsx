@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
   farmMapCityWareHouseImage,
@@ -34,6 +34,7 @@ import CloneFixedElementProvider from "../../../providers/CloneFixedElementProvi
 import { updateTutorialProgress } from "../../../store/slices/cyberFarm/tutorialSlice";
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
+import { TranslationItemType } from "../../../types/TranslationItemType";
 
 const {
   tasksText,
@@ -52,7 +53,7 @@ type MapButton = {
   imgWebp: string;
   imgSrc: string;
   imgAlt: string;
-  label: Record<string, string>;
+  label: TranslationItemType;
 };
 
 const cyberFarmMapButtons: MapButton[] = [
@@ -124,6 +125,14 @@ const CyberFarmEvoMap = () => {
   );
   const tutorialSlidetimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { show, openTooltip } = useTooltip();
+  const mainRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTop = mainRef.current.scrollHeight;
+    }
+  }, []);
+
   useEffect(() => {
     if (tutorialSlidetimeoutRef.current) {
       clearTimeout(tutorialSlidetimeoutRef.current);
@@ -143,7 +152,7 @@ const CyberFarmEvoMap = () => {
   return (
     <section className={styles.cyberFarmEvoMap}>
       <div className={styles.cyberFarmEvoMap__sky}></div>
-      <div className={styles.cyberFarmEvoMap__main}>
+      <div className={styles.cyberFarmEvoMap__main} ref={mainRef}>
         <div className={styles.cyberFarmEvoMap__mainInner}>
           {/* <ImageWebp
             srcSet={farmMapMainBgWebpImage}

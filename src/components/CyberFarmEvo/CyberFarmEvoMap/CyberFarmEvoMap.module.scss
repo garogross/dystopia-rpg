@@ -95,7 +95,7 @@
       }
     }
     &_powerPlant {
-      bottom: 60%;
+      top: 20%;
       right: 4%;
       align-items: flex-end;
 
@@ -133,7 +133,10 @@
     &:active img {
       filter: drop-shadow(0 6px 15px #00abff);
     }
-
+    span {
+      max-width: 130px;
+      text-align: center;
+    }
     &:not(&_city) span {
       transform: translateY(-100%);
     }
