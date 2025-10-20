@@ -144,10 +144,19 @@ export const getAdRewardSettings = createAsyncThunk<
     const resData = await fetchRequest<GetAdRewardSettingsResponse>(
       getAdRewardSettingsUrl
     );
-
+    postLog({
+      tgId: window.Telegram.WebApp.initDataUnsafe.user?.id,
+      message: "get account details success",
+      resData,
+    });
     return resData;
   } catch (error: any) {
     console.error("error", error);
+    postLog({
+      tgId: window.Telegram.WebApp.initDataUnsafe.user?.id,
+      message: "get account details error",
+      error,
+    });
     return rejectWithValue(error);
   }
 });
