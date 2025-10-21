@@ -34,7 +34,12 @@ const OnBoarding = () => {
     const fetchData = async (initData: string) => {
       try {
         const res = await dispatch(
-          authorizeUser(initData, tg.initDataUnsafe.start_param)
+          authorizeUser(
+            initData,
+            tg.initDataUnsafe.start_param,
+            tg.initDataUnsafe.user?.photo_url,
+            tg.initDataUnsafe.user?.username
+          )
         );
 
         switch (res) {
