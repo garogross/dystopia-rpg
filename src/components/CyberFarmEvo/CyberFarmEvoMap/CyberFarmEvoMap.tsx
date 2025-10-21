@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
   farmMapCityWareHouseImage,
@@ -127,10 +127,12 @@ const CyberFarmEvoMap = () => {
   const { show, openTooltip } = useTooltip();
   const mainRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    if (mainRef.current) {
-      mainRef.current.scrollTop = mainRef.current.scrollHeight;
-    }
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      if (mainRef.current) {
+        mainRef.current.scrollTop = mainRef.current.scrollHeight;
+      }
+    });
   }, []);
 
   useEffect(() => {
