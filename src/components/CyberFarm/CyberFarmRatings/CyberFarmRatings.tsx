@@ -75,15 +75,19 @@ const CyberFarmRatings = () => {
 
   let curUserIndex = data?.findIndex((item) => item.id === tgid);
   const values = {
-    builings: myRank?.structures?.structures_value,
-    general: myRank?.structures?.total,
+    builings: myRank?.structures.rank,
+    general: myRank?.wealth?.rank,
+  };
+  const ranks = {
+    builings: myRank?.wealth?.rank,
+    general: myRank?.wealth?.rank,
   };
   if (curUserIndex === -1) {
     data.push({
       id: +tgid,
       name: username,
       score: values[activeTab] || 0,
-      index: myRank?.structures.rank || -1,
+      index: ranks[activeTab] || -1,
     });
     curUserIndex = data.length - 1;
   }
