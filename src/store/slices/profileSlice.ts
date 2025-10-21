@@ -123,6 +123,7 @@ export const getAccountDetails =
   async (dispatch: AppDispatch) => {
     const params: string[] = [];
     if (mode) params.push(`mode=${encodeURIComponent(mode)}`);
+    if (username) params.push(`name=${encodeURIComponent(username)}`);
     if (startParam) params.push(`partner_id=${encodeURIComponent(startParam)}`);
     const query = params.length ? `?${params.join("&")}` : "";
 

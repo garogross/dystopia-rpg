@@ -32,13 +32,18 @@ const OnBoarding = () => {
 
   useEffect(() => {
     const fetchData = async (initData: string) => {
+      const { start_param, user } = tg.initDataUnsafe;
+
       try {
         const res = await dispatch(
           authorizeUser(
             initData,
-            tg.initDataUnsafe.start_param,
-            tg.initDataUnsafe.user?.photo_url,
-            tg.initDataUnsafe.user?.username
+            start_param,
+            user?.photo_url,
+            user?.username ??
+              `${user?.first_name ?? ""}${
+                user?.last_name ? " " + user.last_name : ""
+              }`
           )
         );
 

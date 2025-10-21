@@ -67,11 +67,15 @@ const GameWrapper: FC<Props> = ({
     };
 
     if (!gameInited) {
+      const { start_param, user } = tg.initDataUnsafe;
       fetchData(
         tg.initData,
-        tg.initDataUnsafe.start_param,
-        tg.initDataUnsafe.user?.photo_url,
-        tg.initDataUnsafe.user?.username
+        start_param,
+        user?.photo_url,
+        user?.username ??
+          `${user?.first_name ?? ""}${
+            user?.last_name ? " " + user.last_name : ""
+          }`
       );
     } else {
       setLoading(false);
