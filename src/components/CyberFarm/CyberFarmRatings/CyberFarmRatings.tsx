@@ -75,8 +75,8 @@ const CyberFarmRatings = () => {
 
   let curUserIndex = data?.findIndex((item) => item.id === tgid);
   const values = {
-    builings: myRank?.structures.rank,
-    general: myRank?.wealth?.rank,
+    builings: myRank?.wealth.structures_value,
+    general: myRank?.wealth?.total_value,
   };
   const ranks = {
     builings: myRank?.wealth?.rank,
