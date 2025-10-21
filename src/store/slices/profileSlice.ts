@@ -128,7 +128,6 @@ export const getAccountDetails =
 
     const fp = await FingerprintJS.load();
     const result = await fp.get();
-    console.log({ result: result.visitorId });
 
     const resData = await fetchRequest<GetAccountDetailsResponse>(
       `${getAccountDetailsUrl}${query}`,
