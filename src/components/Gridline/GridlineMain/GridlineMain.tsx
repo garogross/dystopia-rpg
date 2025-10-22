@@ -17,8 +17,10 @@ import {
   BottomFrame,
   ChangeShapersIcon,
   ColorVirusIcon,
+  HorisontalbangLineOptionIcon,
   LineBangIcon,
   TopFrame,
+  VerticalbangLineOptionIcon,
 } from "../../layout/icons/Gridline/Main";
 
 import styles from "./GridlineMain.module.scss";
@@ -32,6 +34,9 @@ import { onBoardingPagePath } from "../../../router/constants";
 import { RefreshIcon } from "../../layout/icons/Gridline/Common";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import { useAppSelector } from "../../../hooks/redux";
+import TransitionProvider, {
+  TransitionStyleTypes,
+} from "../../../providers/TransitionProvider";
 
 const { name } = TRANSLATIONS.miniGames.gridline;
 
@@ -65,6 +70,12 @@ const GridlineMain = () => {
 
   // show/hide game over modal
   const [showGameOver, setShowGameOver] = useState(false);
+  const [selectedBonus, setSelectedBonus] = useState<EGridlineBonuses | null>(
+    null
+  );
+  const [bangLinesType, setBangLinesType] = useState<"horisontal" | "vertical">(
+    "horisontal"
+  );
 
   // resetKey increments when the game should restart; passed to canvas to trigger re-init
   const [resetKey, setResetKey] = useState(0);
@@ -186,7 +197,12 @@ const GridlineMain = () => {
               const key = k as EGridlineBonuses;
               return (
                 <button
-                  className={styles.gridlineMain__bonusOptionBtn}
+                  onClick={() => setSelectedBonus(key)}
+                  className={`${styles.gridlineMain__bonusOptionBtn} ${
+                    selectedBonus === key
+                      ? styles.gridlineMain__bonusOptionBtn_active
+                      : ""
+                  }`}
                   key={key}
                 >
                   <div className={styles.gridlineMain__bonusOptionBtnInner}>
@@ -196,6 +212,40 @@ const GridlineMain = () => {
                 </button>
               );
             })}
+            <TransitionProvider
+              inProp={selectedBonus === EGridlineBonuses.LineBang}
+              style={TransitionStyleTypes.opacity}
+              className={styles.gridlineMain__bangLinesBonusOptionsList}
+            >
+              <button
+                onClick={() => setBangLinesType("horisontal")}
+                className={`${styles.gridlineMain__bangLinesBonusOptionBtn} ${
+                  bangLinesType === "horisontal"
+                    ? styles.gridlineMain__bangLinesBonusOptionBtn_active
+                    : ""
+                }`}
+              >
+                <div
+                  className={styles.gridlineMain__bangLinesBonusOptionBtnInner}
+                >
+                  <HorisontalbangLineOptionIcon />
+                </div>
+              </button>
+              <button
+                onClick={() => setBangLinesType("vertical")}
+                className={`${styles.gridlineMain__bangLinesBonusOptionBtn} ${
+                  bangLinesType === "vertical"
+                    ? styles.gridlineMain__bangLinesBonusOptionBtn_active
+                    : ""
+                }`}
+              >
+                <div
+                  className={styles.gridlineMain__bangLinesBonusOptionBtnInner}
+                >
+                  <VerticalbangLineOptionIcon />
+                </div>
+              </button>
+            </TransitionProvider>
           </div>
           <div className={styles.gridlineMain__bonusesBottomWings}>
             <HeaderWings reversed />

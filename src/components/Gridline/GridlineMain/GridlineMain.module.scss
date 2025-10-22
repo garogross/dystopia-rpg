@@ -83,6 +83,7 @@
     gap: 8px;
     width: 100%;
   }
+
   &__bonusesInfoText {
     @include setFont(10px, 200, $font-fam-main, $color-primary);
     text-align: center;
@@ -108,7 +109,73 @@
     @include flexCol();
     gap: 12px;
     margin-inline: auto;
+    position: relative;
   }
+
+  &__bangLinesBonusOptionsList {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    transform: translateY(-100%);
+    @include flexCol();
+    width: 100%;
+    gap: 10px;
+    z-index: 2;
+    background: $color-bg;
+    border-radius: 30px;
+  }
+
+  &__bangLinesBonusOptionBtn {
+    @include button($color-primary);
+    padding: 1px;
+    flex: 1;
+  }
+  &__bangLinesBonusOptionBtnInner {
+    background: radial-gradient(
+      88.89% 88.89% at 50% 50%,
+      rgb(61, 43, 126) 0%,
+      rgb(4, 0, 16) 100%
+    );
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    @include flexCol();
+    flex-direction: column;
+    @include setFont(12px, 400);
+  }
+
+  &__bangLinesBonusOptionBtn_active &__bangLinesBonusOptionBtnInner {
+    background: $color-active-btn-gradient;
+  }
+
+  &__bangLinesBonusOptionBtn:first-child,
+  &__bangLinesBonusOptionBtn:first-child &__bangLinesBonusOptionBtnInner {
+    clip-path: polygon(
+      8.7% 0%,
+      /* (7.8/90) */ 100% 0%,
+      100% 20.6%,
+      /* (10.9365/53) */ 100% 80.9%,
+      /* (42.9048/53) */ 100% 100%,
+      8.7% 100%,
+      0% 80.9%,
+      0% 20.6%
+    );
+  }
+
+  &__bangLinesBonusOptionBtn:last-child,
+  &__bangLinesBonusOptionBtn:last-child &__bangLinesBonusOptionBtnInner {
+    clip-path: polygon(
+      0% 0%,
+      91.3% 0%,
+      /* (82.2047/90) */ 100% 20.6%,
+      /* (10.9365/53) */ 100% 80.9%,
+      /* (42.9048/53) */ 90.6% 100%,
+      /* (81.4961/90) */ 0% 100%,
+      0% 80.9%,
+      0% 20.6%
+    );
+  }
+
   &__bonusOptionBtn {
     @include button($color-primary);
     padding: 1px;
@@ -128,6 +195,10 @@
     @include setFont(12px, 400);
   }
 
+  &__bonusOptionBtn_active &__bonusOptionBtnInner {
+    background: $color-active-btn-gradient;
+  }
+
   &__bonusOptionBtn:first-child,
   &__bonusOptionBtn:first-child &__bonusOptionBtnInner {
     clip-path: polygon(
@@ -142,8 +213,8 @@
     );
   }
 
-  &__bonusOptionBtn:last-child,
-  &__bonusOptionBtn:last-child &__bonusOptionBtnInner {
+  &__bonusOptionBtn:nth-child(3),
+  &__bonusOptionBtn:nth-child(3) &__bonusOptionBtnInner {
     clip-path: polygon(
       0% 0%,
       91.3% 0%,
