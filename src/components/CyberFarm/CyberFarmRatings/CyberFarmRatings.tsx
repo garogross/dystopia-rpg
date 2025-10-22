@@ -46,8 +46,11 @@ const getTabItems = (
 ];
 const CyberFarmRatings = () => {
   const dispatch = useAppDispatch();
-  const ratings = useAppSelector(
+  const wealthRankData = useAppSelector(
     (state) => state.cyberfarm.ratings.wealthRankData
+  );
+  const structuresRankData = useAppSelector(
+    (state) => state.cyberfarm.ratings.structuresRankData
   );
   const myRank = useAppSelector((state) => state.cyberfarm.ratings.myRank);
   const tgid = useAppSelector((state) => state.profile.tgId);
@@ -56,17 +59,22 @@ const CyberFarmRatings = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const tabItems = getTabItems(language);
   const [activeTab, setActiveTab] = useState(tabItems[0].id);
+  const ratings =
+    activeTab === "builings" ? structuresRankData : wealthRankData;
 
   const data = [
     ...(ratings || []).map((item, index) => {
-      const values = {
-        builings: item.structures_value,
-        general: item.total_value,
-      };
+      let score = 0;
+      if (activeTab === "builings" && "structures_value" in item) {
+        score = item.structures_value ?? 0;
+      } else if (activeTab === "general" && "total_value" in item) {
+        // Patch for types: StructuresRankRating does not have total_value
+        score = (item as any).total_value ?? 0;
+      }
       return {
         id: item.user_id,
         name: item.name,
-        score: values[activeTab],
+        score,
       };
     }),
   ]
