@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HeaderWings } from "../../layout/icons/RPGGame/Common";
 import {
   gridlineBlueBallImage,
@@ -69,6 +69,38 @@ const GridlineMain = () => {
   // resetKey increments when the game should restart; passed to canvas to trigger re-init
   const [resetKey, setResetKey] = useState(0);
 
+  // spawn balls queue - shows next balls to be spawned
+  const [spawnBalls, setSpawnBalls] = useState<EGridlineBalls[]>([]);
+
+  // Generate random spawn balls
+  const generateSpawnBalls = (count: number = 3): EGridlineBalls[] => {
+    const ballTypes = Object.values(EGridlineBalls);
+    const balls: EGridlineBalls[] = [];
+    for (let i = 0; i < count; i++) {
+      const randomBall =
+        ballTypes[Math.floor(Math.random() * ballTypes.length)];
+      balls.push(randomBall as EGridlineBalls);
+    }
+    return balls;
+  };
+
+  // Initialize spawn balls on component mount
+  useEffect(() => {
+    setSpawnBalls(generateSpawnBalls(3));
+  }, []);
+
+  // Handle when balls are consumed from spawn queue
+  const handleBallsConsumed = (count: number) => {
+    setSpawnBalls((prev) => {
+      const newBalls = [...prev];
+      // Remove consumed balls from the front
+      newBalls.splice(0, count);
+      // Add new balls to the end
+      newBalls.push(...generateSpawnBalls(count));
+      return newBalls;
+    });
+  };
+
   // called by GridlineMainCanvas when the board becomes full / game over
   const handleGameOver = () => {
     setShowGameOver(true);
@@ -78,6 +110,7 @@ const GridlineMain = () => {
     // reset score and reinit canvas by bumping resetKey
     setScore(0);
     setShowGameOver(false);
+    setSpawnBalls(generateSpawnBalls(3));
     setResetKey((k) => k + 1);
   };
 
@@ -102,17 +135,18 @@ const GridlineMain = () => {
           <div className={styles.gridlineMain__headerMain}>
             <span className={styles.gridlineMain__headerText}>СферЫ; 14</span>
             <div className={styles.gridlineMain__headerBalls}>
-              {Object.values(nextBalls)
-                .slice(0, 3)
-                .map((item, index) => (
+              {spawnBalls.slice(0, 3).map((ballType, index) => {
+                const ballImages = nextBalls[ballType];
+                return (
                   <ImageWebp
-                    src={item[0]}
-                    srcSet={item[1]}
+                    src={ballImages[0]}
+                    srcSet={ballImages[1]}
                     alt={"ball"}
                     className={styles.gridlineMain__headerBallImg}
-                    key={index}
+                    key={`${ballType}-${index}`}
                   />
-                ))}
+                );
+              })}
             </div>
             <span className={styles.gridlineMain__headerText}>
               очки: {score}
@@ -128,6 +162,8 @@ const GridlineMain = () => {
               setScore={setScore}
               onGameOver={handleGameOver}
               resetKey={resetKey}
+              spawnBalls={spawnBalls}
+              onBallsConsumed={handleBallsConsumed}
             />
           </div>
           <div className={styles.gridlineMain__gameWrapperBottomIcon}>

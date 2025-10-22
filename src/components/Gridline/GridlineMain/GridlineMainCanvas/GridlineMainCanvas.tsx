@@ -12,11 +12,14 @@ import {
 } from "../../../../assets/imageMaps/gridlineImages";
 import { EGridlineBalls } from "../../../../constants/gridline/EGridlineBalls";
 import { Graphics, Sprite, Texture, Ticker } from "pixi.js";
+import { useCopyRef } from "../../../../hooks/useCopyRef";
 
 interface Props {
   setScore: React.Dispatch<React.SetStateAction<number>>;
   onGameOver?: () => void;
   resetKey?: number;
+  spawnBalls: EGridlineBalls[];
+  onBallsConsumed: (count: number) => void;
 }
 interface IField {
   ball?: EGridlineBalls;
@@ -71,6 +74,8 @@ const GridlineMainCanvas: React.FC<Props> = ({
   setScore,
   onGameOver,
   resetKey,
+  spawnBalls,
+  onBallsConsumed,
 }) => {
   const onInitApp = () => {};
   const { isInitialized, pixiContainer, hexLayerRef } = usePixi(onInitApp);
@@ -78,10 +83,8 @@ const GridlineMainCanvas: React.FC<Props> = ({
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(-1);
 
   // keep latest fields in ref so pointer handlers inside updateCanvas can read current data
-  const fieldsRef = useRef<IField[]>(fields);
-  useEffect(() => {
-    fieldsRef.current = fields;
-  }, [fields]);
+  const fieldsRef = useCopyRef(fields);
+  const spawnBallsRef = useCopyRef(spawnBalls);
 
   // refs to persist between renders
   const spriteInfoRef = useRef<
@@ -231,9 +234,12 @@ const GridlineMainCanvas: React.FC<Props> = ({
     return Array.from(toRemove);
   };
 
-  // spawn N random balls into empty cells (mutates a shallow copy passed in)
+  // spawn balls from spawnBalls queue into empty cells (mutates a shallow copy passed in)
   // returns number of balls actually placed
-  const spawnRandomBalls = (count: number, localFields: IField[]): number => {
+  const spawnBallsFromQueue = (
+    count: number,
+    localFields: IField[]
+  ): number => {
     const emptyIndices: number[] = [];
     for (let i = 0; i < localFields.length; i++) {
       if (!localFields[i] || !localFields[i].ball) emptyIndices.push(i);
@@ -246,18 +252,26 @@ const GridlineMainCanvas: React.FC<Props> = ({
       [emptyIndices[i], emptyIndices[j]] = [emptyIndices[j], emptyIndices[i]];
     }
 
-    const ballTypes = Object.values(EGridlineBalls);
-    const toPlace = Math.min(count, emptyIndices.length);
+    const toPlace = Math.min(
+      count,
+      emptyIndices.length,
+      spawnBallsRef.current.length
+    );
     for (let k = 0; k < toPlace; k++) {
       const idx = emptyIndices[k];
-      const randomBall =
-        ballTypes[Math.floor(Math.random() * ballTypes.length)];
+      const ballType = spawnBallsRef.current[k];
       localFields[idx] = {
-        ball: randomBall as EGridlineBalls,
+        ball: ballType,
         incoming: true,
         new: true,
       };
     }
+
+    // Notify parent that balls were consumed
+    if (toPlace > 0) {
+      onBallsConsumed(toPlace);
+    }
+
     return toPlace;
   };
 
@@ -755,8 +769,8 @@ const GridlineMainCanvas: React.FC<Props> = ({
               setFields(newFields);
               fieldsRef.current = newFields;
 
-              // spawn SPAWN_COUNT new balls in random empty places
-              spawnRandomBalls(SPAWN_COUNT, newFields);
+              // spawn SPAWN_COUNT new balls from queue in random empty places
+              spawnBallsFromQueue(SPAWN_COUNT, newFields);
 
               // commit state + fieldsRef
               setFields(newFields);
