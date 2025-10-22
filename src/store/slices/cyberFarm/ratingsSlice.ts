@@ -48,7 +48,7 @@ export const getRatingsList = createAsyncThunk<
 >("ratings/getRatingsList", async (_payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<GetRatingsListResponse>(
-      getRatingsListUrl
+      getRatingsListUrl + "?limit=100"
     );
 
     return resData;
