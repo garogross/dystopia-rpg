@@ -35,6 +35,7 @@ import { initMap } from "./influence/mapSlice";
 import { initMail, receiveMailReward } from "./influence/mailSlice";
 import { EAdSlots } from "../../constants/EAdSlots";
 import { GetWithdrawRatesResponse } from "../../models/api/GetWithdrawRatesResponse";
+import { postLog } from "../../api/logs";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -137,6 +138,12 @@ export const getAccountDetails =
       undefined,
       { "X-Client-FP": result.visitorId }
     );
+
+    postLog({
+      tgId: window.Telegram.WebApp.initDataUnsafe.user?.id,
+      message: "get account details success",
+      resData,
+    });
 
     dispatch(getAdRewardSettings());
     dispatch(
@@ -325,6 +332,11 @@ export const authorizeUser =
 
       return res.mode;
     } catch (error: any) {
+      postLog({
+        tgId: window.Telegram.WebApp.initDataUnsafe.user?.id,
+        message: "get account details error",
+        error,
+      });
       if (error?.status === 401) {
         // in case invalid token
         await dispatch(authUser(initData));
