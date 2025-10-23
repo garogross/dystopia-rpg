@@ -32,7 +32,7 @@ interface Props {
   onBallsConsumed: (count: number) => void;
   selectedBonus: EGridlineBonuses | null;
   bangLinesType: GridlineLineBangType;
-  turnOffBonus: () => void;
+  onUseBonus: (score?: number) => void;
 }
 interface IField {
   ball?: EGridlineBalls;
@@ -108,7 +108,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
   onBallsConsumed,
   selectedBonus,
   bangLinesType,
-  turnOffBonus,
+  onUseBonus,
 }) => {
   const onInitApp = () => {};
   const { isInitialized, pixiContainer, hexLayerRef } = usePixi(onInitApp);
@@ -507,10 +507,14 @@ const GridlineMainCanvas: React.FC<Props> = ({
 
       await animateAndRemoveIndices(indicesToRemove, 300);
       setFields(updatedFields);
-      setScore((prev) => prev + indicesToRemove.length * SCORE_PER_BALL);
-      turnOffBonus();
+      setScore((prev) => {
+        const score = prev + indicesToRemove.length * SCORE_PER_BALL;
+
+        onUseBonus(score);
+        return score;
+      });
     },
-    [fieldsRef, turnOffBonus, setScore, animateAndRemoveIndices]
+    [fieldsRef, onUseBonus, setScore, animateAndRemoveIndices]
   );
 
   // updateCanvas accepts optional fields and selected index so we can rerender immediately with new data
@@ -606,7 +610,9 @@ const GridlineMainCanvas: React.FC<Props> = ({
             selectedIndexRef.current = -1;
             setSelectedFieldIndex(-1);
             // Use optimized banglines execution
-            const fieldsIndexesToRemove = Array.from(bangLinesIndices);
+            const fieldsIndexesToRemove = Array.from(bangLinesIndices).filter(
+              (item) => fields[item]?.ball
+            );
             await executeBangLines(fieldsIndexesToRemove);
             return;
           }

@@ -1689,6 +1689,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Gridline",
         [ELanguages.ru]: "Гридлайн",
       },
+      bonusNotActive: {
+        [ELanguages.en]: "Bonus still not active",
+        [ELanguages.ru]: "Бонус еще не активен",
+      },
     },
     hackTerminal: {
       name: {

@@ -40,8 +40,11 @@ import { useAppSelector } from "../../../hooks/redux";
 import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
+import { useTooltip } from "../../../hooks/useTooltip";
+import Tooltip from "../../layout/Tooltip/Tooltip";
 
-const { name } = TRANSLATIONS.miniGames.gridline;
+const { name, bonusNotActive } = TRANSLATIONS.miniGames.gridline;
+const BONUS_ACTIVITY_PER_SCORE = 0.4;
 
 const nextBalls = {
   [EGridlineBalls.Blue]: [gridlineBlueBallImage, gridlineBlueBallImageWebp],
@@ -68,6 +71,8 @@ const bonuses = {
 
 const GridlineMain = () => {
   const [score, setScore] = useState(0);
+  const [bonusActivityPercent, setBonusActivityPercent] = useState(0);
+  const [bonusActivitySessionScore, setBonusActivitySessionScore] = useState(0);
   const navigate = useNavigate();
   const language = useAppSelector((state) => state.ui.language);
 
@@ -84,6 +89,7 @@ const GridlineMain = () => {
 
   // spawn balls queue - shows next balls to be spawned
   const [spawnBalls, setSpawnBalls] = useState<EGridlineBalls[]>([]);
+  const { show, openTooltip } = useTooltip();
 
   // Generate random spawn balls
   const generateSpawnBalls = (count: number = 3): EGridlineBalls[] => {
@@ -101,6 +107,14 @@ const GridlineMain = () => {
   useEffect(() => {
     setSpawnBalls(generateSpawnBalls(3));
   }, []);
+
+  useEffect(() => {
+    const activityBonus =
+      (score - bonusActivitySessionScore) * BONUS_ACTIVITY_PER_SCORE;
+
+    setBonusActivityPercent(Math.min(activityBonus, 100));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [score]);
 
   // Handle when balls are consumed from spawn queue
   const handleBallsConsumed = (count: number) => {
@@ -125,6 +139,20 @@ const GridlineMain = () => {
     setShowGameOver(false);
     setSpawnBalls(generateSpawnBalls(3));
     setResetKey((k) => k + 1);
+  };
+
+  const handleUseBonus = (scoreArg?: number) => {
+    const freshScore = scoreArg || score;
+    setBonusActivityPercent(0);
+    setBonusActivitySessionScore(freshScore);
+    setSelectedBonus(null);
+  };
+  const onBonnusOptionClick = (bonus: EGridlineBonuses) => {
+    if (bonus && bonusActivityPercent !== 100) {
+      openTooltip();
+      return;
+    }
+    setSelectedBonus((prev) => (prev === bonus ? null : bonus));
   };
 
   return (
@@ -179,7 +207,7 @@ const GridlineMain = () => {
               onBallsConsumed={handleBallsConsumed}
               selectedBonus={selectedBonus}
               bangLinesType={bangLinesType}
-              turnOffBonus={() => setSelectedBonus(null)}
+              onUseBonus={handleUseBonus}
             />
           </div>
           <div className={styles.gridlineMain__gameWrapperBottomIcon}>
@@ -193,8 +221,11 @@ const GridlineMain = () => {
             бонусов
           </div>
           <div className={styles.gridlineMain__bonusesProgressBar}>
-            <div className={styles.gridlineMain__bonusesProgressBarInner}>
-              42%
+            <div
+              style={{ width: `${bonusActivityPercent}%` }}
+              className={styles.gridlineMain__bonusesProgressBarInner}
+            >
+              {bonusActivityPercent}%
             </div>
           </div>
           <div className={styles.gridlineMain__bonusesOptionsList}>
@@ -202,7 +233,7 @@ const GridlineMain = () => {
               const key = k as EGridlineBonuses;
               return (
                 <button
-                  onClick={() => setSelectedBonus(key)}
+                  onClick={() => onBonnusOptionClick(key)}
                   className={`${styles.gridlineMain__bonusOptionBtn} ${
                     selectedBonus === key
                       ? styles.gridlineMain__bonusOptionBtn_active
@@ -262,6 +293,7 @@ const GridlineMain = () => {
           score={score}
         />
       </div>
+      <Tooltip show={show} text={bonusNotActive[language]} />
     </>
   );
 };
