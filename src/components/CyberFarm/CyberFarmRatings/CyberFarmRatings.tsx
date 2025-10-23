@@ -87,7 +87,7 @@ const CyberFarmRatings = () => {
     general: myRank?.wealth?.total_value,
   };
   const ranks = {
-    builings: myRank?.wealth?.rank,
+    builings: myRank?.structures?.rank,
     general: myRank?.wealth?.rank,
   };
   if (curUserIndex === -1) {
