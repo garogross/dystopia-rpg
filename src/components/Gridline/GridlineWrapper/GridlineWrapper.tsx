@@ -23,32 +23,34 @@ const GridlineWrapper = () => {
   const match = useMatch(gridlinePagePath);
   const language = useAppSelector((state) => state.ui.language);
   return (
-    <GameWrapper
-      gameInited={false}
-      header={
-        <>
-          <MiniGamesHeader />
-          {!match && (
-            <HeaderWithBackButton
-              className={`container ${styles.gridlineWrapper__title}`}
-              onClose={() => {
-                navigate(gridlinePagePath);
-              }}
-              title={name[language]}
-            />
-          )}
-        </>
-      }
-      bottomNavbar={
-        <GameBottomNavbar
-        // ratingsPagePath={gridlineRatingsPagePath}
-        // levelSelectPagePath={gridlineLevelSelectPagePath}
-        // achievmentsPagePath={gridlineAchievmentsPagePath}
-        />
-      }
-      images={gridlineImages}
-      offsetSize={171}
-    />
+    <div className={`container ${styles.gridlineWrapper}`}>
+      <GameWrapper
+        gameInited={false}
+        header={
+          <>
+            <MiniGamesHeader />
+            {!match && (
+              <HeaderWithBackButton
+                className={styles.gridlineWrapper__title}
+                onClose={() => {
+                  navigate(gridlinePagePath);
+                }}
+                title={name[language]}
+              />
+            )}
+          </>
+        }
+        bottomNavbar={
+          <GameBottomNavbar
+          // ratingsPagePath={gridlineRatingsPagePath}
+          // levelSelectPagePath={gridlineLevelSelectPagePath}
+          // achievmentsPagePath={gridlineAchievmentsPagePath}
+          />
+        }
+        images={gridlineImages}
+        offsetSize={171}
+      />
+    </div>
   );
 };
 
