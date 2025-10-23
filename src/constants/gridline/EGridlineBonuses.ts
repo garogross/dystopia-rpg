@@ -3,3 +3,5 @@ export enum EGridlineBonuses {
   SphereChange = "SphereChange",
   ColorVirus = "ColorVirus",
 }
+
+export type GridlineLineBangType = "horisontal" | "vertical";

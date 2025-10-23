@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 
 import styles from "./GridlineMainCanvas.module.scss";
 import { usePixi } from "../../../../hooks/influence/usePixi";
@@ -13,6 +19,10 @@ import {
 import { EGridlineBalls } from "../../../../constants/gridline/EGridlineBalls";
 import { Graphics, Sprite, Texture, Ticker } from "pixi.js";
 import { useCopyRef } from "../../../../hooks/useCopyRef";
+import {
+  EGridlineBonuses,
+  GridlineLineBangType,
+} from "../../../../constants/gridline/EGridlineBonuses";
 
 interface Props {
   setScore: React.Dispatch<React.SetStateAction<number>>;
@@ -20,6 +30,9 @@ interface Props {
   resetKey?: number;
   spawnBalls: EGridlineBalls[];
   onBallsConsumed: (count: number) => void;
+  selectedBonus: EGridlineBonuses | null;
+  bangLinesType: GridlineLineBangType;
+  turnOffBonus: () => void;
 }
 interface IField {
   ball?: EGridlineBalls;
@@ -32,7 +45,7 @@ const BALLS_PER_ROW = 10;
 const SCORE_PER_BALL = 10;
 const INITIAL_BALLS_COUNT = 10;
 const MOVE_SPEED = 0.3;
-
+const ACTIVE_BG_COLOR = 0x3d2b7e;
 // minimum length of a line to remove
 const MIN_LINE = 5;
 
@@ -70,21 +83,61 @@ const generateInitialFields = (): IField[] => {
   return fields;
 };
 
+// Memoized row/col calculation for better performance
+const getFieldRowAndCol = (i: number) => {
+  const row = Math.floor(i / BALLS_PER_ROW);
+  const col = i % BALLS_PER_ROW;
+  return { row, col };
+};
+
+// Pre-calculate all row/col mappings for better performance
+const createRowColMap = () => {
+  const map = new Map<number, { row: number; col: number }>();
+  for (let i = 0; i < BALLS_PER_ROW * BALLS_PER_ROW; i++) {
+    map.set(i, getFieldRowAndCol(i));
+  }
+  return map;
+};
+
+const ROW_COL_MAP = createRowColMap();
 const GridlineMainCanvas: React.FC<Props> = ({
   setScore,
   onGameOver,
   resetKey,
   spawnBalls,
   onBallsConsumed,
+  selectedBonus,
+  bangLinesType,
+  turnOffBonus,
 }) => {
   const onInitApp = () => {};
   const { isInitialized, pixiContainer, hexLayerRef } = usePixi(onInitApp);
   const [fields, setFields] = useState<IField[]>(generateInitialFields());
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(-1);
+  const [bangLineIndex, setBangLineIndex] = useState(0);
 
   // keep latest fields in ref so pointer handlers inside updateCanvas can read current data
   const fieldsRef = useCopyRef(fields);
   const spawnBallsRef = useCopyRef(spawnBalls);
+  const selectedBonusRef = useCopyRef(selectedBonus);
+
+  // Memoized banglines detection for better performance
+  const bangLinesIndices = useMemo(() => {
+    if (selectedBonus !== EGridlineBonuses.LineBang) return new Set<number>();
+
+    const indices = new Set<number>();
+    for (let i = 0; i < fields.length; i++) {
+      const { row, col } = ROW_COL_MAP.get(i)!;
+      const rowOrColIndex = bangLinesType === "horisontal" ? row : col;
+      if (rowOrColIndex === bangLineIndex) {
+        indices.add(i);
+      }
+    }
+    return indices;
+  }, [selectedBonus, bangLinesType, bangLineIndex, fields]);
+
+  // Memoized banglines count for UI updates (can be used for future UI enhancements)
+  // const bangLinesCount = useMemo(() => bangLinesIndices.size, [bangLinesIndices]);
 
   // refs to persist between renders
   const spriteInfoRef = useRef<
@@ -119,17 +172,25 @@ const GridlineMainCanvas: React.FC<Props> = ({
   // Keep cancellers for any temporary scale animations so we can clean them on unmount / cancel
   const scaleAnimCancelsRef = useRef<(() => void)[]>([]);
 
-  // Helper: compute neighbors (4-directional)
-  const neighbors = (index: number) => {
-    const row = Math.floor(index / BALLS_PER_ROW);
-    const col = index % BALLS_PER_ROW;
+  // Optimized effect to reduce unnecessary re-renders
+  useEffect(() => {
+    // Clear selection when bonus changes or bangline changes
+    selectedIndexRef.current = -1;
+    setSelectedFieldIndex(-1);
+    updateCanvas(undefined, -1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedBonus, bangLinesType, bangLineIndex]);
+
+  // Optimized neighbors calculation with memoization
+  const neighbors = useCallback((index: number) => {
+    const { row, col } = ROW_COL_MAP.get(index)!;
     const result: number[] = [];
     if (row > 0) result.push(index - BALLS_PER_ROW); // up
     if (row < BALLS_PER_ROW - 1) result.push(index + BALLS_PER_ROW); // down
     if (col > 0) result.push(index - 1); // left
     if (col < BALLS_PER_ROW - 1) result.push(index + 1); // right
     return result;
-  };
+  }, []);
 
   // Helper: BFS shortest path from start to target.
   // Treat start as passable even if occupied; other nodes must be empty unless they are the target.
@@ -169,6 +230,9 @@ const GridlineMainCanvas: React.FC<Props> = ({
       }
     }
     return null;
+  };
+  const updateScore = (removedCount: number) => {
+    setScore((prev) => prev + removedCount * SCORE_PER_BALL);
   };
 
   // New: find lines (horizontal, vertical, diagonal) of length >= MIN_LINE
@@ -285,14 +349,14 @@ const GridlineMainCanvas: React.FC<Props> = ({
   };
 
   // Clear road graphics (if any)
-  const clearRoadGraphics = () => {
+  const clearRoadGraphics = useCallback(() => {
     if (!hexLayerRef.current) return;
     for (const g of roadGraphicsRef.current) {
       if (g.parent) g.parent.removeChild(g);
       g.destroy();
     }
     roadGraphicsRef.current = [];
-  };
+  }, [hexLayerRef]);
 
   // Cancel pending move animation (if any)
   const cancelPendingMove = () => {
@@ -368,68 +432,90 @@ const GridlineMainCanvas: React.FC<Props> = ({
     };
   };
   // Animate multiple sprites scaling down to 0, then call onAllDone
-  const animateAndRemoveIndices = async (indices: number[], durationMs = 300) =>
-    new Promise<void>((resolve) => {
-      const sprites: { idx: number; sprite: Sprite }[] = [];
-      for (const idx of indices) {
-        const info = spriteInfoRef.current[idx];
-        if (info && info.sprite) {
-          sprites.push({ idx, sprite: info.sprite });
-        }
-      }
-
-      // if none of the sprites are present (edge-case), resolve immediately
-      if (sprites.length === 0) {
-        resolve();
-        return;
-      }
-
-      let remaining = sprites.length;
-      const cancels: (() => void)[] = [];
-
-      // helper completion handler declared outside the loop to avoid capturing loop variables unsafely
-      const makeOnComplete = (sprite: Sprite, idx: number) => {
-        return () => {
-          // after each sprite finished shrink, destroy it
-          try {
-            if (sprite.parent) sprite.parent.removeChild(sprite);
-          } catch {}
-          try {
-            sprite.destroy();
-          } catch {}
-          // remove from spriteInfoRef if present
-          try {
-            delete spriteInfoRef.current[idx];
-          } catch {}
-          remaining -= 1;
-          if (remaining <= 0) {
-            // clean up any road markers and resolve
-            clearRoadGraphics();
-            resolve();
+  const animateAndRemoveIndices = useCallback(
+    async (indices: number[], durationMs = 300) =>
+      new Promise<void>((resolve) => {
+        const sprites: { idx: number; sprite: Sprite }[] = [];
+        for (const idx of indices) {
+          const info = spriteInfoRef.current[idx];
+          if (info && info.sprite) {
+            sprites.push({ idx, sprite: info.sprite });
           }
-        };
-      };
+        }
 
-      for (const s of sprites) {
-        const from = s.sprite.scale.x || 0.0001;
-        const cancel = animateSpriteScale(
-          s.sprite,
-          from,
-          0.0001,
-          durationMs,
-          makeOnComplete(s.sprite, s.idx)
-        );
-        cancels.push(cancel);
+        // if none of the sprites are present (edge-case), resolve immediately
+        if (sprites.length === 0) {
+          resolve();
+          return;
+        }
+
+        let remaining = sprites.length;
+        const cancels: (() => void)[] = [];
+
+        // helper completion handler declared outside the loop to avoid capturing loop variables unsafely
+        const makeOnComplete = (sprite: Sprite, idx: number) => {
+          return () => {
+            // after each sprite finished shrink, destroy it
+            try {
+              if (sprite.parent) sprite.parent.removeChild(sprite);
+            } catch {}
+            try {
+              sprite.destroy();
+            } catch {}
+            // remove from spriteInfoRef if present
+            try {
+              delete spriteInfoRef.current[idx];
+            } catch {}
+            remaining -= 1;
+            if (remaining <= 0) {
+              // clean up any road markers and resolve
+              clearRoadGraphics();
+              resolve();
+            }
+          };
+        };
+
+        for (const s of sprites) {
+          const from = s.sprite.scale.x || 0.0001;
+          const cancel = animateSpriteScale(
+            s.sprite,
+            from,
+            0.0001,
+            durationMs,
+            makeOnComplete(s.sprite, s.idx)
+          );
+          cancels.push(cancel);
+        }
+
+        // track cancels for cleanup if needed
+        scaleAnimCancelsRef.current.push(...cancels);
+      }),
+    [clearRoadGraphics]
+  );
+
+  // Optimized banglines execution with useCallback
+  const executeBangLines = useCallback(
+    async (indicesToRemove: number[]) => {
+      if (indicesToRemove.length === 0) return;
+
+      const updatedFields = [...fieldsRef.current];
+
+      // Clear the banglines fields
+      for (const idx of indicesToRemove) {
+        updatedFields[idx] = {};
       }
 
-      // track cancels for cleanup if needed
-      scaleAnimCancelsRef.current.push(...cancels);
-    });
+      await animateAndRemoveIndices(indicesToRemove, 300);
+      setFields(updatedFields);
+      setScore((prev) => prev + indicesToRemove.length * SCORE_PER_BALL);
+      turnOffBonus();
+    },
+    [fieldsRef, turnOffBonus, setScore, animateAndRemoveIndices]
+  );
 
   // updateCanvas accepts optional fields and selected index so we can rerender immediately with new data
   const updateCanvas = (fieldsArg?: IField[], selArg?: number) => {
     if (!pixiContainer.current || !hexLayerRef.current) return;
-
     // stop any existing ticker for regular sprite scaling (we'll add it back)
     if (tickerRef.current) {
       Ticker.shared.remove(tickerRef.current);
@@ -461,13 +547,19 @@ const GridlineMainCanvas: React.FC<Props> = ({
     // For drawing
     for (let i = 0; i < localFields.length; i++) {
       const field = localFields[i];
-      const row = Math.floor(i / BALLS_PER_ROW);
-      const col = i % BALLS_PER_ROW;
-
+      const { row, col } = ROW_COL_MAP.get(i)!;
+      const isLineBangBonusActive =
+        selectedBonusRef.current === EGridlineBonuses.LineBang;
+      // Use memoized banglines indices for better performance
+      const isInBangLineCol = isLineBangBonusActive && bangLinesIndices.has(i);
       // Draw rectangle - default dark background, will highlight on selection
       const graphics = new Graphics();
+      if (isInBangLineCol) {
+        graphics.beginFill(ACTIVE_BG_COLOR, 1);
+      } else {
+        graphics.beginFill(0x0f0e10, 1);
+      }
       graphics.lineStyle(1, 0x5c3fff, 1);
-      graphics.beginFill(0x0f0e10, 1);
       graphics.drawRect(0, 0, rectSize, rectSize);
       graphics.endFill();
       graphics.x = col * rectSize;
@@ -493,9 +585,32 @@ const GridlineMainCanvas: React.FC<Props> = ({
       graphicsMapRef.current[i] = graphics;
 
       // pointer event to set selected index and update visuals (or transfer ball)
-      graphics.on("pointerdown", () => {
+      graphics.on("pointerdown", async () => {
         // ignore inputs while moving
         if (isMovingRef.current || field.incoming) return;
+
+        // check bonueses activity
+        // check lineBang bonus
+        if (selectedBonus === EGridlineBonuses.LineBang) {
+          const { row, col } = ROW_COL_MAP.get(i)!;
+          const rowOrColIndex = bangLinesType === "horisontal" ? row : col;
+
+          if (bangLineIndex !== rowOrColIndex) {
+            // Clear any existing selection when changing bangline
+            selectedIndexRef.current = -1;
+            setSelectedFieldIndex(-1);
+            setBangLineIndex(rowOrColIndex);
+            return;
+          } else {
+            // Clear selection before executing banglines
+            selectedIndexRef.current = -1;
+            setSelectedFieldIndex(-1);
+            // Use optimized banglines execution
+            const fieldsIndexesToRemove = Array.from(bangLinesIndices);
+            await executeBangLines(fieldsIndexesToRemove);
+            return;
+          }
+        }
 
         const currentFields = fieldsRef.current;
         const clickedHasBall = !!currentFields[i]?.ball;
@@ -508,7 +623,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
             // highlight current
             graphics.clear();
             graphics.lineStyle(1, 0x5c3fff, 1);
-            graphics.beginFill(0x7f5cff, 1);
+            graphics.beginFill(ACTIVE_BG_COLOR, 1);
             graphics.drawRect(0, 0, rectSize, rectSize);
             graphics.endFill();
 
@@ -729,7 +844,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
 
                   // update score (parent)
                   const removedCount = linesToRemove.length;
-                  setScore((prev) => prev + removedCount * SCORE_PER_BALL);
+                  updateScore(removedCount);
                   newFields = newFields.map((field) => ({
                     ...field,
                     new: false,
@@ -883,11 +998,12 @@ const GridlineMainCanvas: React.FC<Props> = ({
 
     // If selArg points to a valid index, highlight it visually (ensure highlight after rendering sprites)
     const selToUse = typeof selArg === "number" ? selArg : selectedFieldIndex;
+
     if (selToUse !== -1 && graphicsMapRef.current[selToUse]) {
       const g = graphicsMapRef.current[selToUse];
       g.clear();
       g.lineStyle(1, 0x5c3fff, 1);
-      g.beginFill(0x7f5cff, 1);
+      g.beginFill(ACTIVE_BG_COLOR, 1);
       g.drawRect(0, 0, rectSize, rectSize);
       g.endFill();
     }

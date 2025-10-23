@@ -26,7 +26,10 @@ import {
 import styles from "./GridlineMain.module.scss";
 import GridlineMainCanvas from "./GridlineMainCanvas/GridlineMainCanvas";
 import { EGridlineBalls } from "../../../constants/gridline/EGridlineBalls";
-import { EGridlineBonuses } from "../../../constants/gridline/EGridlineBonuses";
+import {
+  EGridlineBonuses,
+  GridlineLineBangType,
+} from "../../../constants/gridline/EGridlineBonuses";
 import GridlineMainGameOverModal from "./GridlineMainGameOverModal/GridlineMainGameOverModal";
 import HeaderWithBackButton from "../../layout/HeaderWithBackButton/HeaderWithBackButton";
 import { useNavigate } from "react-router-dom";
@@ -73,9 +76,8 @@ const GridlineMain = () => {
   const [selectedBonus, setSelectedBonus] = useState<EGridlineBonuses | null>(
     null
   );
-  const [bangLinesType, setBangLinesType] = useState<"horisontal" | "vertical">(
-    "horisontal"
-  );
+  const [bangLinesType, setBangLinesType] =
+    useState<GridlineLineBangType>("horisontal");
 
   // resetKey increments when the game should restart; passed to canvas to trigger re-init
   const [resetKey, setResetKey] = useState(0);
@@ -175,6 +177,9 @@ const GridlineMain = () => {
               resetKey={resetKey}
               spawnBalls={spawnBalls}
               onBallsConsumed={handleBallsConsumed}
+              selectedBonus={selectedBonus}
+              bangLinesType={bangLinesType}
+              turnOffBonus={() => setSelectedBonus(null)}
             />
           </div>
           <div className={styles.gridlineMain__gameWrapperBottomIcon}>
