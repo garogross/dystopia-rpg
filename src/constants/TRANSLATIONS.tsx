@@ -1792,6 +1792,20 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Играть",
       },
     },
+    gameBottomNavbar: {
+      ratingsText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
+      },
+      levelSelectText: {
+        [ELanguages.en]: "Level Select",
+        [ELanguages.ru]: "Выбор сложности",
+      },
+      achievmentsText: {
+        [ELanguages.en]: "Achievements",
+        [ELanguages.ru]: "Достижения",
+      },
+    },
     puzzle: {
       name: {
         [ELanguages.en]: "Mini Puzzle",
@@ -1800,6 +1814,16 @@ export const TRANSLATIONS = {
       description: {
         [ELanguages.en]: "Small logic puzzles in a cyberpunk style.",
         [ELanguages.ru]: "Небольшие логические головоломки в стиле киберпанка.",
+      },
+    },
+    gridline: {
+      name: {
+        [ELanguages.en]: "Gridline",
+        [ELanguages.ru]: "Гридлайн",
+      },
+      description: {
+        [ELanguages.en]: "Restore order in the world of broken nodes.",
+        [ELanguages.ru]: "Восстанови порядок в мире сломанных узлов.",
       },
     },
     hackTerminal: {
@@ -1836,24 +1860,51 @@ export const TRANSLATIONS = {
       },
     },
   },
+  gridline: {
+    name: {
+      [ELanguages.en]: "Gridline",
+      [ELanguages.ru]: "Гридлайн",
+    },
+    main: {
+      bonusNotActiveText: {
+        [ELanguages.en]: "Bonus still not active",
+        [ELanguages.ru]: "Бонус еще не активен",
+      },
+
+      abilitiesScaleInfoText: {
+        [ELanguages.en]:
+          "The abilities scale fills up after every successful move. A full bar allows you to choose one of the available helpful bonuses.",
+        [ELanguages.ru]:
+          "Шкала способностей заполняется при каждом удачном ходу. Полная полоска даёт возможность выбрать один из доступных помогающих бонусов",
+      },
+      lineBangBonusText: {
+        [ELanguages.en]: "Line Bang",
+        [ELanguages.ru]: "Взрыв линии",
+      },
+      sphereChangeBonusText: {
+        [ELanguages.en]: "Sphere Change",
+        [ELanguages.ru]: "Смена сфер",
+      },
+      colorVirusBonusText: {
+        [ELanguages.en]: "Color Virus",
+        [ELanguages.ru]: "Цветовирус",
+      },
+      spheresLabel: {
+        [ELanguages.en]: "Spheres",
+        [ELanguages.ru]: "СферЫ",
+      },
+      scoreLabel: {
+        [ELanguages.en]: "Score",
+        [ELanguages.ru]: "очки",
+      },
+    },
+  },
   hackTerminal: {
     title: {
       [ELanguages.en]: "Hack Terminal",
       [ELanguages.ru]: "Взлом терминала",
     },
     bottomNavbar: {
-      ratingsText: {
-        [ELanguages.en]: "Ratings",
-        [ELanguages.ru]: "Рейтинги",
-      },
-      levelSelectText: {
-        [ELanguages.en]: "Level Select",
-        [ELanguages.ru]: "Выбор сложности",
-      },
-      achievmentsText: {
-        [ELanguages.en]: "Achievements",
-        [ELanguages.ru]: "Достижения",
-      },
       prizesListText: {
         [ELanguages.en]: "Prizes List",
         [ELanguages.ru]: "Список призов",

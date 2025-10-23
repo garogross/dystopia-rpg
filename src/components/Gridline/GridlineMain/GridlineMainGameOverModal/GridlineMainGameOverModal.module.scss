@@ -1,0 +1,21 @@
+@import "../../../../styles/mixins";
+@import "../../../../styles/vars";
+
+.gridlineMainGameOverModal {
+  @include flexCol();
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+
+  &__title {
+    @include setFont(12px, 400, $font-fam-bowler);
+  }
+  &__scoreText {
+    @include setFont(12px, 400);
+    text-align: center;
+  }
+
+  &__btn {
+    padding: 8px 12px;
+  }
+}
