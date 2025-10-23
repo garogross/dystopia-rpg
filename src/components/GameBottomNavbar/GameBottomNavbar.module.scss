@@ -16,7 +16,8 @@
     padding: 1px;
     background-color: $color-primary;
     text-decoration: none;
-
+    cursor: pointer;
+    
     &:nth-child(2) {
       margin-inline: -2%;
       transform: translateX(1%);

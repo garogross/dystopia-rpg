@@ -33,6 +33,7 @@ interface Props {
   selectedBonus: EGridlineBonuses | null;
   bangLinesType: GridlineLineBangType;
   onUseBonus: (score?: number) => void;
+  setSphereslength: (length: number) => void;
 }
 interface IField {
   ball?: EGridlineBalls;
@@ -109,6 +110,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
   selectedBonus,
   bangLinesType,
   onUseBonus,
+  setSphereslength,
 }) => {
   const onInitApp = () => {};
   const { isInitialized, pixiContainer, hexLayerRef } = usePixi(onInitApp);
@@ -135,7 +137,12 @@ const GridlineMainCanvas: React.FC<Props> = ({
     }
     return indices;
   }, [selectedBonus, bangLinesType, bangLineIndex, fields]);
-
+  useEffect(() => {
+    setSphereslength(
+      fields.filter((item) => item.ball && !item.incoming).length
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fields]);
   // Memoized banglines count for UI updates (can be used for future UI enhancements)
   // const bangLinesCount = useMemo(() => bangLinesIndices.size, [bangLinesIndices]);
 

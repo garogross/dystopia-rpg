@@ -43,8 +43,17 @@ import TransitionProvider, {
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 
-const { name, bonusNotActive } = TRANSLATIONS.miniGames.gridline;
-const BONUS_ACTIVITY_PER_SCORE = 0.4;
+const { name } = TRANSLATIONS.miniGames.gridline;
+const {
+  bonusNotActiveText,
+  abilitiesScaleInfoText,
+  lineBangBonusText,
+  sphereChangeBonusText,
+  colorVirusBonusText,
+  spheresLabel,
+  scoreLabel,
+} = TRANSLATIONS.miniGames.gridline.main;
+const BONUS_ACTIVITY_PER_SCORE = 0.1;
 
 const nextBalls = {
   [EGridlineBalls.Blue]: [gridlineBlueBallImage, gridlineBlueBallImageWebp],
@@ -58,19 +67,23 @@ const nextBalls = {
 };
 
 const bonuses = {
-  [EGridlineBonuses.LineBang]: { icon: <LineBangIcon />, name: "Взрыв линии" },
+  [EGridlineBonuses.LineBang]: {
+    icon: <LineBangIcon />,
+    name: lineBangBonusText,
+  },
   [EGridlineBonuses.SphereChange]: {
     icon: <ChangeShapersIcon />,
-    name: "Смена сфер",
+    name: sphereChangeBonusText,
   },
   [EGridlineBonuses.ColorVirus]: {
     icon: <ColorVirusIcon />,
-    name: "Цветовирус",
+    name: colorVirusBonusText,
   },
 };
 
 const GridlineMain = () => {
   const [score, setScore] = useState(0);
+  const [sphereslength, setSphereslength] = useState(0);
   const [bonusActivityPercent, setBonusActivityPercent] = useState(0);
   const [bonusActivitySessionScore, setBonusActivitySessionScore] = useState(0);
   const navigate = useNavigate();
@@ -138,6 +151,8 @@ const GridlineMain = () => {
     setScore(0);
     setShowGameOver(false);
     setSpawnBalls(generateSpawnBalls(3));
+    setBonusActivityPercent(0);
+    setBonusActivitySessionScore(0);
     setResetKey((k) => k + 1);
   };
 
@@ -174,7 +189,9 @@ const GridlineMain = () => {
             <HeaderWings />
           </div>
           <div className={styles.gridlineMain__headerMain}>
-            <span className={styles.gridlineMain__headerText}>СферЫ; 14</span>
+            <span className={styles.gridlineMain__headerText}>
+              {spheresLabel[language]}; {sphereslength}
+            </span>
             <div className={styles.gridlineMain__headerBalls}>
               {spawnBalls.slice(0, 3).map((ballType, index) => {
                 const ballImages = nextBalls[ballType];
@@ -190,7 +207,7 @@ const GridlineMain = () => {
               })}
             </div>
             <span className={styles.gridlineMain__headerText}>
-              очки: {score}
+              {scoreLabel[language]}: {score}
             </span>
           </div>
         </div>
@@ -208,6 +225,7 @@ const GridlineMain = () => {
               selectedBonus={selectedBonus}
               bangLinesType={bangLinesType}
               onUseBonus={handleUseBonus}
+              setSphereslength={setSphereslength}
             />
           </div>
           <div className={styles.gridlineMain__gameWrapperBottomIcon}>
@@ -216,9 +234,7 @@ const GridlineMain = () => {
         </div>
         <div className={styles.gridlineMain__bonuses}>
           <div className={styles.gridlineMain__bonusesInfoText}>
-            Шкала способностей заполняется при каждом удачном ходу. Полная
-            полоска даёт возможность выбрать один из доступных помогающих
-            бонусов
+            {abilitiesScaleInfoText[language]}
           </div>
           <div className={styles.gridlineMain__bonusesProgressBar}>
             <div
@@ -243,7 +259,7 @@ const GridlineMain = () => {
                 >
                   <div className={styles.gridlineMain__bonusOptionBtnInner}>
                     {value.icon}
-                    <span>{value.name}</span>
+                    <span>{value.name[language]}</span>
                   </div>
                 </button>
               );
@@ -293,7 +309,7 @@ const GridlineMain = () => {
           score={score}
         />
       </div>
-      <Tooltip show={show} text={bonusNotActive[language]} />
+      <Tooltip show={show} text={bonusNotActiveText[language]} />
     </>
   );
 };

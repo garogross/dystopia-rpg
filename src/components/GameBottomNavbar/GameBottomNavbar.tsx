@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   AchievmentsIcon,
   BottomWings,
@@ -13,16 +13,18 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../providers/TransitionProvider";
 import { TRANSLATIONS } from "../../constants/TRANSLATIONS";
+import { useTooltip } from "../../hooks/useTooltip";
+import Tooltip from "../layout/Tooltip/Tooltip";
 
 const { ratingsText, levelSelectText, achievmentsText } =
   TRANSLATIONS.miniGames.gameBottomNavbar;
 
 interface Props {
-  ratingsPagePath: string;
-  levelSelectPagePath: string;
-  achievmentsPagePath: string;
+  ratingsPagePath?: string;
+  levelSelectPagePath?: string;
+  achievmentsPagePath?: string;
 }
-
+const { inDevelopmentText } = TRANSLATIONS.common;
 const linkActiveClass =
   (mainClass: string, activeClass: string) =>
   ({ isActive }: { isActive: boolean }) =>
@@ -35,7 +37,7 @@ const GameBottomNavbar: React.FC<Props> = ({
 }) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const language = useAppSelector((state) => state.ui.language);
-
+  const { show, openTooltip } = useTooltip();
   const mainLinks = [
     {
       icon: <RatingsIcon />,
@@ -66,22 +68,33 @@ const GameBottomNavbar: React.FC<Props> = ({
       className={styles.gameBottomNavbar}
     >
       <div className={styles.gameBottomNavbar__mainNav}>
-        {mainLinks.map((item) => (
-          <NavLink
-            to={item.link}
-            key={item.link}
-            className={maiNavLinksActiveClass}
-          >
-            <div className={styles.gameBottomNavbar__mainNavLinkInner}>
-              {item.icon}
-              <span>{item.name[language]}</span>
-            </div>
-          </NavLink>
+        {mainLinks.map((item, index) => (
+          <Fragment key={index}>
+            {item.link ? (
+              <NavLink to={item.link} className={maiNavLinksActiveClass}>
+                <div className={styles.gameBottomNavbar__mainNavLinkInner}>
+                  {item.icon}
+                  <span>{item.name[language]}</span>
+                </div>
+              </NavLink>
+            ) : (
+              <div
+                className={maiNavLinksActiveClass({ isActive: false })}
+                onClick={openTooltip}
+              >
+                <div className={styles.gameBottomNavbar__mainNavLinkInner}>
+                  {item.icon}
+                  <span>{item.name[language]}</span>
+                </div>
+              </div>
+            )}
+          </Fragment>
         ))}
       </div>
       <div className={styles.gameBottomNavbar__bottomWings}>
         <BottomWings />
       </div>
+      <Tooltip show={show} text={inDevelopmentText[language]} />
     </TransitionProvider>
   );
 };

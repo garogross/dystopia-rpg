@@ -6,10 +6,10 @@ import styles from "./GridlineWrapper.module.scss";
 import * as gridlineImages from "../../../assets/imageMaps/gridlineImages";
 
 import {
-  gridlineAchievmentsPagePath,
-  gridlineLevelSelectPagePath,
+  // gridlineAchievmentsPagePath,
+  // gridlineLevelSelectPagePath,
+  // gridlineRatingsPagePath,
   gridlinePagePath,
-  gridlineRatingsPagePath,
 } from "../../../router/constants";
 import GameBottomNavbar from "../../GameBottomNavbar/GameBottomNavbar";
 import { useMatch, useNavigate } from "react-router-dom";
@@ -41,9 +41,9 @@ const GridlineWrapper = () => {
       }
       bottomNavbar={
         <GameBottomNavbar
-          ratingsPagePath={gridlineRatingsPagePath}
-          levelSelectPagePath={gridlineLevelSelectPagePath}
-          achievmentsPagePath={gridlineAchievmentsPagePath}
+        // ratingsPagePath={gridlineRatingsPagePath}
+        // levelSelectPagePath={gridlineLevelSelectPagePath}
+        // achievmentsPagePath={gridlineAchievmentsPagePath}
         />
       }
       images={gridlineImages}
