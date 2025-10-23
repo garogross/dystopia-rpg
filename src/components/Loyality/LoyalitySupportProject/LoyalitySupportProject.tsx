@@ -19,9 +19,9 @@ import { useTaddy } from "../../../context/TaddyContext";
 import { TadsWidget } from "react-tads-widget";
 import LoyalitySupportProjectAdditionalTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdditionalTaskItem";
 import LoyalitySupportProjectAdsgramTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdsgramTaskItem";
-import LoyalitySupportProjectVideoTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectVideoTaskItem";
+// import LoyalitySupportProjectVideoTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectVideoTaskItem";
 import LoyalitySupportProjectTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectTaskItem";
-import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraffyContainer/LoyalitySupportProjectTraffyContainer";
+// import LoyalitySupportProjectTraffyContainer from "./LoyalitySupportProjectTraffyContainer/LoyalitySupportProjectTraffyContainer";
 import { useTooltip } from "../../../hooks/useTooltip";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import Tooltip from "../../layout/Tooltip/Tooltip";
@@ -30,6 +30,8 @@ import { getPlatformType } from "../../../utils/getPlatformType";
 import { EadProviders } from "../../../constants/EadProviders";
 import { EAdActionTypes } from "../../../constants/EadActionTypes";
 import { postLog } from "../../../api/logs";
+import LoyalitySupportProjectManualAdTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectManualAdTaskItem";
+// import LoyalitySupportProjectManualAdTaskItem from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectManualAdTaskItem";
 // import LoyalitySupportProjectAdMasterWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectAdMasterWidget";
 // import LoyalitySupportProjectBarzhaTaskWidget from "./LoyalitySupportProjectTaskItem/LoyalitySupportProjectBarzhaTaskWidget";
 
@@ -156,7 +158,7 @@ const LoyalitySupportProject = () => {
 
   return (
     <div className={styles.loyalitySupportProject}>
-      <LoyalitySupportProjectTraffyContainer />
+      {/* <LoyalitySupportProjectTraffyContainer /> */}
       <div className={styles.loyalitySupportProject__list}>
         <TadsWidget
           id={TADS_WIDGET_ID}
@@ -190,11 +192,51 @@ const LoyalitySupportProject = () => {
           gameInited={gameInited}
           language={language}
         />
-        <LoyalitySupportProjectVideoTaskItem
+        {/* <LoyalitySupportProjectVideoTaskItem
           language={language}
           gameInited={gameInited}
           disabled={adLoading}
           onLoadingUpdate={(loading) => setAdLoading(loading)}
+        /> */}
+        {isMobile && (
+          <>
+            <LoyalitySupportProjectManualAdTaskItem
+              language={language}
+              gameInited={gameInited}
+              disabled={adLoading}
+              onLoadingUpdate={(loading) => setAdLoading(loading)}
+              provider={EadProviders.Adsgram}
+              ad_type={EAdActionTypes.Video}
+              index={1}
+            />
+            <LoyalitySupportProjectManualAdTaskItem
+              language={language}
+              gameInited={gameInited}
+              disabled={adLoading}
+              onLoadingUpdate={(loading) => setAdLoading(loading)}
+              provider={EadProviders.Adsgram}
+              ad_type={EAdActionTypes.Interstitial}
+              index={2}
+            />
+          </>
+        )}
+        <LoyalitySupportProjectManualAdTaskItem
+          language={language}
+          gameInited={gameInited}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
+          provider={EadProviders.Onclicka}
+          ad_type={EAdActionTypes.Video}
+          index={1}
+        />
+        <LoyalitySupportProjectManualAdTaskItem
+          language={language}
+          gameInited={gameInited}
+          disabled={adLoading}
+          onLoadingUpdate={(loading) => setAdLoading(loading)}
+          provider={EadProviders.Taddy}
+          ad_type={EAdActionTypes.Video}
+          index={3}
         />
         {Array.isArray(taddyTasks) &&
           taddyTasks?.map((task, index) => (

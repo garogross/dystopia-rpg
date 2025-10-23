@@ -2,6 +2,7 @@ import React from "react";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import {
   ProductionIcon,
+  SupportChatIcon,
   TrainingIcon,
   VideoGuidesIcon,
 } from "../../layout/icons/CyberFarmEvo/SupportMenuBar";
@@ -45,7 +46,7 @@ const CyberFarmEvoSupportMenuBar: React.FC<Props> = ({ show, onClose }) => {
     },
     {
       name: askInChatText,
-      icon: <TrainingIcon />,
+      icon: <SupportChatIcon />,
       onClick: () => {
         // @ts-ignore
         if (tg) {

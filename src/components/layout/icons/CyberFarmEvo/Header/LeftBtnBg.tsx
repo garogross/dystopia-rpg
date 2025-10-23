@@ -21,8 +21,8 @@ export const LeftBtnBg = () => {
           y2="28"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#2A1E54" />
-          <stop offset="1" stop-color="#5D42BA" />
+          <stop stopColor="#2A1E54" />
+          <stop offset="1" stopColor="#5D42BA" />
         </linearGradient>
       </defs>
     </svg>

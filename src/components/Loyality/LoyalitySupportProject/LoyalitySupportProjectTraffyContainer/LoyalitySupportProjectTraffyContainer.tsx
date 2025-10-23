@@ -11,14 +11,20 @@ import styles from "./LoyalitySupportProjectTraffyContainer.module.scss";
 import { ELSProps } from "../../../../constants/ELSProps";
 import { EAdActionTypes } from "../../../../constants/EadActionTypes";
 import { EadProviders } from "../../../../constants/EadProviders";
+import { postLog } from "../../../../api/logs";
 
 const { taskNotCompletedText } = TRANSLATIONS.loyality.supportProject;
 
 const LoyalitySupportProjectTraffyContainer = () => {
   const dispatch = useAppDispatch();
+  const adRewardSettings = useAppSelector(
+    (state) => state.tasks.adRewardSettings
+  );
+
   const traffyTasks = useRef<HTMLDivElement | null>(null);
   const { show: showTooltip, openTooltip } = useTooltip();
   const language = useAppSelector((state) => state.ui.language);
+  const gameInited = useAppSelector((state) => state.ui.gameInited);
   const [hidden, setHidden] = React.useState(true);
 
   useEffect(() => {
@@ -27,6 +33,10 @@ const LoyalitySupportProjectTraffyContainer = () => {
       try {
         const hideUntil = await getLSItem(ELSProps.hideTraffyContainerUntil);
         if (hideUntil && Number(hideUntil) > Date.now()) {
+          postLog({
+            id: window?.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+            message: "traffy timer log",
+          });
           setHidden(true);
           // Set a timeout to show again after the period ends
           const timeout = setTimeout(
@@ -44,7 +54,7 @@ const LoyalitySupportProjectTraffyContainer = () => {
   }, []);
 
   useEffect(() => {
-    if (!hidden) {
+    if (!hidden && gameInited) {
       initTraffyTasks(
         traffyTasks.current,
         (signedToken, _id) => {
@@ -61,11 +71,12 @@ const LoyalitySupportProjectTraffyContainer = () => {
           setHidden(true);
           setTimeout(() => setHidden(false), 60 * 60 * 1000);
         },
-        openTooltip
+        openTooltip,
+        adRewardSettings?.traffy?.boost.amount || 0
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hidden]);
+  }, [hidden, gameInited]);
 
   return (
     <>

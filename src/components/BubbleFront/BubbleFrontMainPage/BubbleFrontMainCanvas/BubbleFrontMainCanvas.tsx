@@ -29,8 +29,6 @@ import BubbleFrontMainGameOverModal from "../BubbleFrontMainGameOverModal/Bubble
 import { Rectangle } from "pixi.js";
 import { getAngle } from "../../../../utils/bubbleFront/getAngle";
 import { BUBBLE_FRONT_LEVELS_SETTINGS } from "../../../../constants/bubbleFront/BubbleFrontLevelsSettings";
-import LoadingOverlay from "../../../layout/LoadingOverlay/LoadingOverlay";
-import { useSessionAd } from "../../../../hooks/miniGames/useSessionAd";
 
 const HEX_IN_LINE = 15;
 const LINES_COUNT = 17;
@@ -210,7 +208,6 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
   const [played, setPlayed] = useState(false);
   const [miniNecroBallOrder, setMiniNecroBallOrder] = useState(1);
 
-  const { onShowAd, loading } = useSessionAd();
   const hexSizeRef = useCopyRef(hexSize);
   const hexesRef = useCopyRef(hexes);
   const readyBallsRef = useCopyRef(readyBalls);
@@ -687,7 +684,6 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         }
 
         if (ballSprite.destroyed || !!ballSprite.parent) {
-          // for test
         }
 
         // If hits top (y <= 0), snap to closest empty hex in the first row
@@ -893,7 +889,6 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         LINES_COUNT
       ) {
         setGameOver(true);
-        onShowAd();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -927,7 +922,6 @@ const BubbleFrontMainCanvas: React.FC<Props> = ({ score, setScore }) => {
         onReset={onReset}
         score={score}
       />
-      <LoadingOverlay loading={loading} />
     </div>
   );
 };

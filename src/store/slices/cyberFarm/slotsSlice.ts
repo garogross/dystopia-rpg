@@ -34,7 +34,6 @@ export const buySlot = createAsyncThunk<
     id: string;
     type: EFarmSlotTypes;
     byCp?: boolean;
-    tutorial?: boolean;
     isUpgrade?: boolean;
     cost?: ReturnType<typeof getSlotCost>;
   }
@@ -43,7 +42,6 @@ export const buySlot = createAsyncThunk<
     const resData = await fetchRequest<BuySlotResponse>(buySlotUrl, "POST", {
       slot_id: payload.id,
       action: payload.isUpgrade ? "upgrade" : payload.type,
-      // tutorial: payload.tutorial,
       payment_method: payload.byCp ? "cash_point" : "metal",
     });
 
@@ -99,12 +97,11 @@ export const harvest = createAsyncThunk<
 const speedUpUrl = "/ton_cyber_farm/speed_up/";
 export const speedUp = createAsyncThunk<
   SpeedUpResponse,
-  { id: string; clb?: () => Promise<void>; byAd?: boolean; tutorial?: boolean }
+  { id: string; clb?: () => Promise<void>; byAd?: boolean }
 >("slots/speedUp", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<SpeedUpResponse>(speedUpUrl, "POST", {
       slot_id: payload.id,
-      // tutorial: payload.tutorial,
       payment_method: payload.byAd ? "ad" : "cash_point",
     });
     await payload.clb?.();

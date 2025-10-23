@@ -28,13 +28,14 @@ import CyberFarmFieldsBuildOptionsModal from "../../CyberFarm/CyberFarmFieldsPag
 import CyberFarmFieldsBuyModal from "../../CyberFarm/CyberFarmFieldsPage/CyberFarmFieldsBuyModal/CyberFarmFieldsBuyModal";
 import CyberFarmEvoOptionsModal from "./CyberFarmEvoOptionsModal/CyberFarmEvoOptionsModal";
 import CyberFarmEvoProcessModal from "./CyberFarmEvoProcessModal/CyberFarmEvoProcessModal";
-import { EAdSlots } from "../../../constants/EAdSlots";
-import { useSoltAd } from "../../../hooks/useSlotAd";
 import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
 import CyberFarmBuildingPlantOptionsModal from "../../CyberFarm/CyberFarmBuildingPlantOptionsModal/CyberFarmBuildingPlantOptionsModal";
 import CyberFarmUpgradeBuildModal from "../../CyberFarm/CyberFarmUpgradeBuildModal/CyberFarmUpgradeBuildModal";
+import { useVideoAd } from "../../../hooks/useVideoAd";
+import { EadProviders } from "../../../constants/EadProviders";
+import { EAdActionTypes } from "../../../constants/EadActionTypes";
 
 const FIELD_HEIGHT_ASPECT_RATIO = 3.4;
 
@@ -110,13 +111,13 @@ const CyberFarmEvoFarms = () => {
   );
 
   useFarmFieldsProgressCheck(slotFields);
-  const { onShow, loading, tooltipText, showTooltip } = useSoltAd(
-    EAdSlots.CollectFarmProductionSlot,
-    "farm_collect_ready",
-    undefined,
-    () => {},
-    productionCollectedText[language]
-  );
+
+  const { onShowAd, showTooltip, tooltipText, loading } = useVideoAd({
+    speedUpCompleteText: productionCollectedText,
+    provider: EadProviders.Gigapub,
+    ad_type: EAdActionTypes.Video,
+    game_action: "farm_collect_ready",
+  });
 
   useEffect(() => {
     if (wrapperRef.current) {
@@ -140,8 +141,12 @@ const CyberFarmEvoFarms = () => {
       }
 
       let globalSlotIndex = 0;
+      const totalColsLength = Math.max(
+        colsLength,
+        totalSlotsCols + UNUSABLE_COLS_COUNT
+      );
       const initialFields = Array.from(
-        { length: Math.max(colsLength, totalSlotsCols + UNUSABLE_COLS_COUNT) },
+        { length: totalColsLength },
         (_, colIndex) => {
           const rowLength = isOdd(colIndex) ? 4 : 3;
           return Array.from({ length: rowLength }, (_, index) => {
@@ -150,7 +155,7 @@ const CyberFarmEvoFarms = () => {
             if (
               !curSlot ||
               colIndex < 2 ||
-              colIndex === colsLength ||
+              colIndex === totalColsLength ||
               (isOdd(colIndex) && (!index || index === rowLength - 1))
             )
               return {
@@ -219,7 +224,7 @@ const CyberFarmEvoFarms = () => {
     <div className={styles.cyberFarmEvoFarms}>
       <div className={`container ${styles.cyberFarmEvoFarms__header}`}>
         <MainBtn
-          onClick={onShow}
+          onClick={onShowAd}
           className={styles.cyberFarmEvoFarms__collectAllBtn}
         >
           <ImageWebp srcSet={adImage} src={adImageWebp} alt={"watch ad"} />
@@ -263,6 +268,7 @@ const CyberFarmEvoFarms = () => {
 
               return (
                 <button
+                  data-id={field.id}
                   onClick={() => onClickSlot(field)}
                   disabled={field.disabled}
                   key={`${colIndex}-${fieldIndex}`}
@@ -351,6 +357,7 @@ const CyberFarmEvoFarms = () => {
           onClose={() => setOptionsModalOpened(false)}
           type={producingSlot.type}
           slotId={producingSlotId}
+          level={producingSlot.level}
         />
       )}
       {upgradingSlot && (

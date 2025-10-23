@@ -34,6 +34,7 @@ import { initSettings } from "./influence/settingsSlice";
 import { initMap } from "./influence/mapSlice";
 import { initMail, receiveMailReward } from "./influence/mailSlice";
 import { EAdSlots } from "../../constants/EAdSlots";
+import { GetWithdrawRatesResponse } from "../../models/api/GetWithdrawRatesResponse";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -50,6 +51,8 @@ export interface ProfileState {
   accountDetailsReceived: boolean;
   tonWithdrawCommission: number;
   usdtWithdrawCommission: number;
+  tonWithdrawPoolAmount: number;
+  usdtWithdrawPoolAmount: number;
 }
 
 const initUserData =
@@ -80,6 +83,8 @@ const initialState: ProfileState = {
   accountDetailsReceived: false,
   tonWithdrawCommission: 0,
   usdtWithdrawCommission: 0,
+  tonWithdrawPoolAmount: 0,
+  usdtWithdrawPoolAmount: 0,
 };
 const authUserUrl = "/auth";
 
@@ -125,12 +130,13 @@ export const getAccountDetails =
       })
     );
 
+    const pools = resData?.game_settings_new?.pools;
     dispatch(
       receiveAccountDetails({
-        tonWithdrawCommission:
-          resData.game_settings_new.pools?.ton_pool?.amount || 0,
-        usdtWithdrawCommission:
-          resData.game_settings_new.pools?.usdt_pool?.amount || 0,
+        tonWithdrawCommission: pools?.ton_pool?.comission_ton || 0,
+        usdtWithdrawCommission: pools?.usdt_pool?.comission_usdt || 0,
+        tonWithdrawPoolAmount: pools?.ton_pool?.amount || 0,
+        usdtWithdrawPoolAmount: pools?.usdt_pool?.amount || 0,
       })
     );
     dispatch(
@@ -176,7 +182,6 @@ export const getAccountDetails =
         dispatch(
           getCyberFarmResources({
             resources: resData.ton_cyber_farm.resources,
-            resourceTonmailValue: resData.ton_cyber_farm.resource_ton_value,
             resourceDeficit: resData?.resource_deficit,
             productsSettings:
               resData?.game_settings_new?.ton_cyber_farm_products,
@@ -204,17 +209,11 @@ export const getAccountDetails =
       );
 
       // cyberfarm tutorial
-      const tutorialActoion = resData.metrics.ton_cyber_farm_metrics.tutorial;
-      // const dataset = resData.user?.profile?.dataset;
+      const isTutorialFinished =
+        resData.ton_cyber_farm.ton_cyber_farm_tutorial_finished;
       dispatch(
         initTutorial({
-          tutorialInProgress: false,
-          // dataset && "tutorial_finished_rewarded" in dataset
-          //   ? !dataset.tutorial_finished_rewarded
-          //   : true,
-          tutorialProgressAction: tutorialActoion?.length
-            ? tutorialActoion[tutorialActoion.length - 1]
-            : null,
+          tutorialInProgress: isTutorialFinished ? !isTutorialFinished : true,
         })
       );
     }
@@ -317,7 +316,7 @@ export const authorizeUser =
 const withdrawCPUrl = "/ton_cyber_farm/withdraw_cp/";
 export const withdrawCP = createAsyncThunk<
   WithdrawCPResponse,
-  { amount: number; address: string; currency: "usdt" | "ton" }
+  { amount: number; address: string; currency: "usdt" | "ton"; memo?: string }
 >("profile/withdrawCP", async (payload, { rejectWithValue }) => {
   try {
     const resData = await fetchRequest<WithdrawCPResponse>(
@@ -327,7 +326,24 @@ export const withdrawCP = createAsyncThunk<
         amount: payload.amount,
         address: payload.address,
         currency: payload.currency,
+        memo: payload.memo,
       }
+    );
+
+    return resData;
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+const getWithdrawRatesUrl = "/ton_cyber_farm/withdraw_rates/";
+export const getWithdrawRates = createAsyncThunk<
+  GetWithdrawRatesResponse,
+  undefined
+>("profile/getWithdrawRates", async (_, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<GetWithdrawRatesResponse>(
+      getWithdrawRatesUrl
     );
 
     return resData;
@@ -353,6 +369,9 @@ export const profileSlice = createSlice({
     receiveAccountDetails(state, { payload }) {
       state.accountDetailsReceived = true;
       state.tonWithdrawCommission = payload.tonWithdrawCommission;
+      state.usdtWithdrawCommission = payload.usdtWithdrawCommission;
+      state.usdtWithdrawPoolAmount = payload.usdtWithdrawPoolAmount;
+      state.tonWithdrawPoolAmount = payload.tonWithdrawPoolAmount;
     },
   },
   extraReducers: (builder) => {

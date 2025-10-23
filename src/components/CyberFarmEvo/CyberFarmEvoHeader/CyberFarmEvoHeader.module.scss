@@ -109,6 +109,7 @@
     @include flexCol();
     gap: 6px;
     @include setFont(12px, 500);
+    cursor: pointer;
   }
   &__cpImage {
     width: 15px;

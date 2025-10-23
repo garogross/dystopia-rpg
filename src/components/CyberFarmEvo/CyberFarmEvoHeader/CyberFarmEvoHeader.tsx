@@ -26,6 +26,7 @@ import CyberFarmEvoLanguageMenuBar from "../CyberFarmEvoLanguageMenuBar/CyberFar
 import CyberFarmEvoUiSettingsMenuBar from "../CyberFarmEvoUiSettingsMenuBar/CyberFarmEvoUiSettingsMenuBar";
 import CyberFarmEvoSupportMenuBar from "../CyberFarmEvoSupportMenuBar/CyberFarmEvoSupportMenuBar";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import CyberFarmBonuses from "../../CyberFarm/CyberFarmBonuses/CyberFarmBonuses";
 
 const { profileText, helpText } = TRANSLATIONS.cyberfarmEvo.header;
 
@@ -37,6 +38,8 @@ const CyberFarmEvoHeader = () => {
   const [languageModalOpened, setLanguageModalOpened] = useState(false);
   const [uiSettingsModalOpened, setUiSettingsModalOpened] = useState(false);
   const [supportModalOpened, setSupportModalOpened] = useState(false);
+  const [bonusesOpened, setBonusesOpened] = useState(false);
+
   return (
     <TransitionProvider
       inProp={gameInited}
@@ -67,8 +70,11 @@ const CyberFarmEvoHeader = () => {
         <BottomLeftWing />
       </div>
       <div className={styles.cyberFarmEvoHeader__centerCol}>
-        <div className={styles.cyberFarmEvoHeader__cp}>
-          <span>{formatNumber(cp)}</span>
+        <div
+          onClick={() => setBonusesOpened(true)}
+          className={styles.cyberFarmEvoHeader__cp}
+        >
+          <span>{formatNumber(cp, undefined, true)}</span>
           <ImageWebp
             src={cpImage}
             srcSet={cpImageWebp}
@@ -122,6 +128,10 @@ const CyberFarmEvoHeader = () => {
       <CyberFarmEvoSupportMenuBar
         show={supportModalOpened}
         onClose={() => setSupportModalOpened(false)}
+      />
+      <CyberFarmBonuses
+        show={bonusesOpened}
+        onClose={() => setBonusesOpened(false)}
       />
     </TransitionProvider>
   );

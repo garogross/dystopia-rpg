@@ -34,8 +34,9 @@ export const useSoltAd = (
   const successText = successTooltipText || rewardReceivedText[language];
   const [tooltipText, setTooltipText] = useState(successText);
   const [loading, setLoading] = useState(false);
-  const isMobile = getPlatformType();
   const { show: showTooltip, openTooltip } = useTooltip();
+
+  const isMobile = getPlatformType();
 
   const curSlotDetails = mediation?.[slotId];
   const adType =

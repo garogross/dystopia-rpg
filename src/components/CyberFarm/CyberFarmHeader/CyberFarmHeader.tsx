@@ -132,6 +132,7 @@ const CyberFarmHeader = () => {
         onClose={() => setBonusesOpened(false)}
       />
       <SettingsModal
+        isFarm
         show={settingsOpened}
         onClose={() => setSettingsOpened(false)}
       />

@@ -12,6 +12,8 @@ import {
 import { AdRewardSettingsType } from "../../types/tasks/AdRewardSettingsType";
 import { MediationType } from "../../types/tasks/MediationsType";
 import { AdRewardValidPairsType } from "../../types/tasks/AdRewardValidPairsType";
+import { EadProviders } from "../../constants/EadProviders";
+import { postLog } from "../../api/logs";
 import { ClaimAdRewardActionType } from "../../types/tasks/ClaimAdRewardActionType";
 
 export interface TasksState {
@@ -98,6 +100,14 @@ export const claimAdReward = createAsyncThunk<
   }
 >("tasks/claimAdReward", async (payload, { rejectWithValue }) => {
   try {
+    if (payload.provider === EadProviders.Gigapub && !payload.game_action) {
+      postLog({
+        tgId: window.Telegram.WebApp.initDataUnsafe.user?.id,
+        message: "gigapub claim request",
+        payload,
+        path: window.location.pathname,
+      });
+    }
     const resData = await fetchRequest<ClaimAdRewardResponse>(
       claimAdRewardUrl,
       "POST",
@@ -114,6 +124,12 @@ export const claimAdReward = createAsyncThunk<
 
     return { ...resData, game_action: payload.game_action };
   } catch (error: any) {
+    if (payload.provider === EadProviders.Traffy) {
+      postLog({
+        type: "traffy error",
+        error,
+      });
+    }
     console.error("error", error);
     return rejectWithValue(error);
   }

@@ -4,6 +4,9 @@ import farmMapFarmBuildImage from "../images/CyberFarmEvo/Map/farmMapFarmBuild.p
 import farmMapFarmBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapFarmBuild.webp";
 import farmMapTasksBuildImage from "../images/CyberFarmEvo/Map/farmMapTasksBuild.png";
 import farmMapTasksBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapTasksBuild.webp";
+import farmMapFabricBuildImage from "../images/CyberFarmEvo/Map/farmMapFabricBuild.png";
+import farmMapFabricBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapFabricBuild.webp";
+
 import cybefarmEvoFieldWebpImage from "../images/CyberFarmEvo/Farms/common/cybefarmEvoField.webp";
 import cybefarmEvoFieldImage from "../images/CyberFarmEvo/Farms/common/cybefarmEvoField.png";
 import evoFactoryImage from "../images/CyberFarmEvo/Farms/common/evoFactory.png";
@@ -75,6 +78,8 @@ export {
   farmMapFarmBuildWebpImage,
   farmMapTasksBuildImage,
   farmMapTasksBuildWebpImage,
+  farmMapFabricBuildImage,
+  farmMapFabricBuildWebpImage,
   cybefarmEvoFieldWebpImage,
   cybefarmEvoFieldImage,
   evoFactoryImage,

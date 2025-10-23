@@ -18,6 +18,8 @@ interface Props {
   activeSort: string;
   className?: string;
   disabled?: boolean;
+
+  itemClassName?: string;
 }
 
 const SortList: React.FC<Props> = ({
@@ -26,6 +28,7 @@ const SortList: React.FC<Props> = ({
   onChange,
   className,
   disabled,
+  itemClassName,
 }) => {
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   return (
@@ -40,7 +43,9 @@ const SortList: React.FC<Props> = ({
             if (disabled) return;
             onChange(item.id);
           }}
-          className={styles.sortList__item}
+          className={`${styles.sortList__item} ${
+            activeSort.startsWith(item.id) ? styles.sortList__item_active : ""
+          } ${itemClassName || ""}`}
           key={item.id}
         >
           <span>{item.name}</span>

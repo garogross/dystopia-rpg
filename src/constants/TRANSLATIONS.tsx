@@ -35,6 +35,10 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "Ad view limit reached",
       [ELanguages.ru]: "Достигнут лимит просмотров рекламы",
     },
+    currentAdNotAvailableForDeviceText: {
+      [ELanguages.en]: "Current ad is not available for this device",
+      [ELanguages.ru]: "Текущая реклама недоступна для этого устройства",
+    },
     hourlyLimitReachedText: {
       [ELanguages.en]: "Hourly ad view limit reached (NUMBER/hour)",
       [ELanguages.ru]:
@@ -66,10 +70,12 @@ export const TRANSLATIONS = {
       [ELanguages.en]: "cp",
       [ELanguages.ru]: "cp",
     },
-    watchAdAndGetCpText: {
-      [ELanguages.en]: "Watch an ad and get CP",
-      [ELanguages.ru]: "Посмотри рекламу и получи CP",
-    },
+    watchAdAndGetCpText: (amount?: number) => ({
+      [ELanguages.en]: `Watch an ad and get ${amount ? ` ${amount}` : ""}CP`,
+      [ELanguages.ru]: `Посмотри рекламу и получи ${
+        amount ? ` ${amount}` : ""
+      }CP`,
+    }),
     watchAdText: {
       [ELanguages.en]: "Watch",
       [ELanguages.ru]: "Посмотреть",
@@ -264,6 +270,90 @@ export const TRANSLATIONS = {
         ),
       },
     },
+    cyberFarmEvoSlides: {
+      welcomeText: {
+        [ELanguages.en]: (
+          <>
+            Welcome to the cyber farm!
+            <br />
+            Here you can grow products, process resources, build farms,
+            factories, and develop your farm.
+            <br />
+            Now you see a map showing available locations. As the game develops,
+            new locations will appear.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Добро пожаловать на киберферму!
+            <br />
+            Здесь ты можешь выращивать продукцию, перерабатывать ресурсы,
+            строить фермы, заводы и развивать свою ферму.
+            <br />
+            Сейчас перед тобой карта, на которой показаны доступные локации, по
+            мере развития игры будут появляться новые локации.
+          </>
+        ),
+      },
+      farmText: {
+        [ELanguages.en]: (
+          <>
+            On the farm, you will grow products, build factories, and process
+            materials.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            На ферме ты будешь выращивать продукцию, строить заводы и
+            перерабатывать материалы.
+          </>
+        ),
+      },
+      warehouseText: {
+        [ELanguages.en]: (
+          <>
+            The warehouse stores all your materials and products. Here you can
+            also buy missing items and sell unnecessary ones.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            На складе хранятся все твои материалы и продукты, там же ты можешь
+            купить недостающие и продать ненужные.
+          </>
+        ),
+      },
+      tasksText: {
+        [ELanguages.en]: (
+          <>
+            Tasks are a valuable source of Cash Points (CP), the in-game
+            currency you use to buy and sell everything. Check there often to
+            complete tasks and earn CP.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Задания – это ценный источник Cash Points (CP), игровой валюты, за
+            которую ты все покупаешь и продаешь, заглядывай туда почаще, чтобы
+            выполнять задания и получать СР.
+          </>
+        ),
+      },
+      finishText: {
+        [ELanguages.en]: (
+          <>
+            That's it, you're on your own now. I'll give you 6 CP to start
+            with—enough to get your first harvest. Now it's all up to you.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Вот и все, дальше уже сам, дам тебе на первое время 6 СР, хватит для
+            получения первого урожая. Теперь все зависит от тебя.
+          </>
+        ),
+      },
+    },
   },
   settings: {
     titleText: {
@@ -277,6 +367,18 @@ export const TRANSLATIONS = {
     goToChatText: {
       [ELanguages.en]: "Go to Chat",
       [ELanguages.ru]: "Перейти в Чат",
+    },
+    uiModeText: {
+      [ELanguages.en]: "UI Settings",
+      [ELanguages.ru]: "Настройки UI",
+    },
+    evoText: {
+      [ELanguages.en]: "New",
+      [ELanguages.ru]: "Новый",
+    },
+    classicText: {
+      [ELanguages.en]: "Old",
+      [ELanguages.ru]: "Старый",
     },
   },
   home: {
@@ -302,6 +404,12 @@ export const TRANSLATIONS = {
         "No promises. Only screenshots, style, and gameplay that we sharpen with blood and metal. Take a look — and subscribe so you don't miss the launch.",
       [ELanguages.ru]:
         "Никаких обещаний. Только скрины, стиль и геймплей, который мы затачиваем под кровь и металл. Посмотри — и подпишись, чтобы не проспать запуск.",
+    },
+  },
+  plugModal: {
+    updatingText: {
+      [ELanguages.en]: "App under maintenance.",
+      [ELanguages.ru]: "Приложение на техническом обслуживании.",
     },
   },
   onBoarding: {
@@ -382,8 +490,8 @@ export const TRANSLATIONS = {
     },
     bonuses: {
       bonusesText: {
-        [ELanguages.en]: "Bonuses",
-        [ELanguages.ru]: "Бонусы",
+        [ELanguages.en]: "Wallet",
+        [ELanguages.ru]: "Кошелек",
       },
       walletText: {
         [ELanguages.en]: "Your wallet",
@@ -461,6 +569,22 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Wallet address is required",
         [ELanguages.ru]: "Требуется адрес кошелька",
       },
+      commentText: {
+        [ELanguages.en]: "Comment (memo)",
+        [ELanguages.ru]: "Комментарий (мемо)",
+      },
+      tonWithdrawCommentPlaceholder: {
+        [ELanguages.en]: "Enter a comment for  withdrawal (optional)",
+        [ELanguages.ru]: "Введите комментарий для вывода (необязательно)",
+      },
+      depositLabel: {
+        [ELanguages.en]: "Deposit",
+        [ELanguages.ru]: "Депозит",
+      },
+      withdrawLabel: {
+        [ELanguages.en]: "Withdraw",
+        [ELanguages.ru]: "Вывод",
+      },
     },
     fields: {
       titleText: {
@@ -500,8 +624,8 @@ export const TRANSLATIONS = {
           [ELanguages.ru]: "Выберите способ использования поля",
         },
         plantButtonText: {
-          [ELanguages.en]: "Plant",
-          [ELanguages.ru]: "Посадить",
+          [ELanguages.en]: "Produce",
+          [ELanguages.ru]: "Произвести",
         },
         buildButtonText: {
           [ELanguages.en]: "Build",
@@ -713,8 +837,8 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Выберите способ использования поля",
       },
       plantButtonText: {
-        [ELanguages.en]: "Plant",
-        [ELanguages.ru]: "Посадить",
+        [ELanguages.en]: "Produce",
+        [ELanguages.ru]: "Произвести",
       },
       upgradeButtonText: {
         [ELanguages.en]: "Upgrade",
@@ -1076,11 +1200,15 @@ export const TRANSLATIONS = {
       },
       realEstateTabText: {
         [ELanguages.en]: "Real Estate",
-        [ELanguages.ru]: "Недвиж.",
+        [ELanguages.ru]: "Недвижимость",
       },
       technologyTabText: {
         [ELanguages.en]: "Technology",
         [ELanguages.ru]: "Техно.",
+      },
+      pointsTabText: {
+        [ELanguages.en]: "Points",
+        [ELanguages.ru]: "Очки",
       },
       overallTabText: {
         [ELanguages.en]: "Overall",
@@ -1117,6 +1245,10 @@ export const TRANSLATIONS = {
       farmText: {
         [ELanguages.en]: "Farm",
         [ELanguages.ru]: "Ферма",
+      },
+      fabricText: {
+        [ELanguages.en]: "Factory",
+        [ELanguages.ru]: "Фабрика",
       },
     },
     farms: {
@@ -1189,12 +1321,12 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Настройки UI",
       },
       classicModeText: {
-        [ELanguages.en]: "Classic",
-        [ELanguages.ru]: "Классик",
+        [ELanguages.en]: "Old",
+        [ELanguages.ru]: "Старый",
       },
       evoModeText: {
-        [ELanguages.en]: "Evo mode (new)",
-        [ELanguages.ru]: "Эво режим (новый)",
+        [ELanguages.en]: "New",
+        [ELanguages.ru]: "Новый",
       },
     },
     supportMenuBar: {
@@ -2192,6 +2324,108 @@ export const TRANSLATIONS = {
       },
     },
   },
+  bubbleFront: {
+    bottomNavbar: {
+      modeSelectText: {
+        [ELanguages.en]: "Mode Select",
+        [ELanguages.ru]: "Выбор режима",
+      },
+      ratingsText: {
+        [ELanguages.en]: "Ratings",
+        [ELanguages.ru]: "Рейтинги",
+      },
+      necrobombText: {
+        [ELanguages.en]: "Necrobomb",
+        [ELanguages.ru]: "Некробомба",
+      },
+      achievementsText: {
+        [ELanguages.en]: "Achievements",
+        [ELanguages.ru]: "Достижения",
+      },
+    },
+    buyNecroballModal: {
+      titleText: {
+        [ELanguages.en]: "Necrobomb is ready to launch!",
+        [ELanguages.ru]: "Некрабомба готова к запуску!",
+      },
+      descriptionText: {
+        [ELanguages.en]:
+          "Stronger than a standard necro shell. Blast radius — three balls.",
+        [ELanguages.ru]:
+          "Мощнее стандартного некроснаряда. Радиус поражения — три шара.",
+      },
+      chooseMethodText: {
+        [ELanguages.en]: "Choose how to get the super shell.",
+        [ELanguages.ru]: "Выберите способ получения супер снаряда.",
+      },
+      watchAdText: {
+        [ELanguages.en]: "Watch ad",
+        [ELanguages.ru]: "Смотреть рекламу",
+      },
+      buyForCpText: {
+        [ELanguages.en]: "Buy for 1CP",
+        [ELanguages.ru]: "Купить за 1CP",
+      },
+    },
+    difficultyModal: {
+      titleText: {
+        [ELanguages.en]: "Select difficulty level",
+        [ELanguages.ru]: "выберите уровень сложноси",
+      },
+      descriptionText: {
+        [ELanguages.en]: "Difficulty is a style. Choose yours.",
+        [ELanguages.ru]: "Сложность — это стиль. Выбери свой.",
+      },
+      levelsTexts: {
+        calibration: {
+          [ELanguages.en]: "Calibration",
+          [ELanguages.ru]: "Калибровка",
+        },
+        combatMode: {
+          [ELanguages.en]: "Combat mode",
+          [ELanguages.ru]: "Боевой режим",
+        },
+        overload: {
+          [ELanguages.en]: "Overload",
+          [ELanguages.ru]: "Перегрузка",
+        },
+      },
+      selectedMarkText: {
+        [ELanguages.en]: "Selected",
+        [ELanguages.ru]: "Выбран",
+      },
+      rowDescriptionText: {
+        [ELanguages.en]: "unsuccessful shots — new row.",
+        [ELanguages.ru]: "неудачных выстрелов — новый ряд.",
+      },
+    },
+    main: {
+      header: {
+        scoreText: {
+          [ELanguages.en]: "Score",
+          [ELanguages.ru]: "Очки",
+        },
+        difficultyText: {
+          [ELanguages.en]: "Difficulty",
+          [ELanguages.ru]: "Сложность",
+        },
+      },
+      gameOverModal: {
+        titleText: {
+          [ELanguages.en]: "Game over",
+          [ELanguages.ru]: "Игра окончена",
+        },
+        collectedScoreText: {
+          [ELanguages.en]: "Collected Score",
+          [ELanguages.ru]: "Набрано очков",
+        },
+        restartButtonText: {
+          [ELanguages.en]: "Play again",
+          [ELanguages.ru]: "Играть еще раз",
+        },
+      },
+    },
+  },
   puzzle: {
     achievments: {
       win: {
@@ -2322,108 +2556,7 @@ export const TRANSLATIONS = {
       },
     },
   },
-  bubbleFront: {
-    bottomNavbar: {
-      modeSelectText: {
-        [ELanguages.en]: "Mode Select",
-        [ELanguages.ru]: "Выбор режима",
-      },
-      ratingsText: {
-        [ELanguages.en]: "Ratings",
-        [ELanguages.ru]: "Рейтинги",
-      },
-      necrobombText: {
-        [ELanguages.en]: "Necrobomb",
-        [ELanguages.ru]: "Некробомба",
-      },
-      achievementsText: {
-        [ELanguages.en]: "Achievements",
-        [ELanguages.ru]: "Достижения",
-      },
-    },
-    buyNecroballModal: {
-      titleText: {
-        [ELanguages.en]: "Necrobomb is ready to launch!",
-        [ELanguages.ru]: "Некрабомба готова к запуску!",
-      },
-      descriptionText: {
-        [ELanguages.en]:
-          "Stronger than a standard necro shell. Blast radius — three balls.",
-        [ELanguages.ru]:
-          "Мощнее стандартного некроснаряда. Радиус поражения — три шара.",
-      },
-      chooseMethodText: {
-        [ELanguages.en]: "Choose how to get the super shell.",
-        [ELanguages.ru]: "Выберите способ получения супер снаряда.",
-      },
-      watchAdText: {
-        [ELanguages.en]: "Watch ad",
-        [ELanguages.ru]: "Смотреть рекламу",
-      },
-      buyForCpText: {
-        [ELanguages.en]: "Buy for 1CP",
-        [ELanguages.ru]: "Купить за 1CP",
-      },
-    },
-    difficultyModal: {
-      titleText: {
-        [ELanguages.en]: "Select difficulty level",
-        [ELanguages.ru]: "выберите уровень сложноси",
-      },
-      descriptionText: {
-        [ELanguages.en]: "Difficulty is a style. Choose yours.",
-        [ELanguages.ru]: "Сложность — это стиль. Выбери свой.",
-      },
-      levelsTexts: {
-        calibration: {
-          [ELanguages.en]: "Calibration",
-          [ELanguages.ru]: "Калибровка",
-        },
-        combatMode: {
-          [ELanguages.en]: "Combat mode",
-          [ELanguages.ru]: "Боевой режим",
-        },
-        overload: {
-          [ELanguages.en]: "Overload",
-          [ELanguages.ru]: "Перегрузка",
-        },
-      },
-      selectedMarkText: {
-        [ELanguages.en]: "Selected",
-        [ELanguages.ru]: "Выбран",
-      },
-      rowDescriptionText: {
-        [ELanguages.en]: "unsuccessful shots — new row.",
-        [ELanguages.ru]: "неудачных выстрелов — новый ряд.",
-      },
-    },
-    main: {
-      header: {
-        scoreText: {
-          [ELanguages.en]: "Score",
-          [ELanguages.ru]: "Очки",
-        },
-        difficultyText: {
-          [ELanguages.en]: "Difficulty",
-          [ELanguages.ru]: "Сложность",
-        },
-      },
-      gameOverModal: {
-        titleText: {
-          [ELanguages.en]: "Game over",
-          [ELanguages.ru]: "Игра окончена",
-        },
-        collectedScoreText: {
-          [ELanguages.en]: "Collected Score",
-          [ELanguages.ru]: "Набрано очков",
-        },
-        restartButtonText: {
-          [ELanguages.en]: "Play again",
-          [ELanguages.ru]: "Играть еще раз",
-        },
-      },
-    },
-  },
+
   influence: {
     header: {
       throughText: {

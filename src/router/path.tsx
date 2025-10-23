@@ -65,6 +65,7 @@ import {
   gridlineAchievmentsPagePath,
   gridlineRatingsPagePath,
   gridlineLevelSelectPagePath,
+  cyberFarmFabricPagePath,
 } from "./constants";
 import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
 import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
@@ -131,6 +132,7 @@ import GridlineMainPage from "../pages/Gridline/GridlineMainPage";
 import GridlineAchievmentsPage from "../pages/Gridline/GridlineAchievmentsPage";
 import GridlineRatingsPage from "../pages/Gridline/GridlineRatingsPage";
 import GridlineLevelSelectPage from "../pages/Gridline/GridlineLevelSelectPage";
+import CyberFarmEvoFabricPage from "../pages/CyberFarmEvo/CyberFarmEvoFabricPage";
 
 export const homePagePath = "/";
 
@@ -222,6 +224,10 @@ export const routes: IRoute[] = [
       {
         path: cyberFarmWarehousePagePath,
         component: <CyberFarmWarehousePage />,
+      },
+      {
+        path: cyberFarmFabricPagePath,
+        component: <CyberFarmEvoFabricPage />,
       },
       {
         path: cyberFarmSupportPagePath,

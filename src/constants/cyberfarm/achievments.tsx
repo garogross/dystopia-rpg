@@ -1,11 +1,4 @@
 import {
-  AchievmentStore1Level,
-  AchievmentStore2Level,
-  AchievmentStore3Level,
-  AchievmentStore4Level,
-  AchievmentStore5Level,
-} from "../../components/layout/icons/Achievments/cyberfarm/Store";
-import {
   AchievmentField1Level,
   AchievmentField2Level,
   AchievmentField3Level,
@@ -30,36 +23,36 @@ import {
 import { TRANSLATIONS } from "../TRANSLATIONS";
 import { EFarmAchievments } from "./EFarmAchievments";
 
-const { store, field, farm, factory } = TRANSLATIONS.cyberFarm.achievments;
+const { field, farm, factory } = TRANSLATIONS.cyberFarm.achievments;
 
 export const CYBER_FARM_ACHIEVMENTS = {
-  [EFarmAchievments.SOCIAL_SHOP]: [
-    {
-      icon: <AchievmentStore1Level />,
-      title: store.level1,
-      description: store.desc1,
-    },
-    {
-      icon: <AchievmentStore2Level />,
-      title: store.level2,
-      description: store.desc2,
-    },
-    {
-      icon: <AchievmentStore3Level />,
-      title: store.level3,
-      description: store.desc3,
-    },
-    {
-      icon: <AchievmentStore4Level />,
-      title: store.level4,
-      description: store.desc4,
-    },
-    {
-      icon: <AchievmentStore5Level />,
-      title: store.level5,
-      description: store.desc5,
-    },
-  ],
+  // [EFarmAchievments.SOCIAL_SHOP]: [
+  //   {
+  //     icon: <AchievmentStore1Level />,
+  //     title: store.level1,
+  //     description: store.desc1,
+  //   },
+  //   {
+  //     icon: <AchievmentStore2Level />,
+  //     title: store.level2,
+  //     description: store.desc2,
+  //   },
+  //   {
+  //     icon: <AchievmentStore3Level />,
+  //     title: store.level3,
+  //     description: store.desc3,
+  //   },
+  //   {
+  //     icon: <AchievmentStore4Level />,
+  //     title: store.level4,
+  //     description: store.desc4,
+  //   },
+  //   {
+  //     icon: <AchievmentStore5Level />,
+  //     title: store.level5,
+  //     description: store.desc5,
+  //   },
+  // ],
   [EFarmAchievments.HARVEST_FIELD]: [
     {
       icon: <AchievmentField1Level />,
