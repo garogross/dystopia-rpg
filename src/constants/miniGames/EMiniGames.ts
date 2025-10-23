@@ -2,4 +2,5 @@ export enum EMiniGames {
   PUZZLE = "PUZZLE",
   HACK_TERMINAL = "HACK_TERMINAL",
   BUBBLE_FRONT = "BUBBLE_FRONT",
+  GRIDLINE = "GRIDLINE",
 }

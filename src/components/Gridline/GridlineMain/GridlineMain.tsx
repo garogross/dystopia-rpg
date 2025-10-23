@@ -43,7 +43,7 @@ import TransitionProvider, {
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 
-const { name } = TRANSLATIONS.miniGames.gridline;
+const { name } = TRANSLATIONS.gridline;
 const {
   bonusNotActiveText,
   abilitiesScaleInfoText,
@@ -52,7 +52,7 @@ const {
   colorVirusBonusText,
   spheresLabel,
   scoreLabel,
-} = TRANSLATIONS.miniGames.gridline.main;
+} = TRANSLATIONS.gridline.main;
 const BONUS_ACTIVITY_PER_SCORE = 0.1;
 
 const nextBalls = {
