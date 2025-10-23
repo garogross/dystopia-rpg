@@ -17,7 +17,11 @@ import { TranslationItemType } from "../../types/TranslationItemType";
 import { TRANSLATIONS } from "../TRANSLATIONS";
 import { EMiniGames } from "./EMiniGames";
 
-const { puzzle, hackTerminal, gridline, bubbleFront } = TRANSLATIONS.miniGames;
+const {
+  // puzzle, hackTerminal,
+  gridline,
+  bubbleFront,
+} = TRANSLATIONS.miniGames;
 
 export const MINI_GAMES: {
   image: {
