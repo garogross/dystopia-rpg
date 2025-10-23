@@ -10,6 +10,11 @@
     padding-bottom: 5px;
     @include flexCol();
   }
+  &__headerSideBlock {
+    flex: 1;
+    @include setFont(14px, 400);
+  }
+
   &__collectAllBtn {
     height: 30px;
     width: 100%;

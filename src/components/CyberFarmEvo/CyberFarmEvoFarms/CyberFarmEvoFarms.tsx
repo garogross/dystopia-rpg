@@ -112,12 +112,13 @@ const CyberFarmEvoFarms = () => {
 
   useFarmFieldsProgressCheck(slotFields);
 
-  const { onShowAd, showTooltip, tooltipText, loading } = useVideoAd({
-    speedUpCompleteText: productionCollectedText,
-    provider: EadProviders.Gigapub,
-    ad_type: EAdActionTypes.Video,
-    game_action: "farm_collect_ready",
-  });
+  const { onShowAd, maxPerDay, viewsInDay, showTooltip, tooltipText, loading } =
+    useVideoAd({
+      speedUpCompleteText: productionCollectedText,
+      provider: EadProviders.Gigapub,
+      ad_type: EAdActionTypes.Video,
+      game_action: "farm_collect_ready",
+    });
 
   useEffect(() => {
     if (wrapperRef.current) {
@@ -223,6 +224,11 @@ const CyberFarmEvoFarms = () => {
   return (
     <div className={styles.cyberFarmEvoFarms}>
       <div className={`container ${styles.cyberFarmEvoFarms__header}`}>
+        <div className={styles.cyberFarmEvoFarms__headerSideBlock}>
+          <span>
+            {viewsInDay}/{maxPerDay}
+          </span>
+        </div>
         <MainBtn
           onClick={onShowAd}
           className={styles.cyberFarmEvoFarms__collectAllBtn}
@@ -230,6 +236,7 @@ const CyberFarmEvoFarms = () => {
           <ImageWebp srcSet={adImage} src={adImageWebp} alt={"watch ad"} />
           <span>{collectAllText[language]}</span>
         </MainBtn>
+        <div className={styles.cyberFarmEvoFarms__headerSideBlock}></div>
       </div>
       <div className={styles.cyberFarmEvoFarms__fieldsWrapper} ref={wrapperRef}>
         <div className={styles.cyberFarmEvoFarms__fieldsContainer}>
