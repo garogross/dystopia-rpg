@@ -1031,7 +1031,9 @@ const GridlineMainCanvas: React.FC<Props> = ({
     Ticker.shared.add(animate);
 
     // After drawing all sprites, kick off incoming/new scale-up animations for fields marked accordingly
-
+    if (selectedBonus) {
+      return;
+    }
     for (let i = 0; i < localFields.length; i++) {
       const f = localFields[i];
       const info = spriteInfoRef.current[i];
