@@ -42,11 +42,11 @@ const CyberFarmEvoSupportMenuBar: React.FC<Props> = ({ show, onClose }) => {
           if (tg) {
             tg.openTelegramLink(GUIDES_CHAT_URL);
           } else {
-            window.open(SUPPORT_CHAT_URL, "_blank", "noopener,noreferrer");
+            window.open(GUIDES_CHAT_URL, "_blank", "noopener,noreferrer");
           }
         } catch (error) {
           // Fallback to window.open in case tg.openTelegramLink fails
-          window.open(SUPPORT_CHAT_URL, "_blank", "noopener,noreferrer");
+          window.open(GUIDES_CHAT_URL, "_blank", "noopener,noreferrer");
           // Optionally log the error (do not throw to React)
           // console.error('Failed to open Telegram link:', error);
         }
