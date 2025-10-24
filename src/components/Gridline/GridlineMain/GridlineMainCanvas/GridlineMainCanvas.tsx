@@ -1075,7 +1075,7 @@ const GridlineMainCanvas: React.FC<Props> = ({
             try {
               const current = fieldsRef.current.slice();
               if (current[i]) {
-                current[i] = { ...current[i], incoming: false };
+                current[i] = { ...current[i], incoming: false, recent: false };
                 fieldsRef.current = current;
                 setFields(current);
               }
