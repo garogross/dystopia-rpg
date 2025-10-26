@@ -35,7 +35,6 @@
   &__field {
     @include button();
     position: absolute;
-
     width: calc(100% / 3);
     aspect-ratio: 236 / 144;
     background-position: center;
@@ -85,6 +84,6 @@
     background: $color-primary-dark-radial-gradient;
     @include flexCol();
     min-height: 28px;
-    @include setFont(20px, 400, $color-primary-dark-radial-gradient);
+    @include setFont(16px, 400, $color-primary-dark-radial-gradient);
   }
 }
