@@ -84,12 +84,25 @@ const CyberFarmEvoFarms = () => {
   const [producingSlotId, setProducingSlotId] = useState<string | null>(null);
 
   const slotFields = getFarmFieldsFromSlots(slots).sort((a, b) => {
+    // Sort first by type using custom order, then by level (ascending)
     const order = {
       [EFarmSlotTypes.FIELDS]: 2,
       [EFarmSlotTypes.FARM]: 1,
       [EFarmSlotTypes.FACTORY]: 0,
     };
-    return order[a.type] - order[b.type];
+
+    if (order[a.type] !== order[b.type]) {
+      return order[a.type] - order[b.type];
+    }
+
+    // Fallback: sort by level property if present
+    // Handles undefined level as lower than defined
+    if (a.level !== undefined && b.level !== undefined) {
+      return b.level - a.level;
+    }
+    if (a.level !== undefined) return 1;
+    if (b.level !== undefined) return -1;
+    return 0;
   });
 
   slotFields.push({
