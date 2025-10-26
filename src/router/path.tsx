@@ -53,7 +53,9 @@ import {
   cyberFarmEvoPagePath,
   cyberFarmProductionPagePath,
   cyberFarmRatingsPagePath,
+  cyberFarmFabricPagePath,
 } from "./constants";
+import CyberFarmEvoFabricPage from "../pages/CyberFarmEvo/CyberFarmEvoFabricPage";
 
 const HomePage = lazy(() => import("../pages/HomePage"));
 const RPGGamePage = lazy(() => import("../pages/RPGGame/RPGGamePage"));
@@ -375,6 +377,10 @@ export const routes: IRoute[] = [
       {
         path: cyberFarmRatingsPagePath,
         component: <CyberFarmEvoRatingsPage />,
+      },
+      {
+        path: cyberFarmFabricPagePath,
+        component: <CyberFarmEvoFabricPage />,
       },
     ],
   },

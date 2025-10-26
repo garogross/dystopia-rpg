@@ -1,6 +1,6 @@
 import React from "react";
 
-import styles from "./CyberFarmEvoFarmsProgress.module.scss";
+import styles from "./CyberFarmEvoFieldsWrapperProgress.module.scss";
 import { IFarmField } from "../../../../models/CyberFarm/IFarmField";
 import { useFarmFieldProgress } from "../../../../hooks/useFarmFieldProgress";
 import { CompletedProducticon } from "../../../layout/icons/CyberFarmEvo/Farms";
@@ -9,7 +9,7 @@ interface Props {
   process: IFarmField["process"];
 }
 
-const CyberFarmEvoFarmsProgress: React.FC<Props> = ({ process }) => {
+const CyberFarmEvoFieldsWrapperProgress: React.FC<Props> = ({ process }) => {
   const { progressPercent } = useFarmFieldProgress(process);
 
   return (
@@ -26,10 +26,10 @@ const CyberFarmEvoFarmsProgress: React.FC<Props> = ({ process }) => {
               )}%)`
             : "transparent",
       }}
-      className={styles.cyberFarmEvoFarmsProgress}
+      className={styles.cyberFarmEvoFieldsWrapperProgress}
     >
       {progressPercent === 100 && (
-        <div className={styles.cyberFarmEvoFarmsProgress__completed}>
+        <div className={styles.cyberFarmEvoFieldsWrapperProgress__completed}>
           <CompletedProducticon />
         </div>
       )}
@@ -37,4 +37,4 @@ const CyberFarmEvoFarmsProgress: React.FC<Props> = ({ process }) => {
   );
 };
 
-export default CyberFarmEvoFarmsProgress;
+export default CyberFarmEvoFieldsWrapperProgress;

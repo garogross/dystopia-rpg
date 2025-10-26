@@ -20,6 +20,7 @@ import styles from "./CyberFarmEvoMap.module.scss";
 import { Link } from "react-router-dom";
 import {
   cyberFarmEvoPagePath,
+  cyberFarmFabricPagePath,
   cyberFarmFarmsPagePath,
   cyberFarmSupportPagePath,
   cyberFarmWarehousePagePath,
@@ -35,6 +36,7 @@ import { updateTutorialProgress } from "../../../store/slices/cyberFarm/tutorial
 import { useTooltip } from "../../../hooks/useTooltip";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { TranslationItemType } from "../../../types/TranslationItemType";
+import { TESTER_IDS } from "../../../constants/testerIds";
 
 const {
   tasksText,
@@ -56,64 +58,6 @@ type MapButton = {
   label: TranslationItemType;
 };
 
-const cyberFarmMapButtons: MapButton[] = [
-  {
-    id: ECyberfarmEvoTutorialActions.showTasks,
-    to: cyberFarmSupportPagePath,
-    btnClass: `tasks`,
-    imgWebp: farmMapTasksBuildWebpImage,
-    imgSrc: farmMapTasksBuildImage,
-    imgAlt: "tasks",
-    label: tasksText,
-  },
-  {
-    id: ECyberfarmEvoTutorialActions.showWarehouse,
-    to: cyberFarmWarehousePagePath,
-    btnClass: `warehouse`,
-    imgWebp: farmMapCityWareHouseWebpImage,
-    imgSrc: farmMapCityWareHouseImage,
-    imgAlt: "warehouse",
-    label: warehouseText,
-  },
-  {
-    id: ECyberfarmEvoTutorialActions.showFarm,
-    to: cyberFarmFarmsPagePath,
-    btnClass: `farm`,
-    imgWebp: farmMapFarmBuildWebpImage,
-    imgSrc: farmMapFarmBuildImage,
-    imgAlt: "farm",
-    label: farmText,
-  },
-  {
-    btnClass: `fabric`,
-    imgWebp: farmMapFabricBuildWebpImage,
-    imgSrc: farmMapFabricBuildImage,
-    imgAlt: "fabric",
-    label: fabricText,
-  },
-  {
-    btnClass: `powerPlant`,
-    imgWebp: farmMapPowerPlantBuildWebpImage,
-    imgSrc: farmMapPowerPlantBuildImage,
-    imgAlt: "powerPlant",
-    label: powerPlantText,
-  },
-  {
-    btnClass: `recycler`,
-    imgWebp: farmMapRecyclerBuildWebpImage,
-    imgSrc: farmMapRecyclerBuildImage,
-    imgAlt: "recycler",
-    label: recyclerText,
-  },
-  {
-    btnClass: `city`,
-    imgWebp: farmMapCityWebpImage,
-    imgSrc: farmMapCityImage,
-    imgAlt: "city",
-    label: cityText,
-  },
-];
-
 const CyberFarmEvoMap = () => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
@@ -123,9 +67,69 @@ const CyberFarmEvoMap = () => {
   const tutorialProgressIndex = useAppSelector(
     (state) => state.cyberfarm.tutorial.tutorialProgressIndex
   );
+  const tgId = useAppSelector((state) => state.profile.tgId);
   const tutorialSlidetimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { show, openTooltip } = useTooltip();
   const mainRef = useRef<HTMLDivElement>(null);
+
+  const cyberFarmMapButtons: MapButton[] = [
+    {
+      id: ECyberfarmEvoTutorialActions.showTasks,
+      to: cyberFarmSupportPagePath,
+      btnClass: `tasks`,
+      imgWebp: farmMapTasksBuildWebpImage,
+      imgSrc: farmMapTasksBuildImage,
+      imgAlt: "tasks",
+      label: tasksText,
+    },
+    {
+      id: ECyberfarmEvoTutorialActions.showWarehouse,
+      to: cyberFarmWarehousePagePath,
+      btnClass: `warehouse`,
+      imgWebp: farmMapCityWareHouseWebpImage,
+      imgSrc: farmMapCityWareHouseImage,
+      imgAlt: "warehouse",
+      label: warehouseText,
+    },
+    {
+      id: ECyberfarmEvoTutorialActions.showFarm,
+      to: cyberFarmFarmsPagePath,
+      btnClass: `farm`,
+      imgWebp: farmMapFarmBuildWebpImage,
+      imgSrc: farmMapFarmBuildImage,
+      imgAlt: "farm",
+      label: farmText,
+    },
+    {
+      btnClass: `fabric`,
+      imgWebp: farmMapFabricBuildWebpImage,
+      imgSrc: farmMapFabricBuildImage,
+      imgAlt: "fabric",
+      label: fabricText,
+      to: TESTER_IDS.includes(+tgId) ? cyberFarmFabricPagePath : undefined,
+    },
+    {
+      btnClass: `powerPlant`,
+      imgWebp: farmMapPowerPlantBuildWebpImage,
+      imgSrc: farmMapPowerPlantBuildImage,
+      imgAlt: "powerPlant",
+      label: powerPlantText,
+    },
+    {
+      btnClass: `recycler`,
+      imgWebp: farmMapRecyclerBuildWebpImage,
+      imgSrc: farmMapRecyclerBuildImage,
+      imgAlt: "recycler",
+      label: recyclerText,
+    },
+    {
+      btnClass: `city`,
+      imgWebp: farmMapCityWebpImage,
+      imgSrc: farmMapCityImage,
+      imgAlt: "city",
+      label: cityText,
+    },
+  ];
 
   useEffect(() => {
     requestAnimationFrame(() => {

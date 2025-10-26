@@ -17,4 +17,6 @@ export interface IFarmField {
   finalProduction?: number;
   level?: number;
   disabled?: boolean; // for evo mode
+  isEmpty?: boolean;
+  curImage?: { src: string; srcSet: string };
 }

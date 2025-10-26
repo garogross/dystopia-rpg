@@ -16,6 +16,14 @@ import evoFarmWebpImage from "../images/CyberFarmEvo/Farms/common/evoFarm.webp";
 import evoBlockedSlotImage from "../images/CyberFarmEvo/Farms/common/evoBlockedSlot.png";
 import evoBlockedSlotWebpImage from "../images/CyberFarmEvo/Farms/common/evoBlockedSlot.webp";
 
+// fabric
+import fabricFieldWebpImage from "../images/CyberFarmEvo/Fabric/fabricField.webp";
+import fabricFieldImage from "../images/CyberFarmEvo/Fabric/fabricField.png";
+import fabricBuildWebpImage from "../images/CyberFarmEvo/Fabric/fabricBuild.webp";
+import fabricBuildImage from "../images/CyberFarmEvo/Fabric/fabricBuild.png";
+import fabricBuildWorkingWebpImage from "../images/CyberFarmEvo/Fabric/fabricBuildWorking.webp";
+import fabricBuildWorkingImage from "../images/CyberFarmEvo/Fabric/fabricBuildWorking.png";
+
 // plants
 import evoPlasmaMushroomOnFieldImage from "../images/CyberFarmEvo/Farms/plants/evoPlasmaMushroomOnField.png";
 import evoPlasmaMushroomOnFieldWebpImage from "../images/CyberFarmEvo/Farms/plants/evoPlasmaMushroomOnField.webp";
@@ -150,4 +158,10 @@ export {
   algaeEvoWebpImage,
   evoBlockedSlotImage,
   evoBlockedSlotWebpImage,
+  fabricFieldWebpImage,
+  fabricFieldImage,
+  fabricBuildWebpImage,
+  fabricBuildImage,
+  fabricBuildWorkingWebpImage,
+  fabricBuildWorkingImage,
 };
