@@ -1308,6 +1308,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Ratings",
         [ELanguages.ru]: "Рейтинги",
       },
+      copyText: {
+        [ELanguages.en]: "Copied",
+        [ELanguages.ru]: "Скопировано",
+      },
     },
     languageMenubar: {
       titleText: {
