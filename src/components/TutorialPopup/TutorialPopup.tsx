@@ -20,7 +20,7 @@ import {
   setTutorialInProgress,
   updateTutorialProgress,
 } from "../../store/slices/cyberFarm/tutorialSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CYBERFARM_EVO_TUTORIAL_PROGRESS } from "../../constants/cyberfarmEvo/tutorial";
 
 const { closeText, nextText } = TRANSLATIONS.tutorialPopup;
@@ -30,6 +30,7 @@ interface Props {}
 const TutorialPopup: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const siteLanguage = useAppSelector((state) => state.ui.language);
   const gameInited = useAppSelector((state) => state.ui.gameInited);
   const tutorialInProgress = useAppSelector(
@@ -57,14 +58,21 @@ const TutorialPopup: React.FC<Props> = () => {
   };
 
   const onNext = () => {
-    if (tutorialProgressIndex === progress.length - 1) {
+    const isLastSlide = tutorialProgressIndex === progress.length - 1;
+
+    if (isLastSlide) {
       onClose();
     } else {
+      if (curTutorial.isFinish) dispatch(finsihTutorial());
       dispatch(updateTutorialProgress());
     }
   };
 
-  if (!curTutorial?.text) return null;
+  if (
+    !curTutorial?.text ||
+    (curTutorial.inPage && location.pathname !== curTutorial.inPage)
+  )
+    return null;
 
   return (
     <>

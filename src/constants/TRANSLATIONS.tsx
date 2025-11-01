@@ -349,6 +349,35 @@ export const TRANSLATIONS = {
           </>
         ),
       },
+      importantNoteText: {
+        [ELanguages.en]: (
+          <>
+            Important! Don't rush to buy many fields, farms, or especially
+            factories! It's better to start with one field, launch production,
+            get a bonus from ads, collect your product, and figure out how
+            everything works.
+            <br />
+            <br />
+            To launch a field, you'll need materials worth ~5 CP, a farm ~25 CP,
+            and a factory from 50 CP. Any missing materials can be bought with a
+            single button. If you don't have enough CP, you can complete a few
+            tasks or purchase them.
+          </>
+        ),
+        [ELanguages.ru]: (
+          <>
+            Важно! Не нужно торопиться и покупать много полей, ферм и тем более
+            заводов! Лучше начать с одного поля, запустить производство,
+            получить бонус с рекламы, собрать продукцию и разобраться, как все
+            работает.
+            <br />
+            <br />
+            Чтобы запустить поле нужно материалов на ~5 CP, на ферму ~25 CP, на
+            завод от 50 CP. Недостающие материалы закупаются одной кнопкой. Если
+            не хватает CP, можно выполнить несколько заданий или купить их.
+          </>
+        ),
+      },
     },
   },
   settings: {
