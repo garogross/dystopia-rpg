@@ -1,7 +1,8 @@
 import React from "react";
+import CyberFarmEvoFabric from "../../components/CyberFarmEvo/CyberFarmEvoFabric/CyberFarmEvoFabric";
 
 const CyberFarmEvoFabricPage = () => {
-  return <div></div>;
+  return <CyberFarmEvoFabric />;
 };
 
 export default CyberFarmEvoFabricPage;

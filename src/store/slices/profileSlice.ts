@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { fetchRequest } from "../tools/fetchTools";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { fetchRequest } from "../tools/fetchTools";
 import { AuthUserResponse } from "../../models/api/AuthUserResponse";
 import { getLSItem, setLSItem } from "../../helpers/localStorage";
@@ -35,6 +35,7 @@ import { initMap } from "./influence/mapSlice";
 import { initMail, receiveMailReward } from "./influence/mailSlice";
 import { EAdSlots } from "../../constants/EAdSlots";
 import { GetWithdrawRatesResponse } from "../../models/api/GetWithdrawRatesResponse";
+import { postLog } from "../../api/logs";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -114,11 +115,35 @@ export const authUser = createAsyncThunk<AuthUserResponse, string>(
 const getAccountDetailsUrl = "/account/";
 
 export const getAccountDetails =
-  (avatar?: string, username?: string, mode?: AppGameMode) =>
+  (
+    avatar?: string,
+    username?: string,
+    mode?: AppGameMode,
+    startParam?: string
+  ) =>
   async (dispatch: AppDispatch) => {
+    const params: string[] = [];
+    if (mode) params.push(`mode=${encodeURIComponent(mode)}`);
+    if (username) params.push(`name=${encodeURIComponent(username)}`);
+    if (startParam) params.push(`partner_id=${encodeURIComponent(startParam)}`);
+    const query = params.length ? `?${params.join("&")}` : "";
+
+    const fp = await FingerprintJS.load();
+    const result = await fp.get();
+
     const resData = await fetchRequest<GetAccountDetailsResponse>(
-      `${getAccountDetailsUrl}${mode ? `?mode=${mode}` : ""}`
+      `${getAccountDetailsUrl}${query}`,
+      "GET",
+      null,
+      undefined,
+      { "X-Client-FP": result.visitorId }
     );
+
+    postLog({
+      tgId: window.Telegram.WebApp.initDataUnsafe.user?.id,
+      message: "get account details success",
+      resData,
+    });
 
     dispatch(getAdRewardSettings());
     dispatch(
@@ -279,7 +304,13 @@ export const getAccountDetails =
   };
 
 export const authorizeUser =
-  (initData: string, avatar?: string, username?: string, mode?: AppGameMode) =>
+  (
+    initData: string,
+    startParam?: string,
+    avatar?: string,
+    username?: string,
+    mode?: AppGameMode
+  ) =>
   async (dispatch: AppDispatch) => {
     // for test in dev mode
     if (process.env.NODE_ENV === "development") {
@@ -295,10 +326,17 @@ export const authorizeUser =
     }
 
     try {
-      const res = await dispatch(getAccountDetails(avatar, username, mode));
+      const res = await dispatch(
+        getAccountDetails(avatar, username, mode, startParam)
+      );
 
       return res.mode;
     } catch (error: any) {
+      postLog({
+        tgId: window.Telegram.WebApp.initDataUnsafe.user?.id,
+        message: "get account details error",
+        error,
+      });
       if (error?.status === 401) {
         // in case invalid token
         await dispatch(authUser(initData));
@@ -361,7 +399,7 @@ export const profileSlice = createSlice({
       state.id = payload.id;
       state.tgId = payload.tgId;
       state.avatar = payload.avatar;
-      state.username = payload.username;
+      state.username = payload.username || state.username;
     },
     updateStats(state, { payload }) {
       state.stats = { ...state.stats, ...payload };

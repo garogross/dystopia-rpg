@@ -32,8 +32,20 @@ const OnBoarding = () => {
 
   useEffect(() => {
     const fetchData = async (initData: string) => {
+      const { start_param, user } = tg.initDataUnsafe;
+
       try {
-        const res = await dispatch(authorizeUser(initData));
+        const res = await dispatch(
+          authorizeUser(
+            initData,
+            start_param,
+            user?.photo_url,
+            user?.username ??
+              `${user?.first_name ?? ""}${
+                user?.last_name ? " " + user.last_name : ""
+              }`
+          )
+        );
 
         switch (res) {
           case "ton_cyber_farm": {

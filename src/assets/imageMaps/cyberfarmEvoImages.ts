@@ -4,8 +4,6 @@ import farmMapFarmBuildImage from "../images/CyberFarmEvo/Map/farmMapFarmBuild.p
 import farmMapFarmBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapFarmBuild.webp";
 import farmMapTasksBuildImage from "../images/CyberFarmEvo/Map/farmMapTasksBuild.png";
 import farmMapTasksBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapTasksBuild.webp";
-import farmMapFabricBuildImage from "../images/CyberFarmEvo/Map/farmMapFabricBuild.png";
-import farmMapFabricBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapFabricBuild.webp";
 
 import cybefarmEvoFieldWebpImage from "../images/CyberFarmEvo/Farms/common/cybefarmEvoField.webp";
 import cybefarmEvoFieldImage from "../images/CyberFarmEvo/Farms/common/cybefarmEvoField.png";
@@ -17,6 +15,14 @@ import evoFarmImage from "../images/CyberFarmEvo/Farms/common/evoFarm.png";
 import evoFarmWebpImage from "../images/CyberFarmEvo/Farms/common/evoFarm.webp";
 import evoBlockedSlotImage from "../images/CyberFarmEvo/Farms/common/evoBlockedSlot.png";
 import evoBlockedSlotWebpImage from "../images/CyberFarmEvo/Farms/common/evoBlockedSlot.webp";
+
+// fabric
+import fabricFieldWebpImage from "../images/CyberFarmEvo/Fabric/fabricField.webp";
+import fabricFieldImage from "../images/CyberFarmEvo/Fabric/fabricField.png";
+import fabricBuildWebpImage from "../images/CyberFarmEvo/Fabric/fabricBuild.webp";
+import fabricBuildImage from "../images/CyberFarmEvo/Fabric/fabricBuild.png";
+import fabricBuildWorkingWebpImage from "../images/CyberFarmEvo/Fabric/fabricBuildWorking.webp";
+import fabricBuildWorkingImage from "../images/CyberFarmEvo/Fabric/fabricBuildWorking.png";
 
 // plants
 import evoPlasmaMushroomOnFieldImage from "../images/CyberFarmEvo/Farms/plants/evoPlasmaMushroomOnField.png";
@@ -70,6 +76,14 @@ import plasmaMushroomEvoImage from "../images/CyberFarmEvo/products/plantProduct
 import plasmaMushroomEvoWebpImage from "../images/CyberFarmEvo/products/plantProducts/plasmaMushroomEvo.webp";
 import algaeEvoImage from "../images/CyberFarmEvo/products/plantProducts/аlgaeEvo.png";
 import algaeEvoWebpImage from "../images/CyberFarmEvo/products/plantProducts/аlgaeEvo.webp";
+import farmMapFabricBuildImage from "../images/CyberFarmEvo/Map/farmMapFabricBuild.png";
+import farmMapFabricBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapFabricBuild.webp";
+import farmMapCityWebpImage from "../images/CyberFarmEvo/Map/farmMapCity.webp";
+import farmMapCityImage from "../images/CyberFarmEvo/Map/farmMapCity.png";
+import farmMapPowerPlantBuildImage from "../images/CyberFarmEvo/Map/farmMapPowerPlantBuild.png";
+import farmMapPowerPlantBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapPowerPlantBuild.webp";
+import farmMapRecyclerBuildImage from "../images/CyberFarmEvo/Map/farmMapRecyclerBuild.png";
+import farmMapRecyclerBuildWebpImage from "../images/CyberFarmEvo/Map/farmMapRecyclerBuild.webp";
 
 export {
   farmMapCityWareHouseImage,
@@ -80,6 +94,12 @@ export {
   farmMapTasksBuildWebpImage,
   farmMapFabricBuildImage,
   farmMapFabricBuildWebpImage,
+  farmMapCityWebpImage,
+  farmMapCityImage,
+  farmMapPowerPlantBuildImage,
+  farmMapPowerPlantBuildWebpImage,
+  farmMapRecyclerBuildImage,
+  farmMapRecyclerBuildWebpImage,
   cybefarmEvoFieldWebpImage,
   cybefarmEvoFieldImage,
   evoFactoryImage,
@@ -138,4 +158,10 @@ export {
   algaeEvoWebpImage,
   evoBlockedSlotImage,
   evoBlockedSlotWebpImage,
+  fabricFieldWebpImage,
+  fabricFieldImage,
+  fabricBuildWebpImage,
+  fabricBuildImage,
+  fabricBuildWorkingWebpImage,
+  fabricBuildWorkingImage,
 };

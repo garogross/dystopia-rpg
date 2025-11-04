@@ -46,32 +46,59 @@ const getTabItems = (
 ];
 const CyberFarmRatings = () => {
   const dispatch = useAppDispatch();
-  const ratings = useAppSelector(
+  const wealthRankData = useAppSelector(
     (state) => state.cyberfarm.ratings.wealthRankData
   );
+  const structuresRankData = useAppSelector(
+    (state) => state.cyberfarm.ratings.structuresRankData
+  );
+  const myRank = useAppSelector((state) => state.cyberfarm.ratings.myRank);
   const tgid = useAppSelector((state) => state.profile.tgId);
+  const username = useAppSelector((state) => state.profile.username);
   const language = useAppSelector((state) => state.ui.language);
   const [searchQuery, setSearchQuery] = useState("");
   const tabItems = getTabItems(language);
   const [activeTab, setActiveTab] = useState(tabItems[0].id);
+  const ratings =
+    activeTab === "builings" ? structuresRankData : wealthRankData;
 
   const data = [
     ...(ratings || []).map((item, index) => {
-      const values = {
-        builings: item.structures_value,
-        general: item.total_value,
-      };
+      let score = 0;
+      if (activeTab === "builings" && "structures_value" in item) {
+        score = item.structures_value ?? 0;
+      } else if (activeTab === "general" && "total_value" in item) {
+        // Patch for types: StructuresRankRating does not have total_value
+        score = (item as any).total_value ?? 0;
+      }
       return {
         id: item.user_id,
         name: item.name,
-        score: values[activeTab],
+        score,
       };
     }),
   ]
     .sort((a, b) => b.score - a.score)
     .map((item, index) => ({ ...item, index: index + 1 }));
 
-  const curUserIndex = data?.findIndex((item) => item.id === tgid);
+  let curUserIndex = data?.findIndex((item) => item.id === tgid);
+  const values = {
+    builings: myRank?.wealth.structures_value,
+    general: myRank?.wealth?.total_value,
+  };
+  const ranks = {
+    builings: myRank?.structures?.rank,
+    general: myRank?.wealth?.rank,
+  };
+  if (curUserIndex === -1) {
+    data.push({
+      id: +tgid,
+      name: username,
+      score: values[activeTab] || 0,
+      index: ranks[activeTab] || -1,
+    });
+    curUserIndex = data.length - 1;
+  }
 
   useEffect(() => {
     dispatch(getRatingsList());

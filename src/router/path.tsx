@@ -1,12 +1,4 @@
-import React, { ReactElement } from "react";
-
-import HomePage from "../pages/HomePage";
-import RPGGamePage from "../pages/RPGGame/RPGGamePage";
-import RPGGameCharacterPage from "../pages/RPGGame/RPGGameCharacterPage";
-import RPGGameChallengesPage from "../pages/RPGGame/RPGGameChallengesPage";
-import RPGGameMinigamesPage from "../pages/RPGGame/RPGGameMinigamesPage";
-import RPGGameDuelPage from "../pages/RPGGame/RPGGameDuelPage";
-import RPGGameClanPage from "../pages/RPGGame/RPGGameClanPage";
+import React, { ReactElement, lazy } from "react";
 import {
   rpgGamePagePath,
   rpgGameChallengesPagePath,
@@ -63,67 +55,189 @@ import {
   cyberFarmRatingsPagePath,
   cyberFarmFabricPagePath,
 } from "./constants";
-import RPGGameLoyalityPage from "../pages/RPGGame/RPGGameLoyalityPage";
-import RPGGameSingleChalangePage from "../pages/RPGGame/RPGGameSingleChalangePage";
-import RPGGameReferalsPage from "../pages/RPGGame/RPGGameReferalsPage";
-import RPGGameSkinViewPage from "../pages/RPGGame/RPGGameSkinViewPage";
-import RPGGameClanSearchPage from "../pages/RPGGame/RPGGameClanSearchPage";
-import RPGGameCreateClanPage from "../pages/RPGGame/RPGGameCreateClanPage";
-import RPGGameSingeClanPage from "../pages/RPGGame/RPGGameSingeClanPage";
-import RPGGamePlayAreaPage from "../pages/RPGGame/RPGGamePlayAreaPage";
-import OnBoardingPage from "../pages/OnBoardingPage";
-import CyberFarmPage from "../pages/CyberFarm/CyberFarmPage";
-import CyberFarmFieldsPage from "../pages/CyberFarm/CyberFarmFieldsPage";
-import CyberFarmFarmsPage from "../pages/CyberFarm/CyberFarmFarmsPage";
-import CyberFarmFactoriesPage from "../pages/CyberFarm/CyberFarmFactoriesPage";
-import CyberFarmWarehousePage from "../pages/CyberFarm/CyberFarmWarehousePage";
-import CyberFarmSupportPage from "../pages/CyberFarm/CyberFarmSupportPage";
-import CyberFarmReferalsPage from "../pages/CyberFarm/CyberFarmReferalsPage";
-import CyberFarmAchievmentsPage from "../pages/CyberFarm/CyberFarmAchievmentsPage";
-import MiniGamesPage from "../pages/MiniGames/MiniGamesPage";
-import MiniGamesAchievmentsPage from "../pages/MiniGames/MiniGamesAchievmentsPage";
-import MiniGamesCatalogPage from "../pages/MiniGames/MiniGamesCatalogPage";
-import MiniGamesLoyalityPage from "../pages/MiniGames/MiniGamesLoyalityPage";
-import MiniGamesPinnedPage from "../pages/MiniGames/MiniGamesPinnedPage";
-import MiniGamesReferalsPage from "../pages/MiniGames/MiniGamesReferalsPage";
-import HackTerminalPage from "../pages/HackTerminal/HackTerminalPage";
-import HackTerminalMainPage from "../pages/HackTerminal/HackTerminalMainPage";
-import HackTerminalLevelSelectPage from "../pages/HackTerminal/HackTerminalLevelSelectPage";
-import HackTerminalPrizesPage from "../pages/HackTerminal/HackTerminalPrizesPage";
-import HackTerminalRatingsPage from "../pages/HackTerminal/HackTerminalRatingsPage";
-import HackTerminalRulesPage from "../pages/HackTerminal/HackTerminalRulesPage";
-import HackTerminalAchievmentsPage from "../pages/HackTerminal/HackTerminalAchievmentsPage";
-import PuzzlePage from "../pages/Puzzle/PuzzlePage";
-import PuzzleMainPage from "../pages/Puzzle/PuzzleMainPage";
-import PuzzleSelectModePage from "../pages/Puzzle/PuzzleSelectModePage";
-import PuzzleGalleryPage from "../pages/Puzzle/PuzzleGalleryPage";
-import PuzzleAchievmentsPage from "../pages/Puzzle/PuzzleAchievmentsPage";
-import PuzzleRatingsPage from "../pages/Puzzle/PuzzleRatingsPage";
-import InfluencePage from "../pages/Influence/InfluencePage";
-import InfluenceMapPage from "../pages/Influence/InfluenceMapPage";
-import InfluenceClanPage from "../pages/Influence/InfluenceClanPage";
-import InfluenceLoyalityPage from "../pages/Influence/InfluenceLoyalityPage";
-import InfluencePlayerPage from "../pages/Influence/InfluencePlayerPage";
-import InfluenceReferalsPage from "../pages/Influence/InfluenceReferalsPage";
-import InfluenceNotificatonsPage from "../pages/Influence/InfluenceNotificatonsPage";
-import InfluenceCreateClanPage from "../pages/Influence/InfluenceCreateClanPage";
-import InfluenceMyClanPage from "../pages/Influence/InfluenceMyClanPage";
-import InfluenceMailPage from "../pages/Influence/InfluenceMailPage";
-import InfluenceRatingsPage from "../pages/Influence/InfluenceRatingsPage";
-import BubbleFrontPage from "../pages/BubbleFront/BubbleFrontPage";
-import BubbleFrontMainPage from "../pages/BubbleFront/BubbleFrontMainPage";
-import BubbleFrontAchievmentsPage from "../pages/BubbleFront/BubbleFrontAchievmentsPage";
-import BubbleFrontRatingsPage from "../pages/BubbleFront/BubbleFrontRatingsPage";
-import CyberFarmEvoPage from "../pages/CyberFarmEvo/CyberFarmEvoPage";
-import CyberFarmEvoWarehousePage from "../pages/CyberFarmEvo/CyberFarmEvoWarehousePage";
-import CyberFarmEvoSupportPage from "../pages/CyberFarmEvo/CyberFarmEvoSupportPage";
-import CyberFarmEvoReferalsPage from "../pages/CyberFarmEvo/CyberFarmEvoReferalsPage";
-import CyberFarmEvoAchievmentsPage from "../pages/CyberFarmEvo/CyberFarmEvoAchievmentsPage";
-import CyberFarmEvoMapPage from "../pages/CyberFarmEvo/CyberFarmEvoMapPage";
-import CyberFarmEvoFarmsPage from "../pages/CyberFarmEvo/CyberFarmEvoFarmsPage";
-import CyberFarmEvoProductionPage from "../pages/CyberFarmEvo/CyberFarmEvoProductionPage";
-import CyberFarmEvoRatingsPage from "../pages/CyberFarmEvo/CyberFarmEvoRatingsPage";
 import CyberFarmEvoFabricPage from "../pages/CyberFarmEvo/CyberFarmEvoFabricPage";
+
+const HomePage = lazy(() => import("../pages/HomePage"));
+const RPGGamePage = lazy(() => import("../pages/RPGGame/RPGGamePage"));
+const RPGGameCharacterPage = lazy(
+  () => import("../pages/RPGGame/RPGGameCharacterPage")
+);
+const RPGGameChallengesPage = lazy(
+  () => import("../pages/RPGGame/RPGGameChallengesPage")
+);
+const RPGGameMinigamesPage = lazy(
+  () => import("../pages/RPGGame/RPGGameMinigamesPage")
+);
+const RPGGameDuelPage = lazy(() => import("../pages/RPGGame/RPGGameDuelPage"));
+const RPGGameClanPage = lazy(() => import("../pages/RPGGame/RPGGameClanPage"));
+const RPGGameLoyalityPage = lazy(
+  () => import("../pages/RPGGame/RPGGameLoyalityPage")
+);
+const RPGGameSingleChalangePage = lazy(
+  () => import("../pages/RPGGame/RPGGameSingleChalangePage")
+);
+const RPGGameReferalsPage = lazy(
+  () => import("../pages/RPGGame/RPGGameReferalsPage")
+);
+const RPGGameSkinViewPage = lazy(
+  () => import("../pages/RPGGame/RPGGameSkinViewPage")
+);
+const RPGGameClanSearchPage = lazy(
+  () => import("../pages/RPGGame/RPGGameClanSearchPage")
+);
+const RPGGameCreateClanPage = lazy(
+  () => import("../pages/RPGGame/RPGGameCreateClanPage")
+);
+const RPGGameSingeClanPage = lazy(
+  () => import("../pages/RPGGame/RPGGameSingeClanPage")
+);
+const RPGGamePlayAreaPage = lazy(
+  () => import("../pages/RPGGame/RPGGamePlayAreaPage")
+);
+const OnBoardingPage = lazy(() => import("../pages/OnBoardingPage"));
+const CyberFarmPage = lazy(() => import("../pages/CyberFarm/CyberFarmPage"));
+const CyberFarmFieldsPage = lazy(
+  () => import("../pages/CyberFarm/CyberFarmFieldsPage")
+);
+const CyberFarmFarmsPage = lazy(
+  () => import("../pages/CyberFarm/CyberFarmFarmsPage")
+);
+const CyberFarmFactoriesPage = lazy(
+  () => import("../pages/CyberFarm/CyberFarmFactoriesPage")
+);
+const CyberFarmWarehousePage = lazy(
+  () => import("../pages/CyberFarm/CyberFarmWarehousePage")
+);
+const CyberFarmSupportPage = lazy(
+  () => import("../pages/CyberFarm/CyberFarmSupportPage")
+);
+const CyberFarmReferalsPage = lazy(
+  () => import("../pages/CyberFarm/CyberFarmReferalsPage")
+);
+const CyberFarmAchievmentsPage = lazy(
+  () => import("../pages/CyberFarm/CyberFarmAchievmentsPage")
+);
+const MiniGamesPage = lazy(() => import("../pages/MiniGames/MiniGamesPage"));
+const MiniGamesAchievmentsPage = lazy(
+  () => import("../pages/MiniGames/MiniGamesAchievmentsPage")
+);
+const MiniGamesCatalogPage = lazy(
+  () => import("../pages/MiniGames/MiniGamesCatalogPage")
+);
+const MiniGamesLoyalityPage = lazy(
+  () => import("../pages/MiniGames/MiniGamesLoyalityPage")
+);
+const MiniGamesPinnedPage = lazy(
+  () => import("../pages/MiniGames/MiniGamesPinnedPage")
+);
+const MiniGamesReferalsPage = lazy(
+  () => import("../pages/MiniGames/MiniGamesReferalsPage")
+);
+const HackTerminalPage = lazy(
+  () => import("../pages/HackTerminal/HackTerminalPage")
+);
+const HackTerminalMainPage = lazy(
+  () => import("../pages/HackTerminal/HackTerminalMainPage")
+);
+const HackTerminalLevelSelectPage = lazy(
+  () => import("../pages/HackTerminal/HackTerminalLevelSelectPage")
+);
+const HackTerminalPrizesPage = lazy(
+  () => import("../pages/HackTerminal/HackTerminalPrizesPage")
+);
+const HackTerminalRatingsPage = lazy(
+  () => import("../pages/HackTerminal/HackTerminalRatingsPage")
+);
+const HackTerminalRulesPage = lazy(
+  () => import("../pages/HackTerminal/HackTerminalRulesPage")
+);
+const HackTerminalAchievmentsPage = lazy(
+  () => import("../pages/HackTerminal/HackTerminalAchievmentsPage")
+);
+const PuzzlePage = lazy(() => import("../pages/Puzzle/PuzzlePage"));
+const PuzzleMainPage = lazy(() => import("../pages/Puzzle/PuzzleMainPage"));
+const PuzzleSelectModePage = lazy(
+  () => import("../pages/Puzzle/PuzzleSelectModePage")
+);
+const PuzzleGalleryPage = lazy(
+  () => import("../pages/Puzzle/PuzzleGalleryPage")
+);
+const PuzzleAchievmentsPage = lazy(
+  () => import("../pages/Puzzle/PuzzleAchievmentsPage")
+);
+const PuzzleRatingsPage = lazy(
+  () => import("../pages/Puzzle/PuzzleRatingsPage")
+);
+const InfluencePage = lazy(() => import("../pages/Influence/InfluencePage"));
+const InfluenceMapPage = lazy(
+  () => import("../pages/Influence/InfluenceMapPage")
+);
+const InfluenceClanPage = lazy(
+  () => import("../pages/Influence/InfluenceClanPage")
+);
+const InfluenceLoyalityPage = lazy(
+  () => import("../pages/Influence/InfluenceLoyalityPage")
+);
+const InfluencePlayerPage = lazy(
+  () => import("../pages/Influence/InfluencePlayerPage")
+);
+const InfluenceReferalsPage = lazy(
+  () => import("../pages/Influence/InfluenceReferalsPage")
+);
+const InfluenceNotificatonsPage = lazy(
+  () => import("../pages/Influence/InfluenceNotificatonsPage")
+);
+const InfluenceCreateClanPage = lazy(
+  () => import("../pages/Influence/InfluenceCreateClanPage")
+);
+const InfluenceMyClanPage = lazy(
+  () => import("../pages/Influence/InfluenceMyClanPage")
+);
+const InfluenceMailPage = lazy(
+  () => import("../pages/Influence/InfluenceMailPage")
+);
+const InfluenceRatingsPage = lazy(
+  () => import("../pages/Influence/InfluenceRatingsPage")
+);
+const BubbleFrontPage = lazy(
+  () => import("../pages/BubbleFront/BubbleFrontPage")
+);
+const BubbleFrontMainPage = lazy(
+  () => import("../pages/BubbleFront/BubbleFrontMainPage")
+);
+const BubbleFrontAchievmentsPage = lazy(
+  () => import("../pages/BubbleFront/BubbleFrontAchievmentsPage")
+);
+const BubbleFrontRatingsPage = lazy(
+  () => import("../pages/BubbleFront/BubbleFrontRatingsPage")
+);
+const CyberFarmEvoPage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoPage")
+);
+const CyberFarmEvoWarehousePage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoWarehousePage")
+);
+const CyberFarmEvoSupportPage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoSupportPage")
+);
+const CyberFarmEvoReferalsPage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoReferalsPage")
+);
+const CyberFarmEvoAchievmentsPage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoAchievmentsPage")
+);
+const CyberFarmEvoMapPage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoMapPage")
+);
+const CyberFarmEvoFarmsPage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoFarmsPage")
+);
+const CyberFarmEvoProductionPage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoProductionPage")
+);
+const CyberFarmEvoRatingsPage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoRatingsPage")
+);
 
 export const homePagePath = "/";
 
@@ -267,6 +381,10 @@ export const routes: IRoute[] = [
       {
         path: cyberFarmRatingsPagePath,
         component: <CyberFarmEvoRatingsPage />,
+      },
+      {
+        path: cyberFarmFabricPagePath,
+        component: <CyberFarmEvoFabricPage />,
       },
     ],
   },

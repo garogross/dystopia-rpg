@@ -148,6 +148,7 @@ export const getAdRewardSettings = createAsyncThunk<
     return resData;
   } catch (error: any) {
     console.error("error", error);
+
     return rejectWithValue(error);
   }
 });

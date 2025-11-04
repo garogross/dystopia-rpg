@@ -4,7 +4,6 @@ import {
   ProductionIcon,
   SupportChatIcon,
   TrainingIcon,
-  VideoGuidesIcon,
 } from "../../layout/icons/CyberFarmEvo/SupportMenuBar";
 import CyberFarmEvoMenuBar from "../CyberFarmEvoMenuBar/CyberFarmEvoMenuBar";
 import { useNavigate } from "react-router-dom";
@@ -14,14 +13,10 @@ import {
 } from "../../../router/constants";
 import { SUPPORT_CHAT_URL } from "../../../constants/common/supportChatUrl";
 import { useTelegram } from "../../../hooks/useTelegram";
+import { GUIDES_CHAT_URL } from "../../../constants/common/guidesChatUrl";
 
-const {
-  titleText,
-  productionText,
-  trainingText,
-  videoGuidesText,
-  askInChatText,
-} = TRANSLATIONS.cyberfarmEvo.supportMenuBar;
+const { titleText, productionText, trainingText, askInChatText } =
+  TRANSLATIONS.cyberfarmEvo.supportMenuBar;
 
 interface Props {
   show: boolean;
@@ -39,11 +34,29 @@ const CyberFarmEvoSupportMenuBar: React.FC<Props> = ({ show, onClose }) => {
       onClick: () =>
         navigate(`${cyberFarmEvoPagePath}/${cyberFarmProductionPagePath}`),
     },
-    { name: trainingText, icon: <TrainingIcon /> },
     {
-      name: videoGuidesText,
-      icon: <VideoGuidesIcon />,
+      name: trainingText,
+      icon: <TrainingIcon />,
+      onClick: () => {
+        try {
+          if (tg) {
+            tg.openTelegramLink(GUIDES_CHAT_URL);
+          } else {
+            window.open(GUIDES_CHAT_URL, "_blank", "noopener,noreferrer");
+          }
+        } catch (error) {
+          // Fallback to window.open in case tg.openTelegramLink fails
+          window.open(GUIDES_CHAT_URL, "_blank", "noopener,noreferrer");
+          // Optionally log the error (do not throw to React)
+          // console.error('Failed to open Telegram link:', error);
+        }
+      },
     },
+    // {
+    //   name: videoGuidesText,
+    //   icon: <VideoGuidesIcon />,
+
+    // },
     {
       name: askInChatText,
       icon: <SupportChatIcon />,

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
     "@telegram-apps/sdk": "^2.11.3",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.73",
@@ -14,6 +15,7 @@
   },
   "dependencies": {
     "@adsgram/react": "^1.0.2",
+    "@fingerprintjs/fingerprintjs": "^4.6.2",
     "@reduxjs/toolkit": "^2.2.5",
     "@types/telegram-web-app": "^7.10.1",
     "eruda": "^3.4.1",
@@ -33,8 +35,8 @@
     "uuid": "^11.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "craco start",
+    "build": "craco build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },

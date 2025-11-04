@@ -25,6 +25,7 @@ interface Props {
   show: boolean;
   onClose: () => void;
   items: MenuItem[];
+  headerBlock?: ReactNode;
 }
 
 const CyberFarmEvoMenuBar: React.FC<Props> = ({
@@ -32,6 +33,7 @@ const CyberFarmEvoMenuBar: React.FC<Props> = ({
   onClose,
   items,
   title,
+  headerBlock,
 }) => {
   const language = useAppSelector((state) => state.ui.language);
   return (
@@ -51,6 +53,7 @@ const CyberFarmEvoMenuBar: React.FC<Props> = ({
           </div>
           <div className={styles.cyberFarmEvoMenuBar__main}>
             <div className={styles.cyberFarmEvoMenuBar__mainInner}>
+              {headerBlock}
               {items.map((item, index) => (
                 <button
                   key={index}

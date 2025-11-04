@@ -5,28 +5,33 @@ export type FetchMethods = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export const baseUrl = process.env.REACT_APP_BACKEND_URL;
 
-export const authConfig = async (isFormData: boolean) => {
+export const authConfig = async (
+  isFormData: boolean,
+  headersArg?: HeadersInit
+) => {
   const token = await getLSItem(ELSProps.token);
 
-  const headers: HeadersInit = {};
+  // Use a Headers instance so we can safely call .set(...) regardless of the incoming HeadersInit shape
+  const headersInstance = new Headers(headersArg);
 
   if (token) {
-    headers.Authorization = `Bearer ${token}`;
+    headersInstance.set("Authorization", `Bearer ${token}`);
   }
   if (!isFormData) {
-    headers["Content-Type"] = "application/json";
+    headersInstance.set("Content-Type", "application/json");
   }
-  return { headers };
+  return { headers: headersInstance };
 };
 
 export const fetchRequest = async <Res, Body extends object = {}>(
   fetchUrl: string,
   method: FetchMethods = "GET",
   body: Body | null = null,
-  config?: RequestInit
+  config?: RequestInit,
+  headers?: HeadersInit
 ) => {
   const isFormData = body instanceof FormData;
-  config = config || (await authConfig(isFormData));
+  config = config || (await authConfig(isFormData, headers));
 
   const filteredBody: Partial<Body> = {};
 

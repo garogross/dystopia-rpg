@@ -227,7 +227,7 @@ const LoyalitySupportProject = () => {
           onLoadingUpdate={(loading) => setAdLoading(loading)}
           provider={EadProviders.Onclicka}
           ad_type={EAdActionTypes.Video}
-          index={1}
+          index={4}
         />
         <LoyalitySupportProjectManualAdTaskItem
           language={language}

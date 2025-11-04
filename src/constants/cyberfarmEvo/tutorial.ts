@@ -1,6 +1,6 @@
 import {
   cyberFarmEvoPagePath,
-  cyberFarmWarehousePagePath,
+  cyberFarmFarmsPagePath,
 } from "../../router/constants";
 import { TRANSLATIONS } from "../TRANSLATIONS";
 
@@ -10,8 +10,14 @@ export enum ECyberfarmEvoTutorialActions {
   showTasks = "showTasks",
 }
 
-const { welcomeText, farmText, warehouseText, tasksText, finishText } =
-  TRANSLATIONS.tutorialPopup.cyberFarmEvoSlides;
+const {
+  welcomeText,
+  farmText,
+  warehouseText,
+  tasksText,
+  finishText,
+  importantNoteText,
+} = TRANSLATIONS.tutorialPopup.cyberFarmEvoSlides;
 
 export const CYBERFARM_EVO_TUTORIAL_PROGRESS: {
   text?: {
@@ -21,6 +27,8 @@ export const CYBERFARM_EVO_TUTORIAL_PROGRESS: {
   page: string;
   action?: ECyberfarmEvoTutorialActions;
   required?: boolean;
+  isFinish?: boolean;
+  inPage?: string;
 }[] = [
   {
     text: welcomeText,
@@ -54,6 +62,12 @@ export const CYBERFARM_EVO_TUTORIAL_PROGRESS: {
   },
   {
     text: finishText,
-    page: cyberFarmWarehousePagePath,
+    page: cyberFarmEvoPagePath,
+    isFinish: true,
+  },
+  {
+    text: importantNoteText,
+    page: `${cyberFarmEvoPagePath}/${cyberFarmFarmsPagePath}`,
+    inPage: `${cyberFarmEvoPagePath}/${cyberFarmFarmsPagePath}`,
   },
 ];
