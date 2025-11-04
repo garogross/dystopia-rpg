@@ -1279,6 +1279,18 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Factory",
         [ELanguages.ru]: "Фабрика",
       },
+      powerPlantText: {
+        [ELanguages.en]: "Power Plant",
+        [ELanguages.ru]: "Электро станция",
+      },
+      recyclerText: {
+        [ELanguages.en]: "Recycler",
+        [ELanguages.ru]: "Утилизатор",
+      },
+      cityText: {
+        [ELanguages.en]: "City",
+        [ELanguages.ru]: "Город",
+      },
     },
     farms: {
       collectAllText: {

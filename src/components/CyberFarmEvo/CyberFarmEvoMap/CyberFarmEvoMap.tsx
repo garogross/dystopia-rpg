@@ -3,8 +3,6 @@ import ImageWebp from "../../layout/ImageWebp/ImageWebp";
 import {
   farmMapCityWareHouseImage,
   farmMapCityWareHouseWebpImage,
-  farmMapFabricBuildImage,
-  farmMapFabricBuildWebpImage,
   farmMapFarmBuildImage,
   farmMapFarmBuildWebpImage,
   farmMapTasksBuildImage,
