@@ -8,6 +8,10 @@ import { FarmSlotCostsType } from "../../types/FarmSlotCostsType";
 import { SocialShopType } from "../../types/SocialShopType";
 import { IMailMessage } from "../IMailMessage";
 import { FarmProductsSettingsType } from "../../types/FarmProductsSettingsType";
+import { WorkshopSlotCostsType } from "../../types/WorkshopSlotCostsType";
+import { IFarmSlot } from "../CyberFarm/IFarmSlot";
+import { IWorkshopSlot } from "../CyberFarm/IWorkshopSlot";
+import { GetStorageResponse } from "./CyberFarm/Resources";
 
 type ClaimDailyLogin = {
   next_reward: number;
@@ -41,7 +45,8 @@ export interface GetAccountDetailsResponse {
   };
   // cyberfarm
   ton_cyber_farm?: {
-    slots: Record<string, { type: EFarmSlotTypes }>;
+    slots: Record<string, IFarmSlot>;
+    workshop_slots: Record<string, IWorkshopSlot>;
     timers: {
       daily_login_claimed: {
         last_claim_ts: null | number;
@@ -54,7 +59,7 @@ export interface GetAccountDetailsResponse {
       };
     };
     ton_cyber_farm_tutorial_finished: boolean;
-    resources: Partial<Record<CyberFarmProductType, number>>;
+    resources: GetStorageResponse["resources"];
     ton: number;
     achievements: FarmAchievmentsType;
   };
@@ -78,8 +83,64 @@ export interface GetAccountDetailsResponse {
     ton_cyber_farm_products: FarmProductsSettingsType;
     ton_cyber_farm_slot_costs: {
       upgrade: {
-        [EFarmSlotTypes.FARM]: [150, 200, 250, 300];
-        [EFarmSlotTypes.FACTORY]: [150, 200, 250, 300];
+        [EFarmSlotTypes.FARM]: number[];
+        [EFarmSlotTypes.FACTORY]: number[];
+      };
+    };
+    ton_cyber_workshop_slot_costs: {
+      upgrade: {
+        workshop: number[];
+      };
+      workshop: WorkshopSlotCostsType;
+    };
+    ton_cyber_farm_modules: {
+      [EFarmSlotTypes.FARM]: {
+        speed: {
+          max_total: number;
+          per_level_increment: Record<2 | 3 | 4 | 5, number>;
+          time_reduction_per_module: number;
+        };
+        automation: {
+          max: number;
+          removal_locked_by_speed: boolean;
+          required_for_other_modules: boolean;
+        };
+        production: {
+          max_total: number;
+          per_level_increment: Record<2 | 3 | 4 | 5, number>;
+        };
+      };
+      [EFarmSlotTypes.FACTORY]: {
+        speed: {
+          max_total: number;
+          per_level_increment: Record<2 | 3 | 4 | 5, number>;
+          time_reduction_per_module: number;
+        };
+        automation: {
+          max: number;
+          removal_locked_by_speed: boolean;
+          required_for_other_modules: boolean;
+        };
+        production: {
+          max_total: number;
+          per_level_increment: Record<2 | 3 | 4 | 5, number>;
+        };
+      };
+      [EFarmSlotTypes.WORKSHOP]: {
+        speed: {
+          max_modules: number;
+          time_reduction_per_module: number;
+        };
+        automation: {
+          enabled: boolean;
+        };
+        production: {
+          max_modules: number;
+          batch_multiplier_per_module: number;
+        };
+        capacity_per_level: Record<2 | 3 | 4 | 5, number>;
+        level_time_reduction_per_level: number;
+        level_time_reduction_start_level: number;
       };
     };
     pools: {

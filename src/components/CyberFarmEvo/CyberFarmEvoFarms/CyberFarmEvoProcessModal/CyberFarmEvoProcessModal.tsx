@@ -23,11 +23,13 @@ import { ClaimAdRewardActionType } from "../../../../types/tasks/ClaimAdRewardAc
 import { useVideoAd } from "../../../../hooks/useVideoAd";
 import { EAdActionTypes } from "../../../../constants/EadActionTypes";
 import { EadProviders } from "../../../../constants/EadProviders";
+import { FabricFieldType } from "../../../../types/cyberfarm/FabricFieldType";
+import { EChipProducts } from "../../../../constants/cyberfarm/EChipProducts";
 
 interface Props {
   show: boolean;
   onClose: () => void;
-  item: IFarmField;
+  item: IFarmField | FabricFieldType;
 }
 const {
   titleText,
@@ -68,6 +70,9 @@ const CyberFarmEvoProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
   const gameAction: ClaimAdRewardActionType = !item.adProductionBonusReceived
     ? "farm_production_bonus"
     : "farm_boost_production";
+
+  const isWorkshop = !("factoryProduct" in item || "plant" in item);
+
   const {
     onShowAd,
     showTooltip: showAdTooltip,
@@ -87,7 +92,11 @@ const CyberFarmEvoProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
 
   const { show: showTooltip, openTooltip } = useTooltip();
 
-  const productKey = item.factoryProduct || item.plant;
+  const productKey = !isWorkshop
+    ? item.factoryProduct || item.plant
+    : "product" in item
+    ? item.product
+    : "";
   const { progressPercent: progress, remainingTimeInSecs } =
     useFarmFieldProgress(item.process, [show]);
   const [tooltipText, setTooltipText] = useState(speedUpCompleteText);
@@ -146,6 +155,25 @@ const CyberFarmEvoProcessModal: React.FC<Props> = ({ show, onClose, item }) => {
                 {productionText[language]} - {item.finalProduction || 0}
               </p>
             </div>
+            {"workshop_output" in item && item.workshop_output && (
+              <div className={styles.cyberFarmEvoProcessModal__infoCol}>
+                {Object.entries(item.workshop_output).map(([k, value]) => {
+                  const key = k as EChipProducts;
+                  const curProduct = products[key];
+                  return (
+                    <p className={styles.cyberFarmEvoProcessModal__text}>
+                      <ImageWebp
+                        srcSet={curProduct.srcSet}
+                        src={curProduct.src}
+                        alt={curProduct.name[language]}
+                        className={styles.cyberFarmEvoProcessModal__chipImage}
+                      />
+                      <span>{value || 0}</span>
+                    </p>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
         <div className={styles.cyberFarmEvoProcessModal__actions}>

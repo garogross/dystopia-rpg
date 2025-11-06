@@ -2,16 +2,22 @@ import { EFarmSlotTypes } from "../constants/cyberfarm/EFarmSlotTypes";
 import { products } from "../constants/cyberfarm/products";
 import { TRANSLATIONS } from "../constants/TRANSLATIONS";
 import { FarmSlotCostsType } from "../types/FarmSlotCostsType";
-import { getSlotCost } from "../utils/getSlotCost";
+import { getFabricSlotCostByRange } from "../utils/getFabricSlotCost";
+import { getFarmSlotCost } from "../utils/getFarmSlotCost";
 import { useAppSelector } from "./redux";
 
 const { notEnoughResourcesText: notEnoughText } = TRANSLATIONS.errors;
 const { orText } = TRANSLATIONS.common;
 
-export const useSlotCost = () => {
+export const useSlotCost = (workshop?: boolean) => {
   const language = useAppSelector((state) => state.ui.language);
   const slotCosts = useAppSelector((state) => state.cyberfarm.slots.slotCosts);
-  const slots = useAppSelector((state) => state.cyberfarm.slots.slots);
+  const workshopSlotCosts = useAppSelector(
+    (state) => state.cyberfarm.slots.workshopSlotCosts
+  );
+  const slots = useAppSelector(
+    (state) => state.cyberfarm.slots[workshop ? "workshopSlots" : "slots"]
+  );
   const cp = useAppSelector((state) => state.profile.stats.cp);
   const newSlotIndex = slots ? Object.keys(slots).length + 1 : 1;
   const resources = useAppSelector(
@@ -19,7 +25,9 @@ export const useSlotCost = () => {
   );
 
   const getSlotCostTexts = (type: EFarmSlotTypes, byCp?: boolean) => {
-    const newSlotCost = getSlotCost(type, slotCosts, newSlotIndex);
+    const newSlotCost = workshop
+      ? getFabricSlotCostByRange(workshopSlotCosts, newSlotIndex)
+      : getFarmSlotCost(type, slotCosts, newSlotIndex);
 
     let costTextInCp = "";
     let costTextInMetal = "";

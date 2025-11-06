@@ -37,3 +37,15 @@ export interface SpeedUpResponse {
   time_left_before: number;
   time_left_after: number;
 }
+
+export interface AddModuleToSlotResponse {
+  status: "ok";
+  slot_id: string;
+  slot_type: EFarmSlotTypes;
+  modules: {
+    production: 1;
+    speed: 0;
+    automation: false;
+  };
+  workshop_products: Partial<Record<CyberFarmProductType, number>>;
+}

@@ -26,6 +26,12 @@
   }
   &__text {
     @include setFont(11px, 400);
+    @include flexCol();
+    gap: 5px;
+  }
+
+  &__chipImage {
+    width: 30px;
   }
   &__progressBar {
     width: 100%;

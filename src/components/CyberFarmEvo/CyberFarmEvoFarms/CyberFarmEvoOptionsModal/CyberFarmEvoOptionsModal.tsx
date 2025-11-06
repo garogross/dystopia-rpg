@@ -27,6 +27,7 @@ import {
 import { ConfirmIcon } from "../../../layout/icons/Common";
 import MainBtn from "../../../layout/MainBtn/MainBtn";
 import { cpImage, cpImageWebp } from "../../../../assets/imageMaps";
+import { FarmProductsSettingsType } from "../../../../types/FarmProductsSettingsType";
 
 interface Props {
   show: boolean;
@@ -34,6 +35,7 @@ interface Props {
   type: EFarmSlotTypes;
   slotId: string;
   level?: number;
+  isWorkshop?: boolean;
 }
 
 const {
@@ -56,6 +58,7 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
   type,
   slotId,
   level,
+  isWorkshop,
 }) => {
   const dispatch = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
@@ -83,23 +86,33 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
   const curLevel = upgradeLevels?.[(level || "")?.toString()];
   const cp = useAppSelector((state) => state.profile.stats.cp);
 
-  const productType = type === EFarmSlotTypes.FACTORY ? "factory" : "plant";
+  const productType = isWorkshop
+    ? "modules"
+    : type === EFarmSlotTypes.FACTORY
+    ? "factory"
+    : "plant";
 
   const data = Object.entries(products).filter(
     ([_, product]) => product.type === productType
   );
+  if (isWorkshop) {
+    data.unshift(["chips", products.chips]);
+  }
 
   const [selectedResource, setSelectedResource] =
     useState<CyberFarmProductType | null>(data[0][0] as CyberFarmProductType);
   const displayingData =
-    type !== EFarmSlotTypes.FACTORY
+    type !== EFarmSlotTypes.FACTORY && !isWorkshop
       ? data.filter((item) => item[0] !== selectedResource)
       : data;
 
-  const curProduct = selectedResource ? products[selectedResource] : null;
+  const curProduct = selectedResource
+    ? data.find(([k]) => k === selectedResource)?.[1]
+    : null;
   const totalPricyByCp =
     selectedResource && resourceDeficit
-      ? resourceDeficit[type]?.[selectedResource]?.total_price || 0
+      ? resourceDeficit[type]?.[selectedResource as CyberFarmProductType]
+          ?.total_price || 0
       : 0;
 
   const curEstimate =
@@ -108,7 +121,7 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
       : null;
   const curProductSettings =
     selectedResource && productsSettings
-      ? productsSettings[selectedResource]
+      ? productsSettings[selectedResource]?.production?.[type]?.requirements
       : null;
 
   const fetchProductInfo = async () => {
@@ -144,7 +157,8 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
         await dispatch(
           buyResourceDeflict({
             product: selectedResource,
-            slot_type: type,
+            slot_type:
+              selectedResource === "chips" ? EFarmSlotTypes.WORKSHOP : type,
           })
         ).unwrap();
       }
@@ -174,19 +188,19 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
     }
   };
 
-  const inputResources = curProductSettings?.production?.[type]?.requirements
-    ? Object.entries(curProductSettings.production[type].requirements).map(
-        ([k, value]) => {
-          const key = k as CyberFarmProductType;
-          return {
-            key,
-            name: products[key].name[language],
-            required: value,
-            available: resources[key],
-            isInsufficient: resources[key] < value,
-          };
-        }
-      )
+  const inputResources = curProductSettings
+    ? Object.entries(curProductSettings).map(([k, value]) => {
+        const key =
+          k as keyof FarmProductsSettingsType["chips_rework"]["production"]["workshop"]["requirements"];
+
+        return {
+          key,
+          name: products[key]?.name[language],
+          required: value,
+          available: resources[key],
+          isInsufficient: resources[key] < value,
+        };
+      })
     : [];
 
   const isUnavailableForProduce = inputResources.some(
@@ -250,7 +264,7 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
           ))}
         </div>
         <TransitionProvider
-          inProp={!!(selectedResource && curEstimate)}
+          inProp={!!(selectedResource && (isWorkshop || curEstimate))}
           style={TransitionStyleTypes.height}
           height={650}
           className={styles.cyberFarmEvoOptionsModal__info}
@@ -271,12 +285,14 @@ const CyberFarmEvoOptionsModal: React.FC<Props> = ({
           <div className={styles.cyberFarmEvoOptionsModal__titleBlock}>
             <div className={styles.cyberFarmEvoOptionsModal__titleLine} />
 
-            <span className={styles.cyberFarmEvoOptionsModal__infoText}>
-              {productionText[language]}{" "}
-              {curEstimate
-                ? curEstimate[type]?.final_production + (curLevel?.bonus || 0)
-                : 0}
-            </span>
+            {!isWorkshop && type !== "workshop" && (
+              <span className={styles.cyberFarmEvoOptionsModal__infoText}>
+                {productionText[language]}{" "}
+                {curEstimate
+                  ? curEstimate[type]?.final_production + (curLevel?.bonus || 0)
+                  : 0}
+              </span>
+            )}
             <div className={styles.cyberFarmEvoOptionsModal__titleLine} />
           </div>
           <div className={styles.cyberFarmEvoOptionsModal__titleBlock}>

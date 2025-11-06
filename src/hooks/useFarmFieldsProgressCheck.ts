@@ -1,8 +1,10 @@
-import { IFarmField } from "../models/CyberFarm/IFarmField";
+import { InitialFieldType } from "../components/CyberFarmEvo/CyberFarmEvoFieldsWrapper/CyberFarmEvoFieldsWrapper";
 import { getFarmFieldProgress } from "../utils/getFarmFieldProgress";
 import { useFreshDateStateUpdate } from "./useFreshDateStateUpdate";
 
-export const useFarmFieldsProgressCheck = (filteredFields: IFarmField[]) => {
+export const useFarmFieldsProgressCheck = (
+  filteredFields: InitialFieldType[]
+) => {
   const hasInProgressItem = filteredFields.some(
     (item) =>
       item.process &&

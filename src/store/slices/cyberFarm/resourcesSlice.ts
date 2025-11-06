@@ -9,7 +9,7 @@ import {
   GetProductPricesResponse,
   GetProductionEstimateResponse,
 } from "../../../models/api/CyberFarm/Resources";
-import { buySlot, harvest, produceSlot } from "./slotsSlice";
+import { addModuleToSlot, buySlot, harvest, produceSlot } from "./slotsSlice";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
 import { FarmProductionEstimateType } from "../../../types/FarmProductionEstimateType";
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
@@ -190,13 +190,21 @@ export const resourcesSlice = createSlice({
       };
     });
     builder.addCase(getStorage.fulfilled, (state, { payload }) => {
-      state.resources = { ...state.resources, ...payload.resources };
+      const { workshop_products, ...resources } = payload.resources;
+      state.resources = {
+        ...state.resources,
+        ...resources,
+        ...workshop_products,
+      };
     });
     builder.addCase(getProductPrices.fulfilled, (state, { payload }) => {
       state.productPrices = payload.prices;
     });
     builder.addCase(getResourcesDeflict.fulfilled, (state, { payload }) => {
-      state.resourceDeficit = payload.resource_deficit;
+      state.resourceDeficit = {
+        ...state.resourceDeficit,
+        ...payload.resource_deficit,
+      };
     });
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
       if (payload.cost && "cash_point" in payload.cost) {
@@ -268,6 +276,12 @@ export const resourcesSlice = createSlice({
           ...payload.collect_info.collected_by_product,
         };
       }
+    });
+    builder.addCase(addModuleToSlot.fulfilled, (state, { payload }) => {
+      state.resources = {
+        ...state.resources,
+        ...payload.workshop_products,
+      };
     });
   },
 });

@@ -24,8 +24,9 @@ import CyberFarmProcessModal from "../CyberFarmProcessModal/CyberFarmProcessModa
 import CyberFarmOptionsModal from "../CyberFarmOptionsModal/CyberFarmOptionsModal";
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import CyberFarmWrapperWithListItemProgress from "./CyberFarmWrapperWithListItemProgress/CyberFarmWrapperWithListItemProgress";
+import { FabricFieldType } from "../../../types/cyberfarm/FabricFieldType";
 
-interface Props<T extends IFarmField | IWarehouseProduct> {
+interface Props<T extends IFarmField | FabricFieldType | IWarehouseProduct> {
   title: string;
   emptyText: string;
   data: T[];

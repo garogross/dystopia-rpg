@@ -54,6 +54,7 @@ const CyberFarmEvoFarms = () => {
       [EFarmSlotTypes.FIELDS]: 2,
       [EFarmSlotTypes.FARM]: 1,
       [EFarmSlotTypes.FACTORY]: 0,
+      [EFarmSlotTypes.WORKSHOP]: -1, // added to avoid type error
     };
 
     if (order[a.type] !== order[b.type]) {
@@ -90,7 +91,7 @@ const CyberFarmEvoFarms = () => {
 
   useFarmFieldsProgressCheck(slotFields);
 
-  const modifyInitialFields = (initialFields: IFarmField[][]) => {
+  const addBlockedFields = (initialFields: IFarmField[][]) => {
     const lastFieldsColIndex = initialFields.findLastIndex((col) =>
       col.find((item) => !item.disabled)
     );
@@ -182,7 +183,7 @@ const CyberFarmEvoFarms = () => {
         onClickField={onClickSlot}
         gameAction={"farm_collect_ready"}
         initialFieldData={{ type: EFarmSlotTypes.FIELDS }}
-        modifyInitialFields={modifyInitialFields}
+        modifyInitialFields={addBlockedFields}
       />
       {buyingSlotId && (
         <CyberFarmFieldsBuyModal
@@ -243,6 +244,7 @@ const CyberFarmEvoFarms = () => {
           type={upgradingSlot.type}
           slotId={upgradingSlotId}
           level={upgradingSlot.level}
+          modules={upgradingSlot.modules}
           evoMode
         />
       )}

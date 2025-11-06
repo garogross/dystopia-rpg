@@ -16,4 +16,19 @@ export type FarmProductsSettingsType = {
     };
     base_production: number;
   };
+} & {
+  chips_rework: {
+    production: {
+      workshop: {
+        requirements: Record<CyberFarmProductType, number>;
+        base_production: number;
+        production_time_hours: number;
+        output_random_distribution: {
+          chip_1: number;
+          chip_2: number;
+          chip_3: number;
+        };
+      };
+    };
+  };
 };

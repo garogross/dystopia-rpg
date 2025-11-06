@@ -51,11 +51,26 @@ import {
   plasmaMushroomEvoWebpImage,
   algaeEvoImage,
   algaeEvoWebpImage,
+  moduleAccelerationImage,
+  moduleAutonomyImage,
+  moduleProductionImage,
+  moduleProductionImageWebp,
+  moduleAutonomyImageWebp,
+  chip1Image,
+  chip1ImageWebp,
+  chip2Image,
+  chip2ImageWebp,
+  chip3Image,
+  chip3ImageWebp,
+  randomChipImage,
+  randomChipImageWebp,
 } from "../../assets/imageMaps";
 import { EPlants } from "./EPlants";
 import { TRANSLATIONS } from "../TRANSLATIONS";
 import { EFactoryProducts } from "./EFactoryProducts";
 import { TranslationItemType } from "../../types/TranslationItemType";
+import { EModuleProducts } from "./EModuleProducts";
+import { EChipProducts } from "./EChipProducts";
 
 const {
   metal,
@@ -84,10 +99,25 @@ const {
   bioBacteriaTwisted,
   algaeTwisted,
   modifiedInsectsTwisted,
+  productionModule,
+  accelerationModule,
+  autonomyModule,
+  chip1,
+  chip1Twisted,
+  chip2,
+  chip2Twisted,
+  chip3,
+  chip3Twisted,
+  chipText,
 } = TRANSLATIONS.cyberFarm.products;
 
 export const products: {
-  [key in EFactoryProducts | EPlants]: {
+  [key in
+    | EFactoryProducts
+    | EPlants
+    | EModuleProducts
+    | EChipProducts
+    | "chips"]: {
     src: string;
     srcSet: string;
     evo: {
@@ -96,7 +126,7 @@ export const products: {
     };
     name: TranslationItemType;
     twistedName: TranslationItemType;
-    type: "factory" | "plant";
+    type: "factory" | "plant" | "chips" | "modules";
     forSale?: boolean;
   };
 } = {
@@ -246,5 +276,83 @@ export const products: {
     name: modifiedInsects,
     twistedName: modifiedInsectsTwisted,
     type: "plant",
+  },
+  [EModuleProducts.Production]: {
+    src: moduleProductionImage,
+    srcSet: moduleProductionImageWebp,
+    evo: {
+      src: moduleProductionImage,
+      srcSet: moduleProductionImageWebp,
+    },
+    name: productionModule,
+    twistedName: productionModule,
+    type: "modules",
+  },
+  [EModuleProducts.Autonomy]: {
+    src: moduleAutonomyImage,
+    srcSet: moduleAutonomyImageWebp,
+    evo: {
+      src: moduleAutonomyImage,
+      srcSet: moduleAutonomyImageWebp,
+    },
+    name: autonomyModule,
+    twistedName: autonomyModule,
+    type: "modules",
+  },
+  [EModuleProducts.Acceleration]: {
+    src: moduleAccelerationImage,
+    srcSet: moduleAccelerationImage,
+    evo: {
+      src: moduleAccelerationImage,
+      srcSet: moduleAccelerationImage,
+    },
+    name: accelerationModule,
+    twistedName: accelerationModule,
+    type: "modules",
+  },
+
+  [EChipProducts.Chip1]: {
+    src: chip1Image,
+    srcSet: chip1ImageWebp,
+    evo: {
+      src: chip1Image,
+      srcSet: chip1ImageWebp,
+    },
+    name: chip1,
+    twistedName: chip1Twisted,
+    type: "chips",
+  },
+  [EChipProducts.Chip2]: {
+    src: chip2Image,
+    srcSet: chip2ImageWebp,
+    evo: {
+      src: chip2Image,
+      srcSet: chip2ImageWebp,
+    },
+    name: chip2,
+    twistedName: chip2Twisted,
+    type: "chips",
+  },
+  [EChipProducts.Chip3]: {
+    src: chip3Image,
+    srcSet: chip3ImageWebp,
+    evo: {
+      src: chip3Image,
+      srcSet: chip3ImageWebp,
+    },
+    name: chip3,
+    twistedName: chip3Twisted,
+    type: "chips",
+  },
+  chips: {
+    src: randomChipImage,
+    srcSet: randomChipImageWebp,
+    evo: {
+      src: randomChipImage,
+      srcSet: randomChipImageWebp,
+    },
+    name: chipText,
+    twistedName: chipText,
+    type: "chips",
   },
 };

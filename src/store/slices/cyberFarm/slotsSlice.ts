@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { EFarmSlotTypes } from "../../../constants/cyberfarm/EFarmSlotTypes";
 import {
+  AddModuleToSlotResponse,
   BuySlotResponse,
   HarvestResponse,
   ProduceSlotResponse,
@@ -10,42 +11,105 @@ import { fetchRequest } from "../../tools/fetchTools";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import { IFarmSlot } from "../../../models/CyberFarm/IFarmSlot";
 import { FarmSlotCostsType } from "../../../types/FarmSlotCostsType";
-import { getSlotCost } from "../../../utils/getSlotCost";
+import { getFarmSlotCost } from "../../../utils/getFarmSlotCost";
 import { claimAdReward } from "../tasksSlice";
 import { getProductionEstimate } from "./resourcesSlice";
 import { FarmSlotsUpgradeLevelType } from "../../../types/FarmSlotsUpgradeLevelType";
+import { WorkshopSlotCostsType } from "../../../types/WorkshopSlotCostsType";
+import { IWorkshopSlot } from "../../../models/CyberFarm/IWorkshopSlot";
+import { EModuleProducts } from "../../../constants/cyberfarm/EModuleProducts";
+import { EFarmSlotModules } from "../../../constants/cyberfarm/EFarmSlotModules";
 
 export interface SlotsState {
   slots: Record<string, IFarmSlot> | null;
+  workshopSlots: Record<string, IWorkshopSlot> | null;
   slotCosts: FarmSlotCostsType | null;
+  workshopSlotCosts: WorkshopSlotCostsType | null;
   upgradeLevels: FarmSlotsUpgradeLevelType | null;
+  moduleLimits: Record<EModuleProducts, Record<EFarmSlotTypes, number>>;
 }
 
 const initialState: SlotsState = {
   slots: null,
+  workshopSlots: null,
   slotCosts: null,
+  workshopSlotCosts: null,
   upgradeLevels: null,
+  moduleLimits: {
+    [EModuleProducts.Production]: {
+      [EFarmSlotTypes.FACTORY]: 0,
+      [EFarmSlotTypes.FARM]: 0,
+      [EFarmSlotTypes.FIELDS]: 0,
+      [EFarmSlotTypes.WORKSHOP]: 0,
+    },
+    [EModuleProducts.Autonomy]: {
+      // this is static
+      [EFarmSlotTypes.FACTORY]: 1,
+      [EFarmSlotTypes.FARM]: 1,
+      [EFarmSlotTypes.FIELDS]: 1,
+      [EFarmSlotTypes.WORKSHOP]: 1,
+    },
+    [EModuleProducts.Acceleration]: {
+      [EFarmSlotTypes.FACTORY]: 0,
+      [EFarmSlotTypes.FARM]: 0,
+      [EFarmSlotTypes.FIELDS]: 0,
+      [EFarmSlotTypes.WORKSHOP]: 0,
+    },
+  },
 };
 
 const buySlotUrl = "/ton_cyber_farm/buy_slot/";
 export const buySlot = createAsyncThunk<
-  BuySlotResponse & { cost: ReturnType<typeof getSlotCost> },
+  BuySlotResponse & { cost: ReturnType<typeof getFarmSlotCost> },
   {
     id: string;
     type: EFarmSlotTypes;
     byCp?: boolean;
     isUpgrade?: boolean;
-    cost?: ReturnType<typeof getSlotCost>;
+    cost?: ReturnType<typeof getFarmSlotCost>;
   }
 >("slots/buySlot", async (payload, { rejectWithValue }) => {
   try {
+    let action: EFarmSlotTypes | "upgrade" | "destroy" = payload.type;
+    if (payload.isUpgrade) action = "upgrade";
     const resData = await fetchRequest<BuySlotResponse>(buySlotUrl, "POST", {
       slot_id: payload.id,
-      action: payload.isUpgrade ? "upgrade" : payload.type,
+      action: action,
       payment_method: payload.byCp ? "cash_point" : "metal",
     });
 
     return { ...resData, cost: payload.cost };
+  } catch (error: any) {
+    console.error("error", error);
+    return rejectWithValue(error);
+  }
+});
+
+const addModuleToSlotUrl = "/ton_cyber_farm/modules/";
+export const addModuleToSlot = createAsyncThunk<
+  AddModuleToSlotResponse,
+  {
+    slot_id: string;
+    slot_type: EFarmSlotTypes;
+    module_type: EFarmSlotModules;
+    action: "install" | "remove";
+    amount?: number;
+  }
+>("slots/addModuleToSlot", async (payload, { rejectWithValue }) => {
+  try {
+    const resData = await fetchRequest<AddModuleToSlotResponse>(
+      addModuleToSlotUrl,
+      "POST",
+      {
+        slot_id: payload.slot_id,
+        slot_type: payload.slot_type,
+        module_type: payload.module_type,
+        action: payload.action,
+        amount: payload.amount,
+      }
+    );
+
+    return resData;
   } catch (error: any) {
     console.error("error", error);
     return rejectWithValue(error);
@@ -119,30 +183,60 @@ export const slotsSlice = createSlice({
     getCyberFarmSlots: (state, action) => {
       state.slots = action.payload.slots;
       state.slotCosts = action.payload.slotCosts;
+      state.workshopSlots = action.payload.workshopSlots;
+      state.workshopSlotCosts = action.payload.workshopSlotCosts;
+      state.moduleLimits = {
+        ...state.moduleLimits,
+        ...action.payload.moduleLimits,
+      };
     },
   },
   extraReducers: (builder) => {
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
-      state.slots = {
-        ...state.slots,
-        [payload.slot_id]: {
-          type: payload.type,
-          updated_at: Date.now(),
-          level: payload.level || 1,
-        },
-      };
+      if (payload.type === EFarmSlotTypes.WORKSHOP) {
+        state.workshopSlots = {
+          ...state.workshopSlots,
+          [payload.slot_id]: {
+            type: payload.type,
+            updated_at: Date.now(),
+            level: payload.level || 1,
+          },
+        };
+      } else {
+        state.slots = {
+          ...state.slots,
+          [payload.slot_id]: {
+            type: payload.type,
+            updated_at: Date.now(),
+            level: payload.level || 1,
+          },
+        };
+      }
     });
     builder.addCase(produceSlot.fulfilled, (state, { payload }) => {
-      state.slots = {
-        ...state.slots,
-        [payload.slot_id]: {
-          ...(state.slots || {})[payload.slot_id],
-          product: payload.product,
-          start_time: payload.start_time,
-          finish_time: payload.finish_time,
-          final_production: payload.final_production,
-        },
-      };
+      if (payload.product === "chips") {
+        state.workshopSlots = {
+          ...state.workshopSlots,
+          [payload.slot_id]: {
+            ...(state.workshopSlots || {})[payload.slot_id],
+            product: payload.product,
+            start_time: payload.start_time,
+            finish_time: payload.finish_time,
+            final_production: payload.final_production,
+          },
+        };
+      } else {
+        state.slots = {
+          ...state.slots,
+          [payload.slot_id]: {
+            ...(state.slots || {})[payload.slot_id],
+            product: payload.product,
+            start_time: payload.start_time,
+            finish_time: payload.finish_time,
+            final_production: payload.final_production,
+          },
+        };
+      }
     });
     builder.addCase(harvest.fulfilled, (state, { payload }) => {
       if (state.slots) {
@@ -190,9 +284,50 @@ export const slotsSlice = createSlice({
             },
             {} as Record<string, IFarmSlot>
           );
+          const updatedWorkshopSots =
+            payload.collect_info.collected_slots.reduce((acc, cur) => {
+              if (state.workshopSlots && state.workshopSlots[cur]) {
+                acc[cur] = {
+                  ...state.workshopSlots[cur],
+                  product: undefined,
+                  start_time: undefined,
+                  finish_time: undefined,
+                  ad_production_bonus_received: false,
+                };
+              }
+              return acc;
+            }, {} as Record<string, IWorkshopSlot>);
 
           state.slots = { ...state.slots, ...updatedSots };
+          state.workshopSlots = {
+            ...state.workshopSlots,
+            ...updatedWorkshopSots,
+          };
         }
+      }
+    });
+    builder.addCase(addModuleToSlot.fulfilled, (state, { payload }) => {
+      if (payload.slot_type === EFarmSlotTypes.WORKSHOP) {
+        const updatedSlot = state.workshopSlots?.[payload.slot_id];
+        if (updatedSlot)
+          state.workshopSlots = {
+            ...state.workshopSlots,
+            [payload.slot_id]: {
+              ...updatedSlot,
+              modules: payload.modules,
+            },
+          };
+      }
+      {
+        const updatedSlot = state.slots?.[payload.slot_id];
+        if (updatedSlot)
+          state.slots = {
+            ...state.slots,
+            [payload.slot_id]: {
+              ...updatedSlot,
+              modules: payload.modules,
+            },
+          };
       }
     });
     builder.addCase(getProductionEstimate.fulfilled, (state, { payload }) => {

@@ -1,22 +1,12 @@
+import { InitialFieldType } from "../../components/CyberFarmEvo/CyberFarmEvoFieldsWrapper/CyberFarmEvoFieldsWrapper";
 import { EFactoryProducts } from "../../constants/cyberfarm/EFactoryProducts";
 import { EFarmSlotTypes } from "../../constants/cyberfarm/EFarmSlotTypes";
 import { EPlants } from "../../constants/cyberfarm/EPlants";
 
-export interface IFarmField {
-  id: string;
+export interface IFarmField extends InitialFieldType {
   type: EFarmSlotTypes;
-  blocked?: boolean;
   plant?: EPlants;
   factoryProduct?: EFactoryProducts;
-  process?: {
-    startDate: number;
-    endDate: number;
-  };
+
   idArg?: string;
-  adProductionBonusReceived?: boolean;
-  finalProduction?: number;
-  level?: number;
-  disabled?: boolean; // for evo mode
-  isEmpty?: boolean;
-  curImage?: { src: string; srcSet: string };
 }

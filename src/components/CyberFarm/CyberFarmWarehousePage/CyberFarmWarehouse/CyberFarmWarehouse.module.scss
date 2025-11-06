@@ -14,4 +14,8 @@
     flex-direction: column;
     overflow: auto;
   }
+  &__subtitle {
+    @include setFont(14px, 400);
+    text-align: center;
+  }
 }

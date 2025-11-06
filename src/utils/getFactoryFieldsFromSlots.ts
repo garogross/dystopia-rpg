@@ -1,23 +1,14 @@
-import { EFactoryProducts } from "../constants/cyberfarm/EFactoryProducts";
-import { EFarmSlotTypes } from "../constants/cyberfarm/EFarmSlotTypes";
-import { EPlants } from "../constants/cyberfarm/EPlants";
-import { IFarmField } from "../models/CyberFarm/IFarmField";
 import { SlotsState } from "../store/slices/cyberFarm/slotsSlice";
+import { FabricFieldType } from "../types/cyberfarm/FabricFieldType";
 
-export const getFarmFieldsFromSlots = (slots: SlotsState["slots"]) => {
-  const fields: IFarmField[] = slots
+export const getFactoryFieldsFromSlots = (
+  slots: SlotsState["workshopSlots"]
+) => {
+  const fields: FabricFieldType[] = slots
     ? Object.entries(slots)
         .map(([key, slot]) => ({
           id: key,
           type: slot.type,
-          plant:
-            slot.type === EFarmSlotTypes.FACTORY
-              ? undefined
-              : (slot.product as EPlants),
-          factoryProduct:
-            slot.type !== EFarmSlotTypes.FACTORY
-              ? undefined
-              : (slot.product as EFactoryProducts),
           process:
             slot.start_time && slot.finish_time
               ? {
@@ -29,7 +20,9 @@ export const getFarmFieldsFromSlots = (slots: SlotsState["slots"]) => {
           adProductionBonusReceived: !!slot.ad_production_bonus_received,
           finalProduction: slot.final_production,
           level: slot.level,
+          product: slot.product,
           modules: slot.modules,
+          workshop_output: slot.workshop_output,
         }))
         .sort((a, b) => a.updated_at - b.updated_at)
     : [];

@@ -1,5 +1,6 @@
 export enum EFarmSlotTypes {
-FIELDS = "fields",
-FARM = "farm",
-FACTORY = "factory",
+  FIELDS = "fields",
+  FARM = "farm",
+  FACTORY = "factory",
+  WORKSHOP = "workshop",
 }

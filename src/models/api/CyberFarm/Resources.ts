@@ -1,3 +1,4 @@
+import { EChipProducts } from "../../../constants/cyberfarm/EChipProducts";
 import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 import { FarmProductionEstimateType } from "../../../types/FarmProductionEstimateType";
 import { FarmResourceDeficitType } from "../../../types/FarmResourceDeficitType";
@@ -27,6 +28,10 @@ export interface BuyResourceDeflictResponse {
 export interface GetStorageResponse {
   resources: {
     [key in CyberFarmProductType]?: number;
+  } & {
+    workshop_products?: {
+      [key in EChipProducts]: number;
+    };
   };
 
   estimated_cost: {
@@ -55,7 +60,7 @@ export interface GetProductPricesResponse {
 export interface GetProductionEstimateResponse {
   status: string;
   final_production_per_upgrade_level: {
-    [key in CyberFarmProductType]: FarmSlotsUpgradeLevelType;
+    [key in CyberFarmProductType | "chips_rework"]: FarmSlotsUpgradeLevelType;
   };
   production_estimate: FarmProductionEstimateType;
 }

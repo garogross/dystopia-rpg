@@ -713,7 +713,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Warehouse is empty",
         [ELanguages.ru]: "Склад пуст",
       },
-
+      workshopText: {
+        [ELanguages.en]: "Workshop",
+        [ELanguages.ru]: "Фабрика",
+      },
       productInfo: {
         youHaveText: {
           [ELanguages.en]: "You have:",
@@ -881,6 +884,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Factory",
         [ELanguages.ru]: "Фабрика",
       },
+      workshopText: {
+        [ELanguages.en]: "Workshop",
+        [ELanguages.ru]: "Фабрика",
+      },
       levelText: {
         [ELanguages.en]: "Level",
         [ELanguages.ru]: "Уровень",
@@ -890,6 +897,26 @@ export const TRANSLATIONS = {
       titleText: {
         [ELanguages.en]: "Current building level",
         [ELanguages.ru]: "Текущий уровень постройки",
+      },
+      modulesText: {
+        [ELanguages.en]: "Modules",
+        [ELanguages.ru]: "Модули",
+      },
+      installModuleText: {
+        [ELanguages.en]: "Do you want to install",
+        [ELanguages.ru]: "Вы хотите установить",
+      },
+      forIncreaseSpeedText: {
+        [ELanguages.en]: "to increase production speed",
+        [ELanguages.ru]: "на увеличение скорости производства",
+      },
+      forAutomationActivationText: {
+        [ELanguages.en]: "to activate automation",
+        [ELanguages.ru]: "на активации автоматизация",
+      },
+      forIncreaseProductionText: {
+        [ELanguages.en]: "to increase production",
+        [ELanguages.ru]: "на увелечение производства",
       },
       levelText: {
         [ELanguages.en]: "Level",
@@ -928,6 +955,10 @@ export const TRANSLATIONS = {
         [ELanguages.en]: "Factory",
         [ELanguages.ru]: "Завод",
       },
+      fabricText: {
+        [ELanguages.en]: "Workshop",
+        [ELanguages.ru]: "Фабрика",
+      },
       successText: {
         [ELanguages.en]: "Building upgraded Successfully",
         [ELanguages.ru]: "Постройка успешно улучшена!",
@@ -935,6 +966,26 @@ export const TRANSLATIONS = {
       notEnoughCPText: {
         [ELanguages.en]: "You don't have enough CP",
         [ELanguages.ru]: "У вас недостаточно CP",
+      },
+      automizationNeededText: {
+        [ELanguages.en]: "You need to install automization module",
+        [ELanguages.ru]: "Необходимо установить модуль автоматизации",
+      },
+      workshopSlotModuleCapacityExceededText: {
+        [ELanguages.en]: "Workshop slot module capacity exceeded",
+        [ELanguages.ru]: "Превышена емкость слота цеха по модулям",
+      },
+      notEnoughModulesText: {
+        [ELanguages.en]: "Not enough modules in storage",
+        [ELanguages.ru]: "Недостаточно модулей на складе",
+      },
+      confirmButtonText: {
+        [ELanguages.en]: "Confirm",
+        [ELanguages.ru]: "Потвердить",
+      },
+      cancelButtonText: {
+        [ELanguages.en]: "Cancel",
+        [ELanguages.ru]: "Отмена",
       },
     },
     products: {
@@ -1041,6 +1092,46 @@ export const TRANSLATIONS = {
       modifiedInsectsTwisted: {
         [ELanguages.en]: "Modified Insects",
         [ELanguages.ru]: "ГМ насекомых",
+      },
+      productionModule: {
+        [ELanguages.en]: "Production Module",
+        [ELanguages.ru]: "Модуль продукции",
+      },
+      accelerationModule: {
+        [ELanguages.en]: "Acceleration Module",
+        [ELanguages.ru]: "Модуль ускорения",
+      },
+      autonomyModule: {
+        [ELanguages.en]: "Autonomy Module",
+        [ELanguages.ru]: "Модуль автономии",
+      },
+      chip1: {
+        [ELanguages.en]: "Chip 1",
+        [ELanguages.ru]: "Чип 1",
+      },
+      chip1Twisted: {
+        [ELanguages.en]: "Chip 1",
+        [ELanguages.ru]: "чипа 1",
+      },
+      chip2: {
+        [ELanguages.en]: "Chip 2",
+        [ELanguages.ru]: "Чип 2",
+      },
+      chip2Twisted: {
+        [ELanguages.en]: "Chip 2",
+        [ELanguages.ru]: "чипа 2",
+      },
+      chip3: {
+        [ELanguages.en]: "Chip 3",
+        [ELanguages.ru]: "Чип 3",
+      },
+      chip3Twisted: {
+        [ELanguages.en]: "Chip 3",
+        [ELanguages.ru]: "чипа 3",
+      },
+      chipText: {
+        [ELanguages.en]: "Chip",
+        [ELanguages.ru]: "Чип",
       },
     },
     achievments: {
@@ -1276,7 +1367,7 @@ export const TRANSLATIONS = {
         [ELanguages.ru]: "Ферма",
       },
       fabricText: {
-        [ELanguages.en]: "Factory",
+        [ELanguages.en]: "Workshop",
         [ELanguages.ru]: "Фабрика",
       },
       powerPlantText: {

@@ -5,6 +5,10 @@ import cyberFarmFactoryImage from "../images/CyberFarm/common/factory.png";
 import cyberFarmFactoryImageWebp from "../images/CyberFarm/common/factory.webp";
 import cyberFarmFarmImage from "../images/CyberFarm/common/farm.png";
 import cyberFarmFarmImageWebp from "../images/CyberFarm/common/farm.webp";
+import randomChipImage from "../images/CyberFarm/common/randomChip.png";
+import randomChipImageWebp from "../images/CyberFarm/common/randomChip.webp";
+import addModuleImage from "../images/CyberFarm/common/addModule.png";
+import addModuleImageWebp from "../images/CyberFarm/common/addModule.webp";
 
 // plants
 
@@ -63,6 +67,22 @@ import plasmaImage from "../images/CyberFarm/products/factoryProducts/plasma.png
 import plasmaImageWebp from "../images/CyberFarm/products/factoryProducts/plasma.webp";
 import repairKitImage from "../images/CyberFarm/products/factoryProducts/repairKit.png";
 import repairKitImageWebp from "../images/CyberFarm/products/factoryProducts/repairKit.webp";
+
+import moduleAccelerationImage from "../images/CyberFarm/products/modules/moduleAcceleration.png";
+import moduleAccelerationImageWebp from "../images/CyberFarm/products/modules/moduleAcceleration.webp";
+import moduleAutonomyImage from "../images/CyberFarm/products/modules/moduleAutonomy.png";
+import moduleAutonomyImageWebp from "../images/CyberFarm/products/modules/moduleAutonomy.webp";
+import moduleProductionImage from "../images/CyberFarm/products/modules/moduleProduction.png";
+import moduleProductionImageWebp from "../images/CyberFarm/products/modules/moduleProduction.webp";
+
+// chips
+
+import chip1Image from "../images/CyberFarm/products/chips/chip1.png";
+import chip1ImageWebp from "../images/CyberFarm/products/chips/chip1.webp";
+import chip2Image from "../images/CyberFarm/products/chips/chip2.png";
+import chip2ImageWebp from "../images/CyberFarm/products/chips/chip2.webp";
+import chip3Image from "../images/CyberFarm/products/chips/chip3.png";
+import chip3ImageWebp from "../images/CyberFarm/products/chips/chip3.webp";
 
 // CyberFarmBonuses
 import cyberFarmBonusCpImage from "../images/CyberFarm/CyberFarmBonuses/cyberFarmBonusCp.png";
@@ -123,4 +143,20 @@ export {
   insectsInFarmImageWebp,
   insectsOnFieldImage,
   insectsOnFieldImageWebp,
+  moduleAccelerationImage,
+  moduleAccelerationImageWebp,
+  moduleAutonomyImage,
+  moduleAutonomyImageWebp,
+  moduleProductionImage,
+  moduleProductionImageWebp,
+  chip1Image,
+  chip1ImageWebp,
+  chip2Image,
+  chip2ImageWebp,
+  chip3Image,
+  chip3ImageWebp,
+  randomChipImage,
+  randomChipImageWebp,
+  addModuleImage,
+  addModuleImageWebp,
 };

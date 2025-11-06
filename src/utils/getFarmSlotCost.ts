@@ -1,7 +1,7 @@
 import { EFarmSlotTypes } from "../constants/cyberfarm/EFarmSlotTypes";
 import { FarmSlotCostsType } from "../types/FarmSlotCostsType";
 
-export const getSlotCost = (
+export const getFarmSlotCost = (
   type: EFarmSlotTypes,
   slotCosts: FarmSlotCostsType | null,
   newSlotIndex: number

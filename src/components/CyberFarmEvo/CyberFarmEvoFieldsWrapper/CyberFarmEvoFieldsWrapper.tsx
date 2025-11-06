@@ -20,20 +20,24 @@ import LoadingOverlay from "../../layout/LoadingOverlay/LoadingOverlay";
 import Tooltip from "../../layout/Tooltip/Tooltip";
 import { ClaimAdRewardActionType } from "../../../types/tasks/ClaimAdRewardActionType";
 import CyberFarmEvoFieldsWrapperProgress from "./CyberFarmEvoFieldsWrapperProgress/CyberFarmEvoFieldsWrapperProgress";
+import { IFarmSlot } from "../../../models/CyberFarm/IFarmSlot";
 
-type InitialFieldType = {
+export type InitialFieldType = {
   id: string;
   disabled?: boolean;
   isEmpty?: boolean;
   curImage?: { src: string; srcSet: string };
   blocked?: boolean;
   level?: number;
+  adProductionBonusReceived?: boolean;
+  finalProduction?: number;
   process?:
     | {
         startDate: number;
         endDate: number;
       }
     | undefined;
+  modules?: IFarmSlot["modules"];
 };
 
 interface Props<T extends InitialFieldType> {

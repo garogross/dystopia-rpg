@@ -17,7 +17,7 @@ interface Props {
   onPlant: () => void;
   evoMode?: boolean;
   level: number | undefined;
-  type: EFarmSlotTypes; // farm or factory
+  type: EFarmSlotTypes; // farm or factory or workshop
 }
 
 const {
@@ -27,12 +27,14 @@ const {
   farmText,
   factoryText,
   levelText,
+  workshopText,
 } = TRANSLATIONS.cyberFarm.buildingPlantOptionsModal;
 
 const typeTexts = {
   [EFarmSlotTypes.FIELDS]: farmText, // this is for avoid type error
   [EFarmSlotTypes.FARM]: farmText,
   [EFarmSlotTypes.FACTORY]: factoryText,
+  workshop: workshopText,
 };
 
 const CyberFarmBuildingPlantOptionsModal: React.FC<Props> = ({

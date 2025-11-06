@@ -36,6 +36,8 @@ import { initMail, receiveMailReward } from "./influence/mailSlice";
 import { EAdSlots } from "../../constants/EAdSlots";
 import { GetWithdrawRatesResponse } from "../../models/api/GetWithdrawRatesResponse";
 import { postLog } from "../../api/logs";
+import { EFarmSlotTypes } from "../../constants/cyberfarm/EFarmSlotTypes";
+import { EModuleProducts } from "../../constants/cyberfarm/EModuleProducts";
 // import {AppDispatch, RootState} from "../store";
 
 // endpoints
@@ -194,19 +196,40 @@ export const getAccountDetails =
     if (resData.ton_cyber_farm && resData.mode === "ton_cyber_farm") {
       dispatch(initCyberFarm());
       // store slots
-
+      const modules = resData.game_settings_new.ton_cyber_farm_modules;
       dispatch(
         getCyberFarmSlots({
           slots: resData.ton_cyber_farm.slots,
+          workshopSlots: resData.ton_cyber_farm.workshop_slots,
           slotCosts: resData.game_settings?.slot_costs,
+          workshopSlotCosts:
+            resData.game_settings_new.ton_cyber_workshop_slot_costs.workshop,
+          moduleLimits: {
+            [EModuleProducts.Production]: {
+              [EFarmSlotTypes.FACTORY]: modules.factory.production.max_total,
+              [EFarmSlotTypes.FARM]: modules.farm.production.max_total,
+              [EFarmSlotTypes.FIELDS]: modules.farm.production.max_total,
+              [EFarmSlotTypes.WORKSHOP]:
+                modules.workshop.production.max_modules,
+            },
+
+            [EModuleProducts.Acceleration]: {
+              [EFarmSlotTypes.FACTORY]: modules.factory.speed.max_total,
+              [EFarmSlotTypes.FARM]: modules.farm.speed.max_total,
+              [EFarmSlotTypes.FIELDS]: modules.farm.speed.max_total,
+              [EFarmSlotTypes.WORKSHOP]: modules.workshop.speed.max_modules,
+            },
+          },
         })
       );
 
       // store resources
       if (resData.game_settings) {
+        const { workshop_products, ...resources } =
+          resData.ton_cyber_farm.resources;
         dispatch(
           getCyberFarmResources({
-            resources: resData.ton_cyber_farm.resources,
+            resources: { ...resources, ...workshop_products },
             resourceDeficit: resData?.resource_deficit,
             productsSettings:
               resData?.game_settings_new?.ton_cyber_farm_products,

@@ -12,7 +12,7 @@ import {
   getStorage,
 } from "../../../../store/slices/cyberFarm/resourcesSlice";
 
-const { titleText, emptyText } = TRANSLATIONS.cyberFarm.warehouse;
+const { titleText, emptyText, workshopText } = TRANSLATIONS.cyberFarm.warehouse;
 
 interface Props {
   evoMode?: boolean;
@@ -54,10 +54,31 @@ const CyberFarmWarehouse: React.FC<Props> = ({ evoMode }) => {
           emptyText={emptyText[language]}
           isWarehouse
           onSellItem={(item) => {
-            setSelectedItemId(item.id);
-            setInfoShow(true);
+            if (item.type !== "chips") {
+              setSelectedItemId(item.id);
+              setInfoShow(true);
+            }
           }}
           evoMode={evoMode}
+          sorts={[
+            {
+              header: <></>,
+              filterBy: (item) =>
+                item.type !== "chips" &&
+                item.type !== "modules" &&
+                item.product !== "chips",
+            },
+            {
+              header: (
+                <p className={styles.cyberFarmWarehouse__subtitle}>
+                  {workshopText[language]}
+                </p>
+              ),
+              filterBy: (item) =>
+                (item.type === "chips" || item.type === "modules") &&
+                item.product !== "chips",
+            },
+          ]}
         />
         {selectedItem && (
           <CyberFarmWarehouseProductInfo

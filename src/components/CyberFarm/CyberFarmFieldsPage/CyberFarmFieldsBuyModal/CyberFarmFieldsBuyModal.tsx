@@ -18,6 +18,7 @@ interface Props {
   buyingSlotId: string;
   onClose: () => void;
   evoMode?: boolean;
+  isWorkshop?: boolean;
 }
 
 const { titleText, buyByCpButtonText, cancelButtonText, successText } =
@@ -27,6 +28,7 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
   onClose,
   buyingSlotId,
   evoMode,
+  isWorkshop,
 }) => {
   const dispath = useAppDispatch();
   const language = useAppSelector((state) => state.ui.language);
@@ -36,8 +38,8 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
   const [errored, setErrored] = useState(false);
   const [errorText, setErrorText] = useState("");
 
-  const getSlotCostTexts = useSlotCost();
-  const { costTextInCp } = getSlotCostTexts(EFarmSlotTypes.FIELDS);
+  const getSlotCostTexts = useSlotCost(isWorkshop);
+  const { costTextInCp } = getSlotCostTexts(EFarmSlotTypes.FIELDS, undefined);
 
   useEffect(() => {
     if (!show) {
@@ -62,8 +64,9 @@ const CyberFarmFieldsBuyModal: React.FC<Props> = ({
       await dispath(
         buySlot({
           id: buyingSlotId,
-          type: EFarmSlotTypes.FIELDS,
+          type: isWorkshop ? EFarmSlotTypes.WORKSHOP : EFarmSlotTypes.FIELDS,
           byCp: byCp,
+
           cost,
         })
       ).unwrap();
