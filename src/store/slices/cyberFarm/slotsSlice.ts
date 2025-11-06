@@ -193,32 +193,46 @@ export const slotsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(buySlot.fulfilled, (state, { payload }) => {
-      if (payload.type === EFarmSlotTypes.WORKSHOP) {
+      if (
+        payload.type === EFarmSlotTypes.WORKSHOP &&
+        payload.workshop_slot_id
+      ) {
         state.workshopSlots = {
           ...state.workshopSlots,
-          [payload.slot_id]: {
+          [payload.workshop_slot_id]: {
             type: payload.type,
             updated_at: Date.now(),
             level: payload.level || 1,
           },
         };
       } else {
-        state.slots = {
-          ...state.slots,
-          [payload.slot_id]: {
-            type: payload.type,
-            updated_at: Date.now(),
-            level: payload.level || 1,
-          },
-        };
+        if (payload.slot_id) {
+          state.slots = {
+            ...state.slots,
+            [payload.slot_id]: {
+              type: payload.type,
+              updated_at: Date.now(),
+              level: payload.level || 1,
+            },
+          };
+        }
       }
     });
     builder.addCase(produceSlot.fulfilled, (state, { payload }) => {
-      if (payload.product === "chips") {
+      // Fix: Ensure only valid workshop products are handled in workshopSlots
+      if (
+        payload.product === "chips" ||
+        payload.product === EModuleProducts.Acceleration ||
+        payload.product === EModuleProducts.Autonomy ||
+        payload.product === EModuleProducts.Production
+      ) {
         state.workshopSlots = {
           ...state.workshopSlots,
           [payload.slot_id]: {
-            ...(state.workshopSlots || {})[payload.slot_id],
+            ...(state.workshopSlots?.[payload.slot_id] || {}),
+            type: EFarmSlotTypes.WORKSHOP,
+            updated_at: Date.now(),
+            level: state.workshopSlots?.[payload.slot_id]?.level ?? 1,
             product: payload.product,
             start_time: payload.start_time,
             finish_time: payload.finish_time,

@@ -3,7 +3,8 @@ import { CyberFarmProductType } from "../../../types/CyberFarmProductType";
 
 export interface BuySlotResponse {
   status: string;
-  slot_id: string;
+  slot_id?: string;
+  workshop_slot_id?: string;
   type: EFarmSlotTypes;
   level?: number;
 }
