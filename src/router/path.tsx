@@ -59,7 +59,6 @@ import {
   gridlineLevelSelectPagePath,
   cyberFarmFabricPagePath,
 } from "./constants";
-import CyberFarmEvoFabricPage from "../pages/CyberFarmEvo/CyberFarmEvoFabricPage";
 
 const HomePage = lazy(() => import("../pages/HomePage"));
 const RPGGamePage = lazy(() => import("../pages/RPGGame/RPGGamePage"));
@@ -121,6 +120,13 @@ const CyberFarmReferalsPage = lazy(
 const CyberFarmAchievmentsPage = lazy(
   () => import("../pages/CyberFarm/CyberFarmAchievmentsPage")
 );
+const CyberFarmEvoFabricPage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoFabricPage")
+);
+const CyberFarmEvoRatingsPage = lazy(
+  () => import("../pages/CyberFarmEvo/CyberFarmEvoRatingsPage")
+);
+
 const MiniGamesPage = lazy(() => import("../pages/MiniGames/MiniGamesPage"));
 const MiniGamesAchievmentsPage = lazy(
   () => import("../pages/MiniGames/MiniGamesAchievmentsPage")
@@ -239,8 +245,18 @@ const CyberFarmEvoFarmsPage = lazy(
 const CyberFarmEvoProductionPage = lazy(
   () => import("../pages/CyberFarmEvo/CyberFarmEvoProductionPage")
 );
-const CyberFarmEvoRatingsPage = lazy(
-  () => import("../pages/CyberFarmEvo/CyberFarmEvoRatingsPage")
+const GridlinePage = lazy(() => import("../pages/Gridline/GridlinePage"));
+const GridlineMainPage = lazy(
+  () => import("../pages/Gridline/GridlineMainPage")
+);
+const GridlineAchievmentsPage = lazy(
+  () => import("../pages/Gridline/GridlineAchievmentsPage")
+);
+const GridlineRatingsPage = lazy(
+  () => import("../pages/Gridline/GridlineRatingsPage")
+);
+const GridlineLevelSelectPage = lazy(
+  () => import("../pages/Gridline/GridlineLevelSelectPage")
 );
 
 export const homePagePath = "/";
