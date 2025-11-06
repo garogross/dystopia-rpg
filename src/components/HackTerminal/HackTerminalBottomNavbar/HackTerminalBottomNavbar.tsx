@@ -1,10 +1,6 @@
 import React from "react";
 import {
-  AchievmentsIcon,
-  BottomWings,
-  LevelSelectIcon,
   PrizesListIcon,
-  RatingsIcon,
   RullesIcon,
 } from "../../layout/icons/HackTerminal/HackTerminalBottomNavbar";
 import { NavLink } from "react-router-dom";
@@ -21,32 +17,9 @@ import TransitionProvider, {
   TransitionStyleTypes,
 } from "../../../providers/TransitionProvider";
 import { TRANSLATIONS } from "../../../constants/TRANSLATIONS";
+import GameBottomNavbar from "../../GameBottomNavbar/GameBottomNavbar";
 
-const {
-  ratingsText,
-  levelSelectText,
-  achievmentsText,
-  prizesListText,
-  rulesText,
-} = TRANSLATIONS.hackTerminal.bottomNavbar;
-
-const mainLinks = [
-  {
-    icon: <RatingsIcon />,
-    link: hackTerminalRatingsPagePath,
-    name: ratingsText,
-  },
-  {
-    icon: <LevelSelectIcon />,
-    link: hackTerminalLevelSelectPagePath,
-    name: levelSelectText,
-  },
-  {
-    icon: <AchievmentsIcon />,
-    link: hackTerminalAchievmentsPagePath,
-    name: achievmentsText,
-  },
-];
+const { prizesListText, rulesText } = TRANSLATIONS.hackTerminal.bottomNavbar;
 
 const linkActiveClass =
   (mainClass: string, activeClass: string) =>
@@ -60,11 +33,6 @@ const HackTerminalBottomNavbar = () => {
   const topBlockLinksActiveClass = linkActiveClass(
     styles.hackTerminalBottomNavbar__topBlockLink,
     styles.hackTerminalBottomNavbar__topBlockLink_active
-  );
-
-  const maiNavLinksActiveClass = linkActiveClass(
-    styles.hackTerminalBottomNavbar__mainNavLink,
-    styles.hackTerminalBottomNavbar__mainNavLink_active
   );
 
   return (
@@ -91,31 +59,11 @@ const HackTerminalBottomNavbar = () => {
           </NavLink>
         </div>
       </TransitionProvider>
-      <TransitionProvider
-        inProp={gameInited}
-        style={TransitionStyleTypes.bottom}
-        className={styles.hackTerminalBottomNavbar__main}
-      >
-        <div className={styles.hackTerminalBottomNavbar__mainNav}>
-          {mainLinks.map((item) => (
-            <NavLink
-              to={item.link}
-              key={item.link}
-              className={maiNavLinksActiveClass}
-            >
-              <div
-                className={styles.hackTerminalBottomNavbar__mainNavLinkInner}
-              >
-                {item.icon}
-                <span>{item.name[language]}</span>
-              </div>
-            </NavLink>
-          ))}
-        </div>
-        <div className={styles.hackTerminalBottomNavbar__bottomWings}>
-          <BottomWings />
-        </div>
-      </TransitionProvider>
+      <GameBottomNavbar
+        ratingsPagePath={hackTerminalRatingsPagePath}
+        levelSelectPagePath={hackTerminalLevelSelectPagePath}
+        achievmentsPagePath={hackTerminalAchievmentsPagePath}
+      />
     </div>
   );
 };

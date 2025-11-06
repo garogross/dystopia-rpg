@@ -53,6 +53,10 @@ import {
   cyberFarmEvoPagePath,
   cyberFarmProductionPagePath,
   cyberFarmRatingsPagePath,
+  gridlinePagePath,
+  gridlineAchievmentsPagePath,
+  gridlineRatingsPagePath,
+  gridlineLevelSelectPagePath,
   cyberFarmFabricPagePath,
 } from "./constants";
 import CyberFarmEvoFabricPage from "../pages/CyberFarmEvo/CyberFarmEvoFabricPage";
@@ -475,6 +479,25 @@ export const routes: IRoute[] = [
       {
         path: bubbleFrontRatingsPagePath,
         component: <BubbleFrontRatingsPage />,
+      },
+    ],
+  },
+  {
+    path: gridlinePagePath,
+    component: <GridlinePage />,
+    indexComponent: <GridlineMainPage />,
+    children: [
+      {
+        path: gridlineAchievmentsPagePath,
+        component: <GridlineAchievmentsPage />,
+      },
+      {
+        path: gridlineRatingsPagePath,
+        component: <GridlineRatingsPage />,
+      },
+      {
+        path: gridlineLevelSelectPagePath,
+        component: <GridlineLevelSelectPage />,
       },
     ],
   },

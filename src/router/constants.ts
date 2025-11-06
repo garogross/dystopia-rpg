@@ -27,12 +27,14 @@ export const cyberFarmProductionPagePath = "production";
 export const cyberFarmRatingsPagePath = "ratings";
 export const cyberFarmFabricPagePath = "fabric";
 
+// minigames
 export const miniGamesPagePath = onBoardingPagePath + "/minigames";
 export const miniGamesAchievmentsPagePath = "achievments";
 export const miniGamesLoyalityPagePath = "loyality";
 export const miniGamesPinnedPagePath = "pinned";
 export const miniGamesReferalsPagePath = "referals";
 
+// hack terminal
 export const hackTerminalPagePath = onBoardingPagePath + "/hackterminal";
 export const hackTerminalLevelSelectPagePath = "level-select";
 export const hackTerminalAchievmentsPagePath = "achievments";
@@ -40,16 +42,24 @@ export const hackTerminalPrizesPagePath = "prizes";
 export const hackTerminalRatingsPagePath = "ratings";
 export const hackTerminalRulesPagePath = "rules";
 
+// puzzle
 export const puzzlePagePath = onBoardingPagePath + "/puzzle";
 export const puzzleSelectModePagePath = "select-mode";
 export const puzzleGalleryPagePath = "gallery";
 export const puzzleAchievmentsPagePath = "achievments";
 export const puzzleRatingsPagePath = "ratings";
 
+// bubblefront
 export const bubbleFrontPagePath = onBoardingPagePath + "/bubblefront";
 export const bubbleFrontAchievmentsPagePath = "achievments";
 export const bubbleFrontRatingsPagePath = "ratings";
+// gridline
+export const gridlinePagePath = onBoardingPagePath + "/gridline";
+export const gridlineAchievmentsPagePath = "achievments";
+export const gridlineRatingsPagePath = "ratings";
+export const gridlineLevelSelectPagePath = "level-select";
 
+// influence
 export const influencePagePath = onBoardingPagePath + "/influence";
 export const influenceClanPagePath = "clan";
 export const influenceMyClanPagePath = "clan/my";

@@ -1,6 +1,8 @@
 import {
   bubblefrontImage,
   bubblefrontImageWebp,
+  gridlineImage,
+  gridlineImageWebp,
   // hackTerminalImage,
   // hackTerminalImageWebp,
   // minGamesPuzzleImage,
@@ -8,6 +10,7 @@ import {
 } from "../../assets/imageMaps";
 import {
   bubbleFrontPagePath,
+  gridlinePagePath,
   // hackTerminalPagePath,
 } from "../../router/constants";
 import { TranslationItemType } from "../../types/TranslationItemType";
@@ -16,6 +19,7 @@ import { EMiniGames } from "./EMiniGames";
 
 const {
   // puzzle, hackTerminal,
+  gridline,
   bubbleFront,
 } = TRANSLATIONS.miniGames;
 
@@ -59,5 +63,15 @@ export const MINI_GAMES: {
     description: bubbleFront.description,
     key: EMiniGames.BUBBLE_FRONT,
     link: bubbleFrontPagePath,
+  },
+  {
+    image: {
+      src: gridlineImage,
+      srcSet: gridlineImageWebp,
+    },
+    name: gridline.name,
+    description: gridline.description,
+    key: EMiniGames.GRIDLINE,
+    link: gridlinePagePath,
   },
 ];
