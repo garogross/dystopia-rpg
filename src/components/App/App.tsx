@@ -12,7 +12,7 @@ import { useStoreFreshDate } from "../../hooks/useStoreFreshDate";
 import { getUserIp } from "../../utils/getUserIp";
 import AppRouter from "../../router/AppRouter";
 // import PlugModal from "../PlugModal/PlugModal";
-import { TESTER_IDS } from "../../constants/testerIds";
+// import { TESTER_IDS } from "../../constants/testerIds";
 
 const loadScripts = (tg: WebApp) => {
   // load telegram scripts
