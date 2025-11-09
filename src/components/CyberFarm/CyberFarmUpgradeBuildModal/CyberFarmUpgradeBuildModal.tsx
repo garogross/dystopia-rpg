@@ -96,12 +96,7 @@ const CyberFarmUpgradeBuildModal: React.FC<Props> = ({
   );
   const nextLevelData = upgradeLevels?.[(+level + 1)?.toString()];
 
-  const upgradeCost =
-    nextLevelData?.[
-      type === EFarmSlotTypes.FACTORY
-        ? "upgrade_cost_factory"
-        : "upgrade_cost_farm"
-    ];
+  const upgradeCost = nextLevelData?.bonus;
   useEffect(() => {
     dispatch(getProductionEstimate());
     // eslint-disable-next-line react-hooks/exhaustive-deps
