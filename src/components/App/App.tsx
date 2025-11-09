@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-// import AppRouter from "../../router/AppRouter";
 import { useTelegram } from "../../hooks/useTelegram";
 import { getPlatformType } from "../../utils/getPlatformType";
 import { useOfferwallSdk } from "../../hooks/useOfferwallSdk";
@@ -12,7 +11,7 @@ import { postLog } from "../../api/logs";
 import { useStoreFreshDate } from "../../hooks/useStoreFreshDate";
 import { getUserIp } from "../../utils/getUserIp";
 import AppRouter from "../../router/AppRouter";
-import PlugModal from "../PlugModal/PlugModal";
+// import PlugModal from "../PlugModal/PlugModal";
 import { TESTER_IDS } from "../../constants/testerIds";
 
 const loadScripts = (tg: WebApp) => {
@@ -323,13 +322,13 @@ export const App = () => {
 
   return (
     <>
-      {/* <AppRouter /> */}
-      {process.env.NODE_ENV === "development" ||
+      <AppRouter />
+      {/* {process.env.NODE_ENV === "development" ||
       TESTER_IDS.includes(tg?.initDataUnsafe.user?.id || 0) ? (
         <AppRouter />
       ) : (
         <PlugModal />
-      )}
+      )} */}
     </>
   );
 };
